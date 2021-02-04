@@ -1,5 +1,15 @@
 {
   "extends": [
-    "config:base"
+    "config:base",
+    ":preserveSemverRanges"
+  ],
+  "packageRules": [
+    {
+      "packagePatterns": [
+        "^@arkecosystem",
+        "^@protokol"
+      ],
+      "groupName": "crypto packages"
+    }
   ]
 }
