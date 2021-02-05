@@ -4,7 +4,7 @@ import {
     IonApp,
     IonRouterOutlet,
 } from '@ionic/react';
-import {IonReactRouter} from '@ionic/react-router';
+import {IonReactHashRouter, IonReactRouter} from '@ionic/react-router';
 import {useDispatch} from "react-redux";
 import {SetBaseUrlAppAction} from "./store/actions/app";
 
@@ -40,12 +40,14 @@ const App: React.FC = () => {
 
     return (
         <IonApp>
-            <IonReactRouter>
-                <IonRouterOutlet>
-                    <Route path="/welcome" component={WelcomePage} exact={true}/>
-                    <Route path="/" render={() => <Redirect to="/welcome"/>} exact={true}/>
-                </IonRouterOutlet>
-            </IonReactRouter>
+            <IonReactHashRouter>
+                <IonReactRouter>
+                    <IonRouterOutlet>
+                        <Route path="/welcome" component={WelcomePage} exact={true}/>
+                        <Route path="/" render={() => <Redirect to="/welcome"/>} exact={true}/>
+                    </IonRouterOutlet>
+                </IonReactRouter>
+            </IonReactHashRouter>
         </IonApp>
     );
 }

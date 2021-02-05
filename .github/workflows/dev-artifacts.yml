@@ -35,7 +35,7 @@ jobs:
         with:
           file: package.json
           field: homepage
-          value: .
+          value: https://protokol.github.io/collectibles-mobile
 
       - name: npm build
         run: npm run build
