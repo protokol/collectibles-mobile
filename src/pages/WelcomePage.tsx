@@ -58,8 +58,8 @@ const WelcomePage: React.FC = () => {
                         </IonCol>
                         <IonCol className="ion-no-padding" size="12">
                             <Img
-                                srcSet="assets/images/welcome-screen.png 1x, assets/images/welcome-screen@2x.png 2x"
-                                src="assets/images/welcome-screen.png"
+                                srcSet="./assets/images/welcome-screen.png 1x, ./assets/images/welcome-screen@2x.png 2x"
+                                src="./assets/images/welcome-screen.png"
                                 alt="Welcome"
                             />
                         </IonCol>
