@@ -2,7 +2,7 @@ name: Lint, Test and build
 on: [pull_request]
 
 jobs:
-  build:
+  pr:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -36,5 +36,5 @@ jobs:
       - name: npm build
         run: npm run build
 
-      - name: npm build
+      - name: npm build android
         run: npm run build:android:ci
