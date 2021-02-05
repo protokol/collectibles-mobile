@@ -6,6 +6,7 @@ import Text from "../components/ionic/Text";
 import {FontSize} from "../constants/font-size";
 import {FontWeight} from "../constants/font-weight";
 import Img from "../components/ionic/Img";
+import {welcomeImage} from "../constants/images";
 
 const Content = styled(IonContent)`
   --background: var(--app-color-charade);
@@ -57,11 +58,7 @@ const WelcomePage: React.FC = () => {
                             </Text>
                         </IonCol>
                         <IonCol className="ion-no-padding" size="12">
-                            <Img
-                                srcSet="./assets/images/welcome-screen.png 1x, ./assets/images/welcome-screen@2x.png 2x"
-                                src="./assets/images/welcome-screen.png"
-                                alt="Welcome"
-                            />
+                            <Img {...welcomeImage}/>
                         </IonCol>
                         <IonCol size="12">
                             <Button
