@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "fd4a464b20a4f45264dc2444be6037a6",
+    "revision": "a7ceb0c9bae872db9b6d53e0585b6ea0",
     "url": "/collectibles-mobile/index.html"
   },
   {
@@ -8,8 +8,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/collectibles-mobile/static/css/4.21302a68.chunk.css"
   },
   {
-    "revision": "091cdacf4d0fa8fb241a",
-    "url": "/collectibles-mobile/static/css/main.ec2f60b5.chunk.css"
+    "revision": "b0575dfc669b93ce0464",
+    "url": "/collectibles-mobile/static/css/main.06deb001.chunk.css"
   },
   {
     "revision": "b30fc256d0e3fcf90085",
@@ -248,8 +248,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/collectibles-mobile/static/js/9.8058fa80.chunk.js"
   },
   {
-    "revision": "091cdacf4d0fa8fb241a",
-    "url": "/collectibles-mobile/static/js/main.c3b353f2.chunk.js"
+    "revision": "b0575dfc669b93ce0464",
+    "url": "/collectibles-mobile/static/js/main.fc1e3811.chunk.js"
   },
   {
     "revision": "dd3b92eb83a45ab2b7e6",
