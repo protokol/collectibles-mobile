@@ -44,6 +44,7 @@
     "start": "react-scripts start",
     "cap:start:ios": "ionic cap open ios",
     "cap:start:android": "ionic cap open android",
+    "cap:add:android": "npx ionic capacitor add android",
     "build": "react-scripts build",
     "build:android:ci": "npx ionic capacitor copy android && cd android && ./gradlew assembleDebug && cd ..",
     "test": "react-scripts test",

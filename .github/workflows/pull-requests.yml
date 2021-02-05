@@ -36,5 +36,8 @@ jobs:
       - name: npm build
         run: npm run build
 
+      - name: npm add android config
+        run: npm run cap:add:android
+
       - name: npm build android
         run: npm run build:android:ci
