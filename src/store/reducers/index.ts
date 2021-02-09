@@ -1,9 +1,9 @@
-import {combineReducers} from 'redux';
-import network from './network';
+import { combineReducers } from 'redux';
+import { RootState } from '../types';
 import app from './app';
-import {RootState} from "../types";
+import network from './network';
 
 export default combineReducers<RootState>({
-    app,
-    network
+  app,
+  network,
 });

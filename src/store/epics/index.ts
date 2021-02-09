@@ -1,8 +1,5 @@
-import {combineEpics} from "redux-observable";
+import { combineEpics } from 'redux-observable';
 import appEpics from './app';
 import networkEpics from './network';
 
-export default combineEpics(
-    ...appEpics,
-    ...networkEpics
-)
+export default combineEpics(...appEpics, ...networkEpics);

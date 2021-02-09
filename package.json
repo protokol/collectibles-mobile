@@ -8,6 +8,9 @@
   "description": "Mobile app for Protokol NFT plugins",
   "license": "CC BY-NC-SA 4.0",
   "version": "0.0.0-alpha.1",
+  "engines": {
+    "node": ">=12.20.1"
+  },
   "dependencies": {
     "@capacitor/android": "^2.4.6",
     "@capacitor/core": "2.4.6",
@@ -15,15 +18,6 @@
     "@ionic/react": "^5.0.7",
     "@ionic/react-router": "^5.0.7",
     "@protokol/client": "^1.0.0-beta.38",
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.4.0",
-    "@testing-library/user-event": "^8.0.3",
-    "@types/jest": "^24.0.25",
-    "@types/node": "^12.12.24",
-    "@types/react": "^16.9.17",
-    "@types/react-dom": "^16.9.4",
-    "@types/react-router": "^5.1.4",
-    "@types/react-router-dom": "^5.1.3",
     "aes-js": "^3.1.2",
     "bip39": "^3.0.3",
     "ionicons": "^5.0.0",
@@ -48,10 +42,12 @@
     "build:android:ci": "npx ionic capacitor update android && npx ionic capacitor copy android && cd android && ./gradlew assembleDebug && cd ..",
     "test": "react-scripts test",
     "test:ci": "react-scripts test --ci --watchAll=false",
+    "changelog": "npx auto-changelog",
+    "lint": "eslint --ext .js,.jsx,.ts,.tsx ./src",
+    "prettier": "prettier --write \"./src/**/*.{ts,tsx,css}\"",
+    "prettier:check": "prettier --list-different \"./src/**/*.{ts,tsx,css}\"",
+    "format-staged": "pretty-quick --staged --pattern \"**/*.*(ts|tsx|css)\"",
     "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
   },
   "browserslist": {
     "production": [
@@ -67,9 +63,33 @@
   },
   "devDependencies": {
     "@capacitor/cli": "2.4.6",
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.4.0",
+    "@testing-library/user-event": "^8.0.3",
+    "@trivago/prettier-plugin-sort-imports": "^1.4.1",
     "@types/aes-js": "^3.1.1",
+    "@types/jest": "^24.0.25",
+    "@types/node": "^12.12.24",
+    "@types/react": "^16.9.17",
+    "@types/react-dom": "^16.9.4",
     "@types/react-redux": "^7.1.16",
+    "@types/react-router": "^5.1.4",
+    "@types/react-router-dom": "^5.1.3",
     "@types/sha256": "^0.2.0",
-    "@types/styled-components": "^5.1.7"
+    "@types/styled-components": "^5.1.7",
+    "@typescript-eslint/eslint-plugin": "^4.15.0",
+    "eslint-config-prettier": "^7.2.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-react": "^7.22.0",
+    "husky": "^5.0.9",
+    "prettier": "^2.2.1",
+    "pretty-quick": "^3.1.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run format-staged",
+      "pre-push": "npm run lint"
+    }
   }
 }
