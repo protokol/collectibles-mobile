@@ -1,12 +1,12 @@
 name: Lint, Test and build
-on: [pull_request]
+on: [ pull_request ]
 
 jobs:
   pr:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [12.x]
+        node-version: [ 12.x ]
 
     steps:
       - uses: actions/checkout@v2
@@ -27,8 +27,8 @@ jobs:
       - name: Install Dependencies
         run: npm ci
 
-      # - name: npm lint
-      #  run: npm run lint
+      - name: npm lint
+        run: npm run lint
 
       - name: npm test
         run: npm run test:ci
