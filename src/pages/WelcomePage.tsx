@@ -20,10 +20,12 @@ const Content = styled(IonContent)`
         justify-content: center;
         height: 30vh;
       }
+
       &:nth-child(2) {
         height: 30vh;
         overflow: hidden;
       }
+
       &:nth-child(3) {
         display: flex;
         flex-direction: column;
@@ -65,7 +67,7 @@ const WelcomePage: React.FC = () => {
             <IonCol size="12">
               <Button
                 size="large"
-                expand="full"
+                expand="block"
                 className="ion-text-uppercase ion-margin"
                 fontSize={FontSize.M}
                 fontWeight={FontWeight.BOLD}
@@ -79,6 +81,7 @@ const WelcomePage: React.FC = () => {
                 color="tertiary"
                 fontSize={FontSize.M}
                 fontWeight={FontWeight.BOLD}
+                routerLink="/register/username"
               >
                 Create account
               </Button>

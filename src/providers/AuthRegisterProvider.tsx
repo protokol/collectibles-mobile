@@ -5,18 +5,18 @@ import { SetEncodedUserPrivateKeyAction } from '../store/actions/app';
 import { Encryption } from '../utils/encryption';
 
 interface AuthRegisterProviderState {
-  passphrase: string | null;
+  username?: string;
+  passphrase?: string;
 }
 
 interface AuthRegisterProviderContext {
   readonly state: AuthRegisterProviderState;
-  generatePassphrase: (language?: string) => void;
+  setUsername: (username: string) => void;
   setPin: (pin: string) => void;
+  generatePassphrase: (language?: string) => void;
 }
 
-const authRegisterProviderInitialState: AuthRegisterProviderState = {
-  passphrase: null,
-};
+const authRegisterProviderInitialState: AuthRegisterProviderState = {};
 
 export const AuthRegisterContext = createContext<AuthRegisterProviderContext>(
   {} as AuthRegisterProviderContext
@@ -28,17 +28,11 @@ const AuthRegisterContextProvider: FC = ({ children }) => {
   });
   const dispatch = useDispatch();
 
-  const generatePassphrase: AuthRegisterProviderContext['generatePassphrase'] = useCallback(
-    (language = 'english') => {
-      const passphrase = bip39.generateMnemonic(
-        undefined,
-        undefined,
-        bip39.wordlists[language]
-      );
-
+  const setUsername: AuthRegisterProviderContext['setUsername'] = useCallback(
+    (username) => {
       setState((prevState) => ({
         ...prevState,
-        passphrase,
+        username,
       }));
     },
     [setState]
@@ -67,10 +61,27 @@ const AuthRegisterContextProvider: FC = ({ children }) => {
     [state, dispatch]
   );
 
+  const generatePassphrase: AuthRegisterProviderContext['generatePassphrase'] = useCallback(
+    (language = 'english') => {
+      const passphrase = bip39.generateMnemonic(
+        undefined,
+        undefined,
+        bip39.wordlists[language]
+      );
+
+      setState((prevState) => ({
+        ...prevState,
+        passphrase,
+      }));
+    },
+    [setState]
+  );
+
   const providerState: AuthRegisterProviderContext = {
     state,
-    generatePassphrase,
+    setUsername,
     setPin,
+    generatePassphrase,
   };
 
   return (

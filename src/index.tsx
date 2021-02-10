@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { setupConfig } from '@ionic/react';
 import App from './App';
-import AuthRegisterContextProvider from './providers/AuthRegisterProvider';
 import * as serviceWorker from './serviceWorker';
 import configureStore from './store/configure-store';
 
@@ -15,9 +14,7 @@ const store = configureStore();
 
 ReactDOM.render(
   <Provider store={store}>
-    <AuthRegisterContextProvider>
-      <App />
-    </AuthRegisterContextProvider>
+    <App />
   </Provider>,
   document.getElementById('root')
 );
