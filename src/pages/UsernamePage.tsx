@@ -50,7 +50,7 @@ const UsernamePage: React.FC<RouterProps> = ({ history }) => {
         return;
       }
       setUsername(username);
-      history.push('/welcome');
+      history.push('/register/passcode');
     },
     [formState.isValid, setUsername, history]
   );
@@ -71,7 +71,7 @@ const UsernamePage: React.FC<RouterProps> = ({ history }) => {
               </Text>
               <Text
                 className="ion-margin-top"
-                fontSize={FontSize.M}
+                fontSize={FontSize.SM}
                 color="light"
               >
                 Collecting digital hero cards is easy! Make it even easier for
@@ -85,8 +85,8 @@ const UsernamePage: React.FC<RouterProps> = ({ history }) => {
                   render={({ onChange }) => (
                     <Input
                       type="text"
-                      className="username-prefix ion-margin-bottom"
-                      fontSize={FontSize.M}
+                      className="form-input-prefix-username ion-margin-bottom"
+                      fontSize={FontSize.SM}
                       placeholder="Pick username..."
                       onIonChange={({
                         detail: { value },
@@ -103,11 +103,12 @@ const UsernamePage: React.FC<RouterProps> = ({ history }) => {
                 />
                 <FormInputError errors={errors} name="username" />
                 <Button
+                  type="submit"
                   size="large"
                   expand="block"
                   className="ion-text-uppercase ion-no-margin ion-margin-top"
                   color="tertiary"
-                  fontSize={FontSize.M}
+                  fontSize={FontSize.SM}
                   fontWeight={FontWeight.BOLD}
                   disabled={!formState.isValid}
                 >

@@ -69,7 +69,7 @@ const WelcomePage: React.FC = () => {
                 size="large"
                 expand="block"
                 className="ion-text-uppercase ion-margin"
-                fontSize={FontSize.M}
+                fontSize={FontSize.SM}
                 fontWeight={FontWeight.BOLD}
               >
                 Existing user
@@ -79,7 +79,7 @@ const WelcomePage: React.FC = () => {
                 expand="block"
                 className="ion-text-uppercase ion-margin"
                 color="tertiary"
-                fontSize={FontSize.M}
+                fontSize={FontSize.SM}
                 fontWeight={FontWeight.BOLD}
                 routerLink="/register/username"
               >
@@ -87,7 +87,7 @@ const WelcomePage: React.FC = () => {
               </Button>
             </IonCol>
             <IonCol size="12" className="ion-text-center">
-              <Text fontSize={FontSize.SM} color="light">
+              <Text fontSize={FontSize.XS} color="light">
                 © Protokol, 2021
               </Text>
             </IonCol>

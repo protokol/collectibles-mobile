@@ -18,10 +18,14 @@ const Input = styled(IonInput)<{
 
   ${({ fontSize }) => Styles.serializeFontSize(fontSize)}
 
-  &.username-prefix:before {
-    content: '@';
-    position: absolute;
-    left: 0.65rem;
+  &.form-input- {
+    &prefix-username {
+      &:before {
+        content: '@';
+        position: absolute;
+        left: 0.65rem;
+      }
+    }
   }
 `;
 

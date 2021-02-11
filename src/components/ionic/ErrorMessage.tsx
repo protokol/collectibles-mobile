@@ -7,12 +7,14 @@ import { FontWeight } from '../../constants/font-weight';
 import { Styles } from '../../utils/styles';
 import Text from './Text';
 
-const ErrorMessageWrapped: React.FC<{ name: string; errors: FieldErrors }> = (
-  props
-) => (
+const ErrorMessageWrapped: React.FC<{
+  name: string;
+  errors: FieldErrors;
+  className?: string;
+}> = (props) => (
   <ErrorMessage
     render={({ message }) => (
-      <Text className="ion-padding-top" fontSize={FontSize.M} color="danger">
+      <Text className="ion-padding-top" fontSize={FontSize.SM} color="danger">
         {message}
       </Text>
     )}

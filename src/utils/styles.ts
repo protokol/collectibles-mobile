@@ -4,7 +4,7 @@ import { FontWeight } from '../constants/font-weight';
 export abstract class Styles {
   static serializeLineHeight(fontSize?: FontSize) {
     switch (fontSize) {
-      case FontSize.M:
+      case FontSize.SM:
         return 'line-height: 1.125rem;';
       case FontSize.L:
         return 'line-height: 2.0625rem;';

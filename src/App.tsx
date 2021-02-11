@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 import { Redirect, Route } from 'react-router-dom';
 import { IonApp, IonRouterOutlet } from '@ionic/react';
 import { IonReactHashRouter } from '@ionic/react-router';
+import PasscodePage from './pages/PasscodePage';
 import UsernamePage from './pages/UsernamePage';
 import WelcomePage from './pages/WelcomePage';
 import AuthRegisterContextProvider from './providers/AuthRegisterProvider';
@@ -20,19 +21,12 @@ const App: React.FC = () => {
     <IonApp>
       <IonReactHashRouter>
         <IonRouterOutlet>
-          <Route path="/welcome" component={WelcomePage} exact={true} />
+          <Route path="/welcome" component={WelcomePage} exact />
           <AuthRegisterContextProvider>
-            <Route
-              path="/register/username"
-              component={UsernamePage}
-              exact={true}
-            />
+            <Route path="/register/username" component={UsernamePage} exact />
+            <Route path="/register/passcode" component={PasscodePage} exact />
           </AuthRegisterContextProvider>
-          <Route
-            path="/"
-            render={() => <Redirect to="/welcome" />}
-            exact={true}
-          />
+          <Route path="/" render={() => <Redirect to="/welcome" />} exact />
         </IonRouterOutlet>
       </IonReactHashRouter>
     </IonApp>
