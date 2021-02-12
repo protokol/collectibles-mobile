@@ -9,13 +9,22 @@ import { IonCol } from '@ionic/react';
 import { FontSize } from '../constants/font-size';
 import Button from './ionic/Button';
 
+const MAX_PIN_LENGTH = 4;
+
 const keypadNumbers: undefined[] = Array.from({ length: 9 });
 
 const KeypadNumberBtn: React.FC<{
   onClick: MouseEventHandler;
   fontSize?: FontSize;
   size?: JSX.IonButton['size'];
-}> = ({ children, onClick, fontSize = FontSize.M, size = 'large' }) => (
+  disabled?: boolean;
+}> = ({
+  children,
+  onClick,
+  fontSize = FontSize.M,
+  size = 'large',
+  disabled = false,
+}) => (
   <Button
     type="button"
     size={size}
@@ -27,6 +36,7 @@ const KeypadNumberBtn: React.FC<{
       e.preventDefault();
       onClick(e);
     }}
+    disabled={disabled}
   >
     {children}
   </Button>
@@ -38,11 +48,15 @@ const Keypad: React.FC<{
 }> = ({ onChange, onEnter }) => {
   const [pin, setPin] = useState<string>('');
 
+  const canAddPinNumber = useCallback(() => MAX_PIN_LENGTH > pin.length, [pin]);
+
   const addPinNumber = useCallback(
     (digit: string) => {
-      setPin((prevPin) => `${prevPin}${digit}`);
+      if (canAddPinNumber()) {
+        setPin((prevPin) => `${prevPin}${digit}`);
+      }
     },
-    [setPin]
+    [setPin, canAddPinNumber]
   );
 
   const deletePinNumber = useCallback(() => {
@@ -65,14 +79,22 @@ const Keypad: React.FC<{
 
         return (
           <IonCol key={index} size="4">
-            <KeypadNumberBtn onClick={() => addPinNumber(keypadDigit)}>
+            <KeypadNumberBtn
+              disabled={!canAddPinNumber()}
+              onClick={() => addPinNumber(keypadDigit)}
+            >
               {keypadDigit}
             </KeypadNumberBtn>
           </IonCol>
         );
       })}
       <IonCol size="4" offset="4">
-        <KeypadNumberBtn onClick={() => addPinNumber('0')}>0</KeypadNumberBtn>
+        <KeypadNumberBtn
+          disabled={!canAddPinNumber()}
+          onClick={() => addPinNumber('0')}
+        >
+          0
+        </KeypadNumberBtn>
       </IonCol>
       <IonCol size="4" offset="1">
         <KeypadNumberBtn

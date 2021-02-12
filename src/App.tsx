@@ -24,7 +24,11 @@ const App: React.FC = () => {
           <Route path="/welcome" component={WelcomePage} exact />
           <AuthRegisterContextProvider>
             <Route path="/register/username" component={UsernamePage} exact />
-            <Route path="/register/passcode" component={PasscodePage} exact />
+            <Route
+              path="/register/passcode"
+              exact
+              render={(props) => <PasscodePage withConfirm {...props} />}
+            />
           </AuthRegisterContextProvider>
           <Route path="/" render={() => <Redirect to="/welcome" />} exact />
         </IonRouterOutlet>
