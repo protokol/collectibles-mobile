@@ -20,10 +20,12 @@ const Content = styled(IonContent)`
         justify-content: center;
         height: 30vh;
       }
+
       &:nth-child(2) {
         height: 30vh;
         overflow: hidden;
       }
+
       &:nth-child(3) {
         display: flex;
         flex-direction: column;
@@ -65,9 +67,9 @@ const WelcomePage: React.FC = () => {
             <IonCol size="12">
               <Button
                 size="large"
-                expand="full"
+                expand="block"
                 className="ion-text-uppercase ion-margin"
-                fontSize={FontSize.M}
+                fontSize={FontSize.SM}
                 fontWeight={FontWeight.BOLD}
               >
                 Existing user
@@ -77,14 +79,15 @@ const WelcomePage: React.FC = () => {
                 expand="block"
                 className="ion-text-uppercase ion-margin"
                 color="tertiary"
-                fontSize={FontSize.M}
+                fontSize={FontSize.SM}
                 fontWeight={FontWeight.BOLD}
+                routerLink="/register/username"
               >
                 Create account
               </Button>
             </IonCol>
             <IonCol size="12" className="ion-text-center">
-              <Text fontSize={FontSize.SM} color="light">
+              <Text fontSize={FontSize.XS} color="light">
                 © Protokol, 2021
               </Text>
             </IonCol>

@@ -1,4 +1,5 @@
 import { Epic } from 'redux-observable';
+import storage from '../utils/storage-service';
 import {
   SetBaseUrlAppActionType,
   SetEncodedUserPrivateKeyActionType,
@@ -10,7 +11,6 @@ import {
 } from './actions/network';
 import { AppState } from './reducers/app';
 import { NetworkState } from './reducers/network';
-import * as storage from './services/local-storage-service';
 import connection from './services/protokol-connection';
 
 export type RootActions =
@@ -25,7 +25,7 @@ export type RootState = {
 };
 export type RootDependencies = {
   connection: typeof connection;
-  storage: typeof storage;
+  storage: ReturnType<typeof storage>;
 };
 export type RootEpic = Epic<
   RootActions,

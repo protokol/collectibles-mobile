@@ -1,8 +1,8 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import { createEpicMiddleware } from 'redux-observable';
+import storage from '../utils/storage-service';
 import rootEpic from './epics';
 import rootReducer from './reducers';
-import * as storage from './services/local-storage-service';
 import connection from './services/protokol-connection';
 import { RootActions, RootDependencies, RootState } from './types';
 
@@ -20,7 +20,7 @@ const epicMiddleware = createEpicMiddleware<
 >({
   dependencies: {
     connection,
-    storage,
+    storage: storage(),
   },
 });
 

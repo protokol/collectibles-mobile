@@ -1,22 +1,27 @@
 import * as bip39 from 'bip39';
-import React, { createContext, FC, useCallback, useState } from 'react';
+import React, {
+  createContext,
+  FC,
+  useCallback,
+  useContext,
+  useState,
+} from 'react';
 import { useDispatch } from 'react-redux';
 import { SetEncodedUserPrivateKeyAction } from '../store/actions/app';
 import { Encryption } from '../utils/encryption';
+import { AuthLoginContext } from './AuthLoginProvider';
 
 interface AuthRegisterProviderState {
-  passphrase: string | null;
+  username?: string;
 }
 
 interface AuthRegisterProviderContext {
   readonly state: AuthRegisterProviderState;
-  generatePassphrase: (language?: string) => void;
+  setUsername: (username: string) => void;
   setPin: (pin: string) => void;
 }
 
-const authRegisterProviderInitialState: AuthRegisterProviderState = {
-  passphrase: null,
-};
+const authRegisterProviderInitialState: AuthRegisterProviderState = {};
 
 export const AuthRegisterContext = createContext<AuthRegisterProviderContext>(
   {} as AuthRegisterProviderContext
@@ -27,18 +32,13 @@ const AuthRegisterContextProvider: FC = ({ children }) => {
     ...authRegisterProviderInitialState,
   });
   const dispatch = useDispatch();
+  const { setPin: authLoginSetPin } = useContext(AuthLoginContext);
 
-  const generatePassphrase: AuthRegisterProviderContext['generatePassphrase'] = useCallback(
-    (language = 'english') => {
-      const passphrase = bip39.generateMnemonic(
-        undefined,
-        undefined,
-        bip39.wordlists[language]
-      );
-
+  const setUsername: AuthRegisterProviderContext['setUsername'] = useCallback(
+    (username) => {
       setState((prevState) => ({
         ...prevState,
-        passphrase,
+        username,
       }));
     },
     [setState]
@@ -46,30 +46,24 @@ const AuthRegisterContextProvider: FC = ({ children }) => {
 
   const setPin: AuthRegisterProviderContext['setPin'] = useCallback(
     (pin) => {
-      const { passphrase } = state;
+      const passphrase = bip39.generateMnemonic(
+        undefined,
+        undefined,
+        bip39.wordlists['english']
+      );
+
       const passphraseJson = JSON.stringify({ passphrase });
       const encoded = Encryption.encode(passphraseJson, Encryption.hash(pin));
 
+      authLoginSetPin(pin);
       dispatch(SetEncodedUserPrivateKeyAction(encoded));
-
-      /* const decoded = Encryption.decode(encoded, hashedPin);
-        console.log(decoded);
-        const passphraseJsonDecoded = JSON.parse(decoded);
-        console.dir(passphraseJsonDecoded);
-
-        try {
-            const encodedWrong = Encryption.decode(passphraseJson, Encryption.hash('4321'));
-            JSON.parse(encodedWrong);
-        } catch (e) {
-            console.error('decode failed', e);
-        } */
     },
-    [state, dispatch]
+    [authLoginSetPin, dispatch]
   );
 
   const providerState: AuthRegisterProviderContext = {
     state,
-    generatePassphrase,
+    setUsername,
     setPin,
   };
 
