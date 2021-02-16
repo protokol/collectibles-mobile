@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { useForm, Controller, FieldValues } from 'react-hook-form';
 import { RouterProps } from 'react-router';
 import styled from 'styled-components';
@@ -9,6 +9,7 @@ import Input from '../components/ionic/Input';
 import Text from '../components/ionic/Text';
 import { FontSize } from '../constants/font-size';
 import { FontWeight } from '../constants/font-weight';
+import { AuthLoginContext } from '../providers/AuthLoginProvider';
 import { AuthRegisterContext } from '../providers/AuthRegisterProvider';
 
 const Content = styled(IonContent)`
@@ -53,6 +54,9 @@ const PasscodePage: React.FC<
     withConfirm?: boolean;
   }
 > = ({ history, withConfirm = false }) => {
+  const {
+    state: { session },
+  } = useContext(AuthLoginContext);
   const { setPin } = useContext(AuthRegisterContext);
 
   const [step, setStep] = useState<PasscodeSteps>(PasscodeSteps.Passcode);
@@ -74,6 +78,12 @@ const PasscodePage: React.FC<
 
   const { passcode, confirmPasscode } = watch();
 
+  useEffect(() => {
+    if (session && !session.error && session.isReady) {
+      history.push('/welcome');
+    }
+  }, [session, history]);
+
   const submitForm = useCallback(
     ({ passcode }: PasscodeForm) => {
       if (withConfirm && step === PasscodeSteps.Passcode) {
@@ -89,10 +99,9 @@ const PasscodePage: React.FC<
         clearErrors(['passcode', 'confirmPasscode']);
       } else {
         setPin(passcode);
-        history.push('/welcome');
       }
     },
-    [setPin, history, register, withConfirm, clearErrors, step]
+    [setPin, register, withConfirm, clearErrors, step]
   );
 
   const getTitle = useCallback(() => {

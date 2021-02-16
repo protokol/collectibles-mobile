@@ -10,6 +10,7 @@ import {
   tap,
   withLatestFrom,
 } from 'rxjs/operators';
+import { StorageKeys } from '../../constants/storage';
 import {
   AppActions,
   SetEncodedUserPrivateKeyAction,
@@ -43,7 +44,7 @@ const persistUserPrivateKeyInStorageEpic: RootEpic = (
         saveToStorage,
       } = payload as SetEncodedUserPrivateKeyActionType['payload'];
       if (saveToStorage) {
-        storage.set('pk', encodedUserPrivateKey);
+        storage.set(StorageKeys.STORAGE_PK_KEY, encodedUserPrivateKey);
       }
     }),
     ignoreElements()
@@ -57,7 +58,7 @@ const restoreUserPrivateKeyFromStorageEpic: RootEpic = (
   action$.pipe(
     first(),
     switchMap(() => {
-      const userPrivateKey = storage.get<string>('pk');
+      const userPrivateKey = storage.get<string>(StorageKeys.STORAGE_PK_KEY);
       if (userPrivateKey) {
         return of(SetEncodedUserPrivateKeyAction(userPrivateKey, false));
       }

@@ -12,6 +12,7 @@
     "node": ">=12.20.1"
   },
   "dependencies": {
+    "@arkecosystem/crypto": "^2.7.24",
     "@capacitor/android": "^2.4.6",
     "@capacitor/core": "2.4.6",
     "@capacitor/ios": "^2.4.6",
