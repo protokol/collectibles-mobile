@@ -26,6 +26,20 @@ const Input = styled(IonInput)<{
         left: 0.65rem;
       }
     }
+
+    &transparent {
+      --padding-start: 0.5rem;
+      --padding-end: 0.5rem;
+
+      --placeholder-color: transparent;
+      --background: transparent;
+
+      border: none;
+
+      &.has-focus {
+        border-bottom: 1px solid var(--ion-color-light);
+      }
+    }
   }
 `;
 

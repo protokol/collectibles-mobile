@@ -4,6 +4,7 @@ import { Redirect, Route } from 'react-router-dom';
 import { IonApp, IonRouterOutlet } from '@ionic/react';
 import { IonReactHashRouter } from '@ionic/react-router';
 import PasscodePage from './pages/PasscodePage';
+import PassphrasePage from './pages/PassphrasePage';
 import UsernamePage from './pages/UsernamePage';
 import WelcomePage from './pages/WelcomePage';
 import AuthLoginContextProvider from './providers/AuthLoginProvider';
@@ -25,6 +26,11 @@ const App: React.FC = () => {
           <IonRouterOutlet>
             <Route path="/welcome" component={WelcomePage} exact />
             <AuthRegisterContextProvider>
+              <Route
+                path="/login/passphrase"
+                component={PassphrasePage}
+                exact
+              />
               <Route path="/register/username" component={UsernamePage} exact />
               <Route
                 path="/register/passcode"
