@@ -1,11 +1,51 @@
-![Img](core-starter-kit.png)
+![Img](collectibles-mobile.png)
 [![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 
-# ARK Core-v3 Starter Kit
+# Digital cards mobile app
 
-This is a template repository project. It contains ARK Core Blockchain App Boilerplate Code that accelerates your distributed application development on top of the ARK Core-v3 blockchain application platform.
+A mobile app consuming a set of `@protokol` packages providing Digital Asset (NFT) Support. Supporting the following main features:
 
-This work is licensed under [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-nc-sa/4.0/)
+- wallet management
+- digital card ownership
+
+For more information and detailed documentation follow this link: https://docs.protokol.com/nft/.
+
+This work is licensed under [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-nc-sa/4.0/).
+
+## Production Install
+App is available on:
+
+- [Web](https://protokol.github.io/collectibles-mobile)
+- [Android](https://protokol.github.io/collectibles-mobile)
+- [iOS](https://protokol.github.io/collectibles-mobile)
+
+[comment]: # (TODO: Replace Android and iOS links to Google Play & App Store)
+
+## Source Install
+### Development Environment Setup
+
+Run `npm start` for a dev server. The application will open in your default browser.
+
+Run `cap:start:android` for a dev Android application. Running Android application requires Android Studio to be installed.
+
+Run `cap:start:ios` for a dev iOS application. Running iOS application requires XCode to be installed. 
+
+### Source Code Setup
+
+```bash
+git clone https://github.com/protokol/collectibles-mobile
+cd collectibles-mobile
+
+# run npm install from root folder
+npm install
+
+# install ionic cli tool
+npm install -g @ionic/cli
+```
+
+#### Running Unit Tests
+
+Run `npm run test` to execute the unit tests via [Jest](https://jestjs.io/).
 
 # Contact Us For Support And Custom Development
 
