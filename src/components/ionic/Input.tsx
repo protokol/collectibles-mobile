@@ -6,6 +6,10 @@ import { Styles } from '../../utils/styles';
 const Input = styled(IonInput)<{
   fontSize?: FontSize;
 }>`
+  &::part(input) {
+    background-color: red !important;
+  }
+
   --color: var(--ion-color-light);
   --placeholder-color: var(--ion-color-light);
   --background: var(--app-color-charade);
@@ -41,6 +45,23 @@ const Input = styled(IonInput)<{
       }
     }
   }
+
+  ${() =>
+    Array.from(
+      { length: 12 },
+      (_, index) => `
+      &.form-input-prefix-number-${index + 1} {
+      width: ${index + 1 >= 10 ? 'calc(100% - 2.5ch)' : 'calc(100% - 1.5ch)'};
+      margin-left: ${index + 1 >= 10 ? '2ch' : '1ch'};
+      
+      &:before {
+        content: '${index + 1}';
+        position: absolute;
+        left: -${index + 1 >= 10 ? '2ch' : '1ch'};
+      }
+    }
+    `
+    ).join(' ')}
 `;
 
 export default Input;
