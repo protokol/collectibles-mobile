@@ -19,7 +19,7 @@ export abstract class Styles {
     }
     return `
       ${Styles.serializeLineHeight(fontSize)}
-      font-size: ${fontSize};
+      font-size: ${fontSize} !important;
     `;
   }
 

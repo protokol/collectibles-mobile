@@ -3,5 +3,6 @@ export enum FontSize {
   L = '2rem', // 32px
   M = '1.3125rem', // 21px
   SM = '0.75rem', // 12px
-  XS = '0.375rem', // 6px
+  XS = '0.6875rem', // 11px
+  XXS = '0.375rem', // 6px
 }
