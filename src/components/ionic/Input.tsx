@@ -7,7 +7,6 @@ const Input = styled(IonInput)<{
   fontSize?: FontSize;
 }>`
   &::part(input) {
-    background-color: red !important;
   }
 
   --color: var(--ion-color-light);
