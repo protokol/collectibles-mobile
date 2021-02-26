@@ -5,7 +5,7 @@ export abstract class Styles {
   static serializeLineHeight(fontSize?: FontSize) {
     switch (fontSize) {
       case FontSize.L:
-        return 'ine-height: 2.0625rem;';
+        return 'line-height: 2.0625rem;';
       case FontSize.SM:
         return 'line-height: 1.125rem;';
       case FontSize.XS:
