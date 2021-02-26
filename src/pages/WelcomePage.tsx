@@ -88,7 +88,7 @@ const WelcomePage: React.FC = () => {
               </Button>
             </IonCol>
             <IonCol size="12" className="ion-text-center">
-              <Text fontSize={FontSize.XS} color="light">
+              <Text fontSize={FontSize.XXS} color="light">
                 © Protokol, 2021
               </Text>
             </IonCol>

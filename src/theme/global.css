@@ -1,0 +1,4 @@
+.app-bg-color-transparent {
+    --background: transparent;
+    background: transparent;
+}

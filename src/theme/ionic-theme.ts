@@ -17,5 +17,8 @@ import '@ionic/react/css/typography.css';
 /* Fonts */
 import './fonts.css';
 
+/* Globals */
+import './global.css';
+
 /* Theme variables */
 import './variables.css';

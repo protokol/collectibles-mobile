@@ -81,7 +81,10 @@ const Passphrase: React.FC<{
       {passphrase.map((word, index) => (
         <IonCol key={index} size="3">
           <Input
-            className="form-input-transparent"
+            className={`form-input-transparent form-input-prefix-number-${
+              index + 1
+            }`}
+            data-number={index + 1}
             type="text"
             fontSize={FontSize.SM}
             value={word}

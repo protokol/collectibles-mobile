@@ -4,10 +4,12 @@ import { FontWeight } from '../constants/font-weight';
 export abstract class Styles {
   static serializeLineHeight(fontSize?: FontSize) {
     switch (fontSize) {
-      case FontSize.SM:
-        return 'line-height: 1.125rem;';
       case FontSize.L:
         return 'line-height: 2.0625rem;';
+      case FontSize.SM:
+        return 'line-height: 1.125rem;';
+      case FontSize.XS:
+        return 'line-height: 95%;';
       default:
         return '';
     }
@@ -19,7 +21,7 @@ export abstract class Styles {
     }
     return `
       ${Styles.serializeLineHeight(fontSize)}
-      font-size: ${fontSize};
+      font-size: ${fontSize} !important;
     `;
   }
 
