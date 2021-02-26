@@ -24,16 +24,16 @@ import Label from './ionic/Label';
 import Title from './ionic/Title';
 
 const Menu = styled(IonMenu)`
-  --background: var(--app-dark-cyan-blue);
+  --background: var(--app-color-dark-cyan-blue);
   --max-width: 70vw;
 `;
 
 const MenuHeaderToolbar = styled(IonToolbar)`
-  --background: var(--app-dark-cyan-blue);
+  --background: var(--app-color-dark-cyan-blue);
 `;
 
 const MenuContentToolbar = styled(IonContent)`
-  --background: var(--app-dark-cyan-blue);
+  --background: var(--app-color-dark-cyan-blue);
 `;
 
 const MenuCloseButton = styled(IonButton)`
@@ -59,14 +59,14 @@ const MenuItemLabel = styled(Label)`
 `;
 
 const HeaderToolbar = styled(IonToolbar)`
-  --background: var(--app-dark-cyan-blue);
+  --background: var(--app-color-dark-cyan-blue);
 `;
 
 const SubHeaderToolbar = styled(IonToolbar)`
   display: flex;
   align-items: center;
   max-height: 2.25rem;
-  --background: var(--app-dark-cyan-blue);
+  --background: var(--app-color-dark-cyan-blue);
 `;
 
 const MenuItem: React.FC<{ icon: string; label: string }> = ({

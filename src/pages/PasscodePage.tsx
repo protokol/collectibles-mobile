@@ -80,7 +80,7 @@ const PasscodePage: React.FC<
 
   useEffect(() => {
     if (session && !session.error && session.isReady) {
-      history.push('/welcome');
+      history.push('/home');
     }
   }, [session, history]);
 

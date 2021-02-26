@@ -7,11 +7,12 @@ import { Styles } from '../../utils/styles';
 const Button = styled(IonButton)<{
   fontSize?: FontSize;
   fontWeight?: FontWeight;
+  radius?: boolean;
 }>`
   &::part(native) {
   }
 
-  --border-radius: 0.25rem;
+  ${({ radius = true }) => (radius ? '--border-radius: 0.25rem;' : '')}
 
   &[size='large'] {
     height: 4.8rem;
