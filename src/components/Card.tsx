@@ -31,7 +31,7 @@ const CardAvailabilityTitle = styled(Title)`
 const CardTagStyled = styled.div`
   position: absolute;
   width: 56%;
-  top: -10px;
+  top: -5%;
   right: -5%;
 `;
 
