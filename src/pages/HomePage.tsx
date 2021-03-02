@@ -1,8 +1,24 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
-import { IonCol, IonContent, IonGrid, IonPage, IonRow } from '@ionic/react';
+import {
+  IonCol,
+  IonContent,
+  IonFooter,
+  IonGrid,
+  IonPage,
+  IonRow,
+  IonToolbar,
+} from '@ionic/react';
+import Card from '../components/Card';
 import Header from '../components/Header';
-import { Panel, Tab, Tabs, TabsContextProvider } from '../components/Tabs';
+import SortBy from '../components/SortBy';
+import {
+  Panel,
+  Tab,
+  Tabs,
+  TabsContextProvider,
+  TabsState,
+} from '../components/Tabs';
 import Button from '../components/ionic/Button';
 import Label from '../components/ionic/Label';
 import Text from '../components/ionic/Text';
@@ -11,8 +27,11 @@ import { FontSize } from '../constants/font-size';
 import { FontWeight } from '../constants/font-weight';
 import { welcomeImage } from '../constants/images';
 
-const Content = styled(IonContent)`
-  --background: var(--app-color-dark-cyan-blue);
+const Content = styled(IonContent)<{
+  isDarkBg: boolean;
+}>`
+  ${({ isDarkBg }) =>
+    isDarkBg && '--background: var(--app-color-dark-cyan-blue);'}
 `;
 
 const TabTitle = styled(Title)`
@@ -79,6 +98,36 @@ const ActionButton = styled(Button)`
   }
 `;
 
+const CardContainer = styled(IonCol)`
+  padding: 1.375rem;
+
+  &:nth-child(odd) {
+    padding-left: 0.6875rem;
+  }
+  &:nth-child(even) {
+    padding-right: 0.6875rem;
+  }
+`;
+
+const Footer = styled(IonFooter)`
+  position: fixed;
+  bottom: 0;
+`;
+
+const CollectablesIonRow = styled(IonRow)`
+  margin-bottom: 5rem;
+`;
+
+const HomeContent: React.FC = ({ children }) => {
+  const [activeIndex] = useContext(TabsState);
+
+  return (
+    <Content fullscreen id="home-content" isDarkBg={activeIndex <= 0}>
+      {children}
+    </Content>
+  );
+};
+
 const HomePage: React.FC = () => {
   return (
     <IonPage>
@@ -87,7 +136,7 @@ const HomePage: React.FC = () => {
           <Tabs>
             <Tab>
               <TabTitle
-                className="ion-text-uppercase ion-text-left"
+                className="ion-text-uppercase ion-text-center"
                 fontSize={FontSize.XS}
                 color="light"
               >
@@ -103,19 +152,10 @@ const HomePage: React.FC = () => {
                 Collectables
               </TabTitle>
             </Tab>
-            <Tab>
-              <TabTitle
-                className="ion-text-uppercase ion-text-right"
-                fontSize={FontSize.XS}
-                color="light"
-              >
-                Market
-              </TabTitle>
-            </Tab>
           </Tabs>
         </Header>
 
-        <Content fullscreen id="home-content">
+        <HomeContent>
           <Panel>
             <IonGrid className="ion-no-padding">
               <IonRow>
@@ -213,13 +253,35 @@ const HomePage: React.FC = () => {
           </Panel>
 
           <Panel>
-            <Text color="light">Collectables</Text>
+            <IonGrid className="ion-no-padding">
+              <CollectablesIonRow>
+                <IonCol size="12" className="ion-margin-bottom">
+                  <SortBy options={['All', 'Newest', 'Name', 'Team', 'Race']} />
+                </IonCol>
+                {Array.from({ length: 12 }, (_, index) => (
+                  <CardContainer key={index} size="6">
+                    <Card />
+                  </CardContainer>
+                ))}
+              </CollectablesIonRow>
+            </IonGrid>
+            <Footer className="ion-no-border">
+              <IonToolbar>
+                <Button
+                  color="primary"
+                  size="large"
+                  className="ion-text-uppercase ion-no-margin"
+                  fontSize={FontSize.SM}
+                  fontWeight={FontWeight.BOLD}
+                  radius={false}
+                  expand="block"
+                >
+                  Add new card
+                </Button>
+              </IonToolbar>
+            </Footer>
           </Panel>
-
-          <Panel>
-            <Text color="light">Market</Text>
-          </Panel>
-        </Content>
+        </HomeContent>
       </TabsContextProvider>
     </IonPage>
   );

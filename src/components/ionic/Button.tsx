@@ -12,7 +12,8 @@ const Button = styled(IonButton)<{
   &::part(native) {
   }
 
-  ${({ radius = true }) => (radius ? '--border-radius: 0.25rem;' : '')}
+  ${({ radius = true }) =>
+    radius ? '--border-radius: 0.25rem;' : '--border-radius: 0;'}
 
   &[size='large'] {
     height: 4.8rem;
