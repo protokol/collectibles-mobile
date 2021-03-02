@@ -61,7 +61,7 @@ interface ElementsStateContextType {
   panels: number;
 }
 
-const TabsState = createContext<UseNumberState>(([
+export const TabsState = createContext<UseNumberState>(([
   0,
   () => {},
 ] as unknown) as UseNumberState);
