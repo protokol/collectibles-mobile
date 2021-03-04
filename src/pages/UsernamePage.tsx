@@ -1,6 +1,6 @@
 import React, { useCallback, useContext } from 'react';
 import { useForm, Controller, FieldValues } from 'react-hook-form';
-import { RouterProps } from 'react-router';
+import { useHistory } from 'react-router';
 import styled from 'styled-components';
 import { InputChangeEventDetail } from '@ionic/core';
 import { IonCol, IonContent, IonGrid, IonPage, IonRow } from '@ionic/react';
@@ -34,7 +34,8 @@ interface UsernameForm extends FieldValues {
   username: string;
 }
 
-const UsernamePage: React.FC<RouterProps> = ({ history }) => {
+const UsernamePage: React.FC = () => {
+  const history = useHistory();
   const { setUsername } = useContext(AuthRegisterContext);
 
   const { formState, control, handleSubmit, errors } = useForm<UsernameForm>({

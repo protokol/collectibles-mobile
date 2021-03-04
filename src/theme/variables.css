@@ -16,6 +16,7 @@ html {
   --app-color-gray: #494D5C;
   --app-color-dark-cyan-blue: #14171A;
   --app-color-dark-blue-magenta: #171721;
+  --app-color-black: #000000;
 
   /** utils **/
   --margin: 1rem;

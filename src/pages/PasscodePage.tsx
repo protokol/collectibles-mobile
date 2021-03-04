@@ -1,6 +1,6 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { useForm, Controller, FieldValues } from 'react-hook-form';
-import { RouterProps } from 'react-router';
+import { useHistory } from 'react-router';
 import styled from 'styled-components';
 import { IonCol, IonContent, IonGrid, IonPage, IonRow } from '@ionic/react';
 import Keypad from '../components/Keypad';
@@ -49,11 +49,10 @@ interface PasscodeForm extends FieldValues {
   confirmPasscode?: string;
 }
 
-const PasscodePage: React.FC<
-  RouterProps & {
-    withConfirm?: boolean;
-  }
-> = ({ history, withConfirm = false }) => {
+const PasscodePage: React.FC<{
+  withConfirm?: boolean;
+}> = ({ withConfirm = false }) => {
+  const history = useHistory();
   const {
     state: { session },
   } = useContext(AuthLoginContext);

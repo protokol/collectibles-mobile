@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import { useHistory } from 'react-router';
 import styled from 'styled-components';
 import {
   IonCol,
@@ -129,6 +130,8 @@ const HomeContent: React.FC = ({ children }) => {
 };
 
 const HomePage: React.FC = () => {
+  const history = useHistory();
+
   return (
     <IonPage>
       <TabsContextProvider>
@@ -204,6 +207,7 @@ const HomePage: React.FC = () => {
                     className="ion-text-uppercase ion-no-margin bg-gray"
                     fontSize={FontSize.SM}
                     fontWeight={FontWeight.BOLD}
+                    onClick={() => history.push('/home/collect-card')}
                   >
                     Add new card
                   </ActionButton>
@@ -212,10 +216,11 @@ const HomePage: React.FC = () => {
                     className="ion-text-uppercase ion-no-margin bg-dark-blue-magenta"
                     fontSize={FontSize.SM}
                     fontWeight={FontWeight.BOLD}
+                    onClick={() => history.push('/home/collect-card')}
                   >
                     Scan qr code
                   </ActionButton>
-                  <ActionButton
+                  {/*<ActionButton
                     expand="block"
                     className="ion-text-uppercase ion-no-margin bg-charade"
                     fontSize={FontSize.SM}
@@ -246,7 +251,7 @@ const HomePage: React.FC = () => {
                     fontWeight={FontWeight.BOLD}
                   >
                     Start an auction
-                  </ActionButton>
+                  </ActionButton>*/}
                 </IonCol>
               </IonRow>
             </IonGrid>
@@ -275,6 +280,7 @@ const HomePage: React.FC = () => {
                   fontWeight={FontWeight.BOLD}
                   radius={false}
                   expand="block"
+                  onClick={() => history.push('/home/collect-card')}
                 >
                   Add new card
                 </Button>

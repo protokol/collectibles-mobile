@@ -3,9 +3,11 @@ import { useDispatch } from 'react-redux';
 import { Redirect, Route } from 'react-router-dom';
 import { IonApp, IonRouterOutlet } from '@ionic/react';
 import { IonReactHashRouter } from '@ionic/react-router';
+import CollectCardPage from './pages/CollectCardPage';
 import HomePage from './pages/HomePage';
 import PasscodePage from './pages/PasscodePage';
 import PassphrasePage from './pages/PassphrasePage';
+import QrCodeGeneratorPage from './pages/QrCodeGeneratorPage';
 import UsernamePage from './pages/UsernamePage';
 import WelcomePage from './pages/WelcomePage';
 import AuthLoginContextProvider from './providers/AuthLoginProvider';
@@ -25,8 +27,15 @@ const App: React.FC = () => {
       <AuthLoginContextProvider>
         <IonReactHashRouter>
           <IonRouterOutlet>
+            <Route path="/" render={() => <Redirect to="/welcome" />} exact />
+            <Route path="/qr/:id" component={QrCodeGeneratorPage} exact />
             <Route path="/welcome" component={WelcomePage} exact />
             <Route path="/home" component={HomePage} exact />
+            <Route
+              path="/home/collect-card"
+              component={CollectCardPage}
+              exact
+            />
             <AuthRegisterContextProvider>
               <Route
                 path="/login/passphrase"
@@ -40,7 +49,6 @@ const App: React.FC = () => {
                 render={(props) => <PasscodePage withConfirm {...props} />}
               />
             </AuthRegisterContextProvider>
-            <Route path="/" render={() => <Redirect to="/welcome" />} exact />
           </IonRouterOutlet>
         </IonReactHashRouter>
       </AuthLoginContextProvider>

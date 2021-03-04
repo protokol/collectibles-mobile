@@ -4,6 +4,9 @@ const welcomeImagePath2x = '/assets/images/welcome-screen@2x.png';
 const driverImage1x = '/assets/images/driver.png';
 const driverImage2x = '/assets/images/driver@2x.png';
 
+const driverHighResImage1x = '/assets/images/driver-high-res.png';
+const driverHighResImage2x = '/assets/images/driver-high-res@2x.png';
+
 const addGHPagesPrefix = () => {
   if (window.location.hostname === 'protokol.github.io') {
     return '/collectibles-mobile';
@@ -23,4 +26,10 @@ const driverImage = {
   srcSet: `${addGHPagesPrefix()}${driverImage1x} 1x, ${addGHPagesPrefix()}${driverImage2x} 2x`,
 };
 
-export { welcomeImage, driverImage };
+const driverHighResImage = {
+  alt: 'Driver',
+  src: `${addGHPagesPrefix()}${driverHighResImage1x}`,
+  srcSet: `${addGHPagesPrefix()}${driverHighResImage1x} 1x, ${addGHPagesPrefix()}${driverHighResImage2x} 2x`,
+};
+
+export { welcomeImage, driverImage, driverHighResImage };

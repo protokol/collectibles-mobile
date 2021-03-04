@@ -85,7 +85,9 @@ const MenuItem: React.FC<{ icon: string; label: string }> = ({
   </IonItem>
 );
 
-const Header: React.FC = ({ children }) => {
+const Header: React.FC<{
+  contentId?: string;
+}> = ({ children, contentId = 'home-content' }) => {
   const homeMenuRef = useRef<HTMLIonMenuElement | null>();
 
   const onMenuClose = useCallback(
@@ -108,7 +110,7 @@ const Header: React.FC = ({ children }) => {
           homeMenuRef.current = menuRef;
         }}
         side="start"
-        content-id="home-content"
+        content-id={contentId}
         menuId="home-menu"
       >
         <IonHeader className="ion-no-border">

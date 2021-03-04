@@ -1,6 +1,6 @@
 import React, { useCallback, useContext } from 'react';
 import { useForm, Controller, FieldValues } from 'react-hook-form';
-import { RouterProps } from 'react-router';
+import { useHistory } from 'react-router';
 import styled from 'styled-components';
 import { IonCol, IonContent, IonGrid, IonPage, IonRow } from '@ionic/react';
 import Passphrase from '../components/Passphrase';
@@ -39,7 +39,8 @@ interface PassphraseForm extends FieldValues {
   passphrase: string;
 }
 
-const PassphrasePage: React.FC<RouterProps> = ({ history }) => {
+const PassphrasePage: React.FC = () => {
+  const history = useHistory();
   const { setPassphrase } = useContext(AuthRegisterContext);
 
   const { control, handleSubmit, errors } = useForm<PassphraseForm>({
