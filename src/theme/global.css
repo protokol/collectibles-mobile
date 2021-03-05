@@ -2,3 +2,10 @@
     --background: transparent;
     background: transparent;
 }
+
+ion-app.camera-view {
+    background: transparent url("/assets/images/camera-preview.png") !important;
+    background-repeat: no-repeat !important;
+    background-attachment: fixed !important;
+    background-position: center !important;
+}
