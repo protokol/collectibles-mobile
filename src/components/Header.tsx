@@ -6,6 +6,7 @@ import {
   personOutline,
 } from 'ionicons/icons';
 import React, { useCallback, useRef } from 'react';
+import { useHistory } from 'react-router';
 import styled from 'styled-components';
 import {
   IonButton,
@@ -69,25 +70,43 @@ const SubHeaderToolbar = styled(IonToolbar)`
   --background: var(--app-color-dark-cyan-blue);
 `;
 
-const MenuItem: React.FC<{ icon: string; label: string }> = ({
-  icon,
-  label,
-}) => (
-  <IonItem lines="none" class="app-bg-color-transparent">
-    <MenuItemIcon color="light" icon={icon} slot="start" />
-    <MenuItemLabel
-      className="ion-text-uppercase"
-      color="light"
-      fontSize={FontSize.SM}
-    >
-      {label}
-    </MenuItemLabel>
-  </IonItem>
-);
+const MenuItem: React.FC<{
+  icon: string;
+  label: string;
+  navigateTo?: string;
+}> = ({ icon, label, navigateTo }) => {
+  const history = useHistory();
+
+  const onNavigateClick = useCallback(
+    (navigateTo) => {
+      history.push(navigateTo);
+    },
+    [history]
+  );
+
+  return (
+    <IonItem lines="none" class="app-bg-color-transparent">
+      <MenuItemIcon color="light" icon={icon} slot="start" />
+      <MenuItemLabel
+        className="ion-text-uppercase"
+        color="light"
+        fontSize={FontSize.SM}
+        onClick={() => {
+          if (navigateTo) {
+            onNavigateClick(navigateTo);
+          }
+        }}
+      >
+        {label}
+      </MenuItemLabel>
+    </IonItem>
+  );
+};
 
 const Header: React.FC<{
   contentId?: string;
-}> = ({ children, contentId = 'home-content' }) => {
+  title?: string;
+}> = ({ children, contentId = 'home-content', title }) => {
   const homeMenuRef = useRef<HTMLIonMenuElement | null>();
 
   const onMenuClose = useCallback(
@@ -128,7 +147,7 @@ const Header: React.FC<{
         </IonHeader>
         <MenuContentToolbar>
           <IonList color="none" class="app-bg-color-transparent">
-            <MenuItem icon={homeOutline} label="Home" />
+            <MenuItem icon={homeOutline} label="Home" navigateTo="/home" />
             <MenuItem icon={personOutline} label="My Profile" />
           </IonList>
         </MenuContentToolbar>
@@ -152,7 +171,7 @@ const Header: React.FC<{
             fontSize={FontSize.M}
             className="ion-text-center"
           >
-            Home
+            {title}
           </Title>
         </HeaderToolbar>
         {children && (

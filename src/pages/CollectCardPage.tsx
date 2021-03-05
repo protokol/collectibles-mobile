@@ -1,44 +1,58 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { Subscription } from 'rxjs';
 import styled from 'styled-components';
-import { IonCol, IonContent, IonGrid, IonPage, IonRow } from '@ionic/react';
+import { QRScanner, QRScannerStatus } from '@ionic-native/qr-scanner';
+import { IonPage, IonContent } from '@ionic/react';
 import Header from '../components/Header';
-import { driverHighResImage } from '../constants/images';
 
-const ImageBgCol = styled(IonCol)`
-  position: absolute;
-  overflow: hidden;
-  height: calc(100vh - 3.5rem);
-  background: var(--app-color-black);
+declare const window: any;
 
-  &:after {
-    content: ' ';
-    display: block;
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 1;
-    opacity: 0.45;
-    background-image: url('${driverHighResImage.src}');
-    background-size: 350%;
-    background-repeat: no-repeat;
-    background-position: 75% 15%;
-  }
+const Content = styled(IonContent)`
+  opacity: 0;
 `;
 
 const CollectCardPage: React.FC = () => {
+  useEffect(() => {
+    let scanSubscription: Subscription;
+
+    const onInitQrScanner = async () => {
+      try {
+        const status: QRScannerStatus = await QRScanner.prepare();
+
+        if (status.authorized) {
+          await QRScanner.show();
+          window.document.querySelector('ion-app').classList.add('camera-view');
+
+          scanSubscription = QRScanner.scan().subscribe((text: string) => {
+            console.log('text', text);
+          });
+        } else if (status.denied) {
+          // camera permission was permanently denied
+        } else {
+          // permission was denied, but not permanently
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    };
+
+    onInitQrScanner();
+
+    return () => {
+      if (scanSubscription) {
+        scanSubscription.unsubscribe();
+      }
+      window.document.querySelector('ion-app').classList.remove('camera-view');
+      QRScanner.hide();
+      QRScanner.destroy();
+    };
+  }, []);
+
   return (
     <IonPage>
-      <Header contentId="collect-card-content" />
+      <Header title="Collect Cards" contentId="collect-card-content" />
 
-      <IonContent fullscreen id="collect-card-content">
-        <IonGrid className="ion-no-padding">
-          <IonRow>
-            <ImageBgCol size="12" />
-          </IonRow>
-        </IonGrid>
-      </IonContent>
+      <Content fullscreen id="collect-card-content" />
     </IonPage>
   );
 };
