@@ -47,7 +47,7 @@
     "cap:start:ios": "ionic cap open ios",
     "cap:start:android": "ionic cap open android",
     "build": "react-scripts build",
-    "build:android:ci": "npx jetify && npx ionic capacitor sync android npx ionic capacitor update android && npx ionic capacitor copy android && cd android && ./gradlew assembleDebug && cd ..",
+    "build:android:ci": "npx jetify && npx ionic capacitor sync android && npx ionic capacitor update android && npx ionic capacitor copy android && cd android && ./gradlew assembleDebug && cd ..",
     "test": "react-scripts test",
     "test:ci": "react-scripts test --ci --watchAll=false",
     "changelog": "npx auto-changelog",
