@@ -8,6 +8,7 @@ import HomePage from './pages/HomePage';
 import PasscodePage from './pages/PasscodePage';
 import PassphrasePage from './pages/PassphrasePage';
 import QrCodeGeneratorPage from './pages/QrCodeGeneratorPage';
+import ScanQRPage from './pages/ScanQRPage';
 import UsernamePage from './pages/UsernamePage';
 import WelcomePage from './pages/WelcomePage';
 import AuthLoginContextProvider from './providers/AuthLoginProvider';
@@ -19,7 +20,7 @@ const App: React.FC = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(SetBaseUrlAppAction('https://proto-devnet.protokol.sh'));
+    dispatch(SetBaseUrlAppAction('https://explorer.protokol.sh'));
   }, [dispatch]);
 
   return (
@@ -31,8 +32,9 @@ const App: React.FC = () => {
             <Route path="/qr/:id" component={QrCodeGeneratorPage} exact />
             <Route path="/welcome" component={WelcomePage} exact />
             <Route path="/home" component={HomePage} exact />
+            <Route path="/home/scan-qr" component={ScanQRPage} exact />
             <Route
-              path="/home/collect-card"
+              path="/home/collect-card/:collectionId"
               component={CollectCardPage}
               exact
             />
