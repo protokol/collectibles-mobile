@@ -1,58 +1,156 @@
-import React, { useEffect } from 'react';
-import { Subscription } from 'rxjs';
+import { arrowBackOutline } from 'ionicons/icons';
+import React, { useCallback, useContext, useMemo } from 'react';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { useHistory, useParams } from 'react-router';
 import styled from 'styled-components';
-import { QRScanner, QRScannerStatus } from '@ionic-native/qr-scanner';
-import { IonPage, IonContent } from '@ionic/react';
+import { v4 as uuid } from 'uuid';
+import {
+  IonCol,
+  IonContent,
+  IonGrid,
+  IonPage,
+  IonRow,
+  IonSpinner,
+  IonIcon,
+  IonButton,
+} from '@ionic/react';
 import Header from '../components/Header';
+import Text from '../components/ionic/Text';
+import { FontSize } from '../constants/font-size';
+import { driverHighResImage } from '../constants/images';
+import useEffectOnce from '../hooks/use-effect-once';
+import { AuthLoginContext } from '../providers/AuthLoginProvider';
+import { ClaimAssetAction } from '../store/actions/asset-claim';
+import { assetClaimSelector } from '../store/selectors/asset-claim';
+import { transactionsSelector } from '../store/selectors/transaction';
 
-declare const window: any;
+const ImageBgCol = styled(IonCol)`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: calc(100vh - 56px);
+  overflow: hidden;
+  z-index: 3;
+  text-align: center;
 
-const Content = styled(IonContent)`
-  opacity: 0;
+  &:before {
+    content: ' ';
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100vh;
+    height: 100vh;
+    z-index: 1;
+    background-image: url('${driverHighResImage.src}');
+    background-size: 100vh auto;
+    background-repeat: no-repeat;
+    background-position: 0 -70%;
+    transform: rotate(-90deg);
+  }
+
+  &:after {
+    content: ' ';
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 2;
+    opacity: 0.75;
+    background-color: var(--app-color-black);
+  }
+
+  > * {
+    z-index: 3;
+  }
 `;
 
+const txUuid = uuid();
+
 const CollectCardPage: React.FC = () => {
-  useEffect(() => {
-    let scanSubscription: Subscription;
+  const { collectionId } = useParams();
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const assetClaimRequest = useSelector(assetClaimSelector, shallowEqual);
+  const transactions = useSelector(transactionsSelector, shallowEqual);
+  const tx = useMemo(() => transactions[txUuid], [transactions]);
 
-    const onInitQrScanner = async () => {
-      try {
-        const status: QRScannerStatus = await QRScanner.prepare();
+  const isLoading = useCallback(() => {
+    return assetClaimRequest?.isLoading || tx?.isLoading;
+  }, [assetClaimRequest, tx]);
 
-        if (status.authorized) {
-          await QRScanner.show();
-          window.document.querySelector('ion-app').classList.add('camera-view');
+  const isError = useCallback(() => {
+    return assetClaimRequest?.isError || tx?.isError;
+  }, [assetClaimRequest, tx]);
 
-          scanSubscription = QRScanner.scan().subscribe((text: string) => {
-            console.log('text', text);
-          });
-        } else if (status.denied) {
-          // camera permission was permanently denied
-        } else {
-          // permission was denied, but not permanently
-        }
-      } catch (e) {
-        console.error(e);
-      }
-    };
+  const error = useCallback(() => {
+    return `${assetClaimRequest?.error}${tx?.error}`;
+  }, [assetClaimRequest, tx]);
 
-    onInitQrScanner();
+  const {
+    state: {
+      session: { address },
+    },
+  } = useContext(AuthLoginContext);
 
-    return () => {
-      if (scanSubscription) {
-        scanSubscription.unsubscribe();
-      }
-      window.document.querySelector('ion-app').classList.remove('camera-view');
-      QRScanner.hide();
-      QRScanner.destroy();
-    };
-  }, []);
+  useEffectOnce(() => {
+    if (collectionId && address) {
+      dispatch(ClaimAssetAction(collectionId, address!, txUuid));
+    }
+  });
 
   return (
     <IonPage>
-      <Header title="Collect Cards" contentId="collect-card-content" />
+      <Header
+        title="Collect Cards"
+        contentId="collect-card-content"
+        buttonTopLeft={
+          <IonButton onClick={() => history.push('/home')}>
+            <IonIcon color="light" slot="icon-only" icon={arrowBackOutline} />
+          </IonButton>
+        }
+      />
 
-      <Content fullscreen id="collect-card-content" />
+      <IonContent fullscreen id="collect-card-content">
+        <IonGrid className="ion-no-padding">
+          <IonRow>
+            <ImageBgCol size="12">
+              {isLoading() && <IonSpinner color="light" />}
+              {!isLoading() && isError() && (
+                <>
+                  <Text color="danger" fontSize={FontSize.XL}>
+                    Something went wrong!
+                  </Text>
+                  <Text
+                    className="ion-padding-top"
+                    fontSize={FontSize.SM}
+                    color="light"
+                  >
+                    {error}
+                  </Text>
+                </>
+              )}
+              {!isLoading() && !isError() && (
+                <>
+                  <Text color="success" fontSize={FontSize.XL}>
+                    Hooray!
+                  </Text>
+                  <Text
+                    className="ion-padding-top"
+                    fontSize={FontSize.M}
+                    color="light"
+                  >
+                    You just received a new hero card!
+                  </Text>
+                </>
+              )}
+            </ImageBgCol>
+          </IonRow>
+        </IonGrid>
+      </IonContent>
     </IonPage>
   );
 };

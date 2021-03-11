@@ -106,7 +106,8 @@ const MenuItem: React.FC<{
 const Header: React.FC<{
   contentId?: string;
   title?: string;
-}> = ({ children, contentId = 'home-content', title }) => {
+  buttonTopLeft?: JSX.Element;
+}> = ({ children, contentId = 'home-content', title, buttonTopLeft }) => {
   const homeMenuRef = useRef<HTMLIonMenuElement | null>();
 
   const onMenuClose = useCallback(
@@ -156,9 +157,13 @@ const Header: React.FC<{
       <IonHeader className="ion-no-border">
         <HeaderToolbar>
           <IonButtons slot="start">
-            <IonMenuButton menu="home-menu" auto-hide="false">
-              <IonIcon color="light" icon={menuOutline} />
-            </IonMenuButton>
+            {buttonTopLeft ? (
+              <>{buttonTopLeft}</>
+            ) : (
+              <IonMenuButton menu="home-menu" auto-hide="false">
+                <IonIcon color="light" icon={menuOutline} />
+              </IonMenuButton>
+            )}
           </IonButtons>
           <IonButtons slot="primary">
             <IonButton>
