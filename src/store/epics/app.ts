@@ -66,8 +66,10 @@ const restoreUserPrivateKeyFromStorageEpic: RootEpic = (
     })
   );
 
-export default [
+const epics = [
   onInitLoadNetworkEpic,
   persistUserPrivateKeyInStorageEpic,
   restoreUserPrivateKeyFromStorageEpic,
 ];
+
+export default epics;

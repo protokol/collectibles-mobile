@@ -64,4 +64,6 @@ const pingTransactionConfirmEpic: RootEpic = (
     })
   );
 
-export default [pingTransactionConfirmEpic];
+const epics = [pingTransactionConfirmEpic];
+
+export default epics;

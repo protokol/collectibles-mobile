@@ -28,4 +28,6 @@ const fetchUserEpic: RootEpic = (action$, state$, { connection }) =>
     })
   );
 
-export default [fetchUserEpic];
+const epics = [fetchUserEpic];
+
+export default epics;

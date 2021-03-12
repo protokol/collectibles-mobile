@@ -55,4 +55,6 @@ const postAssetClaimEpic: RootEpic = (action$, state$) =>
     })
   );
 
-export default [postAssetClaimEpic];
+const epics = [postAssetClaimEpic];
+
+export default epics;
