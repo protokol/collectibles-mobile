@@ -1,4 +1,4 @@
-import React from 'react';
+import { FC } from 'react';
 import styled from 'styled-components';
 import { FontSize } from '../constants/font-size';
 import { FontWeight } from '../constants/font-weight';
@@ -42,7 +42,7 @@ const CardTagText = styled(Text)`
   font-size: 0.625rem;
 `;
 
-const CardTag: React.FC = () => (
+const CardTag: FC = () => (
   <CardTagStyled>
     <svg
       viewBox="0 0 2000 500"
@@ -64,7 +64,7 @@ const CardTag: React.FC = () => (
   </CardTagStyled>
 );
 
-const Card: React.FC = () => {
+const Card: FC = () => {
   return (
     <CardStyled>
       <CardTag />

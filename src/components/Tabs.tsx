@@ -1,7 +1,8 @@
-import React, {
+import {
   cloneElement,
   createContext,
   Dispatch,
+  FC,
   isValidElement,
   SetStateAction,
   useContext,
@@ -70,7 +71,7 @@ const Elements = createContext<ElementsStateContextType>({
   panels: 0,
 });
 
-export const TabsContextProvider: React.FC<{ state?: UseNumberState }> = ({
+export const TabsContextProvider: FC<{ state?: UseNumberState }> = ({
   state: outerState,
   children,
 }) => {
@@ -121,7 +122,7 @@ export const usePanelState = () => {
   return panelIndex === activeIndex;
 };
 
-export const Tabs: React.FC = ({ children }) => {
+export const Tabs: FC = ({ children }) => {
   const elements = useContext(Elements);
 
   return (
@@ -132,7 +133,7 @@ export const Tabs: React.FC = ({ children }) => {
   );
 };
 
-export const Tab: React.FC = ({ children }) => {
+export const Tab: FC = ({ children }) => {
   const state = useTabState();
 
   if (typeof children === 'function') {
@@ -148,7 +149,7 @@ export const Tab: React.FC = ({ children }) => {
   );
 };
 
-export const Panel: React.FC<{ active?: boolean }> = ({ active, children }) => {
+export const Panel: FC<{ active?: boolean }> = ({ active, children }) => {
   const isActive = usePanelState();
 
   return isActive || active ? <>{children}</> : <></>;

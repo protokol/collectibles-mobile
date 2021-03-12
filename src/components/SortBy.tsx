@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { FC, useState } from 'react';
 import styled from 'styled-components';
 import { FontSize } from '../constants/font-size';
 import Button from './ionic/Button';
@@ -41,7 +41,7 @@ const ListItemOption = styled(Button)<{
   }}
 `;
 
-const SortBy: React.FC<{
+const SortBy: FC<{
   options: string[];
   defaultIndex?: number;
 }> = ({ options, defaultIndex = 0 }) => {

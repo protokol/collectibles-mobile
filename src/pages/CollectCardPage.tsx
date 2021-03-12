@@ -1,5 +1,5 @@
 import { arrowBackOutline } from 'ionicons/icons';
-import React, { useCallback, useContext, useMemo } from 'react';
+import { FC, useCallback, useContext, useMemo } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router';
 import styled from 'styled-components';
@@ -70,7 +70,7 @@ const ImageBgCol = styled(IonCol)`
 
 const txUuid = uuid();
 
-const CollectCardPage: React.FC = () => {
+const CollectCardPage: FC = () => {
   const { collectionId } = useParams<{ collectionId: string }>();
   const history = useHistory();
   const dispatch = useDispatch();

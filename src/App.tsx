@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { FC, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Redirect, Route } from 'react-router-dom';
 import { IonApp, IonRouterOutlet } from '@ionic/react';
@@ -16,7 +16,7 @@ import AuthRegisterContextProvider from './providers/AuthRegisterProvider';
 import { SetBaseUrlAppAction } from './store/actions/app';
 import './theme/ionic-theme';
 
-const App: React.FC = () => {
+const App: FC = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {

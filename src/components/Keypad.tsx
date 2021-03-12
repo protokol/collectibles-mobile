@@ -1,9 +1,4 @@
-import React, {
-  MouseEventHandler,
-  useCallback,
-  useEffect,
-  useState,
-} from 'react';
+import { FC, MouseEventHandler, useCallback, useEffect, useState } from 'react';
 import { JSX } from '@ionic/core';
 import { IonCol } from '@ionic/react';
 import { FontSize } from '../constants/font-size';
@@ -13,7 +8,7 @@ const MAX_PIN_LENGTH = 4;
 
 const keypadNumbers: undefined[] = Array.from({ length: 9 });
 
-const KeypadNumberBtn: React.FC<{
+const KeypadNumberBtn: FC<{
   onClick: MouseEventHandler;
   fontSize?: FontSize;
   size?: JSX.IonButton['size'];
@@ -42,7 +37,7 @@ const KeypadNumberBtn: React.FC<{
   </Button>
 );
 
-const Keypad: React.FC<{
+const Keypad: FC<{
   onChange: (pin: string) => void;
   onEnter: () => void;
 }> = ({ onChange, onEnter }) => {

@@ -1,5 +1,6 @@
-import React, {
+import {
   createRef,
+  FC,
   RefObject,
   useCallback,
   useEffect,
@@ -13,18 +14,18 @@ import Input from './ionic/Input';
 
 const PASSPHRASE_WORDS = 12;
 
-const Passphrase: React.FC<{
+const Passphrase: FC<{
   onChange: (pin: string) => void;
 }> = ({ onChange }) => {
   const [passphrase, setPassphrase] = useState<string[]>(
     Array.from({ length: PASSPHRASE_WORDS }, () => '')
   );
 
-  const [wordElRefs, setWordElRefs] = React.useState<
+  const [wordElRefs, setWordElRefs] = useState<
     RefObject<HTMLIonInputElement>[]
   >([]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     setWordElRefs((wordElRef) =>
       Array.from(
         { length: PASSPHRASE_WORDS },

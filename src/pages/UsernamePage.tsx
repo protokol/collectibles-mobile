@@ -1,4 +1,4 @@
-import React, { useCallback, useContext } from 'react';
+import { FC, useCallback, useContext } from 'react';
 import { useForm, Controller, FieldValues } from 'react-hook-form';
 import { useHistory } from 'react-router';
 import styled from 'styled-components';
@@ -34,7 +34,7 @@ interface UsernameForm extends FieldValues {
   username: string;
 }
 
-const UsernamePage: React.FC = () => {
+const UsernamePage: FC = () => {
   const history = useHistory();
   const { setUsername } = useContext(AuthRegisterContext);
 

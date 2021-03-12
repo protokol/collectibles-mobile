@@ -1,5 +1,5 @@
 import QRCode from 'qrcode.react';
-import React from 'react';
+import { FC } from 'react';
 import { useParams } from 'react-router';
 import styled from 'styled-components';
 import { IonContent, IonPage } from '@ionic/react';
@@ -19,7 +19,7 @@ const QRCodeStyled = styled(QRCode)`
 /**
  * Qr Code generator page, which generates QR code based on passed in GUID
  */
-const QrCodeGeneratorPage: React.FC = () => {
+const QrCodeGeneratorPage: FC = () => {
   const { id } = useParams<{ id: string }>();
 
   return (
