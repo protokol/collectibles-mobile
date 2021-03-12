@@ -45,13 +45,13 @@
     "uuid": "^8.3.2"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "react-app-rewired start",
     "cap:start:ios": "ionic cap open ios",
     "cap:start:android": "ionic cap open android",
-    "build": "react-scripts build",
+    "build": "react-app-rewired build",
     "build:android:ci": "npx jetify && npx ionic capacitor sync android && npx ionic capacitor update android && npx ionic capacitor copy android && cd android && ./gradlew assembleDebug && cd ..",
-    "test": "react-scripts test",
-    "test:ci": "react-scripts test --ci --watchAll=false",
+    "test": "react-app-rewired test",
+    "test:ci": "react-app-rewired test --ci --watchAll=false",
     "changelog": "npx auto-changelog",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx ./src",
     "prettier": "prettier --write \"./src/**/*.{ts,tsx,css}\"",
@@ -91,14 +91,15 @@
     "@types/styled-components": "^5.1.7",
     "@types/uuid": "^8.3.0",
     "@typescript-eslint/eslint-plugin": "^4.15.0",
-    "babel-jest": "^24.9.0",
+    "babel-jest": "^26.6.0",
     "eslint-config-prettier": "^7.2.0",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-jsx-a11y": "^6.4.1",
     "eslint-plugin-react": "^7.22.0",
     "husky": "^5.0.9",
     "prettier": "^2.2.1",
-    "pretty-quick": "^3.1.0"
+    "pretty-quick": "^3.1.0",
+    "react-app-rewired": "^2.1.8"
   },
   "husky": {
     "hooks": {
