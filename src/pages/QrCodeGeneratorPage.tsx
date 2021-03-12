@@ -20,7 +20,7 @@ const QRCodeStyled = styled(QRCode)`
  * Qr Code generator page, which generates QR code based on passed in GUID
  */
 const QrCodeGeneratorPage: React.FC = () => {
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>();
 
   return (
     <IonPage>

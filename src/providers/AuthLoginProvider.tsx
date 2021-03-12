@@ -1,10 +1,4 @@
-import React, {
-  createContext,
-  FC,
-  useCallback,
-  useEffect,
-  useState,
-} from 'react';
+import { createContext, FC, useCallback, useEffect, useState } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
 import { NodeCryptoConfiguration } from '@arkecosystem/client/dist/resourcesTypes/node';
 import { Identities } from '@arkecosystem/crypto';

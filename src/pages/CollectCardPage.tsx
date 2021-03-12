@@ -71,7 +71,7 @@ const ImageBgCol = styled(IonCol)`
 const txUuid = uuid();
 
 const CollectCardPage: React.FC = () => {
-  const { collectionId } = useParams();
+  const { collectionId } = useParams<{ collectionId: string }>();
   const history = useHistory();
   const dispatch = useDispatch();
   const assetClaimRequest = useSelector(assetClaimSelector, shallowEqual);

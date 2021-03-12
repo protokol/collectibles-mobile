@@ -1,10 +1,4 @@
-import React, {
-  createContext,
-  FC,
-  useCallback,
-  useContext,
-  useState,
-} from 'react';
+import { createContext, FC, useCallback, useContext, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { SetEncodedUserPrivateKeyAction } from '../store/actions/app';
 import { CryptoUtils } from '../utils/crypto-utils';
