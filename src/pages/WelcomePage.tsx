@@ -1,4 +1,4 @@
-import React from 'react';
+import { FC } from 'react';
 import styled from 'styled-components';
 import { IonCol, IonContent, IonGrid, IonPage, IonRow } from '@ionic/react';
 import Button from '../components/ionic/Button';
@@ -37,7 +37,7 @@ const Content = styled(IonContent)`
   }
 `;
 
-const WelcomePage: React.FC = () => {
+const WelcomePage: FC = () => {
   return (
     <IonPage>
       <Content fullscreen>

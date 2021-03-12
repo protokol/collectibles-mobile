@@ -1,4 +1,4 @@
-import React from 'react';
+import { FC } from 'react';
 import { FieldErrors } from 'react-hook-form/dist/types/errors';
 import styled from 'styled-components';
 import { ErrorMessage } from '@hookform/error-message';
@@ -7,7 +7,7 @@ import { FontWeight } from '../../constants/font-weight';
 import { Styles } from '../../utils/styles';
 import Text from './Text';
 
-const ErrorMessageWrapped: React.FC<{
+const ErrorMessageWrapped: FC<{
   name: string;
   errors: FieldErrors;
   className?: string;

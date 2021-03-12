@@ -1,4 +1,4 @@
-import { combineReducers } from 'redux';
+import { combineReducers, ReducersMapObject } from 'redux';
 import { RootState } from '../types';
 import app from './app';
 import assetClaim from './asset-claim';
@@ -10,4 +10,4 @@ export default combineReducers<RootState>({
   network,
   assetClaim,
   transaction,
-});
+} as ReducersMapObject<RootState>);

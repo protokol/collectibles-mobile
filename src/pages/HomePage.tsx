@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import { FC, useContext } from 'react';
 import { useHistory } from 'react-router';
 import styled from 'styled-components';
 import {
@@ -119,7 +119,7 @@ const CollectablesIonRow = styled(IonRow)`
   margin-bottom: 5rem;
 `;
 
-const HomeContent: React.FC = ({ children }) => {
+const HomeContent: FC = ({ children }) => {
   const [activeIndex] = useContext(TabsState);
 
   return (
@@ -129,7 +129,7 @@ const HomeContent: React.FC = ({ children }) => {
   );
 };
 
-const HomePage: React.FC = () => {
+const HomePage: FC = () => {
   const history = useHistory();
 
   return (

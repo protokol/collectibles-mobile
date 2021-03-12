@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react';
+import { FC, useCallback, useContext, useEffect, useState } from 'react';
 import { useForm, Controller, FieldValues } from 'react-hook-form';
 import { useHistory } from 'react-router';
 import styled from 'styled-components';
@@ -49,7 +49,7 @@ interface PasscodeForm extends FieldValues {
   confirmPasscode?: string;
 }
 
-const PasscodePage: React.FC<{
+const PasscodePage: FC<{
   withConfirm?: boolean;
 }> = ({ withConfirm = false }) => {
   const history = useHistory();

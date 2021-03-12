@@ -1,4 +1,4 @@
-import React, { useCallback, useContext } from 'react';
+import { FC, useCallback, useContext } from 'react';
 import { useForm, Controller, FieldValues } from 'react-hook-form';
 import { useHistory } from 'react-router';
 import styled from 'styled-components';
@@ -39,7 +39,7 @@ interface PassphraseForm extends FieldValues {
   passphrase: string;
 }
 
-const PassphrasePage: React.FC = () => {
+const PassphrasePage: FC = () => {
   const history = useHistory();
   const { setPassphrase } = useContext(AuthRegisterContext);
 

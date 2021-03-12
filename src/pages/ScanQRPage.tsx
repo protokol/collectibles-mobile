@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { FC, useEffect } from 'react';
 import { useHistory } from 'react-router';
 import { Subscription } from 'rxjs';
 import styled from 'styled-components';
@@ -12,7 +12,7 @@ const Content = styled(IonContent)`
   opacity: 0;
 `;
 
-const ScanQRPage: React.FC = () => {
+const ScanQRPage: FC = () => {
   const history = useHistory();
 
   useEffect(() => {

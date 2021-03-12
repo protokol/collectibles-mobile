@@ -5,7 +5,7 @@ import {
   searchOutline,
   personOutline,
 } from 'ionicons/icons';
-import React, { useCallback, useRef } from 'react';
+import { FC, useCallback, useRef } from 'react';
 import { useHistory } from 'react-router';
 import styled from 'styled-components';
 import {
@@ -70,7 +70,7 @@ const SubHeaderToolbar = styled(IonToolbar)`
   --background: var(--app-color-dark-cyan-blue);
 `;
 
-const MenuItem: React.FC<{
+const MenuItem: FC<{
   icon: string;
   label: string;
   navigateTo?: string;
@@ -103,7 +103,7 @@ const MenuItem: React.FC<{
   );
 };
 
-const Header: React.FC<{
+const Header: FC<{
   contentId?: string;
   title?: string;
   buttonTopLeft?: JSX.Element;
