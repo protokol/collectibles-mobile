@@ -13,7 +13,7 @@ interface AuthLoginProviderState {
     isReady: boolean;
     error: Error | null;
     address?: string;
-    wif?: string;
+    passphrase?: string;
     publicKey?: string;
   };
 }
@@ -66,10 +66,6 @@ const AuthLoginContextProvider: FC = ({ children }) => {
           passphrase,
           pubKeyHash
         );
-        const wif = ArkCrypto.Identities.WIF.fromPassphrase(
-          passphrase,
-          network
-        );
         const publicKey = ArkCrypto.Identities.PublicKey.fromPassphrase(
           passphrase
         );
@@ -79,7 +75,7 @@ const AuthLoginContextProvider: FC = ({ children }) => {
             isReady: true,
             error: null,
             address,
-            wif,
+            passphrase,
             publicKey,
           },
         });

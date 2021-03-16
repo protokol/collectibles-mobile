@@ -1,8 +1,7 @@
 import { createContext, FC, useCallback, useContext, useState } from 'react';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { SetEncodedUserPrivateKeyAction } from '../store/actions/app';
 import { NamespaceRegisterAction } from '../store/actions/namespace';
-import { nodeCryptoConfigurationSelector } from '../store/selectors/network';
 import { CryptoUtils } from '../utils/crypto-utils';
 import { Encryption } from '../utils/encryption';
 import { AuthLoginContext } from './AuthLoginProvider';
@@ -32,11 +31,6 @@ const AuthRegisterContextProvider: FC = ({ children }) => {
   });
   const dispatch = useDispatch();
   const { setPin: authLoginSetPin } = useContext(AuthLoginContext);
-
-  const nodeCryptoConfiguration = useSelector(
-    nodeCryptoConfigurationSelector,
-    shallowEqual
-  );
 
   const reset = useCallback(() => {
     setState({
@@ -74,13 +68,14 @@ const AuthRegisterContextProvider: FC = ({ children }) => {
       authLoginSetPin(pin);
       dispatch(SetEncodedUserPrivateKeyAction(encoded));
 
-      if (state.username && nodeCryptoConfiguration) {
+      // TODO: Username registration will fail because new wallets have no balance
+      if (state.username) {
         dispatch(NamespaceRegisterAction(state.username, passphrase));
       }
 
       reset();
     },
-    [state, authLoginSetPin, dispatch, reset, nodeCryptoConfiguration]
+    [state, authLoginSetPin, dispatch, reset]
   );
 
   const providerState: AuthRegisterProviderContext = {

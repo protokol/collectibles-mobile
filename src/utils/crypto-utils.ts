@@ -15,7 +15,7 @@ export abstract class CryptoUtils {
     );
   }
 
-  static getNextWalletNonce(wallet?: Wallet) {
+  static getWalletNextNonce(wallet?: Wallet) {
     return wallet
       ? ArkCrypto.Utils.BigNumber.make(wallet.nonce).plus(1).toFixed()
       : ArkCrypto.Utils.BigNumber.ONE.toFixed();

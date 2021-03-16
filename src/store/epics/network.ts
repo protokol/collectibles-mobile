@@ -18,7 +18,7 @@ import {
   NetworkConfigurationSuccessActionType,
 } from '../actions/network';
 import { baseUrlSelector } from '../selectors/app';
-import { ArkCrypto, NameserviceCrypto, NftCrypto } from '../services/crypto';
+import { ArkCrypto, NameserviceCrypto } from '../services/crypto';
 import { RootEpic } from '../types';
 
 const arkCryptoEpic: RootEpic = (action$) =>
@@ -45,9 +45,6 @@ const arkCryptoEpic: RootEpic = (action$) =>
       // Register custom transaction types
       ArkCrypto.Transactions.TransactionRegistry.registerTransactionType(
         NameserviceCrypto.Transactions.NameserviceTransaction
-      );
-      ArkCrypto.Transactions.TransactionRegistry.registerTransactionType(
-        NftCrypto.Transactions.NFTRegisterCollectionTransaction
       );
     }),
     ignoreElements()

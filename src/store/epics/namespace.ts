@@ -27,62 +27,8 @@ const namespaceRegisterEpic: RootEpic = (action$, state$) =>
             .Nameservice({
               name,
             })
-            .nonce(CryptoUtils.getNextWalletNonce(wallet))
+            .nonce(CryptoUtils.getWalletNextNonce(wallet))
             .sign(passphrase);
-
-          console.log('name', name);
-
-          /*const transaction = new NftCrypto.Builders.NFTRegisterCollectionBuilder()
-            .NFTRegisterCollectionAsset({
-              name: 'Nascar Hero Cards',
-              description: 'Nascar Hero Cards collection',
-              maximumSupply: 10000,
-              jsonSchema: {
-                type: 'object',
-                additionalProperties: false,
-                required: [
-                  'ipfsHashImageFront',
-                  'issuedDate',
-                  'issuedLocation',
-                  'signed',
-                ],
-                properties: {
-                  ipfsHashImageFront: {
-                    type: 'string',
-                    maxLength: 120,
-                    minLength: 1,
-                  },
-                  ipfsHashImageBack: {
-                    type: 'string',
-                    maxLength: 120,
-                    minLength: 1,
-                  },
-                  issuedDate: {
-                    format: 'date',
-                  },
-                  issuedLocation: {
-                    type: 'string',
-                    maxLength: 255,
-                    minLength: 1,
-                  },
-                  signed: {
-                    type: 'boolean',
-                  },
-                  tags: {
-                    type: 'array',
-                    maxItems: 12,
-                    minItems: 1,
-                    additionalItems: false,
-                    uniqueItems: true,
-                    items: {
-                      type: 'string',
-                    },
-                  },
-                },
-              },
-            })
-            .nonce(CryptoUtils.getNextWalletNonce(wallet))
-            .sign(passphrase);*/
 
           return TransactionSubmitAction(txUuid, {
             transactions: [transaction.getStruct()],
