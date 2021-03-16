@@ -11,9 +11,16 @@ import {
   withLatestFrom,
 } from 'rxjs/operators';
 import {
+  CreateTransactionApiResponse,
+  ApiResponse,
+} from '@arkecosystem/client';
+import { ClaimAssetErrorAction } from '../actions/asset-claim';
+import {
   TransactionActions,
   TransactionConfirmErrorAction,
   TransactionConfirmSuccessAction,
+  TransactionSubmitActionType,
+  TransactionWaitForConfirmAction,
   TransactionWaitForConfirmActionType,
 } from '../actions/transaction';
 import { baseUrlSelector } from '../selectors/app';
@@ -64,6 +71,37 @@ const pingTransactionConfirmEpic: RootEpic = (
     })
   );
 
-const epics = [pingTransactionConfirmEpic];
+const transactionSubmitEpic: RootEpic = (action$, state$, { connection }) =>
+  action$.ofType(TransactionActions.TRANSACTION_SUBMIT).pipe(
+    withLatestFrom(state$.pipe(map(baseUrlSelector))),
+    switchMap(([action, stateBaseUrl]) => {
+      const {
+        payload: { transactions, txUuid },
+      } = action as TransactionSubmitActionType;
+
+      return defer(() =>
+        connection(stateBaseUrl!).api('transactions').create(transactions)
+      ).pipe(
+        switchMap(
+          ({
+            body: { data, errors },
+          }: ApiResponse<CreateTransactionApiResponse>) => {
+            const [accepted] = data.accept;
+            if (!!accepted) {
+              return of(TransactionWaitForConfirmAction(txUuid, accepted));
+            }
+
+            const [invalid] = data.invalid;
+            const err = errors[invalid].message;
+
+            return of(ClaimAssetErrorAction(err));
+          }
+        ),
+        catchError((err) => of(ClaimAssetErrorAction(err)))
+      );
+    })
+  );
+
+const epics = [pingTransactionConfirmEpic, transactionSubmitEpic];
 
 export default epics;

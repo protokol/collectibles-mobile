@@ -1,5 +1,5 @@
 import { Action } from 'redux';
-import { NodeCryptoConfiguration } from '@arkecosystem/client/dist/resourcesTypes/node';
+import { NodeCryptoConfiguration } from '@arkecosystem/client';
 
 // Actions
 enum NetworkActions {
@@ -19,6 +19,7 @@ export interface NetworkConfigurationSuccessActionType
   extends Action<NetworkActions.NETWORK_CONFIGURATION_SUCCESS> {
   payload: {
     nodeCryptoConfiguration: NodeCryptoConfiguration;
+    height: number;
   };
 }
 
@@ -40,11 +41,13 @@ const LoadNetworkConfigurationAction = (
 });
 
 const NetworkConfigurationSuccessAction = (
-  nodeCryptoConfiguration: NodeCryptoConfiguration
+  nodeCryptoConfiguration: NodeCryptoConfiguration,
+  height: number
 ): NetworkConfigurationSuccessActionType => ({
   type: NetworkActions.NETWORK_CONFIGURATION_SUCCESS,
   payload: {
     nodeCryptoConfiguration,
+    height,
   },
 });
 

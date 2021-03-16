@@ -1,4 +1,6 @@
 import * as bip39 from 'bip39';
+import { Wallet } from '@arkecosystem/client/dist/resourcesTypes/wallets';
+import { ArkCrypto } from '../store/services/crypto';
 
 export abstract class CryptoUtils {
   static isValidPassphrase(passphrase: string) {
@@ -11,5 +13,11 @@ export abstract class CryptoUtils {
       undefined,
       bip39.wordlists['english']
     );
+  }
+
+  static getWalletNextNonce(wallet?: Wallet) {
+    return wallet
+      ? ArkCrypto.Utils.BigNumber.make(wallet.nonce).plus(1).toFixed()
+      : ArkCrypto.Utils.BigNumber.ONE.toFixed();
   }
 }

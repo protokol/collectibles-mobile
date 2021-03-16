@@ -1,10 +1,12 @@
 import { Action } from 'redux';
+import { ArkCrypto } from '../services/crypto';
 
 // Actions
 enum TransactionActions {
   TRANSACTION_WAIT_FOR_CONFIRM = '@Transaction/TRANSACTION_WAIT_FOR_CONFIRM',
   TRANSACTION_CONFIRM_SUCCESS = '@Transaction/TRANSACTION_CONFIRM_SUCCESS',
   TRANSACTION_CONFIRM_ERROR = '@Transaction/TRANSACTION_CONFIRM_ERROR',
+  TRANSACTION_SUBMIT = '@Transaction/TRANSACTION_SUBMIT',
 }
 
 export interface TransactionWaitForConfirmActionType
@@ -27,6 +29,19 @@ export interface TransactionConfirmErrorActionType
   payload: {
     txUuid: string;
     error: Error;
+  };
+}
+
+export interface TransactionSubmitActionType
+  extends Action<TransactionActions.TRANSACTION_SUBMIT> {
+  payload: {
+    txUuid: string;
+    transactions: {
+      transactions: (
+        | ArkCrypto.Interfaces.ITransactionJson
+        | ArkCrypto.Interfaces.ITransactionData
+      )[];
+    } & Record<string, any>;
   };
 }
 
@@ -62,6 +77,22 @@ const TransactionConfirmErrorAction = (
   },
 });
 
+const TransactionSubmitAction = (
+  txUuid: string,
+  transactions: {
+    transactions: (
+      | ArkCrypto.Interfaces.ITransactionJson
+      | ArkCrypto.Interfaces.ITransactionData
+    )[];
+  } & Record<string, any>
+): TransactionSubmitActionType => ({
+  type: TransactionActions.TRANSACTION_SUBMIT,
+  payload: {
+    txUuid,
+    transactions,
+  },
+});
+
 export type TRANSACTION_ACTION_TYPES = TransactionWaitForConfirmActionType &
   TransactionConfirmSuccessActionType &
   TransactionConfirmErrorActionType;
@@ -71,4 +102,5 @@ export {
   TransactionWaitForConfirmAction,
   TransactionConfirmSuccessAction,
   TransactionConfirmErrorAction,
+  TransactionSubmitAction,
 };
