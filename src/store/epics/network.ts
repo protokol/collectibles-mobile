@@ -28,19 +28,15 @@ const arkCryptoEpic: RootEpic = (action$) =>
         payload: { nodeCryptoConfiguration },
       } = action as NetworkConfigurationSuccessActionType;
 
-      const {
-        network,
-        exceptions,
-        genesisBlock,
-        milestones,
-      } = nodeCryptoConfiguration;
+      const { network, exceptions, milestones } = nodeCryptoConfiguration;
 
       // Set network
       ArkCrypto.Managers.configManager.setConfig({
-        exceptions: { ...exceptions },
-        genesisBlock: { ...genesisBlock },
-        network: { ...network },
-        milestones: [...milestones],
+        network,
+        milestones,
+        genesisBlock: ArkCrypto.Managers.configManager.getPreset('devnet')
+          .genesisBlock,
+        exceptions,
       } as ArkCrypto.Interfaces.NetworkConfig);
 
       // Set height
