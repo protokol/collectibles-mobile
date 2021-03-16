@@ -1,15 +1,67 @@
 import { defer, of } from 'rxjs';
-import { catchError, map, switchMap, withLatestFrom } from 'rxjs/operators';
 import {
+  catchError,
+  distinctUntilChanged,
+  filter,
+  ignoreElements,
+  map,
+  switchMap,
+  tap,
+  withLatestFrom,
+} from 'rxjs/operators';
+import {
+  LoadNetworkConfigurationAction,
   LoadNetworkConfigurationActionType,
   NetworkActions,
   NetworkConfigurationErrorAction,
   NetworkConfigurationSuccessAction,
+  NetworkConfigurationSuccessActionType,
 } from '../actions/network';
 import { baseUrlSelector } from '../selectors/app';
+import { ArkCrypto, NameserviceCrypto, NftCrypto } from '../services/crypto';
 import { RootEpic } from '../types';
 
-const fetchUserEpic: RootEpic = (action$, state$, { connection }) =>
+const arkCryptoEpic: RootEpic = (action$) =>
+  action$.ofType(NetworkActions.NETWORK_CONFIGURATION_SUCCESS).pipe(
+    tap((action) => {
+      const {
+        payload: { nodeCryptoConfiguration },
+      } = action as NetworkConfigurationSuccessActionType;
+
+      const {
+        network,
+        exceptions,
+        genesisBlock,
+        milestones,
+      } = nodeCryptoConfiguration;
+
+      // Set network
+      ArkCrypto.Managers.configManager.setConfig({
+        exceptions: { ...exceptions },
+        genesisBlock: { ...genesisBlock },
+        network: { ...network },
+        milestones: [...milestones],
+      } as ArkCrypto.Interfaces.NetworkConfig);
+
+      // Set height
+      ArkCrypto.Managers.configManager.setHeight(2);
+
+      // Register custom transaction types
+      ArkCrypto.Transactions.TransactionRegistry.registerTransactionType(
+        NameserviceCrypto.Transactions.NameserviceTransaction
+      );
+      ArkCrypto.Transactions.TransactionRegistry.registerTransactionType(
+        NftCrypto.Transactions.NFTRegisterCollectionTransaction
+      );
+    }),
+    ignoreElements()
+  );
+
+const fetchNetworkConfigurationEpic: RootEpic = (
+  action$,
+  state$,
+  { connection }
+) =>
   action$.ofType(NetworkActions.LOAD_NETWORK_CONFIGURATION).pipe(
     withLatestFrom(state$.pipe(map(baseUrlSelector))),
     switchMap(([action, stateBaseUrl]) => {
@@ -28,6 +80,18 @@ const fetchUserEpic: RootEpic = (action$, state$, { connection }) =>
     })
   );
 
-const epics = [fetchUserEpic];
+const onInitLoadNetworkEpic: RootEpic = (_, state$) =>
+  state$.pipe(
+    map(baseUrlSelector),
+    distinctUntilChanged(),
+    filter((baseUrl) => !!baseUrl),
+    map(LoadNetworkConfigurationAction)
+  );
+
+const epics = [
+  arkCryptoEpic,
+  fetchNetworkConfigurationEpic,
+  onInitLoadNetworkEpic,
+];
 
 export default epics;

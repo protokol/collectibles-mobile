@@ -1,10 +1,10 @@
 import { createContext, FC, useCallback, useEffect, useState } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
 import { NodeCryptoConfiguration } from '@arkecosystem/client/dist/resourcesTypes/node';
-import { Identities } from '@arkecosystem/crypto';
 import { StorageKeys } from '../constants/storage';
 import { encodedUserPrivateKeySelector } from '../store/selectors/app';
 import { nodeCryptoConfigurationSelector } from '../store/selectors/network';
+import { ArkCrypto } from '../store/services/crypto';
 import { Encryption } from '../utils/encryption';
 import storage from '../utils/storage-service';
 
@@ -13,7 +13,8 @@ interface AuthLoginProviderState {
     isReady: boolean;
     error: Error | null;
     address?: string;
-    privateKey?: string;
+    wif?: string;
+    publicKey?: string;
   };
 }
 
@@ -61,18 +62,25 @@ const AuthLoginContextProvider: FC = ({ children }) => {
 
         const { network } = nodeConfig;
         const { pubKeyHash } = network;
-        const address = Identities.Address.fromPassphrase(
+        const address = ArkCrypto.Identities.Address.fromPassphrase(
           passphrase,
           pubKeyHash
         );
-        const privateKey = Identities.PrivateKey.fromPassphrase(passphrase);
+        const wif = ArkCrypto.Identities.WIF.fromPassphrase(
+          passphrase,
+          network
+        );
+        const publicKey = ArkCrypto.Identities.PublicKey.fromPassphrase(
+          passphrase
+        );
 
         setState({
           session: {
             isReady: true,
             error: null,
             address,
-            privateKey,
+            wif,
+            publicKey,
           },
         });
       } catch (error) {

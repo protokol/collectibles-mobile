@@ -4,11 +4,14 @@ import { NETWORK_ACTION_TYPES, NetworkActions } from '../actions/network';
 
 export interface NetworkState {
   isLoading: boolean;
+  isError: boolean;
   nodeCryptoConfiguration?: NodeCryptoConfiguration;
+  error?: Error;
 }
 
 const initialState: NetworkState = {
   isLoading: false,
+  isError: false,
 };
 
 const reducer: Reducer<NetworkState, NETWORK_ACTION_TYPES> = (
@@ -32,6 +35,17 @@ const reducer: Reducer<NetworkState, NETWORK_ACTION_TYPES> = (
         ...state,
         isLoading: false,
         nodeCryptoConfiguration,
+      };
+    }
+    case NetworkActions.NETWORK_CONFIGURATION_ERROR: {
+      const {
+        payload: { error },
+      } = action;
+      return {
+        ...state,
+        isLoading: false,
+        isError: false,
+        error,
       };
     }
     default:

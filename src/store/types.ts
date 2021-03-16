@@ -9,6 +9,7 @@ import {
   ClaimAssetErrorActionType,
   ClaimAssetSuccessActionType,
 } from './actions/asset-claim';
+import { NamespaceRegisterActionType } from './actions/namespace';
 import {
   LoadNetworkConfigurationActionType,
   NetworkConfigurationErrorActionType,
@@ -17,6 +18,7 @@ import {
 import {
   TransactionConfirmErrorActionType,
   TransactionConfirmSuccessActionType,
+  TransactionSubmitActionType,
   TransactionWaitForConfirmActionType,
 } from './actions/transaction';
 import { AppState } from './reducers/app';
@@ -36,7 +38,9 @@ export type RootActions =
   | ClaimAssetErrorActionType
   | TransactionWaitForConfirmActionType
   | TransactionConfirmSuccessActionType
-  | TransactionConfirmErrorActionType;
+  | TransactionConfirmErrorActionType
+  | TransactionSubmitActionType
+  | NamespaceRegisterActionType;
 export type RootState = {
   app: AppState;
   network: NetworkState;

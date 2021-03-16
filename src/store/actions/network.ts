@@ -1,5 +1,5 @@
 import { Action } from 'redux';
-import { NodeCryptoConfiguration } from '@arkecosystem/client/dist/resourcesTypes/node';
+import { NodeCryptoConfiguration } from '@arkecosystem/client';
 
 // Actions
 enum NetworkActions {
