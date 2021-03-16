@@ -1,4 +1,4 @@
-import { defer, of } from 'rxjs';
+import { defer, forkJoin, of } from 'rxjs';
 import {
   catchError,
   distinctUntilChanged,
@@ -25,7 +25,7 @@ const arkCryptoEpic: RootEpic = (action$) =>
   action$.ofType(NetworkActions.NETWORK_CONFIGURATION_SUCCESS).pipe(
     tap((action) => {
       const {
-        payload: { nodeCryptoConfiguration },
+        payload: { nodeCryptoConfiguration, height },
       } = action as NetworkConfigurationSuccessActionType;
 
       const { network, exceptions, milestones } = nodeCryptoConfiguration;
@@ -40,7 +40,7 @@ const arkCryptoEpic: RootEpic = (action$) =>
       } as ArkCrypto.Interfaces.NetworkConfig);
 
       // Set height
-      ArkCrypto.Managers.configManager.setHeight(2);
+      ArkCrypto.Managers.configManager.setHeight(height);
 
       // Register custom transaction types
       ArkCrypto.Transactions.TransactionRegistry.registerTransactionType(
@@ -63,13 +63,23 @@ const fetchNetworkConfigurationEpic: RootEpic = (
     switchMap(([action, stateBaseUrl]) => {
       const { payload } = action as LoadNetworkConfigurationActionType;
 
-      return defer(() =>
-        connection(payload.baseUrl || stateBaseUrl!)
-          .api('node')
-          .crypto()
-      ).pipe(
-        map((response) =>
-          NetworkConfigurationSuccessAction(response?.body?.data)
+      return forkJoin([
+        defer(() =>
+          connection(payload.baseUrl || stateBaseUrl!)
+            .api('node')
+            .crypto()
+        ),
+        defer(() =>
+          connection(payload.baseUrl || stateBaseUrl!)
+            .api('blocks')
+            .last()
+        ),
+      ]).pipe(
+        map(([cryptoResponse, blockResponse]) =>
+          NetworkConfigurationSuccessAction(
+            cryptoResponse?.body?.data,
+            blockResponse?.body?.data?.height
+          )
         ),
         catchError((err) => of(NetworkConfigurationErrorAction(err)))
       );
