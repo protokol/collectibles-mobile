@@ -77,6 +77,37 @@ const Passphrase: FC<{
     [setPassphrase]
   );
 
+  const onKeyDown = useCallback(
+    (event) => {
+      const readFromClipboard = () => {
+        navigator.clipboard
+          .readText()
+          .then((text) => {
+            const words = text.split(' ');
+            setPassphrase(
+              [
+                ...words,
+                ...Array.from({ length: PASSPHRASE_WORDS }, () => ''),
+              ].slice(0, PASSPHRASE_WORDS)
+            );
+          })
+          .catch((err) => {
+            console.warn('Reading contents from clipboard failed: ', err);
+          });
+      };
+
+      let charCode = String.fromCharCode(event.which).toLowerCase();
+      if (event.ctrlKey && charCode === 'v') {
+        readFromClipboard();
+      }
+
+      if (event.metaKey && charCode === 'v') {
+        readFromClipboard();
+      }
+    },
+    [setPassphrase]
+  );
+
   return (
     <>
       {passphrase.map((word, index) => (
@@ -89,6 +120,7 @@ const Passphrase: FC<{
             type="text"
             fontSize={FontSize.SM}
             value={word}
+            onKeyDown={onKeyDown}
             onIonChange={({
               detail: { value },
             }: CustomEvent<InputChangeEventDetail>) =>

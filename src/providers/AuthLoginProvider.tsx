@@ -19,7 +19,7 @@ interface AuthLoginProviderState {
 }
 
 interface AuthLoginProviderContext {
-  readonly state: AuthLoginProviderState;
+  readonly session: AuthLoginProviderState['session'];
   setPin: (pin: string) => void;
 }
 
@@ -112,7 +112,7 @@ const AuthLoginContextProvider: FC = ({ children }) => {
   }, []);
 
   const providerState: AuthLoginProviderContext = {
-    state,
+    session: state.session,
     setPin,
   };
 

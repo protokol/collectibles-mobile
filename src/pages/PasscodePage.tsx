@@ -53,9 +53,7 @@ const PasscodePage: FC<{
   withConfirm?: boolean;
 }> = ({ withConfirm = false }) => {
   const history = useHistory();
-  const {
-    state: { session },
-  } = useContext(AuthLoginContext);
+  const { session } = useContext(AuthLoginContext);
   const { setPin } = useContext(AuthRegisterContext);
 
   const [step, setStep] = useState<PasscodeSteps>(PasscodeSteps.Passcode);
