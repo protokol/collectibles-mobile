@@ -91,9 +91,7 @@ const CollectCardPage: FC = () => {
   }, [assetClaimRequest, tx]);
 
   const {
-    state: {
-      session: { address },
-    },
+    session: { address },
   } = useContext(AuthLoginContext);
 
   useEffectOnce(() => {

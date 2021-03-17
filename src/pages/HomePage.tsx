@@ -1,18 +1,9 @@
 import { FC, useContext } from 'react';
 import { useHistory } from 'react-router';
 import styled from 'styled-components';
-import {
-  IonCol,
-  IonContent,
-  IonFooter,
-  IonGrid,
-  IonPage,
-  IonRow,
-  IonToolbar,
-} from '@ionic/react';
-import Card from '../components/Card';
+import { IonCol, IonContent, IonGrid, IonPage, IonRow } from '@ionic/react';
 import Header from '../components/Header';
-import SortBy from '../components/SortBy';
+import HomeCollections from '../components/HomeCollections';
 import {
   Panel,
   Tab,
@@ -97,26 +88,6 @@ const ActionButton = styled(Button)`
   &.bg-dark-blue-magenta {
     --background: var(--app-color-dark-blue-magenta);
   }
-`;
-
-const CardContainer = styled(IonCol)`
-  padding: 1.375rem;
-
-  &:nth-child(odd) {
-    padding-left: 0.6875rem;
-  }
-  &:nth-child(even) {
-    padding-right: 0.6875rem;
-  }
-`;
-
-const Footer = styled(IonFooter)`
-  position: fixed;
-  bottom: 0;
-`;
-
-const CollectablesIonRow = styled(IonRow)`
-  margin-bottom: 5rem;
 `;
 
 const HomeContent: FC = ({ children }) => {
@@ -258,34 +229,7 @@ const HomePage: FC = () => {
           </Panel>
 
           <Panel>
-            <IonGrid className="ion-no-padding">
-              <CollectablesIonRow>
-                <IonCol size="12" className="ion-margin-bottom">
-                  <SortBy options={['All', 'Newest', 'Name', 'Team', 'Race']} />
-                </IonCol>
-                {Array.from({ length: 12 }, (_, index) => (
-                  <CardContainer key={index} size="6">
-                    <Card />
-                  </CardContainer>
-                ))}
-              </CollectablesIonRow>
-            </IonGrid>
-            <Footer className="ion-no-border">
-              <IonToolbar>
-                <Button
-                  color="primary"
-                  size="large"
-                  className="ion-text-uppercase ion-no-margin"
-                  fontSize={FontSize.SM}
-                  fontWeight={FontWeight.BOLD}
-                  radius={false}
-                  expand="block"
-                  onClick={() => history.push('/home/collect-card')}
-                >
-                  Add new card
-                </Button>
-              </IonToolbar>
-            </Footer>
+            <HomeCollections />
           </Panel>
         </HomeContent>
       </TabsContextProvider>

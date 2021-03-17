@@ -64,20 +64,27 @@ const CardTag: FC = () => (
   </CardTagStyled>
 );
 
-const Card: FC = () => {
+const Card: FC<{
+  title: string;
+  subtitle: string;
+}> = ({ title, subtitle }) => {
   return (
     <CardStyled>
       <CardTag />
       <Img {...driverImage} />
-      <CardTitle
-        className="ion-no-padding ion-text-left"
-        fontWeight={FontWeight.BOLD}
-      >
-        Corey LaJoie
-      </CardTitle>
-      <CardSubTitle className="ion-no-padding" fontSize={FontSize.SM}>
-        Go Fas Racing
-      </CardSubTitle>
+      {title && (
+        <CardTitle
+          className="ion-no-padding ion-text-left"
+          fontWeight={FontWeight.BOLD}
+        >
+          {title}
+        </CardTitle>
+      )}
+      {subtitle && (
+        <CardSubTitle className="ion-no-padding" fontSize={FontSize.SM}>
+          {subtitle}
+        </CardSubTitle>
+      )}
       <CardAvailabilityTitle className="ion-no-padding">
         30/500 Cards Available
       </CardAvailabilityTitle>

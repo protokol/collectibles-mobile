@@ -9,6 +9,11 @@ import {
   ClaimAssetErrorActionType,
   ClaimAssetSuccessActionType,
 } from './actions/asset-claim';
+import {
+  CollectionsLoadActionType,
+  CollectionsLoadErrorActionType,
+  CollectionsLoadSuccessActionType,
+} from './actions/collections';
 import { NamespaceRegisterActionType } from './actions/namespace';
 import {
   LoadNetworkConfigurationActionType,
@@ -23,6 +28,7 @@ import {
 } from './actions/transaction';
 import { AppState } from './reducers/app';
 import { AssetClaimState } from './reducers/asset-claim';
+import { CollectionsState } from './reducers/collections';
 import { NetworkState } from './reducers/network';
 import { TransactionState } from './reducers/transaction';
 import connection from './services/protokol-connection';
@@ -40,12 +46,16 @@ export type RootActions =
   | TransactionConfirmSuccessActionType
   | TransactionConfirmErrorActionType
   | TransactionSubmitActionType
-  | NamespaceRegisterActionType;
+  | NamespaceRegisterActionType
+  | CollectionsLoadActionType
+  | CollectionsLoadSuccessActionType
+  | CollectionsLoadErrorActionType;
 export type RootState = {
   app: AppState;
   network: NetworkState;
   assetClaim: AssetClaimState;
   transaction: TransactionState;
+  collections: CollectionsState;
 };
 export type RootDependencies = {
   connection: typeof connection;

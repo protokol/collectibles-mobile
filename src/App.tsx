@@ -26,19 +26,20 @@ const App: FC = () => {
   return (
     <IonApp>
       <AuthLoginContextProvider>
-        <IonReactHashRouter>
-          <IonRouterOutlet>
-            <Route path="/" render={() => <Redirect to="/welcome" />} exact />
-            <Route path="/qr/:id" component={QrCodeGeneratorPage} exact />
-            <Route path="/welcome" component={WelcomePage} exact />
-            <Route path="/home" component={HomePage} exact />
-            <Route path="/home/scan-qr" component={ScanQRPage} exact />
-            <Route
-              path="/home/collect-card/:collectionId"
-              component={CollectCardPage}
-              exact
-            />
-            <AuthRegisterContextProvider>
+        <AuthRegisterContextProvider>
+          <IonReactHashRouter>
+            <IonRouterOutlet>
+              <Route path="/" render={() => <Redirect to="/home" />} exact />
+              <Route path="/qr/:id" component={QrCodeGeneratorPage} exact />
+              <Route path="/welcome" component={WelcomePage} exact />
+              <Route path="/home" component={HomePage} exact />
+              <Route path="/home/scan-qr" component={ScanQRPage} exact />
+              <Route
+                path="/home/collect-card/:collectionId"
+                component={CollectCardPage}
+                exact
+              />
+
               <Route
                 path="/login/passphrase"
                 component={PassphrasePage}
@@ -50,9 +51,9 @@ const App: FC = () => {
                 exact
                 render={(props) => <PasscodePage withConfirm {...props} />}
               />
-            </AuthRegisterContextProvider>
-          </IonRouterOutlet>
-        </IonReactHashRouter>
+            </IonRouterOutlet>
+          </IonReactHashRouter>
+        </AuthRegisterContextProvider>
       </AuthLoginContextProvider>
     </IonApp>
   );
