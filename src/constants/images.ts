@@ -14,6 +14,9 @@ const addGHPagesPrefix = () => {
   return '';
 };
 
+const addIPFSGatewayPrefix = (ipfsHash: string) =>
+  `https://gateway.pinata.cloud/ipfs/${ipfsHash}`;
+
 const welcomeImage = {
   alt: 'Welcome',
   src: `${addGHPagesPrefix()}${welcomeImagePath1x}`,
@@ -32,4 +35,4 @@ const driverHighResImage = {
   srcSet: `${addGHPagesPrefix()}${driverHighResImage1x} 1x, ${addGHPagesPrefix()}${driverHighResImage2x} 2x`,
 };
 
-export { welcomeImage, driverImage, driverHighResImage };
+export { addIPFSGatewayPrefix, welcomeImage, driverImage, driverHighResImage };

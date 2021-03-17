@@ -29,7 +29,6 @@ const App: FC = () => {
         <AuthRegisterContextProvider>
           <IonReactHashRouter>
             <IonRouterOutlet>
-              <Route path="/" render={() => <Redirect to="/home" />} exact />
               <Route path="/qr/:id" component={QrCodeGeneratorPage} exact />
               <Route path="/welcome" component={WelcomePage} exact />
               <Route path="/home" component={HomePage} exact />
@@ -51,6 +50,7 @@ const App: FC = () => {
                 exact
                 render={(props) => <PasscodePage withConfirm {...props} />}
               />
+              <Route path="/" render={() => <Redirect to="/home" />} exact />
             </IonRouterOutlet>
           </IonReactHashRouter>
         </AuthRegisterContextProvider>

@@ -1,5 +1,5 @@
 import { arrowBackOutline } from 'ionicons/icons';
-import { FC, useCallback, useContext, useMemo } from 'react';
+import { FC, useCallback, useContext, useEffect, useMemo } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router';
 import styled from 'styled-components';
@@ -18,7 +18,7 @@ import Header from '../components/Header';
 import Text from '../components/ionic/Text';
 import { FontSize } from '../constants/font-size';
 import { driverHighResImage } from '../constants/images';
-import useEffectOnce from '../hooks/use-effect-once';
+import useIsMounted from '../hooks/use-is-mounted';
 import { AuthLoginContext } from '../providers/AuthLoginProvider';
 import { ClaimAssetAction } from '../store/actions/asset-claim';
 import { assetClaimSelector } from '../store/selectors/asset-claim';
@@ -94,11 +94,12 @@ const CollectCardPage: FC = () => {
     session: { address },
   } = useContext(AuthLoginContext);
 
-  useEffectOnce(() => {
-    if (collectionId && address) {
+  const isMounted = useIsMounted();
+  useEffect(() => {
+    if (isMounted && collectionId && address) {
       dispatch(ClaimAssetAction(collectionId, address!, txUuid));
     }
-  });
+  }, [isMounted, dispatch, collectionId, address]);
 
   return (
     <IonPage>

@@ -1,4 +1,4 @@
-import { FC, useCallback, useContext, useEffect, useMemo } from 'react';
+import { FC, useContext, useEffect, useMemo } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import styled from 'styled-components';
@@ -19,6 +19,7 @@ import useIsMounted from '../hooks/use-is-mounted';
 import { AuthLoginContext } from '../providers/AuthLoginProvider';
 import { CollectionsLoadAction } from '../store/actions/collections';
 import { collectionSelector } from '../store/selectors/collections';
+import { CardTagType } from './CardTag';
 import Text from './ionic/Text';
 
 const CardContainer = styled(IonCol)`
@@ -43,10 +44,12 @@ const CollectablesIonRow = styled(IonRow)`
 
 const HomeCollections: FC = () => {
   const history = useHistory();
-  const { isError, error, isLoading, assets, isLastPage, query } = useSelector(
-    collectionSelector,
-    shallowEqual
-  );
+  const {
+    isError,
+    error,
+    isLoading,
+    assets /*isLastPage, query*/,
+  } = useSelector(collectionSelector, shallowEqual);
   const dispatch = useDispatch();
   const {
     session: { publicKey },
@@ -59,7 +62,7 @@ const HomeCollections: FC = () => {
     }
   }, [isMounted, dispatch, publicKey]);
 
-  const loadNextPage = useCallback(() => {
+  /*const loadNextPage = useCallback(() => {
     if (publicKey && !isLastPage) {
       const { page } = query ?? { page: 0 };
       dispatch(
@@ -69,7 +72,7 @@ const HomeCollections: FC = () => {
         })
       );
     }
-  }, [query, dispatch, publicKey, isLastPage]);
+  }, [query, dispatch, publicKey, isLastPage]);*/
 
   const flatAssets = useMemo(() => assets.flat(), [assets]);
 
@@ -96,12 +99,30 @@ const HomeCollections: FC = () => {
               <IonCol size="12" className="ion-margin-bottom">
                 <SortBy options={['All', 'Newest', 'Name', 'Team', 'Race']} />
               </IonCol>
-              {flatAssets.map(({ id, attributes }) => (
-                <CardContainer key={id} size="6">
-                  {console.log('attributes', attributes)}
-                  <Card title="Title" subtitle="Subtitle" />
-                </CardContainer>
-              ))}
+              {flatAssets.map(({ id, attributes }) => {
+                const {
+                  title,
+                  subtitle,
+                  ipfsHashImageFront,
+                  tags,
+                } = attributes as any;
+
+                const type =
+                  Array.isArray(tags) && tags.length
+                    ? tags[0]
+                    : CardTagType.None;
+
+                return (
+                  <CardContainer key={id} size="6">
+                    <Card
+                      title={title}
+                      subtitle={subtitle}
+                      imgIpfsHash={ipfsHashImageFront}
+                      type={type}
+                    />
+                  </CardContainer>
+                );
+              })}
             </>
           )}
           {!isLoading && !flatAssets.length && !isError && (
@@ -133,9 +154,7 @@ const HomeCollections: FC = () => {
             radius={false}
             expand="block"
             onClick={() => {
-              loadNextPage();
-              // history.push('/home/collect-card');
-              console.log(history);
+              history.push('/home/scan-qr');
             }}
           >
             Add new card
