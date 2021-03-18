@@ -107,7 +107,7 @@ const CollectCardPage: FC = () => {
         title="Collect Cards"
         contentId="collect-card-content"
         buttonTopLeft={
-          <IonButton onClick={() => history.push('/home')}>
+          <IonButton onClick={() => history.replace('/home')}>
             <IonIcon color="light" slot="icon-only" icon={arrowBackOutline} />
           </IonButton>
         }

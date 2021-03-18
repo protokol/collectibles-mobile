@@ -51,7 +51,7 @@ const restoreUserPrivateKeyFromStorageEpic: RootEpic = (
       if (userPrivateKey) {
         return of(SetEncodedUserPrivateKeyAction(userPrivateKey, false));
       }
-      return of().pipe(ignoreElements());
+      return of(SetEncodedUserPrivateKeyAction(null, false));
     })
   );
 

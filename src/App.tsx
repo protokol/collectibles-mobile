@@ -1,8 +1,11 @@
 import { FC, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { Redirect, Route } from 'react-router-dom';
-import { IonApp, IonRouterOutlet } from '@ionic/react';
+import { Redirect, Route, Switch } from 'react-router-dom';
+import { Plugins } from '@capacitor/core';
+import { IonApp, IonRouterOutlet, isPlatform } from '@ionic/react';
 import { IonReactHashRouter } from '@ionic/react-router';
+import ProtectedRoute from './components/ProtectedRoute';
+import useIsMounted from './hooks/use-is-mounted';
 import CollectCardPage from './pages/CollectCardPage';
 import HomePage from './pages/HomePage';
 import PasscodePage from './pages/PasscodePage';
@@ -16,29 +19,35 @@ import AuthRegisterContextProvider from './providers/AuthRegisterProvider';
 import { SetBaseUrlAppAction } from './store/actions/app';
 import './theme/ionic-theme';
 
+const { ScreenOrientation } = Plugins;
+
 const App: FC = () => {
   const dispatch = useDispatch();
 
+  const isMounted = useIsMounted();
   useEffect(() => {
-    dispatch(SetBaseUrlAppAction('https://explorer.protokol.sh'));
-  }, [dispatch]);
+    const lockOrientation = async () => {
+      await ScreenOrientation.lockScreenOrientation({
+        orientation: 'portrait',
+      });
+    };
+
+    if (isMounted) {
+      if (isPlatform('capacitor')) {
+        lockOrientation();
+      }
+      dispatch(SetBaseUrlAppAction('https://explorer.protokol.sh'));
+    }
+  }, [isMounted, dispatch]);
 
   return (
     <IonApp>
       <AuthLoginContextProvider>
         <AuthRegisterContextProvider>
           <IonReactHashRouter>
-            <IonRouterOutlet>
+            <Switch>
               <Route path="/qr/:id" component={QrCodeGeneratorPage} exact />
               <Route path="/welcome" component={WelcomePage} exact />
-              <Route path="/home" component={HomePage} exact />
-              <Route path="/home/scan-qr" component={ScanQRPage} exact />
-              <Route
-                path="/home/collect-card/:collectionId"
-                component={CollectCardPage}
-                exact
-              />
-
               <Route
                 path="/login/passphrase"
                 component={PassphrasePage}
@@ -50,8 +59,30 @@ const App: FC = () => {
                 exact
                 render={(props) => <PasscodePage withConfirm {...props} />}
               />
-              <Route path="/" render={() => <Redirect to="/home" />} exact />
-            </IonRouterOutlet>
+              <Route
+                path="/passcode"
+                exact
+                render={(props) => (
+                  <PasscodePage withConfirm={false} {...props} />
+                )}
+              />
+              <Redirect path="/" exact to="/home" />
+
+              <IonRouterOutlet>
+                <ProtectedRoute path="/home" component={HomePage} exact />
+                <ProtectedRoute
+                  requiresCordova={true}
+                  path="/home/scan-qr"
+                  component={ScanQRPage}
+                  exact
+                />
+                <ProtectedRoute
+                  path="/home/collect-card/:collectionId"
+                  component={CollectCardPage}
+                  exact
+                />
+              </IonRouterOutlet>
+            </Switch>
           </IonReactHashRouter>
         </AuthRegisterContextProvider>
       </AuthLoginContextProvider>

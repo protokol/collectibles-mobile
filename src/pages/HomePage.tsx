@@ -178,7 +178,7 @@ const HomePage: FC = () => {
                     className="ion-text-uppercase ion-no-margin bg-gray"
                     fontSize={FontSize.SM}
                     fontWeight={FontWeight.BOLD}
-                    onClick={() => history.push('/home/collect-card')}
+                    onClick={() => history.push('/home/scan-qr')}
                   >
                     Add new card
                   </ActionButton>
@@ -187,7 +187,7 @@ const HomePage: FC = () => {
                     className="ion-text-uppercase ion-no-margin bg-dark-blue-magenta"
                     fontSize={FontSize.SM}
                     fontWeight={FontWeight.BOLD}
-                    onClick={() => history.push('/home/collect-card')}
+                    onClick={() => history.push('/home/scan-qr')}
                   >
                     Scan qr code
                   </ActionButton>

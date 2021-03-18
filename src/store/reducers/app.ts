@@ -3,7 +3,7 @@ import { APP_ACTION_TYPES, AppActions } from '../actions/app';
 
 export interface AppState {
   baseUrl?: string;
-  userPrivateKey?: string;
+  userPrivateKey?: string | null;
 }
 
 const initialState: AppState = {

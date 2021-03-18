@@ -15,6 +15,12 @@ import { CryptoUtils } from '../utils/crypto-utils';
 const Content = styled(IonContent)`
   --background: var(--app-color-charade);
 
+  & > ion-grid {
+    display: flex;
+    align-items: center;
+    height: 100vh;
+  }
+
   & > ion-grid > ion-row {
     > ion-col {
       &:nth-child(1) {
@@ -22,7 +28,6 @@ const Content = styled(IonContent)`
         flex-direction: column;
         align-items: center;
         justify-content: flex-end;
-        height: 40vh;
         padding: 2rem;
         text-align: center;
       }
@@ -133,7 +138,7 @@ const PassphrasePage: FC = () => {
                 className="ion-text-capitalize ion-no-margin"
                 color="light"
                 fontSize={FontSize.SM}
-                onClick={() => history.push('/welcome')}
+                onClick={() => history.replace('/welcome')}
               >
                 Back
               </Button>
