@@ -1,5 +1,5 @@
 import { FC, useCallback, useContext, useEffect, useState } from 'react';
-import { useForm, Controller, FieldValues } from 'react-hook-form';
+import { Controller, FieldValues, useForm } from 'react-hook-form';
 import { useHistory } from 'react-router';
 import styled from 'styled-components';
 import { IonCol, IonContent, IonGrid, IonPage, IonRow } from '@ionic/react';
@@ -9,11 +9,21 @@ import Input from '../components/ionic/Input';
 import Text from '../components/ionic/Text';
 import { FontSize } from '../constants/font-size';
 import { FontWeight } from '../constants/font-weight';
-import { AuthLoginContext } from '../providers/AuthLoginProvider';
+import {
+  AuthLoginContext,
+  AuthLoginState,
+} from '../providers/AuthLoginProvider';
 import { AuthRegisterContext } from '../providers/AuthRegisterProvider';
 
 const Content = styled(IonContent)`
   --background: var(--app-color-charade);
+
+  & > ion-grid {
+    display: flex;
+    align-items: flex-end;
+    height: 100vh;
+    padding-bottom: 2rem;
+  }
 
   & > ion-grid > ion-row {
     > ion-col {
@@ -22,7 +32,6 @@ const Content = styled(IonContent)`
         flex-direction: column;
         align-items: center;
         justify-content: flex-end;
-        height: 40vh;
         padding: 2rem;
         text-align: center;
       }
@@ -53,8 +62,9 @@ const PasscodePage: FC<{
   withConfirm?: boolean;
 }> = ({ withConfirm = false }) => {
   const history = useHistory();
-  const { session } = useContext(AuthLoginContext);
+  const { session, setPin: loginSetPin } = useContext(AuthLoginContext);
   const { setPin } = useContext(AuthRegisterContext);
+  const { state } = session;
 
   const [step, setStep] = useState<PasscodeSteps>(PasscodeSteps.Passcode);
 
@@ -76,8 +86,12 @@ const PasscodePage: FC<{
   const { passcode, confirmPasscode } = watch();
 
   useEffect(() => {
-    if (session && !session.error && session.isReady) {
-      history.push('/home');
+    if (
+      session &&
+      !session.error &&
+      session.state === AuthLoginState.LoggedIn
+    ) {
+      history.replace('/home');
     }
   }, [session, history]);
 
@@ -95,13 +109,21 @@ const PasscodePage: FC<{
         setStep(PasscodeSteps.ConfirmPasscode);
         clearErrors(['passcode', 'confirmPasscode']);
       } else {
-        setPin(passcode);
+        if (withConfirm) {
+          setPin(passcode);
+        } else {
+          loginSetPin(passcode);
+        }
       }
     },
-    [setPin, register, withConfirm, clearErrors, step]
+    [setPin, register, withConfirm, clearErrors, step, loginSetPin]
   );
 
   const getTitle = useCallback(() => {
+    if (!withConfirm) {
+      return 'Safety First!';
+    }
+
     switch (step) {
       case PasscodeSteps.ConfirmPasscode:
         return 'Confirm your passcode';
@@ -109,9 +131,19 @@ const PasscodePage: FC<{
       default:
         return 'Create your passcode';
     }
-  }, [step]);
+  }, [step, withConfirm]);
 
   const getSubTitle = useCallback(() => {
+    if (!withConfirm) {
+      return (
+        <>
+          Insert your <b>passcode, that you chose</b> when creating your
+          account! Don’t forget to store it somewhere safe, since we are unable
+          to restore any lost passcodes! Learn more
+        </>
+      );
+    }
+
     switch (step) {
       case PasscodeSteps.ConfirmPasscode:
         return (
@@ -130,7 +162,7 @@ const PasscodePage: FC<{
           </>
         );
     }
-  }, [step]);
+  }, [step, withConfirm]);
 
   return (
     <IonPage>
@@ -208,6 +240,19 @@ const PasscodePage: FC<{
                 <div className="ion-text-center">
                   <FormInputError errors={errors} name="passcode" />
                   <FormInputError errors={errors} name="confirmPasscode" />
+
+                  {state === AuthLoginState.Error && (
+                    <>
+                      <br />
+                      <Text
+                        className="ion-padding-top"
+                        fontSize={FontSize.SM}
+                        color="danger"
+                      >
+                        Invalid PIN!
+                      </Text>
+                    </>
+                  )}
                 </div>
               </form>
             </IonCol>

@@ -65,8 +65,8 @@ const AuthRegisterContextProvider: FC = ({ children }) => {
       const passphraseJson = JSON.stringify({ passphrase });
       const encoded = Encryption.encode(passphraseJson, Encryption.hash(pin));
 
-      authLoginSetPin(pin);
       dispatch(SetEncodedUserPrivateKeyAction(encoded));
+      authLoginSetPin(pin);
 
       // TODO: Username registration will fail because new wallets have no balance
       if (state.username) {

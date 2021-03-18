@@ -16,7 +16,7 @@ export interface SetBaseUrlAppActionType
 export interface SetEncodedUserPrivateKeyActionType
   extends Action<AppActions.SET_ENCODED_USER_PRIVATE_KEY> {
   payload: {
-    userPrivateKey: string;
+    userPrivateKey: string | null;
     saveToStorage?: boolean;
   };
 }
@@ -30,7 +30,7 @@ const SetBaseUrlAppAction = (baseUrl: string): SetBaseUrlAppActionType => ({
 });
 
 const SetEncodedUserPrivateKeyAction = (
-  userPrivateKey: string,
+  userPrivateKey: string | null,
   saveToStorage = true
 ): SetEncodedUserPrivateKeyActionType => ({
   type: AppActions.SET_ENCODED_USER_PRIVATE_KEY,

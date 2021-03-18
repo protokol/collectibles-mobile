@@ -11,6 +11,13 @@ import { welcomeImage } from '../constants/images';
 const Content = styled(IonContent)`
   --background: var(--app-color-charade);
 
+  & > ion-grid {
+    display: flex;
+    align-items: flex-end;
+    height: 100vh;
+    padding-bottom: 2rem;
+  }
+
   ion-row {
     ion-col {
       &:nth-child(1) {
@@ -18,20 +25,20 @@ const Content = styled(IonContent)`
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        height: 30vh;
+        padding-bottom: 3rem;
       }
 
       &:nth-child(2) {
-        height: 30vh;
         overflow: hidden;
+        padding-bottom: 2rem;
       }
 
       &:nth-child(3) {
         display: flex;
         flex-direction: column;
         justify-content: center;
-        height: 35vh;
         width: 100vw;
+        padding-bottom: 2rem;
       }
     }
   }

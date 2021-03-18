@@ -29,7 +29,7 @@ const ScanQRPage: FC = () => {
           scanSubscription = QRScanner.scan().subscribe(
             (collectionId: string) => {
               // TODO: Validate text if it is valid collection id
-              history.push(`/home/collect-card/${collectionId}`);
+              history.replace(`/home/collect-card/${collectionId}`);
             }
           );
         } else if (status.denied) {
