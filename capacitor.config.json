@@ -1,6 +1,6 @@
 {
-  "appId": "io.ionic.starter",
-  "appName": "collectibles-mobile",
+  "appId": "io.protokol.collectibles",
+  "appName": "Protokol Collectibles",
   "bundledWebRuntime": false,
   "npmClient": "npm",
   "webDir": "build",
