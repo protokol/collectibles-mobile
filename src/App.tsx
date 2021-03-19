@@ -1,7 +1,7 @@
 import { FC, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Redirect, Route, Switch } from 'react-router-dom';
-import { Plugins } from '@capacitor/core';
+import { ScreenOrientation } from '@ionic-native/screen-orientation';
 import { IonApp, IonRouterOutlet, isPlatform } from '@ionic/react';
 import { IonReactHashRouter } from '@ionic/react-router';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -19,17 +19,15 @@ import AuthRegisterContextProvider from './providers/AuthRegisterProvider';
 import { SetBaseUrlAppAction } from './store/actions/app';
 import './theme/ionic-theme';
 
-const { ScreenOrientation } = Plugins;
-
 const App: FC = () => {
   const dispatch = useDispatch();
 
   const isMounted = useIsMounted();
   useEffect(() => {
     const lockOrientation = async () => {
-      await ScreenOrientation.lockScreenOrientation({
-        orientation: 'portrait',
-      });
+      await ScreenOrientation.lock(
+        ScreenOrientation.ORIENTATIONS.PORTRAIT_PRIMARY
+      );
     };
 
     if (isMounted) {
