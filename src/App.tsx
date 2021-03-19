@@ -1,6 +1,7 @@
 import { FC, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Redirect, Route, Switch } from 'react-router-dom';
+import { Plugins } from '@capacitor/core';
 import { ScreenOrientation } from '@ionic-native/screen-orientation';
 import { IonApp, IonRouterOutlet, isPlatform } from '@ionic/react';
 import { IonReactHashRouter } from '@ionic/react-router';
@@ -19,6 +20,8 @@ import AuthRegisterContextProvider from './providers/AuthRegisterProvider';
 import { SetBaseUrlAppAction } from './store/actions/app';
 import './theme/ionic-theme';
 
+const { SplashScreen } = Plugins;
+
 const App: FC = () => {
   const dispatch = useDispatch();
 
@@ -33,6 +36,7 @@ const App: FC = () => {
     if (isMounted) {
       if (isPlatform('capacitor')) {
         lockOrientation();
+        SplashScreen.hide();
       }
       dispatch(SetBaseUrlAppAction('https://explorer.protokol.sh'));
     }

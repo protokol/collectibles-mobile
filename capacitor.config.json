@@ -1,12 +1,16 @@
 {
-  "appId": "io.ionic.starter",
-  "appName": "collectibles-mobile",
+  "appId": "io.protokol.collectibles",
+  "appName": "Protokol Collectibles",
   "bundledWebRuntime": false,
   "npmClient": "npm",
   "webDir": "build",
   "plugins": {
     "SplashScreen": {
-      "launchShowDuration": 0
+      "launchAutoHide": false,
+      "androidScaleType": "CENTER_CROP",
+      "splashFullScreen": true,
+      "splashImmersive": false,
+      "backgroundColor": "#252732"
     }
   },
   "cordova": {}

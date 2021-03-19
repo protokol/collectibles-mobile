@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">collectibles-mobile</string>
-    <string name="title_activity_main">collectibles-mobile</string>
-    <string name="package_name">io.ionic.starter</string>
-    <string name="custom_url_scheme">io.ionic.starter</string>
+    <string name="app_name">Protokol Collectibles</string>
+    <string name="title_activity_main">Protokol Collectibles</string>
+    <string name="package_name">io.protokol.collectibles</string>
+    <string name="custom_url_scheme">io.protokol.collectibles</string>
 </resources>
