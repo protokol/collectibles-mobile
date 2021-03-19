@@ -25,12 +25,13 @@ const Content = styled(IonContent)`
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        padding-bottom: 3rem;
+        padding-bottom: 1rem;
       }
 
       &:nth-child(2) {
         overflow: hidden;
-        padding-bottom: 2rem;
+        margin-bottom: 1rem;
+        max-height: 25vh;
       }
 
       &:nth-child(3) {
@@ -38,7 +39,25 @@ const Content = styled(IonContent)`
         flex-direction: column;
         justify-content: center;
         width: 100vw;
-        padding-bottom: 2rem;
+        padding-bottom: 0.5rem;
+      }
+    }
+  }
+
+  @media screen and (min-height: 600px) {
+    ion-row {
+      ion-col {
+        &:nth-child(1) {
+          padding-bottom: 2rem;
+        }
+
+        &:nth-child(2) {
+          margin-bottom: 2rem;
+        }
+
+        &:nth-child(3) {
+          padding-bottom: 1rem;
+        }
       }
     }
   }
