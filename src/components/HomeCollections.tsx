@@ -82,7 +82,7 @@ const HomeCollections: FC = () => {
         <CollectablesIonRow>
           {!isLoading && isError && (
             <IonCol size="12" class="ion-text-center ion-padding-top">
-              <Text color="danger" fontSize={FontSize.XL}>
+              <Text color="danger" fontSize={FontSize.XXL}>
                 Something went wrong!
               </Text>
               <Text
@@ -115,6 +115,7 @@ const HomeCollections: FC = () => {
                 return (
                   <CardContainer key={id} size="6">
                     <Card
+                      id={id}
                       title={title}
                       subtitle={subtitle}
                       imgIpfsHash={ipfsHashImageFront}
@@ -129,7 +130,7 @@ const HomeCollections: FC = () => {
             <IonCol size="12" class="ion-text-center">
               <Text
                 className="ion-padding-top"
-                fontSize={FontSize.M}
+                fontSize={FontSize.L}
                 color="primary"
               >
                 No collectables yet!

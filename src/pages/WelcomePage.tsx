@@ -72,7 +72,7 @@ const WelcomePage: FC = () => {
             <IonCol size="12">
               <Text
                 className="ion-text-uppercase"
-                fontSize={FontSize.XL}
+                fontSize={FontSize.XXL}
                 color="light"
                 fontWeight={FontWeight.BOLD}
               >
@@ -80,7 +80,7 @@ const WelcomePage: FC = () => {
               </Text>
               <Text
                 className="ion-text-capitalize"
-                fontSize={FontSize.L}
+                fontSize={FontSize.XL}
                 color="light"
                 fontWeight={FontWeight.BOLD}
               >
