@@ -17,7 +17,7 @@ const KeypadNumberBtn: FC<{
 }> = ({
   children,
   onClick,
-  fontSize = FontSize.M,
+  fontSize = FontSize.L,
   size = 'large',
   disabled = false,
 }) => (

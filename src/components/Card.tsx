@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import { useHistory } from 'react-router';
 import styled from 'styled-components';
 import { FontSize } from '../constants/font-size';
 import { FontWeight } from '../constants/font-weight';
@@ -29,14 +30,17 @@ const CardAvailabilityTitle = styled(Title)`
 `;
 
 const Card: FC<{
+  id: string;
   title: string;
   subtitle: string;
   imgIpfsHash: string;
   details?: string;
   type?: CardTagType;
-}> = ({ title, subtitle, details, imgIpfsHash, type }) => {
+}> = ({ id, title, subtitle, details, imgIpfsHash, type }) => {
+  const history = useHistory();
+
   return (
-    <CardStyled>
+    <CardStyled onClick={() => history.push(`/home/card/${id}`)}>
       <CardTag type={type} />
       <Img src={addIPFSGatewayPrefix(imgIpfsHash)} />
       {title && (

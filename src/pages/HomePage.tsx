@@ -136,7 +136,7 @@ const HomePage: FC = () => {
                 <ImageBgCol size="12">
                   <Label
                     color="light"
-                    fontSize={FontSize.M}
+                    fontSize={FontSize.L}
                     fontWeight={FontWeight.BOLD}
                   >
                     Collecting Digital Hero Cards Is Easy!
@@ -164,7 +164,7 @@ const HomePage: FC = () => {
                 </ImageBgCol>
                 <BannerCol>
                   <BannerText
-                    fontSize={FontSize.M}
+                    fontSize={FontSize.L}
                     fontWeight={FontWeight.BOLD}
                   >
                     Gentlemen,

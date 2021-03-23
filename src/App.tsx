@@ -7,6 +7,7 @@ import { IonApp, IonRouterOutlet, isPlatform } from '@ionic/react';
 import { IonReactHashRouter } from '@ionic/react-router';
 import ProtectedRoute from './components/ProtectedRoute';
 import useIsMounted from './hooks/use-is-mounted';
+import CardDetails from './pages/CardDetails';
 import CollectCardPage from './pages/CollectCardPage';
 import HomePage from './pages/HomePage';
 import PasscodePage from './pages/PasscodePage';
@@ -76,6 +77,11 @@ const App: FC = () => {
                   requiresCordova={true}
                   path="/home/scan-qr"
                   component={ScanQRPage}
+                  exact
+                />
+                <ProtectedRoute
+                  path="/home/card/:assetId"
+                  component={CardDetails}
                   exact
                 />
                 <ProtectedRoute

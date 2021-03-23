@@ -72,7 +72,7 @@ const PassphrasePage: FC = () => {
             <IonCol size="12">
               <Text
                 className="ion-margin-bottom"
-                fontSize={FontSize.L}
+                fontSize={FontSize.XL}
                 color="light"
                 fontWeight={FontWeight.BOLD}
               >

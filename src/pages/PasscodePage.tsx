@@ -172,7 +172,7 @@ const PasscodePage: FC<{
             <IonCol size="12">
               <Text
                 className="ion-margin-bottom"
-                fontSize={FontSize.L}
+                fontSize={FontSize.XL}
                 color="light"
                 fontWeight={FontWeight.BOLD}
               >
@@ -196,7 +196,7 @@ const PasscodePage: FC<{
                           type="password"
                           value={passcode}
                           className="form-input-pin"
-                          fontSize={FontSize.M}
+                          fontSize={FontSize.L}
                           readonly
                         />
                       </IonCol>
@@ -224,7 +224,7 @@ const PasscodePage: FC<{
                           type="password"
                           value={confirmPasscode}
                           className="form-input-pin"
-                          fontSize={FontSize.M}
+                          fontSize={FontSize.L}
                           readonly
                         />
                       </IonCol>

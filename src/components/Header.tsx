@@ -173,7 +173,7 @@ const Header: FC<{
 
           <Title
             color="light"
-            fontSize={FontSize.M}
+            fontSize={FontSize.L}
             className="ion-text-center"
           >
             {title}

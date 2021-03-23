@@ -105,7 +105,6 @@ const CollectCardPage: FC = () => {
     <IonPage>
       <Header
         title="Collect Cards"
-        contentId="collect-card-content"
         buttonTopLeft={
           <IonButton onClick={() => history.replace('/home')}>
             <IonIcon color="light" slot="icon-only" icon={arrowBackOutline} />
@@ -113,14 +112,14 @@ const CollectCardPage: FC = () => {
         }
       />
 
-      <IonContent fullscreen id="collect-card-content">
+      <IonContent fullscreen>
         <IonGrid className="ion-no-padding">
           <IonRow>
             <ImageBgCol size="12">
               {isLoading() && <IonSpinner color="light" />}
               {!isLoading() && isError() && (
                 <>
-                  <Text color="danger" fontSize={FontSize.XL}>
+                  <Text color="danger" fontSize={FontSize.XXL}>
                     Something went wrong!
                   </Text>
                   <Text
@@ -134,12 +133,12 @@ const CollectCardPage: FC = () => {
               )}
               {!isLoading() && !isError() && (
                 <>
-                  <Text color="success" fontSize={FontSize.XL}>
+                  <Text color="success" fontSize={FontSize.XXL}>
                     Hooray!
                   </Text>
                   <Text
                     className="ion-padding-top"
-                    fontSize={FontSize.M}
+                    fontSize={FontSize.L}
                     color="light"
                   >
                     You just received a new hero card!
