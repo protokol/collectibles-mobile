@@ -1,7 +1,7 @@
 import { format } from 'date-fns';
-import GoogleMapReact from 'google-map-react';
+import GoogleMap from 'google-map-react';
 import { arrowBackOutline, locationOutline } from 'ionicons/icons';
-import { FC, useMemo } from 'react';
+import { FC, useCallback, useMemo } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router';
 import styled from 'styled-components';
@@ -59,6 +59,29 @@ const CardDetails: FC = () => {
     description,
   } = attributes as any;
 
+  const onGoogleMapsLoaded = useCallback(
+    async (maps) => {
+      const geocoder = new maps.Geocoder();
+
+      geocoder.geocode(
+        { address: issuedAddress },
+        (results: any, status: string) => {
+          if (status === 'OK') {
+            const [result] = results;
+            const latLng = {
+              lat: result.geometry.location.lat(),
+              lng: result.geometry.location.lng(),
+            };
+            console.log('latLng', latLng);
+          } else {
+            console.error('Geocode failed: ' + status);
+          }
+        }
+      );
+    },
+    [issuedAddress]
+  );
+
   return (
     <IonPage>
       <Header
@@ -100,7 +123,7 @@ const CardDetails: FC = () => {
             </IonColCards>
             <IonCol size="12">
               <GoogleMapContainer>
-                <GoogleMapReact
+                <GoogleMap
                   options={{
                     styles: MapUtils.MapStyles(),
                   }}
@@ -108,10 +131,12 @@ const CardDetails: FC = () => {
                     key: 'AIzaSyAzYuxD62y_TmSlgLXhfXywHrNLCsR4a40',
                   }}
                   defaultCenter={{
-                    lat: 59.95,
-                    lng: 30.33,
+                    lat: 52.3676,
+                    lng: 4.9041,
                   }}
                   defaultZoom={11}
+                  onGoogleApiLoaded={({ maps }) => onGoogleMapsLoaded(maps)}
+                  yesIWantToUseGoogleMapApiInternals
                 />
               </GoogleMapContainer>
             </IonCol>
