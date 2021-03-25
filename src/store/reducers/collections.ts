@@ -40,15 +40,15 @@ const reducer: Reducer<CollectionsState, COLLECTIONS_ACTION_TYPES> = (
         payload: { assets, query, isLastPage },
       } = action as CollectionsLoadSuccessActionType;
       const { page } = query;
-      const indexPage = page! - 1;
+      const indexPage = page!;
       return {
         ...state,
         isLoading: false,
         query,
         assets: [
-          ...state.assets.slice(0, indexPage),
+          ...state.assets.slice(0, indexPage - 1),
           assets,
-          ...state.assets.slice(indexPage + 1),
+          ...state.assets.slice(indexPage),
         ],
         isLastPage,
         isError: false,
