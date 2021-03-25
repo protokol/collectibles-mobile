@@ -30,11 +30,13 @@ const fetchWalletCollectionsEpic: RootEpic = (
           if (errors) {
             return CollectionsLoadErrorAction(errors);
           }
-          return CollectionsLoadSuccessAction(
-            query ?? { page: 1, limit: 100 },
-            data,
-            data.length === 0
-          );
+
+          const q = query || {
+            page: 1,
+            limit: 100,
+          };
+
+          return CollectionsLoadSuccessAction(q, data, data.length < q.limit!);
         }),
         catchError((err) => of(CollectionsLoadErrorAction(err)))
       );

@@ -1,4 +1,4 @@
-import { FC, useContext, useEffect, useMemo } from 'react';
+import { FC, useCallback, useContext, useEffect, useMemo } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import styled from 'styled-components';
@@ -39,17 +39,16 @@ const Footer = styled(IonFooter)`
 `;
 
 const CollectablesIonRow = styled(IonRow)`
-  margin-bottom: 5rem;
+  overflow: auto;
+  max-height: calc(100vh - 92px - 4.8rem);
 `;
 
 const HomeCollections: FC = () => {
   const history = useHistory();
-  const {
-    isError,
-    error,
-    isLoading,
-    assets /*isLastPage, query*/,
-  } = useSelector(collectionSelector, shallowEqual);
+  const { isError, error, isLoading, assets, isLastPage, query } = useSelector(
+    collectionSelector,
+    shallowEqual
+  );
   const dispatch = useDispatch();
   const {
     session: { publicKey },
@@ -62,9 +61,9 @@ const HomeCollections: FC = () => {
     }
   }, [isMounted, dispatch, publicKey]);
 
-  /*const loadNextPage = useCallback(() => {
-    if (publicKey && !isLastPage) {
-      const { page } = query ?? { page: 0 };
+  const loadNextPage = useCallback(() => {
+    if (publicKey) {
+      const { page } = query ?? { page: 1 };
       dispatch(
         CollectionsLoadAction(publicKey!, {
           ...query,
@@ -72,14 +71,25 @@ const HomeCollections: FC = () => {
         })
       );
     }
-  }, [query, dispatch, publicKey, isLastPage]);*/
+  }, [query, dispatch, publicKey]);
 
   const flatAssets = useMemo(() => assets.flat(), [assets]);
+
+  const onCardsScroll = useCallback(
+    ({ target }) => {
+      const isBottom =
+        target.scrollHeight - target.scrollTop === target.clientHeight;
+      if (isBottom && !isLastPage && !isLoading) {
+        loadNextPage();
+      }
+    },
+    [loadNextPage, isLastPage, isLoading]
+  );
 
   return (
     <>
       <IonGrid className="ion-no-padding">
-        <CollectablesIonRow>
+        <CollectablesIonRow onScroll={onCardsScroll}>
           {!isLoading && isError && (
             <IonCol size="12" class="ion-text-center ion-padding-top">
               <Text color="danger" fontSize={FontSize.XXL}>
@@ -137,7 +147,7 @@ const HomeCollections: FC = () => {
               </Text>
             </IonCol>
           )}
-          {isLoading && (
+          {isLoading && !flatAssets.length && (
             <IonCol size="12" class="ion-text-center ion-padding-top">
               <IonSpinner color="primary" />
             </IonCol>
