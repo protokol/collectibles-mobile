@@ -1,7 +1,7 @@
 import { format } from 'date-fns';
-import GoogleMapReact from 'google-map-react';
+import GoogleMap from 'google-map-react';
 import { arrowBackOutline, locationOutline } from 'ionicons/icons';
-import { FC, useMemo } from 'react';
+import { FC, useCallback, useMemo } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router';
 import styled from 'styled-components';
@@ -24,6 +24,7 @@ import Header from '../components/Header';
 import Img from '../components/ionic/Img';
 import { addIPFSGatewayPrefix } from '../constants/images';
 import { collectionSelector } from '../store/selectors/collections';
+import { Icons } from '../utils/icons';
 import { MapUtils } from '../utils/map-utils';
 
 const IonColCards = styled(IonCol)`
@@ -57,7 +58,25 @@ const CardDetails: FC = () => {
     issuedLocation,
     issuedAddress,
     description,
+    issuedLocationLng: lng,
+    issuedLocationLat: lat,
   } = attributes as any;
+
+  const onGoogleMapsLoaded = useCallback(
+    (maps, map) => {
+      new maps.Marker({
+        position: new maps.LatLng(lat, lng),
+        map,
+        title: issuedLocation,
+        icon: {
+          url: Icons.LOCATION_BASE_64,
+          fillColor: 'white',
+          scaledSize: new maps.Size(20, 20),
+        },
+      });
+    },
+    [lat, lng, issuedLocation]
+  );
 
   return (
     <IonPage>
@@ -98,23 +117,34 @@ const CardDetails: FC = () => {
                 />
               </DetailCards>
             </IonColCards>
-            <IonCol size="12">
-              <GoogleMapContainer>
-                <GoogleMapReact
-                  options={{
-                    styles: MapUtils.MapStyles(),
-                  }}
-                  bootstrapURLKeys={{
-                    key: 'AIzaSyAzYuxD62y_TmSlgLXhfXywHrNLCsR4a40',
-                  }}
-                  defaultCenter={{
-                    lat: 59.95,
-                    lng: 30.33,
-                  }}
-                  defaultZoom={11}
-                />
-              </GoogleMapContainer>
-            </IonCol>
+            {lat && lng && (
+              <IonCol size="12">
+                <GoogleMapContainer>
+                  <GoogleMap
+                    options={{
+                      styles: MapUtils.MapStyles(),
+                      disableDefaultUI: true,
+                      scrollwheel: false,
+                      disableDoubleClickZoom: true,
+                      draggable: false,
+                      fullscreenControl: false,
+                    }}
+                    bootstrapURLKeys={{
+                      key: 'AIzaSyAzYuxD62y_TmSlgLXhfXywHrNLCsR4a40',
+                    }}
+                    defaultCenter={{
+                      lat,
+                      lng,
+                    }}
+                    defaultZoom={13}
+                    onGoogleApiLoaded={({ maps, map }) =>
+                      onGoogleMapsLoaded(maps, map)
+                    }
+                    yesIWantToUseGoogleMapApiInternals
+                  />
+                </GoogleMapContainer>
+              </IonCol>
+            )}
           </IonRow>
         </IonGrid>
       </IonContent>

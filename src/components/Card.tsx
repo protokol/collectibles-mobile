@@ -58,7 +58,7 @@ const Card: FC<{
       )}
       {details && (
         <CardAvailabilityTitle className="ion-no-padding">
-          30/500 Cards Available
+          {details}
         </CardAvailabilityTitle>
       )}
     </CardStyled>
