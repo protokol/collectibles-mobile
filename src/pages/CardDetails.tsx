@@ -24,6 +24,7 @@ import Header from '../components/Header';
 import Img from '../components/ionic/Img';
 import { addIPFSGatewayPrefix } from '../constants/images';
 import { collectionSelector } from '../store/selectors/collections';
+import { Icons } from '../utils/icons';
 import { MapUtils } from '../utils/map-utils';
 
 const IonColCards = styled(IonCol)`
@@ -57,29 +58,24 @@ const CardDetails: FC = () => {
     issuedLocation,
     issuedAddress,
     description,
+    issuedLocationLng: lng,
+    issuedLocationLat: lat,
   } = attributes as any;
 
   const onGoogleMapsLoaded = useCallback(
-    async (maps) => {
-      const geocoder = new maps.Geocoder();
-
-      geocoder.geocode(
-        { address: issuedAddress },
-        (results: any, status: string) => {
-          if (status === 'OK') {
-            const [result] = results;
-            const latLng = {
-              lat: result.geometry.location.lat(),
-              lng: result.geometry.location.lng(),
-            };
-            console.log('latLng', latLng);
-          } else {
-            console.error('Geocode failed: ' + status);
-          }
-        }
-      );
+    (maps, map) => {
+      new maps.Marker({
+        position: new maps.LatLng(lat, lng),
+        map,
+        title: issuedLocation,
+        icon: {
+          url: Icons.LOCATION_BASE_64,
+          fillColor: 'white',
+          scaledSize: new maps.Size(20, 20),
+        },
+      });
     },
-    [issuedAddress]
+    [lat, lng, issuedLocation]
   );
 
   return (
@@ -121,25 +117,34 @@ const CardDetails: FC = () => {
                 />
               </DetailCards>
             </IonColCards>
-            <IonCol size="12">
-              <GoogleMapContainer>
-                <GoogleMap
-                  options={{
-                    styles: MapUtils.MapStyles(),
-                  }}
-                  bootstrapURLKeys={{
-                    key: 'AIzaSyAzYuxD62y_TmSlgLXhfXywHrNLCsR4a40',
-                  }}
-                  defaultCenter={{
-                    lat: 52.3676,
-                    lng: 4.9041,
-                  }}
-                  defaultZoom={11}
-                  onGoogleApiLoaded={({ maps }) => onGoogleMapsLoaded(maps)}
-                  yesIWantToUseGoogleMapApiInternals
-                />
-              </GoogleMapContainer>
-            </IonCol>
+            {lat && lng && (
+              <IonCol size="12">
+                <GoogleMapContainer>
+                  <GoogleMap
+                    options={{
+                      styles: MapUtils.MapStyles(),
+                      disableDefaultUI: true,
+                      scrollwheel: false,
+                      disableDoubleClickZoom: true,
+                      draggable: false,
+                      fullscreenControl: false,
+                    }}
+                    bootstrapURLKeys={{
+                      key: 'AIzaSyAzYuxD62y_TmSlgLXhfXywHrNLCsR4a40',
+                    }}
+                    defaultCenter={{
+                      lat,
+                      lng,
+                    }}
+                    defaultZoom={13}
+                    onGoogleApiLoaded={({ maps, map }) =>
+                      onGoogleMapsLoaded(maps, map)
+                    }
+                    yesIWantToUseGoogleMapApiInternals
+                  />
+                </GoogleMapContainer>
+              </IonCol>
+            )}
           </IonRow>
         </IonGrid>
       </IonContent>

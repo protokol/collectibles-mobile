@@ -4,7 +4,7 @@ export abstract class MapUtils {
       "elementType": "geometry",
       "stylers": [
         {
-          "color": "#212121"
+          "color": "#262732"
         }
       ]
     },
@@ -36,7 +36,7 @@ export abstract class MapUtils {
       "elementType": "labels.text.stroke",
       "stylers": [
         {
-          "color": "#212121"
+          "color": "#262732"
         }
       ]
     },
@@ -45,7 +45,7 @@ export abstract class MapUtils {
       "elementType": "geometry",
       "stylers": [
         {
-          "color": "#757575"
+          "color": "#262732"
         }
       ]
     },
@@ -105,7 +105,7 @@ export abstract class MapUtils {
       "elementType": "geometry",
       "stylers": [
         {
-          "color": "#181818"
+          "color": "#262732"
         }
       ]
     },
@@ -141,7 +141,7 @@ export abstract class MapUtils {
       "elementType": "geometry.fill",
       "stylers": [
         {
-          "color": "#2c2c2c"
+          "color": "#51525B"
         }
       ]
     },
@@ -159,7 +159,7 @@ export abstract class MapUtils {
       "elementType": "geometry",
       "stylers": [
         {
-          "color": "#373737"
+          "color": "#51525B"
         }
       ]
     },
@@ -177,7 +177,7 @@ export abstract class MapUtils {
       "elementType": "geometry",
       "stylers": [
         {
-          "color": "#3c3c3c"
+          "color": "#51525B"
         }
       ]
     },
@@ -195,7 +195,7 @@ export abstract class MapUtils {
       "elementType": "geometry",
       "stylers": [
         {
-          "color": "#4e4e4e"
+          "color": "#51525B"
         }
       ]
     },
