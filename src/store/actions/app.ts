@@ -4,6 +4,7 @@ import { Action } from 'redux';
 enum AppActions {
   SET_BASE_URL = '@App/SET_BASE_URL',
   SET_ENCODED_USER_PRIVATE_KEY = '@App/SET_ENCODED_USER_PRIVATE_KEY',
+  SET_USERNAME = '@App/SET_USERNAME',
 }
 
 export interface SetBaseUrlAppActionType
@@ -17,6 +18,13 @@ export interface SetEncodedUserPrivateKeyActionType
   extends Action<AppActions.SET_ENCODED_USER_PRIVATE_KEY> {
   payload: {
     userPrivateKey: string | null;
+    saveToStorage?: boolean;
+  };
+}
+
+export interface SetUsernameActionType extends Action<AppActions.SET_USERNAME> {
+  payload: {
+    username: string | null;
     saveToStorage?: boolean;
   };
 }
@@ -40,7 +48,24 @@ const SetEncodedUserPrivateKeyAction = (
   },
 });
 
-export type APP_ACTION_TYPES = SetBaseUrlAppActionType &
-  SetEncodedUserPrivateKeyActionType;
+const SetUsernameAction = (
+  username: string | null,
+  saveToStorage = true
+): SetUsernameActionType => ({
+  type: AppActions.SET_USERNAME,
+  payload: {
+    username,
+    saveToStorage,
+  },
+});
 
-export { AppActions, SetBaseUrlAppAction, SetEncodedUserPrivateKeyAction };
+export type APP_ACTION_TYPES = SetBaseUrlAppActionType &
+  SetEncodedUserPrivateKeyActionType &
+  SetUsernameActionType;
+
+export {
+  AppActions,
+  SetBaseUrlAppAction,
+  SetEncodedUserPrivateKeyAction,
+  SetUsernameAction,
+};

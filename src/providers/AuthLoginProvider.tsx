@@ -9,7 +9,10 @@ import {
 import { shallowEqual, useSelector } from 'react-redux';
 import { NodeCryptoConfiguration } from '@arkecosystem/client/dist/resourcesTypes/node';
 import { StorageKeys } from '../constants/storage';
-import { encodedUserPrivateKeySelector } from '../store/selectors/app';
+import {
+  encodedUserPrivateKeySelector,
+  usernameSelector,
+} from '../store/selectors/app';
 import { nodeCryptoConfigurationSelector } from '../store/selectors/network';
 import { ArkCrypto } from '../store/services/crypto';
 import { Encryption } from '../utils/encryption';
@@ -30,6 +33,7 @@ interface AuthLoginProviderState {
     address?: string;
     passphrase?: string;
     publicKey?: string;
+    username?: string | null;
   };
 }
 
@@ -64,6 +68,7 @@ const AuthLoginContextProvider: FC = ({ children }) => {
     nodeCryptoConfigurationSelector,
     shallowEqual
   );
+  const username = useSelector(usernameSelector, shallowEqual);
 
   useEffect(() => {
     if (encodedPrivateKey === null) {
@@ -80,7 +85,8 @@ const AuthLoginContextProvider: FC = ({ children }) => {
     (
       encodedPin: string,
       encodedPassphrase: string,
-      nodeConfig: NodeCryptoConfiguration
+      nodeConfig: NodeCryptoConfiguration,
+      username: string | null
     ) => {
       try {
         const decoded = Encryption.decode(encodedPassphrase, encodedPin);
@@ -103,6 +109,7 @@ const AuthLoginContextProvider: FC = ({ children }) => {
             address,
             passphrase,
             publicKey,
+            username,
           },
         });
       } catch (error) {
@@ -115,14 +122,14 @@ const AuthLoginContextProvider: FC = ({ children }) => {
           },
         });
       } finally {
-        session.removeItem(StorageKeys.STORAGE_PIN_KEY);
+        session.removeItem(StorageKeys.PIN);
       }
     },
     []
   );
 
   useEffect(() => {
-    const encodedPin = session.get<string>(StorageKeys.STORAGE_PIN_KEY);
+    const encodedPin = session.get<string>(StorageKeys.PIN);
 
     if (!encodedPin && encodedPrivateKey && nodeCryptoConfiguration) {
       setState({
@@ -135,15 +142,21 @@ const AuthLoginContextProvider: FC = ({ children }) => {
   }, [encodedPrivateKey, nodeCryptoConfiguration]);
 
   useEffect(() => {
-    const encodedPin = session.get<string>(StorageKeys.STORAGE_PIN_KEY);
+    const encodedPin = session.get<string>(StorageKeys.PIN);
 
     if (encodedPin && encodedPrivateKey && nodeCryptoConfiguration) {
-      unlock(encodedPin, encodedPrivateKey, nodeCryptoConfiguration);
+      unlock(encodedPin, encodedPrivateKey, nodeCryptoConfiguration, username);
     }
-  }, [encodedPrivateKey, nodeCryptoConfiguration, unlock, state.session]);
+  }, [
+    encodedPrivateKey,
+    nodeCryptoConfiguration,
+    unlock,
+    state.session,
+    username,
+  ]);
 
   const setPin = useCallback((pin: string) => {
-    session.set(StorageKeys.STORAGE_PIN_KEY, Encryption.hash(pin));
+    session.set(StorageKeys.PIN, Encryption.hash(pin));
 
     setState({
       ...authLoginProviderInitialState,

@@ -4,11 +4,13 @@ import { APP_ACTION_TYPES, AppActions } from '../actions/app';
 export interface AppState {
   baseUrl?: string;
   userPrivateKey?: string | null;
+  username: string | null;
 }
 
 const initialState: AppState = {
   baseUrl: undefined,
   userPrivateKey: undefined,
+  username: null,
 };
 
 const reducer: Reducer<AppState, APP_ACTION_TYPES> = (
@@ -25,6 +27,16 @@ const reducer: Reducer<AppState, APP_ACTION_TYPES> = (
       return {
         ...state,
         baseUrl,
+      };
+    }
+    case AppActions.SET_USERNAME: {
+      const {
+        payload: { username },
+      } = action;
+
+      return {
+        ...state,
+        username,
       };
     }
     case AppActions.SET_ENCODED_USER_PRIVATE_KEY: {

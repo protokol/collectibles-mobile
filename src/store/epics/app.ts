@@ -14,8 +14,13 @@ import {
   AppActions,
   SetEncodedUserPrivateKeyAction,
   SetEncodedUserPrivateKeyActionType,
+  SetUsernameAction,
+  SetUsernameActionType,
 } from '../actions/app';
-import { encodedUserPrivateKeySelector } from '../selectors/app';
+import {
+  encodedUserPrivateKeySelector,
+  usernameSelector,
+} from '../selectors/app';
 import { RootEpic } from '../types';
 
 const persistUserPrivateKeyInStorageEpic: RootEpic = (
@@ -33,7 +38,7 @@ const persistUserPrivateKeyInStorageEpic: RootEpic = (
         saveToStorage,
       } = payload as SetEncodedUserPrivateKeyActionType['payload'];
       if (saveToStorage) {
-        storage.set(StorageKeys.STORAGE_PK_KEY, encodedUserPrivateKey);
+        storage.set(StorageKeys.PRIVATE_KEY, encodedUserPrivateKey);
       }
     }),
     ignoreElements()
@@ -47,7 +52,7 @@ const restoreUserPrivateKeyFromStorageEpic: RootEpic = (
   action$.pipe(
     first(),
     switchMap(() => {
-      const userPrivateKey = storage.get<string>(StorageKeys.STORAGE_PK_KEY);
+      const userPrivateKey = storage.get<string>(StorageKeys.PRIVATE_KEY);
       if (userPrivateKey) {
         return of(SetEncodedUserPrivateKeyAction(userPrivateKey, false));
       }
@@ -55,9 +60,36 @@ const restoreUserPrivateKeyFromStorageEpic: RootEpic = (
     })
   );
 
+const persistUsernameInStorageEpic: RootEpic = (action$, state$, { storage }) =>
+  action$.pipe(
+    ofType(AppActions.SET_USERNAME),
+    withLatestFrom(state$.pipe(map(usernameSelector), distinctUntilChanged())),
+    tap(([{ payload }, username]) => {
+      const { saveToStorage } = payload as SetUsernameActionType['payload'];
+      if (saveToStorage) {
+        storage.set(StorageKeys.USERNAME, username);
+      }
+    }),
+    ignoreElements()
+  );
+
+const restoreUsernameFromStorageEpic: RootEpic = (action$, _, { storage }) =>
+  action$.pipe(
+    first(),
+    switchMap(() => {
+      const username = storage.get<string>(StorageKeys.USERNAME);
+      if (username) {
+        return of(SetUsernameAction(username, false));
+      }
+      return of(SetUsernameAction(null, false));
+    })
+  );
+
 const epics = [
   persistUserPrivateKeyInStorageEpic,
   restoreUserPrivateKeyFromStorageEpic,
+  persistUsernameInStorageEpic,
+  restoreUsernameFromStorageEpic,
 ];
 
 export default epics;
