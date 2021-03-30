@@ -12,6 +12,7 @@ import CollectCardPage from './pages/CollectCardPage';
 import HomePage from './pages/HomePage';
 import PasscodePage from './pages/PasscodePage';
 import PassphrasePage from './pages/PassphrasePage';
+import ProfilePage from './pages/ProfilePage';
 import QrCodeGeneratorPage from './pages/QrCodeGeneratorPage';
 import ScanQRPage from './pages/ScanQRPage';
 import UsernamePage from './pages/UsernamePage';
@@ -73,6 +74,11 @@ const App: FC = () => {
 
               <IonRouterOutlet>
                 <ProtectedRoute path="/home" component={HomePage} exact />
+                <ProtectedRoute
+                  path="/home/profile"
+                  component={ProfilePage}
+                  exact
+                />
                 <ProtectedRoute
                   requiresCordova={true}
                   path="/home/scan-qr"

@@ -15,8 +15,20 @@ const DetailCardStyled = styled(IonCol)`
   padding: 0.25rem;
 `;
 
-const DetailsCardInner = styled.div<{ isDescription?: boolean }>`
-  background: var(--app-color-charade);
+const DetailsCardInner = styled.div<{
+  isDescription?: boolean;
+  isGrayBg?: boolean;
+  isBlueBg?: boolean;
+}>`
+  ${({ isGrayBg, isBlueBg }) => {
+    if (isGrayBg) {
+      return 'background: var(--app-color-gray);';
+    } else if (isBlueBg) {
+      return 'background: var(--app-color-blue-bg);';
+    } else {
+      return 'background: var(--app-color-charade);';
+    }
+  }}
 
   display: flex;
   flex-direction: column;
@@ -32,11 +44,14 @@ const DetailsCardInner = styled.div<{ isDescription?: boolean }>`
       return 'padding: 1.65rem 1.15rem;';
     }
 
-    return 'padding: 2.25rem 0.55rem;';
+    return 'padding: 2.7rem 0.55rem;';
   }}
 `;
 
-const DetailsIconCardInner = styled.div`
+const DetailsIconCardInner = styled.div<{
+  isGrayBg?: boolean;
+  isBlueBg?: boolean;
+}>`
   background: var(--app-color-charade);
 
   display: flex;
@@ -67,11 +82,27 @@ const DetailCard: FC<
     title?: string;
     subtitle?: string;
     description?: string;
+    isGrayBg?: boolean;
+    isBlueBg?: boolean;
+    onClick?: () => void;
   }
-> = ({ title, subtitle, description, ...props }) => {
+> = ({
+  title,
+  subtitle,
+  description,
+  isGrayBg,
+  isBlueBg,
+  onClick,
+  ...props
+}) => {
   return (
     <DetailCardStyled {...props}>
-      <DetailsCardInner isDescription={!!description}>
+      <DetailsCardInner
+        isGrayBg={isGrayBg}
+        isBlueBg={isBlueBg}
+        isDescription={!!description}
+        onClick={onClick}
+      >
         {subtitle && (
           <Text
             fontSize={FontSize.SM}
@@ -146,4 +177,11 @@ const DetailCards: FC = ({ children }) => {
   );
 };
 
-export { DetailCards, DetailIconCard, DetailCard };
+export {
+  DetailCards,
+  DetailIconCard,
+  DetailCard,
+  DetailCardsStyled,
+  DetailCardStyled,
+  DetailsCardInner,
+};

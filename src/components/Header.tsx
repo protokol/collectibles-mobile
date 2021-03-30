@@ -149,7 +149,11 @@ const Header: FC<{
         <MenuContentToolbar>
           <IonList color="none" class="app-bg-color-transparent">
             <MenuItem icon={homeOutline} label="Home" navigateTo="/home" />
-            <MenuItem icon={personOutline} label="My Profile" />
+            <MenuItem
+              icon={personOutline}
+              label="My Profile"
+              navigateTo="/home/profile"
+            />
           </IonList>
         </MenuContentToolbar>
       </Menu>
