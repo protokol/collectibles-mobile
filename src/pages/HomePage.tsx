@@ -1,6 +1,7 @@
 import { FC, useContext } from 'react';
 import { useHistory } from 'react-router';
 import styled from 'styled-components';
+import { JSX } from '@ionic/core';
 import { IonCol, IonContent, IonGrid, IonPage, IonRow } from '@ionic/react';
 import Header from '../components/Header';
 import HomeCollections from '../components/HomeCollections';
@@ -58,7 +59,7 @@ const ImageBgCol = styled(IonCol)`
   }
 `;
 
-const StartCollectionButton = styled(Button)`
+const StartCollectionButton = styled(Button)<JSX.IonButton>`
   text-decoration: underline;
 `;
 
@@ -90,108 +91,72 @@ const ActionButton = styled(Button)`
   }
 `;
 
-const HomeContent: FC = ({ children }) => {
-  const [activeIndex] = useContext(TabsState);
-
-  return (
-    <Content fullscreen id="home-content" isDarkBg={activeIndex <= 0}>
-      {children}
-    </Content>
-  );
-};
-
-const HomePage: FC = () => {
+const HomeContent: FC = () => {
   const history = useHistory();
+  const [activeIndex, setActiveIndex] = useContext(TabsState);
 
   return (
-    <IonPage>
-      <TabsContextProvider>
-        <Header>
-          <Tabs>
-            <Tab>
-              <TabTitle
-                className="ion-text-uppercase ion-text-center"
-                fontSize={FontSize.XS}
+    <Content id="main-content" fullscreen isDarkBg={activeIndex <= 0}>
+      <Panel>
+        <IonGrid className="ion-no-padding">
+          <IonRow>
+            <ImageBgCol size="12">
+              <Label
                 color="light"
+                fontSize={FontSize.L}
+                fontWeight={FontWeight.BOLD}
               >
-                Home
-              </TabTitle>
-            </Tab>
-            <Tab>
-              <TabTitle
-                className="ion-text-uppercase ion-text-center"
-                fontSize={FontSize.XS}
+                Collecting Digital Hero Cards Is Easy!
+              </Label>
+              <br />
+              <Text
+                className="ion-margin-vertical"
                 color="light"
+                fontSize={FontSize.XS}
               >
-                Collectables
-              </TabTitle>
-            </Tab>
-          </Tabs>
-        </Header>
-
-        <HomeContent>
-          <Panel>
-            <IonGrid className="ion-no-padding">
-              <IonRow>
-                <ImageBgCol size="12">
-                  <Label
-                    color="light"
-                    fontSize={FontSize.L}
-                    fontWeight={FontWeight.BOLD}
-                  >
-                    Collecting Digital Hero Cards Is Easy!
-                  </Label>
-                  <br />
-                  <Text
-                    className="ion-margin-vertical"
-                    color="light"
-                    fontSize={FontSize.XS}
-                  >
-                    Now you can find your favourite cards via the official
-                    NASCAR app, and digitally collect them! You can also scan QR
-                    codes at races, or buy cards at the market place.
-                  </Text>
-                  <br />
-                  <StartCollectionButton
-                    className="ion-float-right"
-                    color="light"
-                    fill="clear"
-                    fontSize={FontSize.SM}
-                    fontWeight={FontWeight.BOLD}
-                  >
-                    Start collecting
-                  </StartCollectionButton>
-                </ImageBgCol>
-                <BannerCol>
-                  <BannerText
-                    fontSize={FontSize.L}
-                    fontWeight={FontWeight.BOLD}
-                  >
-                    Gentlemen,
-                    <br />
-                    start your engines…
-                  </BannerText>
-                </BannerCol>
-                <IonCol size="12">
-                  <ActionButton
-                    expand="block"
-                    className="ion-text-uppercase ion-no-margin bg-gray"
-                    fontSize={FontSize.SM}
-                    fontWeight={FontWeight.BOLD}
-                    onClick={() => history.push('/home/scan-qr')}
-                  >
-                    Add new card
-                  </ActionButton>
-                  <ActionButton
-                    expand="block"
-                    className="ion-text-uppercase ion-no-margin bg-dark-blue-magenta"
-                    fontSize={FontSize.SM}
-                    fontWeight={FontWeight.BOLD}
-                    onClick={() => history.push('/home/scan-qr')}
-                  >
-                    Scan qr code
-                  </ActionButton>
-                  {/*<ActionButton
+                Now you can find your favourite cards via the official NASCAR
+                app, and digitally collect them! You can also scan QR codes at
+                races, or buy cards at the market place.
+              </Text>
+              <br />
+              <StartCollectionButton
+                className="ion-float-right"
+                color="light"
+                fill="clear"
+                fontSize={FontSize.SM}
+                fontWeight={FontWeight.BOLD}
+                onClick={() => setActiveIndex(1)}
+              >
+                Start collecting
+              </StartCollectionButton>
+            </ImageBgCol>
+            <BannerCol>
+              <BannerText fontSize={FontSize.L} fontWeight={FontWeight.BOLD}>
+                Gentlemen,
+                <br />
+                start your engines…
+              </BannerText>
+            </BannerCol>
+            <IonCol size="12">
+              <ActionButton
+                expand="block"
+                className="ion-text-uppercase ion-no-margin bg-gray"
+                fontSize={FontSize.SM}
+                fontWeight={FontWeight.BOLD}
+                onClick={() => history.push('/home/scan-qr')}
+              >
+                Add new card
+              </ActionButton>
+              <ActionButton
+                expand="block"
+                className="ion-text-uppercase ion-no-margin bg-dark-blue-magenta"
+                fontSize={FontSize.SM}
+                fontWeight={FontWeight.BOLD}
+                onClick={() => history.push('/home/scan-qr')}
+              >
+                Scan qr code
+              </ActionButton>
+              {/*<ActionButton
                     expand="block"
                     className="ion-text-uppercase ion-no-margin bg-charade"
                     fontSize={FontSize.SM}
@@ -223,15 +188,46 @@ const HomePage: FC = () => {
                   >
                     Start an auction
                   </ActionButton>*/}
-                </IonCol>
-              </IonRow>
-            </IonGrid>
-          </Panel>
+            </IonCol>
+          </IonRow>
+        </IonGrid>
+      </Panel>
 
-          <Panel>
-            <HomeCollections />
-          </Panel>
-        </HomeContent>
+      <Panel>
+        <HomeCollections />
+      </Panel>
+    </Content>
+  );
+};
+
+const HomePage: FC = () => {
+  return (
+    <IonPage>
+      <TabsContextProvider>
+        <Header>
+          <Tabs>
+            <Tab>
+              <TabTitle
+                className="ion-text-uppercase ion-text-center"
+                fontSize={FontSize.XS}
+                color="light"
+              >
+                Home
+              </TabTitle>
+            </Tab>
+            <Tab>
+              <TabTitle
+                className="ion-text-uppercase ion-text-center"
+                fontSize={FontSize.XS}
+                color="light"
+              >
+                Collectables
+              </TabTitle>
+            </Tab>
+          </Tabs>
+        </Header>
+
+        <HomeContent />
       </TabsContextProvider>
     </IonPage>
   );

@@ -1,6 +1,9 @@
 import { createContext, FC, useCallback, useContext, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { SetEncodedUserPrivateKeyAction } from '../store/actions/app';
+import {
+  SetEncodedUserPrivateKeyAction,
+  SetUsernameAction,
+} from '../store/actions/app';
 import { NamespaceRegisterAction } from '../store/actions/namespace';
 import { CryptoUtils } from '../utils/crypto-utils';
 import { Encryption } from '../utils/encryption';
@@ -66,6 +69,7 @@ const AuthRegisterContextProvider: FC = ({ children }) => {
       const encoded = Encryption.encode(passphraseJson, Encryption.hash(pin));
 
       dispatch(SetEncodedUserPrivateKeyAction(encoded));
+      dispatch(SetUsernameAction(state.username!, true));
       authLoginSetPin(pin);
 
       // TODO: Username registration will fail because new wallets have no balance

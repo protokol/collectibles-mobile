@@ -56,9 +56,9 @@ const ScanQRPage: FC = () => {
 
   return (
     <IonPage>
-      <Header title="Collect Cards" contentId="collect-card-content" />
+      <Header title="Collect Cards" />
 
-      <Content fullscreen id="collect-card-content" />
+      <Content fullscreen id="main-content" />
     </IonPage>
   );
 };

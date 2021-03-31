@@ -1,8 +1,6 @@
-import { of, merge } from 'rxjs';
 import { map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 import { StorageKeys } from '../../constants/storage';
 import { CryptoUtils } from '../../utils/crypto-utils';
-import { SetUsernameAction } from '../actions/app';
 import {
   NamespaceActions,
   NamespaceRegisterActionType,
@@ -26,7 +24,7 @@ const namespaceRegisterEpic: RootEpic = (action$, state$, { storage }) =>
         ArkCrypto.Identities.PublicKey.fromPassphrase(passphrase)
       ).pipe(
         tap(() => storage.set(StorageKeys.USERNAME, name)),
-        switchMap((wallet) => {
+        map((wallet) => {
           const transaction = new NameserviceCrypto.Builders.NameserviceBuilder()
             .Nameservice({
               name,
@@ -34,14 +32,9 @@ const namespaceRegisterEpic: RootEpic = (action$, state$, { storage }) =>
             .nonce(CryptoUtils.getWalletNextNonce(wallet))
             .sign(passphrase);
 
-          return merge(
-            of(
-              TransactionSubmitAction(txUuid, {
-                transactions: [transaction.getStruct()],
-              })
-            ),
-            of(SetUsernameAction(name, true))
-          );
+          return TransactionSubmitAction(txUuid, {
+            transactions: [transaction.getStruct()],
+          });
         })
       );
     })

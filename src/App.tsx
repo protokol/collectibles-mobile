@@ -5,6 +5,7 @@ import { Plugins } from '@capacitor/core';
 import { ScreenOrientation } from '@ionic-native/screen-orientation';
 import { IonApp, IonRouterOutlet, isPlatform } from '@ionic/react';
 import { IonReactHashRouter } from '@ionic/react-router';
+import MainMenu from './components/MainMenu';
 import ProtectedRoute from './components/ProtectedRoute';
 import useIsMounted from './hooks/use-is-mounted';
 import CardDetails from './pages/CardDetails';
@@ -49,6 +50,7 @@ const App: FC = () => {
       <AuthLoginContextProvider>
         <AuthRegisterContextProvider>
           <IonReactHashRouter>
+            <MainMenu />
             <Switch>
               <Route path="/qr/:id" component={QrCodeGeneratorPage} exact />
               <Route path="/welcome" component={WelcomePage} exact />

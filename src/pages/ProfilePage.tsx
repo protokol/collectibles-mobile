@@ -62,9 +62,9 @@ const ProfilePage: FC = () => {
 
   return (
     <IonPage>
-      <Header title="My profile" contentId="profile-content" />
+      <Header title="My profile" />
 
-      <IonContent fullscreen id="profile-content">
+      <IonContent fullscreen id="main-content">
         <IonGrid>
           <IonRow>
             {!isLoading && isError && (
