@@ -35,11 +35,6 @@ const Content = styled(IonContent)`
   }
 `;
 
-const FormBackground = styled.div`
-  border-radius: 0.25rem;
-  background-color: var(--app-color-gray);
-`;
-
 interface PassphraseForm extends FieldValues {
   passphrase: string;
 }
@@ -89,30 +84,24 @@ const PassphrasePage: FC = () => {
               </Text>
             </IonCol>
             <IonCol size="12" className="ion-padding">
-              <FormBackground className="ion-padding">
-                <form onSubmit={handleSubmit(submitForm)}>
-                  <Controller
-                    render={({ onChange }) => (
-                      <IonRow>
-                        <Passphrase onChange={onChange} />
-                      </IonRow>
-                    )}
-                    control={control}
-                    name="passphrase"
-                    rules={{
-                      required: 'Passphrase is required!',
-                      pattern: {
-                        value: /^(\w+\s){11}(\w+)$/,
-                        message:
-                          'Passphrase should be 12 words long. Fill out remaining fields!',
-                      },
-                      validate: (value) =>
-                        CryptoUtils.isValidPassphrase(value) ||
-                        'Invalid passphrase!',
-                    }}
-                  />
-                </form>
-              </FormBackground>
+              <form onSubmit={handleSubmit(submitForm)}>
+                <Controller
+                  render={({ onChange }) => <Passphrase onChange={onChange} />}
+                  control={control}
+                  name="passphrase"
+                  rules={{
+                    required: 'Passphrase is required!',
+                    pattern: {
+                      value: /^(\w+\s){11}(\w+)$/,
+                      message:
+                        'Passphrase should be 12 words long. Fill out remaining fields!',
+                    },
+                    validate: (value) =>
+                      CryptoUtils.isValidPassphrase(value) ||
+                      'Invalid passphrase!',
+                  }}
+                />
+              </form>
             </IonCol>
             <IonCol size="12" className="ion-padding-horizontal">
               <FormInputError errors={errors} name="passphrase" />
