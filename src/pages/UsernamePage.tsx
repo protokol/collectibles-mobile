@@ -4,6 +4,7 @@ import { useHistory } from 'react-router';
 import styled from 'styled-components';
 import { InputChangeEventDetail } from '@ionic/core';
 import { IonCol, IonContent, IonGrid, IonPage, IonRow } from '@ionic/react';
+import BackButton from '../components/BackButton';
 import Button from '../components/ionic/Button';
 import FormInputError from '../components/ionic/ErrorMessage';
 import Input from '../components/ionic/Input';
@@ -59,6 +60,7 @@ const UsernamePage: FC = () => {
   return (
     <IonPage>
       <Content fullscreen>
+        <BackButton />
         <IonGrid className="ion-no-padding">
           <IonRow>
             <IonCol size="12">
