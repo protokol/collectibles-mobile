@@ -3,6 +3,7 @@ import { Controller, FieldValues, useForm } from 'react-hook-form';
 import { useHistory } from 'react-router';
 import styled from 'styled-components';
 import { IonCol, IonContent, IonGrid, IonPage, IonRow } from '@ionic/react';
+import BackButton from '../components/BackButton';
 import Keypad from '../components/Keypad';
 import FormInputError from '../components/ionic/ErrorMessage';
 import Input from '../components/ionic/Input';
@@ -167,6 +168,7 @@ const PasscodePage: FC<{
   return (
     <IonPage>
       <Content fullscreen>
+        {withConfirm && <BackButton />}
         <IonGrid className="ion-no-padding">
           <IonRow>
             <IonCol size="12">
