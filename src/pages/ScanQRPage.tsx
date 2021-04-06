@@ -1,9 +1,10 @@
+import { arrowBackOutline } from 'ionicons/icons';
 import { FC, useEffect } from 'react';
 import { useHistory } from 'react-router';
 import { Subscription } from 'rxjs';
 import styled from 'styled-components';
 import { QRScanner, QRScannerStatus } from '@ionic-native/qr-scanner';
-import { IonPage, IonContent } from '@ionic/react';
+import { IonPage, IonContent, IonButton, IonIcon } from '@ionic/react';
 import Header from '../components/Header';
 
 declare const window: any;
@@ -56,7 +57,14 @@ const ScanQRPage: FC = () => {
 
   return (
     <IonPage>
-      <Header title="Collect Cards" />
+      <Header
+        title="Collect Cards"
+        buttonTopLeft={
+          <IonButton onClick={() => history.replace('/home')}>
+            <IonIcon color="light" slot="icon-only" icon={arrowBackOutline} />
+          </IonButton>
+        }
+      />
 
       <Content fullscreen id="main-content" />
     </IonPage>
