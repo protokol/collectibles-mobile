@@ -16,6 +16,7 @@ import Button from '../components/ionic/Button';
 import { FontSize } from '../constants/font-size';
 import { FontWeight } from '../constants/font-weight';
 import useIsMounted from '../hooks/use-is-mounted';
+import useMediaQuery from '../hooks/use-media-query';
 import { AuthLoginContext } from '../providers/AuthLoginProvider';
 import { CollectionsLoadAction } from '../store/actions/collections';
 import { collectionSelector } from '../store/selectors/collections';
@@ -45,6 +46,8 @@ const CollectablesIonRow = styled(IonRow)`
 
 const HomeCollections: FC = () => {
   const history = useHistory();
+  const isMedium = useMediaQuery('(min-height: 992px)');
+  const isLarge = useMediaQuery('(min-height: 1200px)');
   const { isError, error, isLoading, assets, isLastPage, query } = useSelector(
     collectionSelector,
     shallowEqual
@@ -86,6 +89,16 @@ const HomeCollections: FC = () => {
     [loadNextPage, isLastPage, isLoading]
   );
 
+  const cardColSize = useCallback(() => {
+    if (isLarge) {
+      return 3;
+    }
+    if (isMedium) {
+      return 4;
+    }
+    return 6;
+  }, [isMedium, isLarge]);
+
   return (
     <>
       <IonGrid className="ion-no-padding">
@@ -123,7 +136,7 @@ const HomeCollections: FC = () => {
                     : CardTagType.None;
 
                 return (
-                  <CardContainer key={id} size="6">
+                  <CardContainer key={id} size={cardColSize().toString()}>
                     <Card
                       id={id}
                       title={title}

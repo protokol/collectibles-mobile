@@ -1,5 +1,6 @@
 import { FC } from 'react';
 import styled from 'styled-components';
+import { FontSize } from '../constants/font-size';
 import Text from './ionic/Text';
 
 const CardTagStyled = styled.div`
@@ -13,7 +14,15 @@ const CardTagText = styled(Text)`
   position: absolute;
   top: 15%;
   right: 29%;
-  font-size: 0.625rem;
+  font-size: ${FontSize.XS};
+
+  @media only screen and (min-width: 992px) {
+    font-size: ${FontSize.M};
+  }
+
+  @media only screen and (min-width: 1200px) {
+    font-size: ${FontSize.L};
+  }
 `;
 
 export enum CardTagType {

@@ -1,5 +1,6 @@
 const welcomeImagePath1x = '/assets/images/welcome-screen.png';
 const welcomeImagePath2x = '/assets/images/welcome-screen@2x.png';
+const welcomeImagePath3x = '/assets/images/welcome-screen@3x.png';
 
 const driverImage1x = '/assets/images/driver.png';
 const driverImage2x = '/assets/images/driver@2x.png';
@@ -20,7 +21,7 @@ const addIPFSGatewayPrefix = (ipfsHash: string) =>
 const welcomeImage = {
   alt: 'Welcome',
   src: `${addGHPagesPrefix()}${welcomeImagePath1x}`,
-  srcSet: `${addGHPagesPrefix()}${welcomeImagePath1x} 1x, ${addGHPagesPrefix()}${welcomeImagePath2x} 2x`,
+  srcSet: `${addGHPagesPrefix()}${welcomeImagePath1x} 1x, ${addGHPagesPrefix()}${welcomeImagePath2x} 2x, ${addGHPagesPrefix()}${welcomeImagePath3x} 3x`,
 };
 
 const driverImage = {
