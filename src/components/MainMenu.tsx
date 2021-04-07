@@ -1,7 +1,13 @@
-import { arrowBackOutline, homeOutline, personOutline } from 'ionicons/icons';
+import {
+  arrowBackOutline,
+  homeOutline,
+  lockOpenOutline,
+  personOutline,
+} from 'ionicons/icons';
 import { FC, useCallback, useContext, useRef } from 'react';
 import { useHistory } from 'react-router';
 import styled from 'styled-components';
+import { Plugins } from '@capacitor/core';
 import {
   IonButton,
   IonButtons,
@@ -12,13 +18,17 @@ import {
   IonList,
   IonMenu,
   IonToolbar,
+  isPlatform,
 } from '@ionic/react';
+import { APP_PRIVACY_URL } from '../constants/external-links';
 import { FontSize } from '../constants/font-size';
 import {
   AuthLoginContext,
   AuthLoginState,
 } from '../providers/AuthLoginProvider';
 import Label from './ionic/Label';
+
+const { Browser } = Plugins;
 
 const Menu = styled(IonMenu)`
   --background: var(--app-color-dark-cyan-blue);
@@ -60,7 +70,8 @@ const MenuItem: FC<{
   label: string;
   navigateTo?: string;
   onMenuClose: () => void;
-}> = ({ icon, label, navigateTo, onMenuClose }) => {
+  onNavigate?: () => void;
+}> = ({ icon, label, navigateTo, onMenuClose, onNavigate }) => {
   const history = useHistory();
 
   const onNavigateClick = useCallback(
@@ -80,6 +91,9 @@ const MenuItem: FC<{
         onClick={() => {
           if (navigateTo) {
             onNavigateClick(navigateTo);
+            onMenuClose();
+          } else if (onNavigate) {
+            onNavigate();
             onMenuClose();
           }
         }}
@@ -111,6 +125,14 @@ const MainMenu: FC = () => {
     },
     [homeMenuRef]
   );
+
+  const onNavigateToPrivacyPage = useCallback(() => {
+    if (isPlatform('capacitor')) {
+      Browser.open({ url: APP_PRIVACY_URL });
+    } else {
+      window.open(APP_PRIVACY_URL, '_blank');
+    }
+  }, []);
 
   if (state !== AuthLoginState.LoggedIn) {
     return <></>;
@@ -146,6 +168,12 @@ const MainMenu: FC = () => {
             icon={personOutline}
             label="My Profile"
             navigateTo="/home/profile"
+            onMenuClose={onMenuClose}
+          />
+          <MenuItem
+            icon={lockOpenOutline}
+            label="Privacy"
+            onNavigate={() => onNavigateToPrivacyPage()}
             onMenuClose={onMenuClose}
           />
         </IonList>

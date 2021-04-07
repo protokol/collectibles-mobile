@@ -35,7 +35,9 @@ interface UsernameForm extends FieldValues {
   username: string;
 }
 
-const UsernamePage: FC = () => {
+const UsernamePage: FC<{
+  navigateTo: string;
+}> = ({ navigateTo }) => {
   const history = useHistory();
   const { setUsername } = useContext(AuthRegisterContext);
 
@@ -52,9 +54,9 @@ const UsernamePage: FC = () => {
         return;
       }
       setUsername(username);
-      history.push('/register/passcode');
+      history.push(navigateTo);
     },
-    [formState.isValid, setUsername, history]
+    [formState.isValid, setUsername, history, navigateTo]
   );
 
   return (

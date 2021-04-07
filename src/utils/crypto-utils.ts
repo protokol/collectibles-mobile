@@ -23,15 +23,15 @@ export abstract class CryptoUtils {
       : ArkCrypto.Utils.BigNumber.ONE.toFixed();
   }
 
-  static suggestWords(word: string): string[] {
-    if(!word && word.length === 0) {
+  static suggestWords(partialWord: string): string[] {
+    const word = partialWord.toLowerCase();
+    if (!word && word.length === 0) {
       return [];
     }
 
     const dictionary = bip39.wordlists[CryptoUtils.WORDLIST_DEFAULT_LANGUAGE];
-    return dictionary.filter(
-      (w) =>
-        w.startsWith(word) && w !== word
-    ).slice(0, 12);
+    return dictionary
+      .filter((w) => w.startsWith(word) && w !== word)
+      .slice(0, 12);
   }
 }

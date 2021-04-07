@@ -97,7 +97,7 @@ const WelcomePage: FC = () => {
                 className="ion-text-uppercase ion-margin"
                 fontSize={FontSize.SM}
                 fontWeight={FontWeight.BOLD}
-                routerLink="/login/passphrase"
+                routerLink="/login/username"
               >
                 Existing user
               </Button>

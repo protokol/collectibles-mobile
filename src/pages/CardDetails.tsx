@@ -1,7 +1,7 @@
 import { format } from 'date-fns';
 import GoogleMap from 'google-map-react';
 import { arrowBackOutline, locationOutline } from 'ionicons/icons';
-import { FC, useCallback, useMemo } from 'react';
+import { FC, useMemo } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router';
 import styled from 'styled-components';
@@ -13,6 +13,7 @@ import {
   IonRow,
   IonIcon,
   IonButton,
+  IonSpinner,
 } from '@ionic/react';
 import { BaseResourcesTypes } from '@protokol/client';
 import {
@@ -42,13 +43,19 @@ const CardDetails: FC = () => {
   const { assetId } = useParams<{ assetId: string }>();
   const history = useHistory();
   const { assets } = useSelector(collectionSelector, shallowEqual);
-  const {
-    attributes,
-    timestamp: { unix },
-  } = useMemo(() => assets.flat().find(({ id }) => id === assetId), [
+  const asset = useMemo(() => assets.flat().find(({ id }) => id === assetId), [
     assets,
     assetId,
   ]) as BaseResourcesTypes.Assets;
+
+  if (!asset) {
+    return <IonSpinner color="light" />;
+  }
+
+  const {
+    attributes,
+    timestamp: { unix },
+  } = asset;
 
   const {
     ipfsHashImageFront,
@@ -62,21 +69,18 @@ const CardDetails: FC = () => {
     issuedLocationLat: lat,
   } = attributes as any;
 
-  const onGoogleMapsLoaded = useCallback(
-    (maps, map) => {
-      new maps.Marker({
-        position: new maps.LatLng(lat, lng),
-        map,
-        title: issuedLocation,
-        icon: {
-          url: Icons.LOCATION_BASE_64,
-          fillColor: 'white',
-          scaledSize: new maps.Size(20, 20),
-        },
-      });
-    },
-    [lat, lng, issuedLocation]
-  );
+  const onGoogleMapsLoaded = (maps: any, map: any) => {
+    new maps.Marker({
+      position: new maps.LatLng(lat, lng),
+      map,
+      title: issuedLocation,
+      icon: {
+        url: Icons.LOCATION_BASE_64,
+        fillColor: 'white',
+        scaledSize: new maps.Size(20, 20),
+      },
+    });
+  };
 
   return (
     <IonPage>

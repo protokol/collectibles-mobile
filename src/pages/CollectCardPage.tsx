@@ -13,14 +13,19 @@ import {
   IonSpinner,
   IonIcon,
   IonButton,
+  IonToolbar,
+  IonFooter,
 } from '@ionic/react';
 import Header from '../components/Header';
+import Button from '../components/ionic/Button';
 import Text from '../components/ionic/Text';
 import { FontSize } from '../constants/font-size';
+import { FontWeight } from '../constants/font-weight';
 import { driverHighResImage } from '../constants/images';
 import useIsMounted from '../hooks/use-is-mounted';
 import { AuthLoginContext } from '../providers/AuthLoginProvider';
 import { ClaimAssetAction } from '../store/actions/asset-claim';
+import { CollectionsLoadAction } from '../store/actions/collections';
 import { assetClaimSelector } from '../store/selectors/asset-claim';
 import { transactionsSelector } from '../store/selectors/transaction';
 
@@ -68,12 +73,27 @@ const ImageBgCol = styled(IonCol)`
   }
 `;
 
+const Footer = styled(IonFooter)`
+  position: fixed;
+  bottom: 0;
+`;
+
+const ViewCardButton = styled(Button)`
+  --background: var(--app-color-green-bg);
+  background: var(--app-color-green-bg);
+`;
+
 const txUuid = uuid();
 
 const CollectCardPage: FC = () => {
   const { collectionId } = useParams<{ collectionId: string }>();
   const history = useHistory();
   const dispatch = useDispatch();
+
+  const {
+    session: { publicKey },
+  } = useContext(AuthLoginContext);
+
   const assetClaimRequest = useSelector(assetClaimSelector, shallowEqual);
   const transactions = useSelector(transactionsSelector, shallowEqual);
   const tx = useMemo(() => transactions[txUuid], [transactions]);
@@ -149,6 +169,27 @@ const CollectCardPage: FC = () => {
           </IonRow>
         </IonGrid>
       </IonContent>
+      {!isLoading() && !isError() && (
+        <Footer className="ion-no-border">
+          <IonToolbar>
+            <ViewCardButton
+              size="large"
+              className="ion-text-uppercase ion-no-margin"
+              fontSize={FontSize.SM}
+              fontWeight={FontWeight.BOLD}
+              radius={false}
+              expand="block"
+              onClick={() => {
+                const { txId } = tx;
+                dispatch(CollectionsLoadAction(publicKey!));
+                history.push(`/home/card/${txId}`);
+              }}
+            >
+              View Card
+            </ViewCardButton>
+          </IonToolbar>
+        </Footer>
+      )}
     </IonPage>
   );
 };

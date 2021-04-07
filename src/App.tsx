@@ -55,11 +55,24 @@ const App: FC = () => {
               <Route path="/qr/:id" component={QrCodeGeneratorPage} exact />
               <Route path="/welcome" component={WelcomePage} exact />
               <Route
+                path="/login/username"
+                exact
+                render={(props) => (
+                  <UsernamePage navigateTo="/login/passphrase" {...props} />
+                )}
+              />
+              <Route
                 path="/login/passphrase"
                 component={PassphrasePage}
                 exact
               />
-              <Route path="/register/username" component={UsernamePage} exact />
+              <Route
+                path="/register/username"
+                exact
+                render={(props) => (
+                  <UsernamePage navigateTo="/register/passcode" {...props} />
+                )}
+              />
               <Route
                 path="/register/passcode"
                 exact

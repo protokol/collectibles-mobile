@@ -1,15 +1,25 @@
+import { arrowBackOutline } from 'ionicons/icons';
 import { FC, useEffect } from 'react';
 import { useHistory } from 'react-router';
 import { Subscription } from 'rxjs';
 import styled from 'styled-components';
 import { QRScanner, QRScannerStatus } from '@ionic-native/qr-scanner';
-import { IonPage, IonContent } from '@ionic/react';
+import { IonPage, IonContent, IonButton, IonIcon } from '@ionic/react';
 import Header from '../components/Header';
+import Text from '../components/ionic/Text';
+import { FontSize } from '../constants/font-size';
 
 declare const window: any;
 
 const Content = styled(IonContent)`
   opacity: 0;
+`;
+
+const InstructionText = styled(Text)`
+  text-align: center;
+  padding-left: 4rem;
+  padding-right: 4rem;
+  margin-bottom: 20vh;
 `;
 
 const ScanQRPage: FC = () => {
@@ -56,9 +66,19 @@ const ScanQRPage: FC = () => {
 
   return (
     <IonPage>
-      <Header title="Collect Cards" />
+      <Header
+        title="Collect Cards"
+        buttonTopLeft={
+          <IonButton onClick={() => history.replace('/home')}>
+            <IonIcon color="light" slot="icon-only" icon={arrowBackOutline} />
+          </IonButton>
+        }
+      />
 
       <Content fullscreen id="main-content" />
+      <InstructionText fontSize={FontSize.SM} color="light">
+        Align the QR code inside the marked area, and receive the hero card.
+      </InstructionText>
     </IonPage>
   );
 };
