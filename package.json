@@ -7,7 +7,7 @@
   ],
   "description": "Mobile app for Protokol NFT plugins",
   "license": "CC BY-NC-SA 4.0",
-  "version": "1.0.5",
+  "version": "1.0.7",
   "engines": {
     "node": ">=12.20.1"
   },
