@@ -11,7 +11,6 @@ import {
   IonToolbar,
 } from '@ionic/react';
 import Card from '../components/Card';
-import SortBy from '../components/SortBy';
 import Button from '../components/ionic/Button';
 import { FontSize } from '../constants/font-size';
 import { FontWeight } from '../constants/font-weight';
@@ -119,9 +118,6 @@ const HomeCollections: FC = () => {
           )}
           {!isLoading && !!flatAssets.length && !isError && (
             <>
-              <IonCol size="12" className="ion-margin-bottom">
-                <SortBy options={['All', 'Newest', 'Name', 'Team', 'Race']} />
-              </IonCol>
               {flatAssets.map(({ id, attributes }) => {
                 const {
                   title,
