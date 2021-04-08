@@ -30,6 +30,7 @@ const namespaceRegisterEpic: RootEpic = (action$, state$, { storage }) =>
               name,
             })
             .nonce(CryptoUtils.getWalletNextNonce(wallet))
+            .fee('0')
             .sign(passphrase);
 
           return TransactionSubmitAction(txUuid, {
