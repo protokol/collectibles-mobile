@@ -10,6 +10,7 @@ import { addIPFSGatewayPrefix } from '../constants/images';
 import useFetch from '../hooks/use-fetch';
 
 const QR_CODE_SIZE = 256;
+const QR_CODE_BG_SIZE = QR_CODE_SIZE + 48;
 
 const Content = styled(IonContent)`
   position: relative;
@@ -30,11 +31,21 @@ const CollectionBg = styled.div<{
   background-size: cover;
 `;
 
+const QRCodeBg = styled.div`
+  position: absolute;
+  left: calc(50% - ${QR_CODE_BG_SIZE / 2}px);
+  top: calc(50% - ${QR_CODE_BG_SIZE / 2}px);
+  height: ${QR_CODE_BG_SIZE}px;
+  width: ${QR_CODE_BG_SIZE}px;
+  background: white;
+  z-index: 1001;
+`;
+
 const QRCodeStyled = styled(QRCode)`
   position: absolute;
   left: calc(50% - ${QR_CODE_SIZE / 2}px);
   top: calc(50% - ${QR_CODE_SIZE / 2}px);
-  z-index: 1001;
+  z-index: 1002;
 `;
 
 /**
@@ -78,6 +89,7 @@ const QrCodeGeneratorPage: FC = () => {
           {!isLoading && !error && imageIpfs && id && (
             <>
               <CollectionBg bgUrl={addIPFSGatewayPrefix(imageIpfs)} />
+              <QRCodeBg />
               <QRCodeStyled renderAs="svg" size={QR_CODE_SIZE} value={id} />
             </>
           )}
