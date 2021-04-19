@@ -21,7 +21,7 @@
     "@ionic-native/qr-scanner": "^5.31.1",
     "@ionic-native/screen-orientation": "^5.31.1",
     "@ionic/react": "^5.0.7",
-    "@ionic/react-router": "^5.0.7",
+    "@ionic/react-router": "^5.6.3",
     "@protokol/client": "^1.0.0-beta.39",
     "@protokol/nameservice-crypto": "^1.0.0-beta",
     "aes-js": "^3.1.2",
