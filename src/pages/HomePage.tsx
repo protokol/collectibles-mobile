@@ -5,6 +5,7 @@ import { JSX } from '@ionic/core';
 import { IonCol, IonContent, IonGrid, IonPage, IonRow } from '@ionic/react';
 import Header from '../components/Header';
 import HomeCollections from '../components/HomeCollections';
+import HomeMarket from '../components/HomeMarket';
 import {
   Panel,
   Tab,
@@ -49,6 +50,7 @@ const ImageBgCol = styled(IonCol)`
     opacity: 0.5;
     background-image: url('${welcomeImage.src}');
     background-size: cover;
+    background-color:red;
     background-repeat: no-repeat;
     background-position: 50% 0;
   }
@@ -196,6 +198,10 @@ const HomeContent: FC = () => {
       <Panel>
         <HomeCollections />
       </Panel>
+
+      <Panel>
+        <HomeMarket />
+      </Panel>      
     </Content>
   );
 };
@@ -221,9 +227,18 @@ const HomePage: FC = () => {
                 fontSize={FontSize.XS}
                 color="light"
               >
-                Collectables
+                Collectibles
               </TabTitle>
             </Tab>
+            <Tab>
+              <TabTitle
+                className="ion-text-uppercase ion-text-center"
+                fontSize={FontSize.XS}
+                color="light"
+              >
+                Market
+              </TabTitle>
+            </Tab>            
           </Tabs>
         </Header>
 

@@ -25,6 +25,8 @@ import './theme/ionic-theme';
 
 const { SplashScreen } = Plugins;
 
+
+
 const App: FC = () => {
   const dispatch = useDispatch();
 

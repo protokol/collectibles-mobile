@@ -2,6 +2,10 @@ const welcomeImagePath1x = '/assets/images/welcome-screen.png';
 const welcomeImagePath2x = '/assets/images/welcome-screen@2x.png';
 const welcomeImagePath3x = '/assets/images/welcome-screen@3x.png';
 
+const flagImagePath1x = '/assets/images/flag-screen.png';
+const flagImagePath2x = '/assets/images/flag-screen@2x.png';
+const flagImagePath3x = '/assets/images/flag-screen@3x.png';
+
 const driverImage1x = '/assets/images/driver.png';
 const driverImage2x = '/assets/images/driver@2x.png';
 
@@ -18,9 +22,15 @@ const addGHPagesPrefix = () => {
 const addIPFSGatewayPrefix = (ipfsHash: string) =>
   `https://gateway.pinata.cloud/ipfs/${ipfsHash}`;
 
+const flagImage = {
+  alt: 'Flag',
+  src: `${process.env.PUBLIC_URL}${addGHPagesPrefix()}${flagImagePath1x}`,
+  srcSet: `${addGHPagesPrefix()}${flagImagePath1x} 1x, ${addGHPagesPrefix()}${flagImagePath2x} 2x, ${addGHPagesPrefix()}${flagImagePath3x} 3x`,
+};
+
 const welcomeImage = {
   alt: 'Welcome',
-  src: `${addGHPagesPrefix()}${welcomeImagePath1x}`,
+  src: `${process.env.PUBLIC_URL}${addGHPagesPrefix()}${welcomeImagePath1x}`,
   srcSet: `${addGHPagesPrefix()}${welcomeImagePath1x} 1x, ${addGHPagesPrefix()}${welcomeImagePath2x} 2x, ${addGHPagesPrefix()}${welcomeImagePath3x} 3x`,
 };
 
@@ -36,4 +46,4 @@ const driverHighResImage = {
   srcSet: `${addGHPagesPrefix()}${driverHighResImage1x} 1x, ${addGHPagesPrefix()}${driverHighResImage2x} 2x`,
 };
 
-export { addIPFSGatewayPrefix, welcomeImage, driverImage, driverHighResImage };
+export { addIPFSGatewayPrefix, welcomeImage, driverImage, flagImage, driverHighResImage };

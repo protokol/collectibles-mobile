@@ -11,7 +11,7 @@ const getCssLoaders = (config) => {
 };
 
 module.exports = (config) => {
-  // Fix url('/images/....') being processed by css-loader 4 =/
+  // Fix url('/images/....') being processed by css-loader 4 =/  
   for (const loader of getCssLoaders(config)) {
     loader.options.url = (url) => url.startsWith('.');
   }
