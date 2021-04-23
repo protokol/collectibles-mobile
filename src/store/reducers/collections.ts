@@ -3,7 +3,7 @@ import { BaseResourcesTypes } from '@protokol/client';
 import {
   COLLECTIONS_ACTION_TYPES,
   CollectionsActions,
-  CollectionsLoadSuccessActionType,
+  CollectiblesLoadSuccessActionType,
 } from '../actions/collections';
 
 export interface CollectionsState {
@@ -29,16 +29,16 @@ const reducer: Reducer<CollectionsState, COLLECTIONS_ACTION_TYPES> = (
   const { type } = action;
 
   switch (type) {
-    case CollectionsActions.COLLECTIONS_LOAD: {
+    case CollectionsActions.COLLECTIBLES_LOAD: {
       return {
         ...state,
         isLoading: true,
       };
     }
-    case CollectionsActions.COLLECTIONS_LOAD_SUCCESS: {
+    case CollectionsActions.COLLECTIBLES_LOAD_SUCCESS: {
       const {
         payload: { assets, query, isLastPage },
-      } = action as CollectionsLoadSuccessActionType;
+      } = action as CollectiblesLoadSuccessActionType;
       const { page } = query;
       return {
         ...state,
@@ -54,7 +54,7 @@ const reducer: Reducer<CollectionsState, COLLECTIONS_ACTION_TYPES> = (
         error: undefined,
       };
     }
-    case CollectionsActions.COLLECTIONS_LOAD_ERROR: {
+    case CollectionsActions.COLLECTIBLES_LOAD_ERROR: {
       const {
         payload: { error },
       } = action;

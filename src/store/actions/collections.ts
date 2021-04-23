@@ -3,21 +3,21 @@ import { BaseResourcesTypes } from '@protokol/client';
 
 // Actions
 enum CollectionsActions {
-  COLLECTIONS_LOAD = '@Collections/COLLECTIONS_LOAD',
-  COLLECTIONS_LOAD_SUCCESS = '@Collections/COLLECTIONS_LOAD_SUCCESS',
-  COLLECTIONS_LOAD_ERROR = '@Collections/COLLECTIONS_LOAD_ERROR',
+  COLLECTIBLES_LOAD = '@Collections/COLLECTIBLES_LOAD',
+  COLLECTIBLES_LOAD_SUCCESS = '@Collections/COLLECTIBLES_LOAD_SUCCESS',
+  COLLECTIBLES_LOAD_ERROR = '@Collections/COLLECTIBLES_LOAD_ERROR',
 }
 
-export interface CollectionsLoadActionType
-  extends Action<CollectionsActions.COLLECTIONS_LOAD> {
+export interface CollectiblesLoadActionType
+  extends Action<CollectionsActions.COLLECTIBLES_LOAD> {
   payload: {
     query?: BaseResourcesTypes.AllAssetsQuery;
     pubKey: string;
   };
 }
 
-export interface CollectionsLoadSuccessActionType
-  extends Action<CollectionsActions.COLLECTIONS_LOAD_SUCCESS> {
+export interface CollectiblesLoadSuccessActionType
+  extends Action<CollectionsActions.COLLECTIBLES_LOAD_SUCCESS> {
   payload: {
     query: BaseResourcesTypes.AllAssetsQuery;
     assets: BaseResourcesTypes.Assets[];
@@ -25,31 +25,31 @@ export interface CollectionsLoadSuccessActionType
   };
 }
 
-export interface CollectionsLoadErrorActionType
-  extends Action<CollectionsActions.COLLECTIONS_LOAD_ERROR> {
+export interface CollectiblesLoadErrorActionType
+  extends Action<CollectionsActions.COLLECTIBLES_LOAD_ERROR> {
   payload: {
     error: Error;
   };
 }
 
 // Action creators
-const CollectionsLoadAction = (
+const CollectiblesLoadAction = (
   pubKey: string,
   query?: BaseResourcesTypes.AllAssetsQuery
-): CollectionsLoadActionType => ({
-  type: CollectionsActions.COLLECTIONS_LOAD,
+): CollectiblesLoadActionType => ({
+  type: CollectionsActions.COLLECTIBLES_LOAD,
   payload: {
     query,
     pubKey,
   },
 });
 
-const CollectionsLoadSuccessAction = (
+const CollectiblesLoadSuccessAction = (
   query: BaseResourcesTypes.AllAssetsQuery,
   assets: BaseResourcesTypes.Assets[],
   isLastPage = false
-): CollectionsLoadSuccessActionType => ({
-  type: CollectionsActions.COLLECTIONS_LOAD_SUCCESS,
+): CollectiblesLoadSuccessActionType => ({
+  type: CollectionsActions.COLLECTIBLES_LOAD_SUCCESS,
   payload: {
     query,
     assets,
@@ -57,22 +57,22 @@ const CollectionsLoadSuccessAction = (
   },
 });
 
-const CollectionsLoadErrorAction = (
+const CollectiblesLoadErrorAction = (
   error: Error
-): CollectionsLoadErrorActionType => ({
-  type: CollectionsActions.COLLECTIONS_LOAD_ERROR,
+): CollectiblesLoadErrorActionType => ({
+  type: CollectionsActions.COLLECTIBLES_LOAD_ERROR,
   payload: {
     error,
   },
 });
 
-export type COLLECTIONS_ACTION_TYPES = CollectionsLoadActionType &
-  CollectionsLoadSuccessActionType &
-  CollectionsLoadErrorActionType;
+export type COLLECTIONS_ACTION_TYPES = CollectiblesLoadActionType &
+  CollectiblesLoadSuccessActionType &
+  CollectiblesLoadErrorActionType;
 
 export {
   CollectionsActions,
-  CollectionsLoadAction,
-  CollectionsLoadSuccessAction,
-  CollectionsLoadErrorAction,
+  CollectiblesLoadAction,
+  CollectiblesLoadSuccessAction,
+  CollectiblesLoadErrorAction,
 };

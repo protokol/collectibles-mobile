@@ -11,9 +11,9 @@ import {
   ClaimAssetSuccessActionType,
 } from './actions/asset-claim';
 import {
-  CollectionsLoadActionType,
-  CollectionsLoadErrorActionType,
-  CollectionsLoadSuccessActionType,
+  CollectiblesLoadActionType,
+  CollectiblesLoadErrorActionType,
+  CollectiblesLoadSuccessActionType,
 } from './actions/collections';
 import { NamespaceRegisterActionType } from './actions/namespace';
 import {
@@ -55,9 +55,9 @@ export type RootActions =
   | TransactionConfirmErrorActionType
   | TransactionSubmitActionType
   | NamespaceRegisterActionType
-  | CollectionsLoadActionType
-  | CollectionsLoadSuccessActionType
-  | CollectionsLoadErrorActionType
+  | CollectiblesLoadActionType
+  | CollectiblesLoadSuccessActionType
+  | CollectiblesLoadErrorActionType
   | WalletsLoadActionType
   | WalletsLoadSuccessActionType
   | WalletsLoadErrorActionType;

@@ -10,19 +10,19 @@ import {
   IonSpinner,
   IonToolbar,
 } from '@ionic/react';
-import Card from '../components/Card';
-import Button from '../components/ionic/Button';
+import Card from './Card';
+import Button from './ionic/Button';
 import { FontSize } from '../constants/font-size';
 import { FontWeight } from '../constants/font-weight';
 import useIsMounted from '../hooks/use-is-mounted';
 import useMediaQuery from '../hooks/use-media-query';
 import { AuthLoginContext } from '../providers/AuthLoginProvider';
-import { CollectionsLoadAction } from '../store/actions/collections';
+import { CollectiblesLoadAction } from '../store/actions/collections';
 import { collectionSelector } from '../store/selectors/collections';
 import { CardTagType } from './CardTag';
 import Text from './ionic/Text';
-
-const CardContainer = styled(IonCol)`
+ 
+const CardContainer = styled(IonCol)` 
   padding: 1.375rem;
 
   &:nth-child(odd) {
@@ -43,7 +43,7 @@ const CollectablesIonRow = styled(IonRow)`
   max-height: calc(100vh - 92px - 4.8rem);
 `;
 
-const HomeCollections: FC = () => {
+const HomeCollectibles: FC = () => {
   const history = useHistory();
   const isMedium = useMediaQuery('(min-height: 992px)');
   const isLarge = useMediaQuery('(min-height: 1200px)');
@@ -59,7 +59,7 @@ const HomeCollections: FC = () => {
   const isMounted = useIsMounted();
   useEffect(() => {
     if (publicKey && isMounted) {
-      dispatch(CollectionsLoadAction(publicKey!));
+      dispatch(CollectiblesLoadAction(publicKey!));
     }
   }, [isMounted, dispatch, publicKey]);
 
@@ -67,7 +67,7 @@ const HomeCollections: FC = () => {
     if (publicKey) {
       const { page } = query ?? { page: 1 };
       dispatch(
-        CollectionsLoadAction(publicKey!, {
+        CollectiblesLoadAction(publicKey!, {
           ...query,
           page: page! + 1,
         })
@@ -185,4 +185,4 @@ const HomeCollections: FC = () => {
   );
 };
 
-export default HomeCollections;
+export default HomeCollectibles;

@@ -4,13 +4,13 @@ import styled from 'styled-components';
 import { JSX } from '@ionic/core';
 import { IonCol, IonContent, IonGrid, IonPage, IonRow } from '@ionic/react';
 import Header from '../components/Header';
-import HomeCollections from '../components/HomeCollections';
+import HomeCollectibles from '../components/HomeCollectibles';
 import HomeMarket from '../components/HomeMarket';
 import {
   Panel,
   Tab,
   Tabs,
-  TabsContextProvider,
+  TabsContextProvider, 
   TabsState,
 } from '../components/Tabs';
 import Button from '../components/ionic/Button';
@@ -196,7 +196,7 @@ const HomeContent: FC = () => {
       </Panel>
 
       <Panel>
-        <HomeCollections />
+        <HomeCollectibles />
       </Panel>
 
       <Panel>

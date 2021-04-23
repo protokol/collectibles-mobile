@@ -2,9 +2,9 @@ import { defer, of } from 'rxjs';
 import { catchError, map, switchMap, withLatestFrom } from 'rxjs/operators';
 import {
   CollectionsActions,
-  CollectionsLoadActionType,
-  CollectionsLoadErrorAction,
-  CollectionsLoadSuccessAction,
+  CollectiblesLoadActionType,
+  CollectiblesLoadErrorAction,
+  CollectiblesLoadSuccessAction,
 } from '../actions/collections';
 import { baseUrlSelector } from '../selectors/app';
 import { RootEpic } from '../types';
@@ -14,12 +14,12 @@ const fetchWalletCollectionsEpic: RootEpic = (
   state$,
   { connection }
 ) =>
-  action$.ofType(CollectionsActions.COLLECTIONS_LOAD).pipe(
+  action$.ofType(CollectionsActions.COLLECTIBLES_LOAD).pipe(
     withLatestFrom(state$.pipe(map(baseUrlSelector))),
     switchMap(([action, stateBaseUrl]) => {
       const {
         payload: { pubKey, query },
-      } = action as CollectionsLoadActionType;
+      } = action as CollectiblesLoadActionType;
 
       return defer(() =>
         connection(stateBaseUrl!)
@@ -28,7 +28,7 @@ const fetchWalletCollectionsEpic: RootEpic = (
       ).pipe(
         map(({ body: { data, errors } }) => {
           if (errors) {
-            return CollectionsLoadErrorAction(errors);
+            return CollectiblesLoadErrorAction(errors);
           }
 
           const q = query || {
@@ -36,9 +36,9 @@ const fetchWalletCollectionsEpic: RootEpic = (
             limit: 100,
           };
 
-          return CollectionsLoadSuccessAction(q, data, data.length < q.limit!);
+          return CollectiblesLoadSuccessAction(q, data, data.length < q.limit!);
         }),
-        catchError((err) => of(CollectionsLoadErrorAction(err)))
+        catchError((err) => of(CollectiblesLoadErrorAction(err)))
       );
     })
   );

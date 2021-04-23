@@ -17,7 +17,7 @@ import { FontSize } from '../constants/font-size';
 import useIsMounted from '../hooks/use-is-mounted';
 import useMediaQuery from '../hooks/use-media-query';
 import { AuthLoginContext } from '../providers/AuthLoginProvider';
-import { CollectionsLoadAction } from '../store/actions/collections';
+import { CollectiblesLoadAction } from '../store/actions/collections';
 import { collectionSelector } from '../store/selectors/collections';
 import { CardTagType } from './CardTag';
 import Text from './ionic/Text';
@@ -176,7 +176,7 @@ const HomeMarketBuy: FC = () => {
     const publicKeyIn = "02cb8f39ec7962ff009626f53326d93bdbb866383f027159a1c63845606f02d31d"; 
 
     if (publicKeyIn && isMounted) {
-      dispatch(CollectionsLoadAction(publicKeyIn!));
+      dispatch(CollectiblesLoadAction(publicKeyIn!));
       console.log("TBR Hello, passing here! is mounted?: " + JSON.stringify(isMounted));      
     }
   }, [isMounted, dispatch, publicKey]);
@@ -186,7 +186,7 @@ const HomeMarketBuy: FC = () => {
     if (publicKey) {
       const { page } = query ?? { page: 1 };
       dispatch(
-        CollectionsLoadAction(publicKey!, {
+        CollectiblesLoadAction(publicKey!, {
           ...query,
           page: page! + 1,
         })
@@ -383,7 +383,7 @@ const HomeMarketSell: FC = () => {
     var publicKeyIn = "02cb8f39ec7962ff009626f53326d93bdbb866383f027159a1c63845606f02d31d"; 
 
     if (publicKeyIn && isMounted) {
-      dispatch(CollectionsLoadAction(publicKeyIn!));
+      dispatch(CollectiblesLoadAction(publicKeyIn!));
       console.log("TBR Hello, passing here! is mounted?: " + JSON.stringify(isMounted));      
     }
   }, [isMounted, dispatch, publicKey]);
@@ -393,7 +393,7 @@ const HomeMarketSell: FC = () => {
     if (publicKey) {
       const { page } = query ?? { page: 1 };
       dispatch(
-        CollectionsLoadAction(publicKey!, {
+        CollectiblesLoadAction(publicKey!, {
           ...query,
           page: page! + 1,
         })
@@ -590,7 +590,7 @@ const HomeMarketAuction: FC = () => {
     var publicKeyIn = "02cb8f39ec7962ff009626f53326d93bdbb866383f027159a1c63845606f02d31d"; 
 
     if (publicKeyIn && isMounted) {
-      dispatch(CollectionsLoadAction(publicKeyIn!));
+      dispatch(CollectiblesLoadAction(publicKeyIn!));
       console.log("TBR Hello, passing here! is mounted?: " + JSON.stringify(isMounted));      
     }
   }, [isMounted, dispatch, publicKey]);
@@ -600,7 +600,7 @@ const HomeMarketAuction: FC = () => {
     if (publicKey) {
       const { page } = query ?? { page: 1 };
       dispatch(
-        CollectionsLoadAction(publicKey!, {
+        CollectiblesLoadAction(publicKey!, {
           ...query,
           page: page! + 1,
         })
@@ -742,7 +742,7 @@ const HomeMarketAuction: FC = () => {
           <CollectablesIonCard>
               <CollectablesIonGrid style={{background:"#f5f5f5"}}>
                 <CollectablesIonRow className="ion-align-items-center">
-                    <CollectablesIonMarketLabel>No collectibles for sale yet!</CollectablesIonMarketLabel>
+                    <CollectablesIonMarketLabel>No collectibles for auction yet!</CollectablesIonMarketLabel>
                 </CollectablesIonRow>
               </CollectablesIonGrid>                  
           </CollectablesIonCard>

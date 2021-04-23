@@ -25,7 +25,7 @@ import { driverHighResImage } from '../constants/images';
 import useIsMounted from '../hooks/use-is-mounted';
 import { AuthLoginContext } from '../providers/AuthLoginProvider';
 import { ClaimAssetAction } from '../store/actions/asset-claim';
-import { CollectionsLoadAction } from '../store/actions/collections';
+import { CollectiblesLoadAction } from '../store/actions/collections';
 import { assetClaimSelector } from '../store/selectors/asset-claim';
 import { transactionsSelector } from '../store/selectors/transaction';
 
@@ -181,7 +181,7 @@ const CollectCardPage: FC = () => {
               expand="block"
               onClick={() => {
                 const { txId } = tx;
-                dispatch(CollectionsLoadAction(publicKey!));
+                dispatch(CollectiblesLoadAction(publicKey!));
                 history.push(`/home/card/${txId}`);
               }}
             >

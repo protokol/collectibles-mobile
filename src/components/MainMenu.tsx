@@ -22,7 +22,7 @@ import {
 } from '@ionic/react';
 import { APP_PRIVACY_URL } from '../constants/external-links';
 import { FontSize } from '../constants/font-size';
-import {
+import { 
   AuthLoginContext,
   AuthLoginState,
 } from '../providers/AuthLoginProvider';
