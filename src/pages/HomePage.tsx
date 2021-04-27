@@ -25,6 +25,7 @@ import { welcomeImage } from '../constants/images';
 const Content = styled(IonContent)<{
   isDarkBg: boolean;
 }>`
+  overflow: hidden;
   ${({ isDarkBg }) =>
     isDarkBg && '--background: var(--app-color-dark-cyan-blue);'}
 `;

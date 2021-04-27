@@ -125,16 +125,17 @@ const HomeCollectibles: FC = () => {
                 const {
                   title,
                   subtitle,
+                  signed,
                   ipfsHashImageFront,
                   tags,
                 } = attributes as any;
 
                 console.log(attributes);
 
-                const type =
+                const type = (signed)?CardTagType.Signed:
                   Array.isArray(tags) && tags.length
                     ? tags[0]
-                    : CardTagType.Signed; // TBD hardcoded
+                    : CardTagType.None;
 
                 return (
                   <CardContainer key={id} size={cardColSize().toString()}>

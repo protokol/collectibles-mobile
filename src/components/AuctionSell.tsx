@@ -183,7 +183,7 @@ const AuctionSell: FC = () => {
     }, [isMedium, isLarge]);
     
   return (
-    <>
+      <>
     <IonGrid className="ion-no-padding">
       <IonRow>
         <ImageBgCol size="12">
@@ -237,6 +237,8 @@ const AuctionSell: FC = () => {
           </BiddedCardsButton>                            
         </ImageBgCol>
       </IonRow>
+    </IonGrid>
+    <IonGrid className="ion-no-padding">
       <CollectablesIonRow onScroll={onCardsScroll}>
           {!isLoading && isError && (
             <IonCol size="12" class="ion-text-center ion-padding-top">
@@ -259,13 +261,14 @@ const AuctionSell: FC = () => {
                   title,
                   subtitle,
                   ipfsHashImageFront,
+                  signed,
                   tags,
                 } = attributes as any;
 
-                const type =
+                const type = (signed)?CardTagType.Signed:
                   Array.isArray(tags) && tags.length
                     ? tags[0]
-                    : CardTagType.Signed;
+                    : CardTagType.None;
 
                 return (
                   <CardContainer key={id} size={cardColSize().toString()}>
