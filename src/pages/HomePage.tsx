@@ -6,6 +6,7 @@ import { IonCol, IonContent, IonGrid, IonPage, IonRow } from '@ionic/react';
 import Header from '../components/Header';
 import HomeCollectibles from '../components/HomeCollectibles';
 import HomeMarket from '../components/HomeMarket';
+import AuctionSell from '../components/AuctionSell';
 import {
   Panel,
   Tab,
@@ -93,9 +94,10 @@ const ActionButton = styled(Button)`
   }
 `;
 
-const HomeContent: FC = () => {
+const HomeContent: FC<{menu?:string}> = ({menu}) => {
   const history = useHistory();
   const [activeIndex, setActiveIndex] = useContext(TabsState);
+  // console.log("activeIndex: " + activeIndex);
 
   return (
     <Content id="main-content" fullscreen isDarkBg={activeIndex <= 0}>
@@ -200,13 +202,14 @@ const HomeContent: FC = () => {
       </Panel>
 
       <Panel>
-        <HomeMarket />
-      </Panel>      
+        <HomeMarket/>
+      </Panel>
     </Content>
   );
 };
 
-const HomePage: FC = () => {
+const HomePage: FC<{menu?:string}> = ({menu}) => {
+
   return (
     <IonPage>
       <TabsContextProvider>
@@ -241,8 +244,7 @@ const HomePage: FC = () => {
             </Tab>            
           </Tabs>
         </Header>
-
-        <HomeContent />
+        <HomeContent menu={menu}/>        
       </TabsContextProvider>
     </IonPage>
   );

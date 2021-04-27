@@ -87,6 +87,7 @@ const App: FC = () => {
                   <PasscodePage withConfirm={false} {...props} />
                 )}
               />
+             
               <Redirect path="/" exact to="/home" />
 
               <IonRouterOutlet>
@@ -111,7 +112,7 @@ const App: FC = () => {
                   path="/home/collect-card/:collectionId"
                   component={CollectCardPage}
                   exact
-                />
+                />                          
               </IonRouterOutlet>
             </Switch>
           </IonReactHashRouter>

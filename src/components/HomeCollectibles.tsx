@@ -56,24 +56,27 @@ const HomeCollectibles: FC = () => {
     session: { publicKey },
   } = useContext(AuthLoginContext);
 
+  // TBD const publicKeyIn = publicKey;
+  const publicKeyIn = "02cb8f39ec7962ff009626f53326d93bdbb866383f027159a1c63845606f02d31d";  
+
   const isMounted = useIsMounted();
   useEffect(() => {
-    if (publicKey && isMounted) {
-      dispatch(CollectiblesLoadAction(publicKey!));
+    if (publicKeyIn && isMounted) {
+      dispatch(CollectiblesLoadAction(publicKeyIn!));
     }
-  }, [isMounted, dispatch, publicKey]);
+  }, [isMounted, dispatch, publicKeyIn]);
 
   const loadNextPage = useCallback(() => {
-    if (publicKey) {
+    if (publicKeyIn) {
       const { page } = query ?? { page: 1 };
       dispatch(
-        CollectiblesLoadAction(publicKey!, {
+        CollectiblesLoadAction(publicKeyIn!, {
           ...query,
           page: page! + 1,
         })
       );
     }
-  }, [query, dispatch, publicKey]);
+  }, [query, dispatch, publicKeyIn]);
 
   const flatAssets = useMemo(() => assets.flat(), [assets]);
 
@@ -153,6 +156,8 @@ const HomeCollectibles: FC = () => {
                 color="primary"
               >
                 No collectables yet!
+                <br/>
+                {publicKey}
               </Text>
             </IonCol>
           )}

@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { useHistory } from 'react-router';
 import styled from 'styled-components';
 import { IonCol, IonGrid, IonRow } from '@ionic/react';
@@ -8,6 +8,8 @@ import Text from '../components/ionic/Text';
 import { FontSize } from '../constants/font-size';
 import { FontWeight } from '../constants/font-weight';
 import { flagImage } from '../constants/images';
+import AuctionSell from './AuctionSell';
+import { findRenderedComponentWithType } from 'react-dom/test-utils';
 
 const ImageBgCol = styled(IonCol)`
   position: relative;
@@ -67,84 +69,111 @@ const ActionButton = styled(Button)`
   }  
 `;
 
+
 const HomeMarket: FC = () => {
   const history = useHistory();
+  const [submenu, setMarketSubMenu] = useState(0)
+  const auctionSell = submenu===1;
+  const auctionBuy = submenu===2;
+ 
+  const auctionSellHandler = () => {
+    console.log("llamando a AuctionSell");
+    setMarketSubMenu(1);   
+  }
 
-  return (
-    <IonGrid className="ion-no-padding">
-      <IonRow>
-        <ImageBgCol size="12">
-          <Label
-            color="light"
-            fontSize={FontSize.L}
-            fontWeight={FontWeight.BOLD}
-          >
-            Buy, sell & trade - all at one place!
-          </Label>
-          <br />
-          <Text
-            className="ion-margin-vertical"
-            color="light"
-            fontSize={FontSize.XS}
-          >
-            Welcome to the e-market where you can buy new cards, trade them with other fans,
-            or put them on an auction, and sell them to the highest bidder.
-          </Text>
-          <br />
-        </ImageBgCol>
-        <BannerCol>
-          <BannerText fontSize={FontSize.L} fontWeight={FontWeight.BOLD}>
-            Today I
+  const auctionBuyHandler = () => {
+    console.log("llamando a AuctionBuy");
+    setMarketSubMenu(2);   
+  }
+
+  return (  
+    <>
+    {auctionSell && (
+      <AuctionSell/>
+    )}  
+    {auctionBuy && (
+      <AuctionSell/>
+    )}      
+    {!auctionSell && !auctionBuy && (
+      <IonGrid className="ion-no-padding">
+        <IonRow>
+          <ImageBgCol size="12">
+            <Label
+              color="light"
+              fontSize={FontSize.L}
+              fontWeight={FontWeight.BOLD}
+            >
+              Buy, sell & trade - all at one place!
+            </Label>
             <br />
-            want to...
-          </BannerText>
-        </BannerCol>
-        <IonCol size="12">
-          <ActionButton
-            expand="block"
-            className="ion-text-uppercase ion-no-margin bg-gray"
-            fontSize={FontSize.SM}
-            fontWeight={FontWeight.BOLD}
-            onClick={() => history.push('/home/scan-qr')}
-          >
-            Buy cards
-          </ActionButton>
-          <ActionButton
-            expand="block"
-            className="ion-text-uppercase ion-no-margin bg-dark-blue-magenta"
-            fontSize={FontSize.SM}
-            fontWeight={FontWeight.BOLD}
-            onClick={() => history.push('/home/scan-qr')}
-          >
-            Sell cards
-          </ActionButton>
-          <ActionButton
-            expand="block"
-            className="ion-text-uppercase ion-no-margin bg-charade"
-            fontSize={FontSize.SM}
-            fontWeight={FontWeight.BOLD}
-          >
-            Trade cards
-          </ActionButton>
-          <ActionButton
-            expand="block"
-            className="ion-text-uppercase ion-no-margin bg-gray"
-            fontSize={FontSize.SM}
-            fontWeight={FontWeight.BOLD}
-          >
-            Start an auction
-          </ActionButton>
-          <ActionButton
-            expand="block"
-            className="ion-text-uppercase ion-no-margin bg-dark-blue-magenta"
-            fontSize={FontSize.SM}
-            fontWeight={FontWeight.BOLD}
-          >
-            Participate in an auction
-          </ActionButton>
-        </IonCol>
-      </IonRow>
-    </IonGrid>
+            <Text
+              className="ion-margin-vertical"
+              color="light"
+              fontSize={FontSize.XS}
+            >
+              Welcome to the e-market where you can buy new cards, trade them with other fans,
+              or put them on an auction, and sell them to the highest bidder.
+            </Text>
+            <br />
+          </ImageBgCol>
+          <BannerCol>
+            <BannerText fontSize={FontSize.L} fontWeight={FontWeight.BOLD}>
+              Today I
+              <br />
+              want to...
+            </BannerText>
+          </BannerCol>
+          <IonCol size="12">
+            <ActionButton               
+              expand="block"
+              className="ion-text-uppercase ion-no-margin bg-gray"
+              fontSize={FontSize.SM}
+              fontWeight={FontWeight.BOLD}
+              onClick={() => history.push('/home/buycards')}
+            >
+              Buy cards
+            </ActionButton>
+            <ActionButton
+              expand="block"
+              className="ion-text-uppercase ion-no-margin bg-dark-blue-magenta"
+              fontSize={FontSize.SM}
+              fontWeight={FontWeight.BOLD}
+              onClick={() => history.push('/home/sellcards')}
+            >
+              Sell cards
+            </ActionButton>
+            <ActionButton
+              expand="block"
+              className="ion-text-uppercase ion-no-margin bg-charade"
+              fontSize={FontSize.SM}
+              fontWeight={FontWeight.BOLD}
+              onClick={() => history.push('/home/tradecards')}
+            >
+              Trade cards
+            </ActionButton>
+            <ActionButton
+              expand="block"
+              className="ion-text-uppercase ion-no-margin bg-gray"
+              fontSize={FontSize.SM}
+              fontWeight={FontWeight.BOLD}
+              onClick={auctionSellHandler}
+            >
+              Start an auction
+            </ActionButton>
+            <ActionButton
+              expand="block"
+              className="ion-text-uppercase ion-no-margin bg-dark-blue-magenta"
+              fontSize={FontSize.SM}
+              fontWeight={FontWeight.BOLD}
+              onClick={auctionBuyHandler}
+            >
+              Participate in an auction
+            </ActionButton>
+          </IonCol>
+        </IonRow>
+      </IonGrid>
+      )}
+    </>
   );
 };
 
