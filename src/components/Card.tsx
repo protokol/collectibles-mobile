@@ -5,7 +5,6 @@ import { FontSize } from '../constants/font-size';
 import { FontWeight } from '../constants/font-weight';
 import { addIPFSGatewayPrefix } from '../constants/images';
 import CardTag, { CardTagType } from './CardTag';
-import Img from './ionic/Img';
 import Title from './ionic/Title';
 
 const CardStyled = styled.div`
@@ -27,6 +26,14 @@ const CardAvailabilityTitle = styled(Title)`
   font-style: italic;
   opacity: 0.5;
   padding-bottom: 0.1rem;
+`;
+
+const Img = styled.img`  
+  width: 172px !important;
+  height: 130px !important;
+  object-fit: contain;
+  background: black;
+  overflow: hidden;  
 `;
 
 const Card: FC<{

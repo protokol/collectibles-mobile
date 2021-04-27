@@ -129,10 +129,12 @@ const HomeCollectibles: FC = () => {
                   tags,
                 } = attributes as any;
 
+                console.log(attributes);
+
                 const type =
                   Array.isArray(tags) && tags.length
                     ? tags[0]
-                    : CardTagType.None;
+                    : CardTagType.Signed; // TBD hardcoded
 
                 return (
                   <CardContainer key={id} size={cardColSize().toString()}>

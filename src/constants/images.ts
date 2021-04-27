@@ -2,6 +2,10 @@ const welcomeImagePath1x = '/assets/images/welcome-screen.png';
 const welcomeImagePath2x = '/assets/images/welcome-screen@2x.png';
 const welcomeImagePath3x = '/assets/images/welcome-screen@3x.png';
 
+const auctionImagePath1x = '/assets/images/auction-screen.png';
+const auctionImagePath2x = '/assets/images/auction-screen@2x.png';
+const auctionImagePath3x = '/assets/images/auction-screen@3x.png';
+
 const flagImagePath1x = '/assets/images/flag-screen.png';
 const flagImagePath2x = '/assets/images/flag-screen@2x.png';
 const flagImagePath3x = '/assets/images/flag-screen@3x.png';
@@ -40,10 +44,16 @@ const driverImage = {
   srcSet: `${addGHPagesPrefix()}${driverImage1x} 1x, ${addGHPagesPrefix()}${driverImage2x} 2x`,
 };
 
+const auctionImage = {
+  alt: 'Auction',
+  src: `${process.env.PUBLIC_URL}${addGHPagesPrefix()}${auctionImagePath1x}`,
+  srcSet: `${addGHPagesPrefix()}${auctionImagePath1x} 1x, ${addGHPagesPrefix()}${auctionImagePath2x} 2x, ${addGHPagesPrefix()}${auctionImagePath3x} 3x`,
+};
+
 const driverHighResImage = {
   alt: 'Driver',
   src: `${addGHPagesPrefix()}${driverHighResImage1x}`,
   srcSet: `${addGHPagesPrefix()}${driverHighResImage1x} 1x, ${addGHPagesPrefix()}${driverHighResImage2x} 2x`,
 };
 
-export { addIPFSGatewayPrefix, welcomeImage, driverImage, flagImage, driverHighResImage };
+export { addIPFSGatewayPrefix, welcomeImage, driverImage, flagImage, auctionImage, driverHighResImage };

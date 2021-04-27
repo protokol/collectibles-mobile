@@ -17,13 +17,13 @@ import Label from './ionic/Label';
 import Text from './ionic/Text';
 import { FontSize } from '../constants/font-size';
 import { FontWeight } from '../constants/font-weight';
-import { flagImage } from '../constants/images';
 import useIsMounted from '../hooks/use-is-mounted';
 import useMediaQuery from '../hooks/use-media-query';
 import { CardTagType } from './CardTag';
 import { AuthLoginContext } from '../providers/AuthLoginProvider';
 import { CollectiblesLoadAction } from '../store/actions/collections';
 import { collectionSelector } from '../store/selectors/collections';
+import { auctionImage } from '../constants/images';
 
 const ImageBgCol = styled(IonCol)`
   position: relative;
@@ -42,7 +42,7 @@ const ImageBgCol = styled(IonCol)`
     height: 100%;
     z-index: 1;
     opacity: 0.8;
-    background-image: url('${flagImage.src}');
+    background-image: url('${auctionImage.src}');
     background-size: cover;    
     background-repeat: no-repeat;
     background-position: 50% 0;
