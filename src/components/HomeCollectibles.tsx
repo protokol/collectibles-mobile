@@ -3,6 +3,7 @@ import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import styled from 'styled-components';
 import {
+  isPlatform,
   IonCol,
   IonFooter,
   IonGrid,
@@ -43,7 +44,7 @@ const CollectablesIonRow = styled(IonRow)`
   max-height: calc(100vh - 92px - 4.8rem);
 `;
 
-const HomeCollectibles: FC = () => {
+const HomeCollectibles: FC = () => {  
   const history = useHistory();
   const isMedium = useMediaQuery('(min-height: 992px)');
   const isLarge = useMediaQuery('(min-height: 1200px)');
@@ -51,13 +52,27 @@ const HomeCollectibles: FC = () => {
     collectionSelector,
     shallowEqual
   );
+
+  const AddNewCard = () => {  
+    if (isPlatform("cordova")){
+      history.push('/home/scan-qr');
+    }else{
+      const randomCollections = [
+        '35c20e153ea2532cbecae087dee0d68964091caa1a7b043568c38e877f355e08',
+        '64c6ee0e50e860cdd928b70f1dc25dc5f367b5292eb198998445acc44d362b77', 
+        'b725c6c140d6a3f7c6c185380fec56b7edf645a6a086d3553c26901c03e31817'
+      ];
+      let randomCollection = randomCollections[~~(randomCollections.length * Math.random())];
+      history.push(`/home/collect-card/${randomCollection}`);
+    }
+  }
+
   const dispatch = useDispatch();
   const {
     session: { publicKey },
   } = useContext(AuthLoginContext);
 
-  // TBD const publicKeyIn = publicKey;
-  const publicKeyIn = "02cb8f39ec7962ff009626f53326d93bdbb866383f027159a1c63845606f02d31d";  
+  const publicKeyIn = publicKey;  
 
   const isMounted = useIsMounted();
   useEffect(() => {
@@ -124,15 +139,14 @@ const HomeCollectibles: FC = () => {
               {flatAssets.map(({ id, attributes }) => {
                 const {
                   title,
-                  subtitle,
-                  signed,
+                  subtitle,                  
                   ipfsHashImageFront,
                   tags,
                 } = attributes as any;
 
-                console.log(attributes);
+                //console.log(attributes);
 
-                const type = (signed)?CardTagType.Signed:
+                const type = 
                   Array.isArray(tags) && tags.length
                     ? tags[0]
                     : CardTagType.None;
@@ -181,9 +195,7 @@ const HomeCollectibles: FC = () => {
             fontWeight={FontWeight.BOLD}
             radius={false}
             expand="block"
-            onClick={() => {
-              history.push('/home/scan-qr');
-            }}
+            onClick={AddNewCard}
           >
             Add new card
           </Button>

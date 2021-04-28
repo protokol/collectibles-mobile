@@ -137,8 +137,7 @@ const AuctionSell: FC = () => {
       session: { publicKey },
     } = useContext(AuthLoginContext);
   
-    // TBD const publicKeyIn = publicKey;
-    const publicKeyIn = "02cb8f39ec7962ff009626f53326d93bdbb866383f027159a1c63845606f02d31d";  
+    const publicKeyIn = publicKey;    
   
     const isMounted = useIsMounted();
     useEffect(() => {
@@ -261,11 +260,10 @@ const AuctionSell: FC = () => {
                   title,
                   subtitle,
                   ipfsHashImageFront,
-                  signed,
                   tags,
                 } = attributes as any;
 
-                const type = (signed)?CardTagType.Signed:
+                const type = 
                   Array.isArray(tags) && tags.length
                     ? tags[0]
                     : CardTagType.None;
