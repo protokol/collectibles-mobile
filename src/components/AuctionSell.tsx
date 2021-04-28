@@ -276,6 +276,7 @@ const AuctionSell: FC = () => {
                       subtitle={subtitle}
                       imgIpfsHash={ipfsHashImageFront}
                       type={type}
+                      linkto={"/home/card/startauction/"+id}
                     />
                   </CardContainer>
                 );

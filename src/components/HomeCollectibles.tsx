@@ -159,6 +159,7 @@ const HomeCollectibles: FC = () => {
                       subtitle={subtitle}
                       imgIpfsHash={ipfsHashImageFront}
                       type={type}
+                      linkto={"/home/card/"+id}
                     />
                   </CardContainer>
                 );

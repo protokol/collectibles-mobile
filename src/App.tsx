@@ -9,6 +9,7 @@ import MainMenu from './components/MainMenu';
 import ProtectedRoute from './components/ProtectedRoute';
 import useIsMounted from './hooks/use-is-mounted';
 import CardDetails from './pages/CardDetails';
+import CardStartAuction from './pages/CardStartAuction';
 import CollectCardPage from './pages/CollectCardPage';
 import HomePage from './pages/HomePage';
 import PasscodePage from './pages/PasscodePage';
@@ -108,6 +109,11 @@ const App: FC = () => {
                   component={CardDetails}
                   exact
                 />
+                <ProtectedRoute
+                  path="/home/card/startauction/:assetId"
+                  component={CardStartAuction}
+                  exact
+                />                
                 <ProtectedRoute
                   path="/home/collect-card/:collectionId"
                   component={CollectCardPage}
