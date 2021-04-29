@@ -51,7 +51,6 @@ const BannerText = styled(Text)`
 `;
 
 const ActionButton = styled(Button)`
-  border-radius: 0px !important;
   height: 3.4375rem;
   --padding-top: 1.625rem;
   --padding-bottom: 1.8125rem;
@@ -126,6 +125,7 @@ const HomeMarket: FC = () => {
           <IonCol size="12">
             <ActionButton               
               expand="block"
+              radius={false}
               className="ion-text-uppercase ion-no-margin bg-gray"
               fontSize={FontSize.SM}
               fontWeight={FontWeight.BOLD}
@@ -135,6 +135,7 @@ const HomeMarket: FC = () => {
             </ActionButton>
             <ActionButton
               expand="block"
+              radius={false}
               className="ion-text-uppercase ion-no-margin bg-dark-blue-magenta"
               fontSize={FontSize.SM}
               fontWeight={FontWeight.BOLD}
@@ -144,6 +145,7 @@ const HomeMarket: FC = () => {
             </ActionButton>
             <ActionButton
               expand="block"
+              radius={false}
               className="ion-text-uppercase ion-no-margin bg-charade"
               fontSize={FontSize.SM}
               fontWeight={FontWeight.BOLD}
@@ -153,6 +155,7 @@ const HomeMarket: FC = () => {
             </ActionButton>
             <ActionButton
               expand="block"
+              radius={false}
               className="ion-text-uppercase ion-no-margin bg-gray"
               fontSize={FontSize.SM}
               fontWeight={FontWeight.BOLD}
@@ -162,6 +165,7 @@ const HomeMarket: FC = () => {
             </ActionButton>
             <ActionButton
               expand="block"
+              radius={false}
               className="ion-text-uppercase ion-no-margin bg-dark-blue-magenta"
               fontSize={FontSize.SM}
               fontWeight={FontWeight.BOLD}

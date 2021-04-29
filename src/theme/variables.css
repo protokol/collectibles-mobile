@@ -7,6 +7,10 @@ html {
 
 /** Ionic CSS Variables **/
 :root {
+
+  --ion-color-auction-tint: #FFFFFF;
+  --ion-color-auction-base: #F8C938;
+
   /** font **/
   --ion-font-family: 'Open sans', -apple-system, BlinkMacSystemFont,
     'Helvetica Neue', 'Roboto', sans-serif;
@@ -95,5 +99,5 @@ html {
   --ion-color-light-contrast: #000000;
   --ion-color-light-contrast-rgb: 0, 0, 0;
   --ion-color-light-shade: #e0e0e0;
-  --ion-color-light-tint: #ffffff;
+  --ion-color-light-tint: #ffffff;  
 }
