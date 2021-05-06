@@ -1,35 +1,35 @@
 import { Reducer } from 'redux';
 import {
-  AssetClaimActions,
-  CLAIM_ASSET_ACTION_TYPES,
-} from '../actions/asset-claim';
+  AuctionActions,
+  AUCTION_ACTION_TYPES,
+} from '../actions/auctions';
 
-export interface AssetClaimState {
+export interface StartAuctionState {
   isLoading: boolean;
   isError: boolean;
   error?: Error;
   txId?: string;
 }
 
-const initialState: AssetClaimState = {
+const initialState: StartAuctionState = {
   isLoading: false,
   isError: false,
 };
 
-const reducer: Reducer<AssetClaimState, CLAIM_ASSET_ACTION_TYPES> = (
+const reducer: Reducer<StartAuctionState, AUCTION_ACTION_TYPES> = (
   state = initialState,
   action
 ) => {
   const { type } = action;
 
   switch (type) {
-    case AssetClaimActions.CLAIM_ASSET: {
+    case AuctionActions.START_AUCTION: {
       return {
         ...initialState,
         isLoading: true,
       };
     }
-    case AssetClaimActions.CLAIM_ASSET_SUCCESS: {
+    case AuctionActions.START_AUCTION_SUCCESS: {
       const {
         payload: { txId },
       } = action;
@@ -40,7 +40,7 @@ const reducer: Reducer<AssetClaimState, CLAIM_ASSET_ACTION_TYPES> = (
         txId,
       };
     }
-    case AssetClaimActions.CLAIM_ASSET_ERROR: {
+    case AuctionActions.START_AUCTION_ERROR: {
       const {
         payload: { error },
       } = action;

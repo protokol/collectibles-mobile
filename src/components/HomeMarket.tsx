@@ -75,13 +75,11 @@ const HomeMarket: FC = () => {
   const auctionSell = submenu===1;
   const auctionBuy = submenu===2;
  
-  const auctionSellHandler = () => {
-    console.log("llamando a AuctionSell");
+  const auctionSellHandler = () => {    
     setMarketSubMenu(1);   
   }
 
-  const auctionBuyHandler = () => {
-    console.log("llamando a AuctionBuy");
+  const auctionBuyHandler = () => {    
     setMarketSubMenu(2);   
   }
 

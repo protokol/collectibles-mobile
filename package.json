@@ -24,6 +24,7 @@
     "@ionic/react-router": "^5.0.7",
     "@protokol/client": "^1.0.0-beta.39",
     "@protokol/nameservice-crypto": "^1.0.0-beta",
+    "@protokol/nft-exchange-crypto": "^1.0.0-beta.0",
     "aes-js": "^3.1.2",
     "bip39": "^3.0.3",
     "cordova-plugin-qrscanner": "^3.0.1",

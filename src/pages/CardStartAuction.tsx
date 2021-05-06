@@ -1,8 +1,7 @@
-import { format } from 'date-fns';
-import GoogleMap from 'google-map-react';
-import { arrowBackOutline, locationOutline } from 'ionicons/icons';
+import { FC, useMemo, useState, useEffect } from 'react';
+import { arrowBackOutline } from 'ionicons/icons';
 import { CalendarOutline } from 'react-ionicons'
-import { FC, useMemo } from 'react';
+import { Controller, useForm } from 'react-hook-form';
 import { shallowEqual, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router';
 import styled from 'styled-components';
@@ -104,24 +103,136 @@ const ViewCardIonButton = styled(Button)<JSX.IonButton>`
   box-shadow: none !important;
 `;
 
+const d = new Date();
+const dateDefault = (d.getMonth()+1) + "/" + d.getDate() + "/" + d.getFullYear();
+const datePlaceHolder = (d.getMonth()+1) + " / " + d.getDate() + " / " + d.getFullYear();
+
+let renderCount = 0;
+let initialValues = {
+  minimumbid: "",
+  minimumincrement: "",
+  finalbiddingdate: dateDefault,
+}
+
+interface stateData{
+  minimumbid?: string;
+  minimumincrement?: string;
+  finalbiddingdate?: string;
+}
+
 const CardStartAuction: FC = () => {
-  const { assetId } = useParams<{ assetId: string }>();
+  renderCount++;
+  const [data, setStateData] = useState<stateData>(initialValues);
+  const { watch, control, handleSubmit, formState, register, errors } = useForm({
+    defaultValues: { ...initialValues },
+    mode: "onChange"
+  });  
+
+  /*
+  useEffect(() => {
+    if (
+      session &&
+      !session.error &&
+      session.state === AuthLoginState.LoggedIn
+    ) {
+      history.replace('/home');
+    }
+  }, [session, history]);
+  */
+
+  useEffect(() => {
+    /*
+    register('minimumbid', {
+      required: 'Minimum Bid required!',
+      pattern: {
+        value: /^[0-9]/,
+        message: 'Minimum Bid should be a number',
+      },
+      validate: (value) => value > 0 || 'Minimum Bid should to be higher than 0',
+    });
+    register('minimumincrement', {
+      required: 'Minimum Increment required!',
+      pattern: {
+        value: /^[0-9]/,
+        message: 'Minimum Increment should be a number',
+      },
+      validate: (value) => value > 0 || 'Minimum Increment should to be higher than 0',
+    }); 
+    */ 
+    //console.log("Entra en useEffect:" + JSON.stringify(data));
+    setStateData(data);
+  }, [data])  // UseEffect will be executed when some of these dependency variables values changed
+
+  /**
+   *
+   * @param _fieldName
+   */
+  const showError = (_fieldName: string) => {
+    //console.log("Entra en showerror:" + _fieldName);
+    {      
+      return (
+        (errors as any)[_fieldName] && (
+          <div
+            style={{
+              color: "red",
+              padding: 5,
+              paddingLeft: 12,
+              fontSize: "smaller"
+            }}
+          >
+            This field is required
+          </div>
+        )
+      );
+    }
+  };
+
+  const onIonChange = (event) => {    
+    //console.log(data.minimunbid);   
+    event.preventDefault();
+    event.stopPropagation()
+    console.log("Entra en onIonChange: " + event.target.name + ": " + event.target.value);
+    //data.minimumbid = event.target.value;
+    setStateData({...data, [event.target.name] : event.target.value});
+    /*
+    setStateData({
+      ...data, 
+      [event.target.name] : event.target.value
+    });
+    */
+    /*     
+    setData({ ...data,
+      [event.target.name] : event.target.value 
+    })
+    */
+  }
+
+  /**
+   *
+   * @param data
+   */  
+  const onSubmit = (formdata, e) => {
+    e.preventDefault();    
+    console.log(data);
+    console.log(e);
+    console.log("submitted:" + JSON.stringify(data, null, 2));    
+    history.replace(`/home/card/startauctionaction/${assetId}/${data.minimumbid}/${data.minimumincrement}/${data.finalbiddingdate?.replaceAll('/','-')}`);
+  }
+
+  console.log(errors);
+
   const history = useHistory();
+  // const { session } = useContext(AuthLoginContext);
+
+  const { assetId } = useParams<{ assetId: string }>();  
   const { assets } = useSelector(collectionSelector, shallowEqual);
   const asset = useMemo(() => assets.flat().find(({ id }) => id === assetId), [
     assets,
     assetId,
-  ]) as BaseResourcesTypes.Assets;
+  ]) as BaseResourcesTypes.Assets;  
 
   if (!asset) {
     return <IonSpinner color="light" />;
-  }
-
-  const d = new Date();
-  const datePlaceHolder = (d.getMonth()+1) + " / " + d.getDate() + " / " + d.getFullYear();
-
-  const StartAuction = () => {
-
   }
 
   const {
@@ -131,22 +242,14 @@ const CardStartAuction: FC = () => {
 
   const {
     ipfsHashImageFront,
-    id,
     title,
     subtitle,
-    carNumber,
-    season,
-    issuedDate,
-    issuedLocation,
-    issuedAddress,
-    description,
-    issuedLocationLng: lng,
-    issuedLocationLat: lat,
+    issuedDate
   } = attributes as any;
 
-  console.log(attributes);
+  //console.log(attributes);
 
-  return (
+  return (    
     <IonPage>
       <Header
         title={title}
@@ -156,8 +259,8 @@ const CardStartAuction: FC = () => {
           </IonButton>
         }
       />
-
-      <IonContent fullscreen>
+      <IonContent fullscreen>        
+        <form onSubmit={handleSubmit(onSubmit)}>
         <IonGrid className="ion-no-padding">
           <IonRow>
             <IonCol className="ion-no-padding" size="12">
@@ -198,24 +301,40 @@ const CardStartAuction: FC = () => {
               </Title>              
             </IonCol>
           </IonRow>
-          <HorizontalLine/>
+          <HorizontalLine/>          
           <IonRow>            
             <IonCol className="ion-text-center" >              
               <IonList no-lines lines="none">
-                <IonItem className="ion-text-center" no-lines>                  
-                  <AmountIonInput placeholder="$0.00" clear-on-edit={true}  min="0" inputmode="numeric" color="warning"/>
+                <IonItem className="ion-text-center" no-lines>  
+                <Controller
+                    as={
+                      <AmountIonInput value={data.minimumbid} placeholder="$0.00" onIonInput={onIonChange} clearOnEdit={true} min="0" inputmode="numeric" color="warning"/>
+                    }
+                    control={control}                
+                    name="minimumbid" 
+                    id="minid"                   
+                  />
                 </IonItem>
+                {showError("minimumbid")}
               </IonList>
-              <AmountIonLabel position="stacked">Set Minimum Bid</AmountIonLabel>
+              <AmountIonLabel position="stacked">Set Minimum Bid</AmountIonLabel> 
             </IonCol>
             <VerticalLine/>
             <IonCol className="ion-text-center" >              
               <IonList no-lines lines="none">
-                <IonItem className="ion-text-center" no-lines>                  
-                  <AmountIonInput placeholder="$0.00" clear-on-edit={true}  min="0" inputmode="numeric" color="warning"/>                              
+                <IonItem className="ion-text-center" no-lines>
+                  <Controller
+                      as={
+                        <AmountIonInput value={data.minimumincrement} placeholder="$0.00" onIonInput={onIonChange} clear-on-edit="true" min="0" inputmode="numeric" color="warning"/>
+                      }
+                      control={control}                 
+                      name="minimumincrement"   
+                      id="mininc"                 
+                  />                                              
                 </IonItem>
+                {showError("minimumincrement")}
               </IonList>
-              <AmountIonLabel position="stacked">Set Minimum increment</AmountIonLabel>
+              <AmountIonLabel position="stacked">Set Minimum Increment</AmountIonLabel> 
             </IonCol>            
           </IonRow>
           <HorizontalLine/>
@@ -224,31 +343,40 @@ const CardStartAuction: FC = () => {
               <AmountIonLabel position="stacked" style={{marginLeft:"30px"}}>Set Final Bidding Date</AmountIonLabel> 
               <IonList no-lines>
                 <IonItem style={{border:"1px solid #F8C938"}} className="ion-text-center">              
-                  <CardIonDatetime color="auctiondatetime" className="ion-text-left" displayFormat="MM / DD / YYYY" placeholder={datePlaceHolder} max="2100" min={new Date().toISOString()}/>              
+                  <Controller
+                      as={
+                        <CardIonDatetime value={data.finalbiddingdate} onIonChange={onIonChange} color="auctiondatetime" className="ion-text-left" displayFormat="MM / DD / YYYY" placeholder={datePlaceHolder} max="2100" min={new Date().toISOString()}/>              
+                      }
+                      control={control}
+                      name="finalbiddingdate"      
+                  />                                     
                   <CalendarOutline color={'#F8C938'} title="Final Bidding Date"/>
                 </IonItem>
+                {showError("finalbiddingdate")}
               </IonList>
             </IonCol>
-          </IonRow>
+          </IonRow>             
         </IonGrid>
         <Footer className="ion-no-border">
-        <IonToolbar>
-          <FooterButton
-            color="auction"
-            size="large"
-            className="ion-text-uppercase ion-no-margin"
-            fontSize={FontSize.SM}
-            fontWeight={FontWeight.BOLD}
-            radius={false}
-            expand="block"
-            onClick={StartAuction}
-          >
-            Start Auction
-          </FooterButton>
-        </IonToolbar>
-      </Footer>        
+          <IonToolbar>
+            <FooterButton
+              color="auction"
+              size="large"
+              type="submit"
+              className="ion-text-uppercase ion-no-margin"
+              fontSize={FontSize.SM}
+              fontWeight={FontWeight.BOLD}
+              radius={false}
+              expand="block"   
+              disabled={formState.isValid === false}           
+            >
+              Start Auction
+            </FooterButton>
+          </IonToolbar>
+        </Footer>  
+        </form>
       </IonContent>
-    </IonPage>
+    </IonPage>    
   );
 };
 

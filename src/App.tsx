@@ -14,6 +14,7 @@ import CollectCardPage from './pages/CollectCardPage';
 import HomePage from './pages/HomePage';
 import PasscodePage from './pages/PasscodePage';
 import PassphrasePage from './pages/PassphrasePage';
+import StartAuctionPage from './pages/StartAuctionPage';
 import ProfilePage from './pages/ProfilePage';
 import QrCodeGeneratorPage from './pages/QrCodeGeneratorPage';
 import ScanQRPage from './pages/ScanQRPage';
@@ -113,7 +114,12 @@ const App: FC = () => {
                   path="/home/card/startauction/:assetId"
                   component={CardStartAuction}
                   exact
-                />                
+                />  
+                <ProtectedRoute
+                  path="/home/card/startauctionaction/:cardId/:minimumBid/:minimumIncrement/:finalBiddingDate"
+                  component={StartAuctionPage}
+                  exact
+                />                               
                 <ProtectedRoute
                   path="/home/collect-card/:collectionId"
                   component={CollectCardPage}
