@@ -28,6 +28,7 @@ import { StartAuctionAction } from '../store/actions/auctions';
 import { startAuctionSelector } from '../store/selectors/auctions';
 import { transactionsSelector } from '../store/selectors/transaction';
 import { min } from 'rxjs/operators';
+import { ClaimAssetAction } from '../store/actions/asset-claim';
 
 const ImageBgCol = styled(IonCol)`
   display: flex;
@@ -121,9 +122,7 @@ const StartAuctionPage: FC = () => {
   useEffect(() => {    
     if (isMounted && minimumBid && minimumIncrement && finalBiddingDate && cardId && address) {
       console.log("Calling dispatch");
-      console.log(isLoading);
-      console.log(isError);
-      console.log(startAuctionRequest);
+      //dispatch(ClaimAssetAction('35c20e153ea2532cbecae087dee0d68964091caa1a7b043568c38e877f355e08', address!, txUuid));
       dispatch(StartAuctionAction(Number(minimumBid), Number(minimumIncrement), finalBiddingDate, cardId, address!, passph, txUuid));
     }
   }, [isMounted, dispatch, minimumBid, minimumIncrement, finalBiddingDate, cardId, address, passph]);  

@@ -37,8 +37,7 @@ const startAuction: RootEpic = (
                 passphrase,
                 txUuid
             },
-        } = action as StartAuctionActionType;
-        console.log("Entra en el Epic");
+        } = action as StartAuctionActionType;      
 
         const transaction = new Builders.NFTAuctionBuilder()
             .NFTAuctionAsset({
@@ -52,7 +51,7 @@ const startAuction: RootEpic = (
             .sign(passphrase);
 
         return defer(() =>
-                connection(stateBaseUrl!).api("transactions").create({ transactions: [transaction.build().toJson()] })
+            connection(stateBaseUrl!).api("transactions").create({ transactions: [transaction.build().toJson()] })
         ).pipe(       
             switchMap(
                 ({ body: { data, errors } }: ApiResponse<CreateTransactionApiResponse>) => {
@@ -70,19 +69,7 @@ const startAuction: RootEpic = (
                   return of(StartAuctionErrorAction(err));
                 }
               ),
-              catchError((err) => of(StartAuctionErrorAction(err)))            
-            /*
-            map(({ body: { data, errors } }) => {
-                console.log(JSON.stringify(data, null, 4));
-                console.log(JSON.stringify(ErrorMessage, null, 4));
-                if (errors) {
-                    return StartAuctionErrorAction(errors);
-                }
-                const [accepted] = data.accept;
-                return StartAuctionSuccessAction(accepted);
-            }),
-            catchError((err) => of(StartAuctionErrorAction(err)))   
-            */     
+              catchError((err) => of(StartAuctionErrorAction(err)))    
         );                      
     })
   );

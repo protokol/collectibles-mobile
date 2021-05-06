@@ -169,29 +169,27 @@ const CardStartAuction: FC = () => {
    */
   const showError = (_fieldName: string) => {
     //console.log("Entra en showerror:" + _fieldName);
-    {      
-      return (
-        (errors as any)[_fieldName] && (
-          <div
-            style={{
-              color: "red",
-              padding: 5,
-              paddingLeft: 12,
-              fontSize: "smaller"
-            }}
-          >
-            This field is required
-          </div>
-        )
-      );
-    }
+    return (
+      (errors as any)[_fieldName] && (
+        <div
+          style={{
+            color: "red",
+            padding: 5,
+            paddingLeft: 12,
+            fontSize: "smaller"
+          }}
+        >
+          This field is required
+        </div>
+      )
+    );
   };
 
   const onIonChange = (event) => {    
     //console.log(data.minimunbid);   
     event.preventDefault();
     event.stopPropagation()
-    console.log("Entra en onIonChange: " + event.target.name + ": " + event.target.value);
+    //console.log("Entra en onIonChange: " + event.target.name + ": " + event.target.value);
     //data.minimumbid = event.target.value;
     setStateData({...data, [event.target.name] : event.target.value});
     /*
@@ -213,13 +211,13 @@ const CardStartAuction: FC = () => {
    */  
   const onSubmit = (formdata, e) => {
     e.preventDefault();    
-    console.log(data);
-    console.log(e);
+    //console.log(data);  
+    //console.log(e);
     console.log("submitted:" + JSON.stringify(data, null, 2));    
     history.replace(`/home/card/startauctionaction/${assetId}/${data.minimumbid}/${data.minimumincrement}/${data.finalbiddingdate?.replaceAll('/','-')}`);
   }
 
-  console.log(errors);
+  //console.log(errors);
 
   const history = useHistory();
   // const { session } = useContext(AuthLoginContext);
