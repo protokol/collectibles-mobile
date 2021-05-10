@@ -114,18 +114,14 @@ const StartAuctionPage: FC = () => {
 
   const {
     session: { address, passphrase },
-  } = useContext(AuthLoginContext);
-
-  const passph = (passphrase===undefined)?"":passphrase.valueOf();
+  } = useContext(AuthLoginContext);  
 
   const isMounted = useIsMounted();  
-  useEffect(() => {    
-    if (isMounted && minimumBid && minimumIncrement && finalBiddingDate && cardId && address) {
-      console.log("Calling dispatch");
-      //dispatch(ClaimAssetAction('35c20e153ea2532cbecae087dee0d68964091caa1a7b043568c38e877f355e08', address!, txUuid));
-      dispatch(StartAuctionAction(Number(minimumBid), Number(minimumIncrement), finalBiddingDate, cardId, address!, passph, txUuid));
+  useEffect(() => {        
+    if (isMounted && minimumBid && minimumIncrement && finalBiddingDate && cardId && address) {            
+      dispatch(StartAuctionAction(Number(minimumBid), Number(minimumIncrement), finalBiddingDate, cardId, address!, passphrase!, txUuid));
     }
-  }, [isMounted, dispatch, minimumBid, minimumIncrement, finalBiddingDate, cardId, address, passph]);  
+  }, [isMounted, dispatch, minimumBid, minimumIncrement, finalBiddingDate, cardId, address, passphrase]);  
 
   return (
     <IonPage>
@@ -153,7 +149,7 @@ const StartAuctionPage: FC = () => {
                     fontSize={FontSize.SM}
                     color="light"
                   >
-                    {error}
+                  {error}
                   </Text>
                 </>
               )}
@@ -175,6 +171,7 @@ const StartAuctionPage: FC = () => {
           </IonRow>
         </IonGrid>
       </IonContent>
+
       {!isLoading() && !isError() && (
         <Footer className="ion-no-border">
           <IonToolbar>
@@ -188,8 +185,8 @@ const StartAuctionPage: FC = () => {
               onClick={() => {
                 const { txId } = tx;
                 //dispatch(CollectiblesLoadAction(publicKey!));
-                history.push(`/home/card/${txId}`);
-              }}
+                history.push(`/home/auction/${txId}`);
+              }}              
             >
               View Auction
             </ViewCardButton>

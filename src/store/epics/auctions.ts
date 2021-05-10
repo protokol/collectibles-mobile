@@ -1,7 +1,6 @@
 import { defer, merge, of } from 'rxjs';
 import { catchError, map, switchMap, withLatestFrom } from 'rxjs/operators';
 import {
-  DataResponse,
   ApiResponse,
   CreateTransactionApiResponse,
 } from '@arkecosystem/client';
@@ -14,12 +13,11 @@ import {
 import { baseUrlSelector } from '../selectors/app';
 import { RootEpic } from '../types';
 import { Builders, Transactions as NFTTransactions } from "@protokol/nft-exchange-crypto";
-import { ErrorMessage } from '@hookform/error-message';
+import { Transactions, Utils } from "@arkecosystem/crypto";
 import { CryptoUtils } from '../../utils/crypto-utils';
-import { Utils } from '@arkecosystem/crypto';
 import { TransactionWaitForConfirmAction } from '../actions/transaction';
 
-const startAuction: RootEpic = (
+const startAuctionEpic: RootEpic = (
     action$,
     state$,
     { connection }
@@ -37,21 +35,26 @@ const startAuction: RootEpic = (
                 passphrase,
                 txUuid
             },
-        } = action as StartAuctionActionType;      
+        } = action as StartAuctionActionType;              
+
+        Transactions.TransactionRegistry.registerTransactionType(NFTTransactions.NFTAuctionTransaction);
 
         const transaction = new Builders.NFTAuctionBuilder()
             .NFTAuctionAsset({
-                startAmount: Utils.BigNumber.make(minimumBid),
+                startAmount: Utils.BigNumber.make(minimumBid),                
                 expiration: {
                     blockHeight: 1000000,
                 },
-                nftId: cardId,
+                nftIds: [cardId],
             })
+            //.fee("0")
             .nonce(CryptoUtils.getWalletNextNonce())
             .sign(passphrase);
 
         return defer(() =>
-            connection(stateBaseUrl!).api("transactions").create({ transactions: [transaction.build().toJson()] })
+            connection(stateBaseUrl!)
+              .api("transactions")
+              .create({ transactions: [transaction.getStruct()] })
         ).pipe(       
             switchMap(
                 ({ body: { data, errors } }: ApiResponse<CreateTransactionApiResponse>) => {
@@ -62,18 +65,17 @@ const startAuction: RootEpic = (
                       of(TransactionWaitForConfirmAction(txUuid, accepted))
                     );
                   }
-      
                   const [invalid] = data.invalid;
                   const err = errors[invalid].message;
-      
                   return of(StartAuctionErrorAction(err));
                 }
               ),
-              catchError((err) => of(StartAuctionErrorAction(err)))    
+              catchError((err) => of(StartAuctionErrorAction(err))
+            )    
         );                      
     })
   );
 
-const epics = [startAuction];
+const epics = [startAuctionEpic];
 
 export default epics;

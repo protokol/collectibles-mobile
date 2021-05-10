@@ -5,6 +5,7 @@ import rootEpic from './epics';
 import rootReducer from './reducers';
 import connection from './services/protokol-connection';
 import { RootActions, RootDependencies, RootState } from './types';
+import * as actionCreators from './devtoolactions';
 
 declare global {
   interface Window {

@@ -20,6 +20,8 @@ const fetchWalletCollectionsEpic: RootEpic = (
       const {
         payload: { pubKey, query },
       } = action as CollectiblesLoadActionType;
+      
+      console.log("Collections Epic connection: " + JSON.stringify(connection));
 
       return defer(() =>
         connection(stateBaseUrl!)
