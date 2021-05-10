@@ -10,9 +10,6 @@ import {
     StartAuctionSuccessAction,
     StartAuctionErrorAction,
     StartAuctionActionType,
-    CollectiblesOnAuctionLoadActionType,
-    CollectiblesOnAuctionLoadErrorAction,
-    CollectiblesOnAuctionLoadSuccessAction,
 } from '../actions/auctions';
 import { baseUrlSelector } from '../selectors/app';
 import { RootEpic } from '../types';
@@ -20,38 +17,6 @@ import { Builders, Transactions as NFTTransactions } from "@protokol/nft-exchang
 import { Transactions, Interfaces, Utils } from "@arkecosystem/crypto";
 import { CryptoUtils } from '../../utils/crypto-utils';
 import { TransactionWaitForConfirmAction } from '../actions/transaction';
-
-const fetchCardsOnAuctionEpic: RootEpic = (
-  action$,
-  state$,
-  { connection }
-) =>
-  action$.ofType(AuctionActions.COLLECTIBLES_ON_AUCTION_LOAD).pipe(
-    withLatestFrom(state$.pipe(map(baseUrlSelector))),
-    switchMap(([action, stateBaseUrl]) => {
-      const {
-        payload: { body, query },
-      } = action as CollectiblesOnAuctionLoadActionType;   
-
-      return defer(() =>
-        connection(stateBaseUrl!).NFTExchangeApi("auctions").searchByAsset(body!, query)
-      ).pipe(
-        map(({ body: { data, errors } }) => {
-          if (errors) {
-            return CollectiblesOnAuctionLoadErrorAction(errors);
-          }
-          /*
-          const q = query || {
-            page: 1,
-            limit: 100,
-          };
-          */
-          return CollectiblesOnAuctionLoadSuccessAction(body!, data, true /*data.length < q.limit!*/);
-        }),
-        catchError((err) => of(CollectiblesOnAuctionLoadErrorAction(err)))
-      );
-    })
-);
 
 const startAuctionEpic: RootEpic = (
     action$,
@@ -132,6 +97,6 @@ const startAuctionEpic: RootEpic = (
     })
   );
 
-const epics = [fetchCardsOnAuctionEpic, startAuctionEpic];
+const epics = [startAuctionEpic];
 
 export default epics;

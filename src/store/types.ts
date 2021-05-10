@@ -15,15 +15,15 @@ import {
   StartAuctionActionType,
   StartAuctionSuccessActionType,
   StartAuctionErrorActionType,
-  CollectiblesOnAuctionLoadActionType,
-  CollectiblesOnAuctionLoadSuccessActionType,
-  CollectiblesOnAuctionLoadErrorActionType,
 } from './actions/auctions';
 
 import {
   CollectiblesLoadActionType,
   CollectiblesLoadErrorActionType,
   CollectiblesLoadSuccessActionType,
+  CollectiblesOnAuctionLoadActionType,
+  CollectiblesOnAuctionLoadErrorActionType,
+  CollectiblesOnAuctionLoadSuccessActionType,  
 } from './actions/collections';
 import { NamespaceRegisterActionType } from './actions/namespace';
 import {
@@ -83,7 +83,7 @@ export type RootState = {
   network: NetworkState;
   assetClaim: AssetClaimState;
   startAuction: AuctionState;
-  cardsOnAuction: AuctionState;
+  cardsOnAuction: CollectionsState;
   transaction: TransactionState;
   collections: CollectionsState;
   wallets: WalletsState;

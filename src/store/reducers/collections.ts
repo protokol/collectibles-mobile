@@ -29,13 +29,15 @@ const reducer: Reducer<CollectionsState, COLLECTIONS_ACTION_TYPES> = (
   const { type } = action;
 
   switch (type) {
-    case CollectionsActions.COLLECTIBLES_LOAD: {
+    case CollectionsActions.COLLECTIBLES_LOAD:
+    case CollectionsActions.COLLECTIBLES_ON_AUCTION_LOAD: {
       return {
         ...state,
         isLoading: true,
       };
     }
-    case CollectionsActions.COLLECTIBLES_LOAD_SUCCESS: {
+    case CollectionsActions.COLLECTIBLES_LOAD_SUCCESS:
+    case CollectionsActions.COLLECTIBLES_ON_AUCTION_LOAD_SUCCESS: {
       const {
         payload: { assets, query, isLastPage },
       } = action as CollectiblesLoadSuccessActionType;
@@ -54,7 +56,8 @@ const reducer: Reducer<CollectionsState, COLLECTIONS_ACTION_TYPES> = (
         error: undefined,
       };
     }
-    case CollectionsActions.COLLECTIBLES_LOAD_ERROR: {
+    case CollectionsActions.COLLECTIBLES_LOAD_ERROR:
+    case CollectionsActions.COLLECTIBLES_ON_AUCTION_LOAD_ERROR: {
       const {
         payload: { error },
       } = action;
@@ -64,7 +67,7 @@ const reducer: Reducer<CollectionsState, COLLECTIONS_ACTION_TYPES> = (
         isError: true,
         error,
       };
-    }
+    }        
     default:
       return state;
   }

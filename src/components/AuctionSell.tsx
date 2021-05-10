@@ -21,8 +21,7 @@ import useIsMounted from '../hooks/use-is-mounted';
 import useMediaQuery from '../hooks/use-media-query';
 import { CardTagType } from './CardTag';
 import { AuthLoginContext } from '../providers/AuthLoginProvider';
-import { CollectiblesLoadAction } from '../store/actions/collections';
-import { CollectiblesOnAuctionLoadAction } from '../store/actions/auctions';
+import { CollectiblesLoadAction, CollectiblesOnAuctionLoadAction } from '../store/actions/collections';
 import { collectionSelector } from '../store/selectors/collections';
 import { auctionImage } from '../constants/images';
 
@@ -153,12 +152,12 @@ const AuctionSell: FC<{menu?:string}> = ({menu}) => {
         if (auctionStart){
           dispatch(CollectiblesLoadAction(publicKeyIn!));
         }else if (cardsOnAuction){
-          dispatch(CollectiblesOnAuctionLoadAction({senderPublicKey: publicKeyIn!}));
+          dispatch(CollectiblesOnAuctionLoadAction(publicKeyIn!, undefined));
         }else if (biddedCards){
           //dispatch(CollectiblesBiddedLoadAction(publicKeyIn!));
         }
       }
-    }, [isMounted, dispatch, publicKeyIn]);
+    }, [isMounted, dispatch, publicKeyIn, auctionStart, cardsOnAuction, biddedCards]);
   
     const loadNextPage = useCallback(() => {
       if (publicKeyIn) {
@@ -171,7 +170,7 @@ const AuctionSell: FC<{menu?:string}> = ({menu}) => {
             })
           );
         }else if (cardsOnAuction){
-          dispatch(CollectiblesOnAuctionLoadAction({senderPublicKey: publicKeyIn!}));
+          dispatch(CollectiblesOnAuctionLoadAction(publicKeyIn!, undefined));
         }else if (biddedCards){
           /*
           dispatch(
@@ -183,7 +182,7 @@ const AuctionSell: FC<{menu?:string}> = ({menu}) => {
           */
         }        
       }
-    }, [query, dispatch, publicKeyIn]);
+    }, [query, dispatch, publicKeyIn, auctionStart, cardsOnAuction, biddedCards]);
   
     const flatAssets = useMemo(() => assets.flat(), [assets]);
   

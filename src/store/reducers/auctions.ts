@@ -53,34 +53,6 @@ const reducer: Reducer<AuctionState, AUCTION_ACTION_TYPES> = (
         error,
       };
     }
-    case AuctionActions.COLLECTIBLES_ON_AUCTION_LOAD: {
-      return {
-        ...initialState,
-        isLoading: true,
-      };
-    }
-    case AuctionActions.COLLECTIBLES_ON_AUCTION_LOAD_SUCCESS: {
-      const {
-        payload: { auctions },
-      } = action;
-      return {
-        ...state,
-        isLoading: false,
-        isError: false,
-        auctions: auctions
-      };
-    }
-    case AuctionActions.COLLECTIBLES_ON_AUCTION_LOAD_ERROR: {
-      const {
-        payload: { error },
-      } = action;
-      return {
-        ...state,
-        isLoading: false,
-        isError: true,
-        error,
-      };
-    }
     default:
       return state;
   }

@@ -1,14 +1,10 @@
 import { Action } from 'redux';
-import { BaseResourcesTypes, ExchangeResourcesTypes } from '@protokol/client';
 
 // Actions
 enum AuctionActions {
   START_AUCTION = '@Auctions/START_AUCTION',
   START_AUCTION_SUCCESS = '@Auctions/START_AUCTION_SUCCESS',
   START_AUCTION_ERROR = '@Auctions/START_AUCTION_ERROR',
-  COLLECTIBLES_ON_AUCTION_LOAD = '@Collections/COLLECTIBLES_ON_AUCTION_LOAD',
-  COLLECTIBLES_ON_AUCTION_LOAD_SUCCESS = '@Collections/COLLECTIBLES_ON_AUCTION_LOAD_SUCCESS',
-  COLLECTIBLES_ON_AUCTION_LOAD_ERROR = '@Collections/COLLECTIBLES_ON_AUCTION_LOAD_ERROR',
 }
 
 export interface StartAuctionActionType
@@ -33,30 +29,6 @@ export interface StartAuctionSuccessActionType
 
 export interface StartAuctionErrorActionType
   extends Action<AuctionActions.START_AUCTION_ERROR> {
-  payload: {
-    error: Error;
-  };
-}
-
-export interface CollectiblesOnAuctionLoadActionType
-  extends Action<AuctionActions.COLLECTIBLES_ON_AUCTION_LOAD> {
-  payload: {
-    body?: ExchangeResourcesTypes.SearchAuctionsApiBody,
-    query?: ExchangeResourcesTypes.SearchAuctionsApiQuery,
-  };
-}
-
-export interface CollectiblesOnAuctionLoadSuccessActionType
-  extends Action<AuctionActions.COLLECTIBLES_ON_AUCTION_LOAD_SUCCESS> {
-  payload: {
-    body: ExchangeResourcesTypes.SearchAuctionsApiBody,
-    auctions: ExchangeResourcesTypes.Auctions[],
-    isLastPage: boolean;
-  };
-}
-
-export interface CollectiblesOnAuctionLoadErrorActionType
-  extends Action<AuctionActions.COLLECTIBLES_ON_AUCTION_LOAD_ERROR> {
   payload: {
     error: Error;
   };
@@ -100,45 +72,9 @@ const StartAuctionErrorAction = (error: Error): StartAuctionErrorActionType => (
   },
 });
 
-const CollectiblesOnAuctionLoadAction = (
-  body?: ExchangeResourcesTypes.SearchAuctionsApiBody,
-  query?: ExchangeResourcesTypes.SearchAuctionsApiQuery
-): CollectiblesOnAuctionLoadActionType => ({
-  type: AuctionActions.COLLECTIBLES_ON_AUCTION_LOAD,
-  payload: {
-    body,
-    query,
-  },
-});
-
-const CollectiblesOnAuctionLoadSuccessAction = (
-  body: ExchangeResourcesTypes.SearchAuctionsApiBody,
-  auctions: ExchangeResourcesTypes.Auctions[],
-  isLastPage = false
-): CollectiblesOnAuctionLoadSuccessActionType => ({
-  type: AuctionActions.COLLECTIBLES_ON_AUCTION_LOAD_SUCCESS,
-  payload: {
-    body,
-    auctions,
-    isLastPage,
-  },
-});
-
-const CollectiblesOnAuctionLoadErrorAction = (
-  error: Error
-): CollectiblesOnAuctionLoadErrorActionType => ({
-  type: AuctionActions.COLLECTIBLES_ON_AUCTION_LOAD_ERROR,
-  payload: {
-    error,
-  },
-});
-
 export type AUCTION_ACTION_TYPES = StartAuctionActionType &
   StartAuctionSuccessActionType &
-  StartAuctionErrorActionType & 
-  CollectiblesOnAuctionLoadActionType &
-  CollectiblesOnAuctionLoadSuccessActionType &
-  CollectiblesOnAuctionLoadErrorActionType
+  StartAuctionErrorActionType
   ;
 
 export {
@@ -146,7 +82,4 @@ export {
   StartAuctionAction,
   StartAuctionSuccessAction,
   StartAuctionErrorAction,
-  CollectiblesOnAuctionLoadAction,
-  CollectiblesOnAuctionLoadSuccessAction,
-  CollectiblesOnAuctionLoadErrorAction
 };
