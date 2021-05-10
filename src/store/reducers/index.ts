@@ -3,6 +3,7 @@ import { RootState } from '../types';
 import app from './app';
 import assetClaim from './asset-claim';
 import startAuction from './auctions';
+import cardsOnAuction from './auctions';
 import collections from './collections';
 import network from './network';
 import transaction from './transaction';
@@ -13,6 +14,7 @@ export default combineReducers<RootState>({
   network,
   assetClaim,
   startAuction,
+  cardsOnAuction,
   transaction,
   collections,
   wallets,

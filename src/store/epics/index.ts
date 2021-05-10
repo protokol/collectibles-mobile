@@ -1,7 +1,7 @@
 import { combineEpics } from 'redux-observable';
 import appEpics from './app';
 import assetClaimEpics from './asset-claim';
-import startAuctionEpic from './auctions';
+import auctionsEpic from './auctions';
 import collectionsEpics from './collections';
 import namespaceEpics from './namespace';
 import networkEpics from './network';
@@ -12,7 +12,7 @@ export default combineEpics(
   ...appEpics,
   ...networkEpics,
   ...assetClaimEpics,
-  ...startAuctionEpic,
+  ...auctionsEpic,
   ...transactionEpics,
   ...namespaceEpics,
   ...collectionsEpics,

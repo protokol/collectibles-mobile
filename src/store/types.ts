@@ -15,6 +15,9 @@ import {
   StartAuctionActionType,
   StartAuctionSuccessActionType,
   StartAuctionErrorActionType,
+  CollectiblesOnAuctionLoadActionType,
+  CollectiblesOnAuctionLoadSuccessActionType,
+  CollectiblesOnAuctionLoadErrorActionType,
 } from './actions/auctions';
 
 import {
@@ -41,7 +44,7 @@ import {
 } from './actions/wallets';
 import { AppState } from './reducers/app';
 import { AssetClaimState } from './reducers/asset-claim';
-import { StartAuctionState } from './reducers/auctions';
+import { AuctionState } from './reducers/auctions';
 import { CollectionsState } from './reducers/collections';
 import { NetworkState } from './reducers/network';
 import { TransactionState } from './reducers/transaction';
@@ -61,6 +64,9 @@ export type RootActions =
   | StartAuctionActionType
   | StartAuctionSuccessActionType
   | StartAuctionErrorActionType
+  | CollectiblesOnAuctionLoadActionType
+  | CollectiblesOnAuctionLoadSuccessActionType
+  | CollectiblesOnAuctionLoadErrorActionType
   | TransactionWaitForConfirmActionType
   | TransactionConfirmSuccessActionType
   | TransactionConfirmErrorActionType
@@ -76,7 +82,8 @@ export type RootState = {
   app: AppState;
   network: NetworkState;
   assetClaim: AssetClaimState;
-  startAuction: StartAuctionState;
+  startAuction: AuctionState;
+  cardsOnAuction: AuctionState;
   transaction: TransactionState;
   collections: CollectionsState;
   wallets: WalletsState;

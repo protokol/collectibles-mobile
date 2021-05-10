@@ -28,7 +28,6 @@ import { StartAuctionAction } from '../store/actions/auctions';
 import { startAuctionSelector } from '../store/selectors/auctions';
 import { transactionsSelector } from '../store/selectors/transaction';
 import { min } from 'rxjs/operators';
-import { ClaimAssetAction } from '../store/actions/asset-claim';
 
 const ImageBgCol = styled(IonCol)`
   display: flex;
@@ -155,7 +154,7 @@ const StartAuctionPage: FC = () => {
               )}
               {!isLoading() && !isError() && (
                 <>
-                  <Text color="success" fontSize={FontSize.XXL}>
+                  <Text color="warning" fontSize={FontSize.XXL} fontWeight={FontWeight.BOLD}>
                     Hooray!
                   </Text>
                   <Text
@@ -163,7 +162,7 @@ const StartAuctionPage: FC = () => {
                     fontSize={FontSize.L}
                     color="light"
                   >
-                    You just started a card auction!
+                    The auction is now live!
                   </Text>
                 </>
               )}

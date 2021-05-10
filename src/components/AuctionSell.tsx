@@ -1,4 +1,4 @@
-import { FC, useCallback, useContext, useEffect, useMemo } from 'react';
+import { FC, useCallback, useContext, useState, useEffect, useMemo } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import styled from 'styled-components';
@@ -22,6 +22,7 @@ import useMediaQuery from '../hooks/use-media-query';
 import { CardTagType } from './CardTag';
 import { AuthLoginContext } from '../providers/AuthLoginProvider';
 import { CollectiblesLoadAction } from '../store/actions/collections';
+import { CollectiblesOnAuctionLoadAction } from '../store/actions/auctions';
 import { collectionSelector } from '../store/selectors/collections';
 import { auctionImage } from '../constants/images';
 
@@ -114,7 +115,7 @@ const CollectablesIonRow = styled(IonRow)`
   max-height: calc(100vh - 92px - 4.8rem);
 `;
 
-const AuctionSell: FC = () => {
+const AuctionSell: FC<{menu?:string}> = ({menu}) => {
     const history = useHistory();
     const isMedium = useMediaQuery('(min-height: 992px)');
     const isLarge = useMediaQuery('(min-height: 1200px)');
@@ -122,14 +123,21 @@ const AuctionSell: FC = () => {
       collectionSelector,
       shallowEqual
     );
+    const [submenu, setAuctionSellSubMenu] = useState(1)
+    const auctionStart = submenu===1;
+    const cardsOnAuction = submenu===2;
+    const biddedCards = submenu===3;
 
     const StartAuction = () => {
+      setAuctionSellSubMenu(1);
     }
 
     const CardsOnAuction = () => {
+      setAuctionSellSubMenu(2);
     }
 
     const BiddedCards = () => {
+      setAuctionSellSubMenu(3);
     }
 
     const dispatch = useDispatch();
@@ -142,19 +150,38 @@ const AuctionSell: FC = () => {
     const isMounted = useIsMounted();
     useEffect(() => {
       if (publicKeyIn && isMounted) {
-        dispatch(CollectiblesLoadAction(publicKeyIn!));
+        if (auctionStart){
+          dispatch(CollectiblesLoadAction(publicKeyIn!));
+        }else if (cardsOnAuction){
+          dispatch(CollectiblesOnAuctionLoadAction({senderPublicKey: publicKeyIn!}));
+        }else if (biddedCards){
+          //dispatch(CollectiblesBiddedLoadAction(publicKeyIn!));
+        }
       }
     }, [isMounted, dispatch, publicKeyIn]);
   
     const loadNextPage = useCallback(() => {
       if (publicKeyIn) {
         const { page } = query ?? { page: 1 };
-        dispatch(
-          CollectiblesLoadAction(publicKeyIn!, {
-            ...query,
-            page: page! + 1,
-          })
-        );
+        if (auctionStart){
+          dispatch(
+            CollectiblesLoadAction(publicKeyIn!, {
+              ...query,
+              page: page! + 1,
+            })
+          );
+        }else if (cardsOnAuction){
+          dispatch(CollectiblesOnAuctionLoadAction({senderPublicKey: publicKeyIn!}));
+        }else if (biddedCards){
+          /*
+          dispatch(
+            CollectiblesBiddedLoadAction(publicKeyIn!, {
+              ...query,
+              page: page! + 1,
+            })
+          );
+          */
+        }        
       }
     }, [query, dispatch, publicKeyIn]);
   
@@ -236,7 +263,7 @@ const AuctionSell: FC = () => {
           </BiddedCardsButton>                            
         </ImageBgCol>
       </IonRow>
-    </IonGrid>
+    </IonGrid>    
     <IonGrid className="ion-no-padding">
       <CollectablesIonRow onScroll={onCardsScroll}>
           {!isLoading && isError && (
