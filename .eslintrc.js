@@ -10,8 +10,6 @@ module.exports = {
   extends: ['react-app', 'prettier'],
   rules: {
     '@typescript-eslint/no-unused-vars': 'off',
-    '@typescript-eslint/no-unused-vars-experimental': 'off',
-    'no-unused-vars': 'off',
-    'no-unused-vars-experimental': 'off',
+    '@typescript-eslint/no-unused-vars-experimental': 'error',
   },
 };

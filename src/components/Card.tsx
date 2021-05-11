@@ -37,7 +37,7 @@ const Card: FC<{
   details?: string;
   type?: CardTagType;
   linkto: string;
-}> = ({ id, title, subtitle, details, imgIpfsHash, type, linkto }) => {
+}> = ({ title, subtitle, details, imgIpfsHash, type, linkto }) => {
   const history = useHistory();
 
   return (

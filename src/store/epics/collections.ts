@@ -11,7 +11,7 @@ import {
 } from '../actions/collections';
 import { baseUrlSelector } from '../selectors/app';
 import { RootEpic } from '../types';
-import { BaseResourcesTypes, ExchangeResourcesTypes } from '@protokol/client';
+import { BaseResourcesTypes } from '@protokol/client';
 
 const fetchWalletCollectionsEpic: RootEpic = (
   action$,

@@ -69,8 +69,11 @@ const HomeCollectibles: FC = () => {
 
   const dispatch = useDispatch();
   const {
-    session: { publicKey },
+    session: { publicKey, address },
   } = useContext(AuthLoginContext);
+
+  console.log(publicKey);
+  console.log(address);
 
   const publicKeyIn = publicKey;  
 
@@ -174,8 +177,6 @@ const HomeCollectibles: FC = () => {
                 color="primary"
               >
                 No collectables yet!
-                <br/>
-                {publicKey}
               </Text>
             </IonCol>
           )}

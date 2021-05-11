@@ -107,7 +107,6 @@ const d = new Date();
 const dateDefault = (d.getMonth()+1) + "/" + d.getDate() + "/" + d.getFullYear();
 const datePlaceHolder = (d.getMonth()+1) + " / " + d.getDate() + " / " + d.getFullYear();
 
-let renderCount = 0;
 let initialValues = {
   minimumbid: "",
   minimumincrement: "",
@@ -121,26 +120,14 @@ interface stateData{
 }
 
 const CardStartAuction: FC = () => {
-  renderCount++;
+  
   const [data, setStateData] = useState<stateData>(initialValues);
-  const { watch, control, handleSubmit, formState, register, errors } = useForm({
+  const { control, handleSubmit, formState, errors } = useForm({
     defaultValues: { ...initialValues },
     mode: "onChange"
   });  
 
-  /*
-  useEffect(() => {
-    if (
-      session &&
-      !session.error &&
-      session.state === AuthLoginState.LoggedIn
-    ) {
-      history.replace('/home');
-    }
-  }, [session, history]);
-  */
-
-  useEffect(() => {
+  useEffect(() => {    
     /*
     register('minimumbid', {
       required: 'Minimum Bid required!',
@@ -157,11 +144,12 @@ const CardStartAuction: FC = () => {
         message: 'Minimum Increment should be a number',
       },
       validate: (value) => value > 0 || 'Minimum Increment should to be higher than 0',
-    }); 
-    */ 
-    //console.log("Entra en useEffect:" + JSON.stringify(data));
+    });     
+    //console.log("Entra en useEffect:" + JSON.stringify(data));    
+    clearErrors(['minimumbid', 'minimumincrement']);
+    */
     setStateData(data);
-  }, [data])  // UseEffect will be executed when some of these dependency variables values changed
+  }, [data])
 
   /**
    *
@@ -169,6 +157,7 @@ const CardStartAuction: FC = () => {
    */
   const showError = (_fieldName: string) => {
     //console.log("Entra en showerror:" + _fieldName);
+    //console.log(JSON.stringify(formState, null, 4));
     return (
       (errors as any)[_fieldName] && (
         <div
@@ -186,41 +175,34 @@ const CardStartAuction: FC = () => {
   };
 
   const onIonChange = (event) => {    
-    //console.log(data.minimunbid);   
     event.preventDefault();
     event.stopPropagation()
-    //console.log("Entra en onIonChange: " + event.target.name + ": " + event.target.value);
-    //data.minimumbid = event.target.value;
     setStateData({...data, [event.target.name] : event.target.value});
-    /*
-    setStateData({
-      ...data, 
-      [event.target.name] : event.target.value
-    });
-    */
-    /*     
-    setData({ ...data,
-      [event.target.name] : event.target.value 
-    })
-    */
   }
 
-  /**
-   *
-   * @param data
-   */  
-  const onSubmit = (formdata, e) => {
+  const history = useHistory();
+
+  const submitForm = (e) => {
+    //console.log("submitted:" + JSON.stringify(data, null, 2));   
     e.preventDefault();    
-    //console.log(data);  
-    //console.log(e);
     console.log("submitted:" + JSON.stringify(data, null, 2));    
     history.replace(`/home/card/startauctionaction/${assetId}/${data.minimumbid}/${data.minimumincrement}/${data.finalbiddingdate?.replaceAll('/','-')}`);
   }
-
-  //console.log(errors);
-
-  const history = useHistory();
-  // const { session } = useContext(AuthLoginContext);
+   
+  /*
+  const submitForm = useCallback(
+    ({ minimumbid, minimumincrement, finalbiddingdate }: stateData) => {
+      if (!formState.isValid) {
+        return;
+      }      
+      setStateData({ minimumbid, minimumincrement, finalbiddingdate });
+      //history.push(navigateTo);
+      console.log("submitted:" + JSON.stringify(data, null, 2));    
+      //history.push(`/home/card/startauctionaction/${assetId}/${data.minimumbid}/${data.minimumincrement}/${data.finalbiddingdate?.replaceAll('/','-')}`);
+    },
+    [formState.isValid, setStateData, history]
+  );
+  */
 
   const { assetId } = useParams<{ assetId: string }>();  
   const { assets } = useSelector(collectionSelector, shallowEqual);
@@ -235,7 +217,6 @@ const CardStartAuction: FC = () => {
 
   const {
     attributes,
-    timestamp: { unix },
   } = asset;
 
   const {
@@ -244,8 +225,6 @@ const CardStartAuction: FC = () => {
     subtitle,
     issuedDate
   } = attributes as any;
-
-  //console.log(attributes);
 
   return (    
     <IonPage>
@@ -258,7 +237,7 @@ const CardStartAuction: FC = () => {
         }
       />
       <IonContent fullscreen>        
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(submitForm)}>
         <IonGrid className="ion-no-padding">
           <IonRow>
             <IonCol className="ion-no-padding" size="12">
@@ -310,8 +289,16 @@ const CardStartAuction: FC = () => {
                     }
                     control={control}                
                     name="minimumbid" 
-                    id="minid"                   
-                  />
+                    id="minid"
+                    onChangeName="onIonChange"
+                    onChange={([selected]) => {
+                      console.log("minimumbid", selected.detail.value);
+                      return selected.detail.value;
+                    }}
+                    rules={{                                    
+                      minLength: { value: 4, message: "Must be 4 chars long" }
+                    }}                    
+                  />                
                 </IonItem>
                 {showError("minimumbid")}
               </IonList>

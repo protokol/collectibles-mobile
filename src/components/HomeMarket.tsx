@@ -9,7 +9,6 @@ import { FontSize } from '../constants/font-size';
 import { FontWeight } from '../constants/font-weight';
 import { flagImage } from '../constants/images';
 import AuctionSell from './AuctionSell';
-import { findRenderedComponentWithType } from 'react-dom/test-utils';
 
 const ImageBgCol = styled(IonCol)`
   position: relative;

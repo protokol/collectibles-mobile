@@ -1,14 +1,11 @@
 import { FC, useCallback, useContext, useState, useEffect, useMemo } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router';
 import styled from 'styled-components';
 import {
-  IonCol,
-  IonFooter,
+  IonCol,  
   IonGrid,
   IonRow,
   IonSpinner,
-  IonToolbar,
 } from '@ionic/react';
 import Card from './Card';
 import { JSX } from '@ionic/core';
@@ -54,35 +51,6 @@ const ImageBgCol = styled(IonCol)`
   }
 `;
 
-const BannerCol = styled(IonCol)`
-  padding: 2.25rem;
-  background: var(--ion-color-light);
-  text-align: center;
-`;
-
-const BannerText = styled(Text)`
-  color: var(--app-color-gray);
-`;
-
-const ActionButton = styled(Button)`
-  border-radius: 0px !important;
-  height: 3.4375rem;
-  --padding-top: 1.625rem;
-  --padding-bottom: 1.8125rem;
-
-  &.bg-gray {
-    --background: var(--app-color-gray);
-  }
-
-  &.bg-charade {
-    --background: var(--app-color-charade);
-  }
-
-  &.bg-dark-blue-magenta {
-    --background: var(--app-color-dark-blue-magenta);
-  }  
-`;
-
 const CardContainer = styled(IonCol)` 
   padding: 1.375rem;
 
@@ -94,9 +62,9 @@ const CardContainer = styled(IonCol)`
   }
 `;
 
-const StartAuctionButton = styled(Button)<JSX.IonButton>`
-  text-decoration: underline;
-  text-transform: capitalize;
+const StartAuctionButton = styled(Button)<JSX.IonButton>`  
+  text-decoration: none;
+  text-transform: capitalize;  
 `;
 
 const CardsOnAuctionButton = styled(Button)<JSX.IonButton>`
@@ -114,8 +82,7 @@ const CollectablesIonRow = styled(IonRow)`
   max-height: calc(100vh - 92px - 4.8rem);
 `;
 
-const AuctionSell: FC<{menu?:string}> = ({menu}) => {
-    const history = useHistory();
+const AuctionSell: FC = () => {    
     const isMedium = useMediaQuery('(min-height: 992px)');
     const isLarge = useMediaQuery('(min-height: 1200px)');
     const { isError, error, isLoading, assets, isLastPage, query } = useSelector(
@@ -230,36 +197,46 @@ const AuctionSell: FC<{menu?:string}> = ({menu}) => {
             since some disappear at a racing speed!
           </Text>
           <br />
-          <StartAuctionButton
-                className="ion-float-left"
-                color="#F8C938"
-                fill="clear"
-                fontSize={FontSize.SM}
-                fontWeight={FontWeight.BOLD}
-                onClick={() => StartAuction()}
-              >
-                Start Auction
-          </StartAuctionButton>   
-          <CardsOnAuctionButton
-                className="ion-center"
-                color="light"
-                fill="clear"
-                fontSize={FontSize.SM}
-                fontWeight={FontWeight.BOLD}
-                onClick={() => CardsOnAuction()}
-              >
-                Cards On Auction
-          </CardsOnAuctionButton> 
-          <BiddedCardsButton
-                className="ion-float-right"
-                color="light"
-                fill="clear"
-                fontSize={FontSize.SM}
-                fontWeight={FontWeight.BOLD}
-                onClick={() => BiddedCards()}
-              >
-                Bidded Cards
-          </BiddedCardsButton>                            
+          <IonGrid class="ion-justify-content-center">
+            <IonRow class="ion-justify-content-center">
+              <IonCol class="ion-align-self-center">
+                <StartAuctionButton
+                  className="ion-float-left"                                  
+                  fill="clear"
+                  fontSize={FontSize.SM}                  
+                  color={(auctionStart)?"warning":"light"}
+                  fontWeight={(auctionStart)?FontWeight.BOLD:FontWeight.NORMAL}
+                  onClick={() => StartAuction()}
+                >
+                  Start Auction
+                </StartAuctionButton>
+              </IonCol>              
+              <IonCol class="ion-align-self-center">
+                <CardsOnAuctionButton
+                  className="ion-float-center"                  
+                  fill="clear"
+                  fontSize={FontSize.SM}      
+                  color={(cardsOnAuction)?"warning":"light"}
+                  fontWeight={(cardsOnAuction)?FontWeight.BOLD:FontWeight.NORMAL}
+                  onClick={() => CardsOnAuction()}
+                >
+                  Cards On Auction
+                </CardsOnAuctionButton>                 
+              </IonCol>              
+              <IonCol class="ion-align-self-center">
+                <BiddedCardsButton
+                  className="ion-float-right"
+                  fill="clear"
+                  fontSize={FontSize.SM}
+                  color={(biddedCards)?"warning":"light"}
+                  fontWeight={(biddedCards)?FontWeight.BOLD:FontWeight.NORMAL}
+                  onClick={() => BiddedCards()}
+                >
+                  Bidded Cards
+                </BiddedCardsButton>                   
+              </IonCol>              
+            </IonRow>
+          </IonGrid>                         
         </ImageBgCol>
       </IonRow>
     </IonGrid>    

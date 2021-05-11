@@ -27,7 +27,6 @@ import { AuthLoginContext } from '../providers/AuthLoginProvider';
 import { StartAuctionAction } from '../store/actions/auctions';
 import { startAuctionSelector } from '../store/selectors/auctions';
 import { transactionsSelector } from '../store/selectors/transaction';
-import { min } from 'rxjs/operators';
 
 const ImageBgCol = styled(IonCol)`
   display: flex;
@@ -90,10 +89,6 @@ const StartAuctionPage: FC = () => {
   const { cardId, minimumBid, minimumIncrement, finalBiddingDate } = useParams<{ cardId: string, minimumBid: string, minimumIncrement: string, finalBiddingDate: string}>();
   const history = useHistory();
   const dispatch = useDispatch();
-
-  const {
-    session: { publicKey },
-  } = useContext(AuthLoginContext);
 
   const startAuctionRequest = useSelector(startAuctionSelector, shallowEqual);
   const transactions = useSelector(transactionsSelector, shallowEqual);

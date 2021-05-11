@@ -1,6 +1,5 @@
 import { defer, merge, of } from 'rxjs';
 import { catchError, map, switchMap, withLatestFrom } from 'rxjs/operators';
-import { Container } from "@arkecosystem/core-kernel";
 import {
   ApiResponse,
   CreateTransactionApiResponse,
@@ -14,7 +13,7 @@ import {
 import { baseUrlSelector } from '../selectors/app';
 import { RootEpic } from '../types';
 import { Builders, Transactions as NFTTransactions } from "@protokol/nft-exchange-crypto";
-import { Transactions, Interfaces, Utils } from "@arkecosystem/crypto";
+import { Transactions, Utils } from "@arkecosystem/crypto";
 import { CryptoUtils } from '../../utils/crypto-utils';
 import { TransactionWaitForConfirmAction } from '../actions/transaction';
 
@@ -29,16 +28,17 @@ const startAuctionEpic: RootEpic = (
         const {
             payload: {             
                 minimumBid,
-                minimumIncrement,
-                finalBiddingDate,
+                /*minimumIncrement,
+                finalBiddingDate,*/
                 cardId,
-                recipientId,
+                /*recipientId,*/
                 passphrase,
                 txUuid
             },
         } = action as StartAuctionActionType;              
 
-        //TODO Transactions.TransactionRegistry.registerTransactionType(NFTTransactions.NFTAuctionTransaction);
+        Transactions.TransactionRegistry.registerTransactionType(NFTTransactions.NFTAuctionTransaction);
+        //connection(stateBaseUrl!).api("blocks").last();
         //const lastBlock: Interfaces.IBlock = app.get<any>(Container.Identifiers.StateStore).getLastBlock();
         //obtain blocktime from https://explorer.protokol.sh/api/node/configuration
         /* {"data": {
@@ -58,13 +58,13 @@ const startAuctionEpic: RootEpic = (
                   "reward": "0",
                   "activeDelegates": 17,
                   -------------> "blocktime": 6,
-     */      
+        */      
 
         const transaction = new Builders.NFTAuctionBuilder()
             .NFTAuctionAsset({
                 startAmount: Utils.BigNumber.make(minimumBid),                
                 expiration: {
-                    blockHeight: 10000000,
+                    blockHeight: 1000000,
                 },
                 nftIds: [cardId],
             })
@@ -79,6 +79,8 @@ const startAuctionEpic: RootEpic = (
         ).pipe(       
             switchMap(
                 ({ body: { data, errors } }: ApiResponse<CreateTransactionApiResponse>) => {
+                  console.log(JSON.stringify(data, null, 4));
+                  console.log(JSON.stringify(errors, null, 4));
                   const [accepted] = data.accept;
                   if (!!accepted) {
                     return merge(
