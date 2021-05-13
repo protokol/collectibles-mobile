@@ -51,7 +51,6 @@ const ImageBgCol = styled(IonCol)`
     opacity: 0.5;
     background-image: url('${welcomeImage.src}');
     background-size: cover;
-    background-color:red;
     background-repeat: no-repeat;
     background-position: 50% 0;
   }

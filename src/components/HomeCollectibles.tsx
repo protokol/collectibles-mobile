@@ -58,9 +58,9 @@ const HomeCollectibles: FC = () => {
       history.push('/home/scan-qr');
     }else{
       const randomCollections = [
-        '35c20e153ea2532cbecae087dee0d68964091caa1a7b043568c38e877f355e08',
-        '64c6ee0e50e860cdd928b70f1dc25dc5f367b5292eb198998445acc44d362b77', 
-        'b725c6c140d6a3f7c6c185380fec56b7edf645a6a086d3553c26901c03e31817'
+        'd845dba7a14f1d146b01c1055834caaa66ed761abb27512a76c7211880353f9d',
+        '03c81f98549151ac6cc65889aee2549283ef6f364bb5af6cbf770cb6cfa09f36', 
+        '12b28dfbfabe8af1aaefb9a4774d20a36216905fa874a29fde79ed6521a381d7'
       ];
       let randomCollection = randomCollections[~~(randomCollections.length * Math.random())];
       history.push(`/home/collect-card/${randomCollection}`);
@@ -72,7 +72,7 @@ const HomeCollectibles: FC = () => {
     session: { publicKey, address },
   } = useContext(AuthLoginContext);
 
-  console.log(publicKey);
+  //console.log(publicKey);
   console.log(address);
 
   const publicKeyIn = publicKey;  

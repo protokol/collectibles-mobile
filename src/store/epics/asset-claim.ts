@@ -23,6 +23,9 @@ const postAssetClaimEpic: RootEpic = (action$, state$) =>
         payload: { collectionId, recipientId, txUuid },
       } = action as ClaimAssetActionType;
 
+      //console.log(JSON.stringify(stateBaseUrl, null, 2));
+      //console.log(JSON.stringify(recipientId, null, 2));
+
       return fromFetch(`${stateBaseUrl}/api/nft/assets/claim`, {
         headers: {
           'Content-Type': 'application/json',
@@ -36,6 +39,8 @@ const postAssetClaimEpic: RootEpic = (action$, state$) =>
       }).pipe(
         switchMap(
           ({ data, errors }: DataResponse<CreateTransactionApiResponse>) => {
+            //console.log(JSON.stringify(data, null, 2));
+            //console.log(JSON.stringify(errors, null, 2));
             const [accepted] = data.accept;
             if (!!accepted) {
               return merge(

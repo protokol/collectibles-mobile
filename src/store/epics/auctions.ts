@@ -40,7 +40,7 @@ const startAuctionEpic: RootEpic = (
         Transactions.TransactionRegistry.registerTransactionType(NFTTransactions.NFTAuctionTransaction);
         //connection(stateBaseUrl!).api("blocks").last();
         //const lastBlock: Interfaces.IBlock = app.get<any>(Container.Identifiers.StateStore).getLastBlock();
-        //obtain blocktime from https://explorer.protokol.sh/api/node/configuration
+        //obtain blocktime from https://nascar-explorer.protokol.sh/api/node/configuration -->stateBaseurl mejor
         /* {"data": {
               "core": {
                   "version": "3.0.0-next.23"

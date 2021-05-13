@@ -45,7 +45,7 @@ const App: FC = () => {
         lockOrientation();
         SplashScreen.hide();
       }
-      dispatch(SetBaseUrlAppAction('https://explorer.protokol.sh'));
+      dispatch(SetBaseUrlAppAction('https://nascar-explorer.protokol.sh'));
     }
   }, [isMounted, dispatch]);
 

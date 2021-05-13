@@ -294,8 +294,6 @@ const AuctionSell: FC = () => {
                 color="primary"
               >
                 No collectables yet!
-                <br/>
-                {publicKey}
               </Text>
             </IonCol>
           )}

@@ -1,10 +1,19 @@
-import { FC, useMemo, useState, useEffect } from 'react';
+import { FC, useMemo, useState, useCallback } from 'react';
 import { arrowBackOutline } from 'ionicons/icons';
 import { CalendarOutline } from 'react-ionicons'
 import { Controller, useForm } from 'react-hook-form';
 import { shallowEqual, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router';
+import { InputChangeEventDetail } from '@ionic/core';
 import styled from 'styled-components';
+import { Styles } from '../utils/styles';
+import { FontSize } from '../constants/font-size';
+import { FontWeight } from '../constants/font-weight';
+import FormInputError from '../components/ionic/ErrorMessage';
+import Title from '../components/ionic/Title';
+import Button from '../components/ionic/Button';
+import { JSX } from '@ionic/core';
+
 import {
   IonList,
   IonButton,
@@ -27,18 +36,16 @@ import Header from '../components/Header';
 import Img from '../components/ionic/Img';
 import { addIPFSGatewayPrefix } from '../constants/images';
 import { collectionSelector } from '../store/selectors/collections';
-import { FontSize } from '../constants/font-size';
-import { FontWeight } from '../constants/font-weight';
-import Title from '../components/ionic/Title';
-import Button from '../components/ionic/Button';
-import { JSX } from '@ionic/core';
 
 const Footer = styled(IonFooter)`
   position: fixed;
   bottom: 0;
 `;
 
-const AmountIonInput = styled(IonInput)`  
+const AmountIonInput = styled(IonInput)<{
+  fontSize?: FontSize;
+}>`
+  ${({ fontSize }) => Styles.serializeFontSize(fontSize)} 
   font: normal normal bold 21px/28px Open Sans;
   letter-spacing: 0px;
   color: #F8C938;
@@ -127,83 +134,26 @@ const CardStartAuction: FC = () => {
     mode: "onChange"
   });  
 
-  useEffect(() => {    
-    /*
-    register('minimumbid', {
-      required: 'Minimum Bid required!',
-      pattern: {
-        value: /^[0-9]/,
-        message: 'Minimum Bid should be a number',
-      },
-      validate: (value) => value > 0 || 'Minimum Bid should to be higher than 0',
-    });
-    register('minimumincrement', {
-      required: 'Minimum Increment required!',
-      pattern: {
-        value: /^[0-9]/,
-        message: 'Minimum Increment should be a number',
-      },
-      validate: (value) => value > 0 || 'Minimum Increment should to be higher than 0',
-    });     
-    //console.log("Entra en useEffect:" + JSON.stringify(data));    
-    clearErrors(['minimumbid', 'minimumincrement']);
-    */
-    setStateData(data);
-  }, [data])
-
-  /**
-   *
-   * @param _fieldName
-   */
-  const showError = (_fieldName: string) => {
-    //console.log("Entra en showerror:" + _fieldName);
-    //console.log(JSON.stringify(formState, null, 4));
-    return (
-      (errors as any)[_fieldName] && (
-        <div
-          style={{
-            color: "red",
-            padding: 5,
-            paddingLeft: 12,
-            fontSize: "smaller"
-          }}
-        >
-          This field is required
-        </div>
-      )
-    );
-  };
-
   const onIonChange = (event) => {    
     event.preventDefault();
-    event.stopPropagation()
+    event.stopPropagation();    
     setStateData({...data, [event.target.name] : event.target.value});
   }
 
   const history = useHistory();
-
-  const submitForm = (e) => {
-    //console.log("submitted:" + JSON.stringify(data, null, 2));   
-    e.preventDefault();    
-    console.log("submitted:" + JSON.stringify(data, null, 2));    
-    history.replace(`/home/card/startauctionaction/${assetId}/${data.minimumbid}/${data.minimumincrement}/${data.finalbiddingdate?.replaceAll('/','-')}`);
-  }
-   
-  /*
+ 
   const submitForm = useCallback(
     ({ minimumbid, minimumincrement, finalbiddingdate }: stateData) => {
       if (!formState.isValid) {
         return;
       }      
-      setStateData({ minimumbid, minimumincrement, finalbiddingdate });
-      //history.push(navigateTo);
+      setStateData({ minimumbid, minimumincrement, finalbiddingdate });      
       console.log("submitted:" + JSON.stringify(data, null, 2));    
       //history.push(`/home/card/startauctionaction/${assetId}/${data.minimumbid}/${data.minimumincrement}/${data.finalbiddingdate?.replaceAll('/','-')}`);
     },
-    [formState.isValid, setStateData, history]
+    [formState.isValid, setStateData, data]
   );
-  */
-
+  
   const { assetId } = useParams<{ assetId: string }>();  
   const { assets } = useSelector(collectionSelector, shallowEqual);
   const asset = useMemo(() => assets.flat().find(({ id }) => id === assetId), [
@@ -282,25 +232,35 @@ const CardStartAuction: FC = () => {
           <IonRow>            
             <IonCol className="ion-text-center" >              
               <IonList no-lines lines="none">
-                <IonItem className="ion-text-center" no-lines>  
-                <Controller
-                    as={
-                      <AmountIonInput value={data.minimumbid} placeholder="$0.00" onIonInput={onIonChange} clearOnEdit={true} min="0" inputmode="numeric" color="warning"/>
-                    }
-                    control={control}                
-                    name="minimumbid" 
-                    id="minid"
-                    onChangeName="onIonChange"
-                    onChange={([selected]) => {
-                      console.log("minimumbid", selected.detail.value);
-                      return selected.detail.value;
+                <IonItem className="ion-text-center" no-lines>     
+                  <Controller
+                    render={({ onChange }) => (
+                      <AmountIonInput
+                        type="text"
+                        name="minimumbid"                        
+                        inputmode="numeric"                        
+                        placeholder="$0.00"
+                        onIonInput={onIonChange} 
+                        onIonChange={({
+                          detail: { value },
+                        }: CustomEvent<InputChangeEventDetail>) =>
+                          onChange(value)
+                        }
+                      />
+                    )}
+                    control={control}
+                    name="minimumbid"
+                    rules={{
+                      required: 'Minimum Bid is required!',
+                      pattern: {
+                        value: /^[0-9]/,
+                        message: 'Minimum Bid should be a number',
+                      },
+                      validate: (value) => value > 0 || 'Minimum Bid should to be higher than 0',                        
                     }}
-                    rules={{                                    
-                      minLength: { value: 4, message: "Must be 4 chars long" }
-                    }}                    
-                  />                
+                  />                            
                 </IonItem>
-                {showError("minimumbid")}
+                <FormInputError errors={errors} name="minimumbid" />                
               </IonList>
               <AmountIonLabel position="stacked">Set Minimum Bid</AmountIonLabel> 
             </IonCol>
@@ -308,16 +268,36 @@ const CardStartAuction: FC = () => {
             <IonCol className="ion-text-center" >              
               <IonList no-lines lines="none">
                 <IonItem className="ion-text-center" no-lines>
-                  <Controller
-                      as={
-                        <AmountIonInput value={data.minimumincrement} placeholder="$0.00" onIonInput={onIonChange} clear-on-edit="true" min="0" inputmode="numeric" color="warning"/>
-                      }
-                      control={control}                 
-                      name="minimumincrement"   
-                      id="mininc"                 
-                  />                                              
+                <Controller
+                    render={({ onChange }) => (
+                      <AmountIonInput
+                        type="text"
+                        name="minimumincrement"                        
+                        inputmode="numeric"                        
+                        placeholder="$0.00"
+                        value="5"
+                        disabled={true}
+                        onIonInput={onIonChange} 
+                        onIonChange={({
+                          detail: { value },
+                        }: CustomEvent<InputChangeEventDetail>) =>
+                          onChange(value)
+                        }
+                      />
+                    )}
+                    control={control}
+                    name="minimumincrement"
+                    rules={{
+                      required: 'Minimum Increment is required!',
+                      pattern: {
+                        value: /^[0-9]/,
+                        message: 'Minimum Increment should be a number',
+                      },
+                      validate: (value) => value > 0 || 'Minimum Increment should to be higher than 0',                        
+                    }}
+                  />                                                                  
                 </IonItem>
-                {showError("minimumincrement")}
+                <FormInputError errors={errors} name="minimumincrement" />
               </IonList>
               <AmountIonLabel position="stacked">Set Minimum Increment</AmountIonLabel> 
             </IonCol>            
@@ -336,8 +316,7 @@ const CardStartAuction: FC = () => {
                       name="finalbiddingdate"      
                   />                                     
                   <CalendarOutline color={'#F8C938'} title="Final Bidding Date"/>
-                </IonItem>
-                {showError("finalbiddingdate")}
+                </IonItem>                
               </IonList>
             </IonCol>
           </IonRow>             
