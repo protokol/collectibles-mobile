@@ -3,19 +3,24 @@ import { ExchangeResourcesTypes } from '@protokol/client';
 import {
   AuctionActions,
   AUCTION_ACTION_TYPES,
+  AuctionsLoadSuccessActionType,  
 } from '../actions/auctions';
 
 export interface AuctionState {
+  isLastPage?: boolean,
   isLoading: boolean;
   isError: boolean;
   error?: Error;
   txId?: string;
-  auctions?: ExchangeResourcesTypes.Auctions;
+  query?: ExchangeResourcesTypes.AllAuctionsQuery;
+  auctions?: ExchangeResourcesTypes.Auctions[][];
 }
 
 const initialState: AuctionState = {
+  isLastPage: false,
   isLoading: false,
-  isError: false,
+  isError: false,  
+  auctions: [],
 };
 
 const reducer: Reducer<AuctionState, AUCTION_ACTION_TYPES> = (
@@ -53,6 +58,56 @@ const reducer: Reducer<AuctionState, AUCTION_ACTION_TYPES> = (
         error,
       };
     }
+    case AuctionActions.AUCTIONS_LOAD: {
+      return {
+        ...state,
+        isLoading: true,
+      };
+    }
+    case AuctionActions.AUCTIONS_LOAD_SUCCESS: {
+      const {
+        payload: { assets, query, isLastPage },
+      } = action as AuctionsLoadSuccessActionType;
+      const { page } = query;
+      return {
+        ...state,
+        isLoading: false,
+        query,
+        assets: [          
+          ...state.auctions!.slice(0, page! - 1),
+          assets,
+          ...state.auctions!.slice(page!),
+        ],
+        isLastPage,
+        isError: false,
+        error: undefined,
+      };
+    }
+    case AuctionActions.AUCTIONS_LOAD_SUCCESS: {
+      const {
+        payload: { assets, query, isLastPage },
+      } = action as AuctionsLoadSuccessActionType;
+      return {
+        ...state,
+        isLoading: false,
+        query,
+        assets: [assets],
+        isLastPage,
+        isError: false,
+        error: undefined,
+      };
+    }
+    case AuctionActions.AUCTIONS_LOAD_ERROR: {
+      const {
+        payload: { error },
+      } = action;
+      return {
+        ...state,
+        isLoading: false,
+        isError: true,
+        error,
+      };
+    }       
     default:
       return state;
   }

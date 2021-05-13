@@ -1,4 +1,4 @@
-import { FC, useCallback, useContext, useState, useEffect, useMemo } from 'react';
+import { FC, useCallback, useContext, useEffect, useMemo } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import {
@@ -8,8 +8,6 @@ import {
   IonSpinner,
 } from '@ionic/react';
 import Card from './Card';
-import { JSX } from '@ionic/core';
-import Button from './ionic/Button';
 import Label from './ionic/Label';
 import Text from './ionic/Text';
 import { FontSize } from '../constants/font-size';
@@ -18,8 +16,8 @@ import useIsMounted from '../hooks/use-is-mounted';
 import useMediaQuery from '../hooks/use-media-query';
 import { CardTagType } from './CardTag';
 import { AuthLoginContext } from '../providers/AuthLoginProvider';
-import { CollectiblesLoadAction, CollectiblesOnAuctionLoadAction } from '../store/actions/collections';
-import { collectionSelector } from '../store/selectors/collections';
+import { CollectiblesOnAuctionLoadAction } from '../store/actions/collections';
+import { cardsOnAuctionSelector } from '../store/selectors/collections';
 import { auctionImage } from '../constants/images';
 
 const ImageBgCol = styled(IonCol)`
@@ -62,94 +60,43 @@ const CardContainer = styled(IonCol)`
   }
 `;
 
-const StartAuctionButton = styled(Button)<JSX.IonButton>`  
-  text-decoration: none;
-  text-transform: capitalize;  
-`;
-
-const CardsOnAuctionButton = styled(Button)<JSX.IonButton>`
-  text-decoration: none;
-  text-transform: capitalize;
-`;
-
-const BiddedCardsButton = styled(Button)<JSX.IonButton>`
-  text-decoration: none;
-  text-transform: capitalize;
-`;
-
 const CollectablesIonRow = styled(IonRow)`
   overflow: auto;
   max-height: calc(100vh - 92px - 4.8rem);
 `;
 
-const AuctionSell: FC = () => {    
+const AuctionBuy: FC = () => {    
     const isMedium = useMediaQuery('(min-height: 992px)');
     const isLarge = useMediaQuery('(min-height: 1200px)');
     const { isError, error, isLoading, assets, isLastPage, query } = useSelector(
-      collectionSelector,
+      cardsOnAuctionSelector,
       shallowEqual
     );
-    const [submenu, setAuctionSellSubMenu] = useState(1)
-    const auctionStart = submenu===1;
-    const cardsOnAuction = submenu===2;
-    const biddedCards = submenu===3;
-
-    const StartAuction = () => {
-      setAuctionSellSubMenu(1);
-    }
-
-    const CardsOnAuction = () => {
-      setAuctionSellSubMenu(2);
-    }
-
-    const BiddedCards = () => {
-      setAuctionSellSubMenu(3);
-    }
 
     const dispatch = useDispatch();
     const {
       session: { publicKey },
     } = useContext(AuthLoginContext);
   
-    const publicKeyIn = publicKey;    
-  
+ 
     const isMounted = useIsMounted();
     useEffect(() => {
-      if (publicKeyIn && isMounted) {
-        if (auctionStart){
-          dispatch(CollectiblesLoadAction(publicKeyIn!));
-        }else if (cardsOnAuction){
-          dispatch(CollectiblesOnAuctionLoadAction(publicKeyIn!, true, undefined));
-        }else if (biddedCards){
-          //dispatch(CollectiblesBiddedLoadAction(publicKeyIn!));
-        }
+      if (publicKey && isMounted) {
+          dispatch(CollectiblesOnAuctionLoadAction(publicKey!, false, undefined));
       }
-    }, [isMounted, dispatch, publicKeyIn, auctionStart, cardsOnAuction, biddedCards]);
+    }, [isMounted, dispatch, publicKey]);
   
     const loadNextPage = useCallback(() => {
-      if (publicKeyIn) {
+      if (publicKey) {
         const { page } = query ?? { page: 1 };
-        if (auctionStart){
-          dispatch(
-            CollectiblesLoadAction(publicKeyIn!, {
-              ...query,
-              page: page! + 1,
-            })
-          );
-        }else if (cardsOnAuction){
-          dispatch(CollectiblesOnAuctionLoadAction(publicKeyIn!, true, undefined));
-        }else if (biddedCards){
-          /*
-          dispatch(
-            CollectiblesBiddedLoadAction(publicKeyIn!, {
-              ...query,
-              page: page! + 1,
-            })
-          );
-          */
-        }        
+        dispatch(
+          CollectiblesOnAuctionLoadAction(publicKey!, false, {
+            ...query,
+            page: page! + 1,
+          })
+        );
       }
-    }, [query, dispatch, publicKeyIn, auctionStart, cardsOnAuction, biddedCards]);
+    }, [query, dispatch, publicKey]);
   
     const flatAssets = useMemo(() => assets.flat(), [assets]);
   
@@ -184,7 +131,7 @@ const AuctionSell: FC = () => {
             fontSize={FontSize.L}
             fontWeight={FontWeight.BOLD}
           >
-            Pick a card and start an auction...
+            Pick a card and participate in the auction...
           </Label>
           <br />
           <Text
@@ -192,51 +139,10 @@ const AuctionSell: FC = () => {
             color="light"
             fontSize={FontSize.XS}
           >
-            ...or start bidding on your favourite cards. 
+            ...start bidding on your favourite cards. 
             Make sure to follow up with your cards, 
             since some disappear at a racing speed!
-          </Text>
-          <br />
-          <IonGrid class="ion-justify-content-center">
-            <IonRow class="ion-justify-content-center">
-              <IonCol class="ion-align-self-center">
-                <StartAuctionButton
-                  className="ion-float-left"                                  
-                  fill="clear"
-                  fontSize={FontSize.SM}                  
-                  color={(auctionStart)?"warning":"light"}
-                  fontWeight={(auctionStart)?FontWeight.BOLD:FontWeight.NORMAL}
-                  onClick={() => StartAuction()}
-                >
-                  Start Auction
-                </StartAuctionButton>
-              </IonCol>              
-              <IonCol class="ion-align-self-center">
-                <CardsOnAuctionButton
-                  className="ion-float-center"                  
-                  fill="clear"
-                  fontSize={FontSize.SM}      
-                  color={(cardsOnAuction)?"warning":"light"}
-                  fontWeight={(cardsOnAuction)?FontWeight.BOLD:FontWeight.NORMAL}
-                  onClick={() => CardsOnAuction()}
-                >
-                  Cards On Auction
-                </CardsOnAuctionButton>                 
-              </IonCol>              
-              <IonCol class="ion-align-self-center">
-                <BiddedCardsButton
-                  className="ion-float-right"
-                  fill="clear"
-                  fontSize={FontSize.SM}
-                  color={(biddedCards)?"warning":"light"}
-                  fontWeight={(biddedCards)?FontWeight.BOLD:FontWeight.NORMAL}
-                  onClick={() => BiddedCards()}
-                >
-                  Bidded Cards
-                </BiddedCardsButton>                   
-              </IonCol>              
-            </IonRow>
-          </IonGrid>                         
+          </Text>                      
         </ImageBgCol>
       </IonRow>
     </IonGrid>    
@@ -293,7 +199,7 @@ const AuctionSell: FC = () => {
                 fontSize={FontSize.L}
                 color="primary"
               >
-                No collectables yet!
+                No available auctions yet!
               </Text>
             </IonCol>
           )}
@@ -308,4 +214,4 @@ const AuctionSell: FC = () => {
   );
 };
 
-export default AuctionSell;
+export default AuctionBuy;

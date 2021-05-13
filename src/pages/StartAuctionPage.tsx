@@ -25,7 +25,7 @@ import { driverHighResImage } from '../constants/images';
 import useIsMounted from '../hooks/use-is-mounted';
 import { AuthLoginContext } from '../providers/AuthLoginProvider';
 import { StartAuctionAction } from '../store/actions/auctions';
-import { startAuctionSelector } from '../store/selectors/auctions';
+import { auctionSelector } from '../store/selectors/auctions';
 import { transactionsSelector } from '../store/selectors/transaction';
 
 const ImageBgCol = styled(IonCol)`
@@ -90,7 +90,7 @@ const StartAuctionPage: FC = () => {
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const startAuctionRequest = useSelector(startAuctionSelector, shallowEqual);
+  const startAuctionRequest = useSelector(auctionSelector, shallowEqual);
   const transactions = useSelector(transactionsSelector, shallowEqual);
   const tx = useMemo(() => transactions[txUuid], [transactions]);
 

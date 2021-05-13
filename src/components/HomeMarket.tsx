@@ -9,6 +9,7 @@ import { FontSize } from '../constants/font-size';
 import { FontWeight } from '../constants/font-weight';
 import { flagImage } from '../constants/images';
 import AuctionSell from './AuctionSell';
+import AuctionBuy from './AuctionBuy';
 
 const ImageBgCol = styled(IonCol)`
   position: relative;
@@ -88,7 +89,7 @@ const HomeMarket: FC = () => {
       <AuctionSell/>
     )}  
     {auctionBuy && (
-      <AuctionSell/>
+      <AuctionBuy/>
     )}      
     {!auctionSell && !auctionBuy && (
       <IonGrid className="ion-no-padding">

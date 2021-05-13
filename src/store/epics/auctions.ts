@@ -9,6 +9,9 @@ import {
     StartAuctionSuccessAction,
     StartAuctionErrorAction,
     StartAuctionActionType,
+    AuctionsLoadSuccessAction,
+    AuctionsLoadErrorAction,      
+    AuctionsLoadActionType,
 } from '../actions/auctions';
 import { baseUrlSelector } from '../selectors/app';
 import { RootEpic } from '../types';
@@ -16,6 +19,38 @@ import { Builders, Transactions as NFTTransactions } from "@protokol/nft-exchang
 import { Transactions, Utils } from "@arkecosystem/crypto";
 import { CryptoUtils } from '../../utils/crypto-utils';
 import { TransactionWaitForConfirmAction } from '../actions/transaction';
+
+const fetchAuctionsEpic: RootEpic = (
+  action$,
+  state$,
+  { connection }
+) =>
+  action$.ofType(AuctionActions.AUCTIONS_LOAD).pipe(
+    withLatestFrom(state$.pipe(map(baseUrlSelector))),
+    switchMap(([action, stateBaseUrl]) => {
+      const {
+        payload: { query },
+      } = action as AuctionsLoadActionType;   
+      
+      return defer(() =>
+        connection(stateBaseUrl!)
+          .NFTExchangeApi('auctions')
+          .getAllAuctions()          
+      ).pipe(
+        map(({ body: { data, errors } }) => {
+          if (errors) {
+            return AuctionsLoadErrorAction(errors);
+          }
+          const q = query || {
+            page: 1,
+            limit: 100,
+          };
+          return AuctionsLoadSuccessAction(q, data, data.length < q.limit!);
+        }),
+        catchError((err) => of(AuctionsLoadErrorAction(err)))
+      );      
+    })
+  );
 
 const startAuctionEpic: RootEpic = (
     action$,
@@ -99,6 +134,6 @@ const startAuctionEpic: RootEpic = (
     })
   );
 
-const epics = [startAuctionEpic];
+const epics = [fetchAuctionsEpic, startAuctionEpic];
 
 export default epics;

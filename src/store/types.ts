@@ -15,6 +15,9 @@ import {
   StartAuctionActionType,
   StartAuctionSuccessActionType,
   StartAuctionErrorActionType,
+  AuctionsLoadActionType,
+  AuctionsLoadSuccessActionType,
+  AuctionsLoadErrorActionType,
 } from './actions/auctions';
 
 import {
@@ -64,6 +67,9 @@ export type RootActions =
   | StartAuctionActionType
   | StartAuctionSuccessActionType
   | StartAuctionErrorActionType
+  | AuctionsLoadActionType
+  | AuctionsLoadSuccessActionType
+  | AuctionsLoadErrorActionType
   | CollectiblesOnAuctionLoadActionType
   | CollectiblesOnAuctionLoadSuccessActionType
   | CollectiblesOnAuctionLoadErrorActionType
@@ -82,7 +88,7 @@ export type RootState = {
   app: AppState;
   network: NetworkState;
   assetClaim: AssetClaimState;
-  startAuction: AuctionState;
+  auctions: AuctionState;
   cardsOnAuction: CollectionsState;
   transaction: TransactionState;
   collections: CollectionsState;

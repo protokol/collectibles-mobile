@@ -2,7 +2,7 @@ import { combineReducers, ReducersMapObject } from 'redux';
 import { RootState } from '../types';
 import app from './app';
 import assetClaim from './asset-claim';
-import startAuction from './auctions';
+import auctions from './auctions';
 import collections from './collections';
 import cardsOnAuction from './collections';
 import network from './network';
@@ -13,7 +13,7 @@ export default combineReducers<RootState>({
   app,
   network,
   assetClaim,
-  startAuction,
+  auctions,
   transaction,
   collections,
   cardsOnAuction,
