@@ -15,7 +15,7 @@ export interface CollectiblesLoadActionType
   extends Action<CollectionsActions.COLLECTIBLES_LOAD> {
   payload: {
     query?: BaseResourcesTypes.AllAssetsQuery;
-    pubKey: string;
+    pubKey: string;    
   };
 }
 
@@ -40,7 +40,7 @@ export interface CollectiblesOnAuctionLoadActionType
     payload: {
       pubKey: string;
       query?: BaseResourcesTypes.AllAssetsQuery;
-      owned: boolean;      
+      ownAuctions?: boolean;      
     };
 }
 
@@ -63,12 +63,12 @@ export interface CollectiblesOnAuctionLoadErrorActionType
 // Action creators
 const CollectiblesLoadAction = (
   pubKey: string,
-  query?: BaseResourcesTypes.AllAssetsQuery
+  query?: BaseResourcesTypes.AllAssetsQuery,  
 ): CollectiblesLoadActionType => ({
   type: CollectionsActions.COLLECTIBLES_LOAD,
   payload: {
     query,
-    pubKey,
+    pubKey,    
   },
 });
 
@@ -96,13 +96,13 @@ const CollectiblesLoadErrorAction = (
 
 const CollectiblesOnAuctionLoadAction = (
   pubKey: string,
-  owned: boolean,
+  ownAuctions?: boolean,
   query?: BaseResourcesTypes.AllAssetsQuery
 ): CollectiblesOnAuctionLoadActionType => ({
   type: CollectionsActions.COLLECTIBLES_ON_AUCTION_LOAD,
   payload: {
     query,
-    owned,
+    ownAuctions,
     pubKey,
   },
 });

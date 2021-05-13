@@ -68,7 +68,7 @@ const CollectablesIonRow = styled(IonRow)`
 const AuctionBuy: FC = () => {    
     const isMedium = useMediaQuery('(min-height: 992px)');
     const isLarge = useMediaQuery('(min-height: 1200px)');
-    const { isError, error, isLoading, assets, isLastPage, query } = useSelector(
+    const { isError, error, isLoading, assets, isLastPage /*, query*/ } = useSelector(
       cardsOnAuctionSelector,
       shallowEqual
     );
@@ -88,15 +88,10 @@ const AuctionBuy: FC = () => {
   
     const loadNextPage = useCallback(() => {
       if (publicKey) {
-        const { page } = query ?? { page: 1 };
-        dispatch(
-          CollectiblesOnAuctionLoadAction(publicKey!, false, {
-            ...query,
-            page: page! + 1,
-          })
-        );
+        //const { page } = query ?? { page: 1 };
+        dispatch(CollectiblesOnAuctionLoadAction(publicKey!, false, undefined));
       }
-    }, [query, dispatch, publicKey]);
+    }, [/*query,*/ dispatch, publicKey]);
   
     const flatAssets = useMemo(() => assets.flat(), [assets]);
   

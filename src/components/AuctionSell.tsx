@@ -8,6 +8,7 @@ import {
   IonSpinner,
 } from '@ionic/react';
 import Card from './Card';
+import CardOnAuction from './CardOnAuction';
 import { JSX } from '@ionic/core';
 import Button from './ionic/Button';
 import Label from './ionic/Label';
@@ -264,6 +265,9 @@ const AuctionSell: FC = () => {
                   subtitle,
                   ipfsHashImageFront,
                   tags,
+                  finalBiddingDate,
+                  currentBid,
+                  yourBid
                 } = attributes as any;
 
                 const type = 
@@ -272,16 +276,32 @@ const AuctionSell: FC = () => {
                     : CardTagType.None;
 
                 return (
-                  <CardContainer key={id} size={cardColSize().toString()}>
-                    <Card
-                      id={id}
-                      title={title}
-                      subtitle={subtitle}
-                      imgIpfsHash={ipfsHashImageFront}
-                      type={type}
-                      linkto={"/home/card/startauction/"+id}
-                    />
-                  </CardContainer>
+                  <>
+                    {(cardsOnAuction || biddedCards) && (
+                      <CardOnAuction
+                        id={id}
+                        title={title}
+                        imgIpfsHash={ipfsHashImageFront}
+                        type={type}
+                        linkto={"/home/card/startauction/"+id}  
+                        finalBiddingDate={finalBiddingDate}                   
+                        currentBid={currentBid}
+                        yourBid={yourBid}
+                      />
+                    )}                    
+                    {!cardsOnAuction && !biddedCards && (
+                      <CardContainer key={id} size={cardColSize().toString()}>  
+                        <Card
+                          id={id}
+                          title={title}
+                          subtitle={subtitle}
+                          imgIpfsHash={ipfsHashImageFront}
+                          type={type}
+                          linkto={"/home/card/startauction/"+id}                      
+                        />    
+                      </CardContainer>                  
+                    )}       
+                  </>           
                 );
               })}
             </>

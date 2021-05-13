@@ -39,6 +39,7 @@
     "ionic": "^5.4.16",
     "ionicons": "^5.0.0",
     "jetifier": "^1.6.6",
+    "node-sass": "^5.0.0",
     "perf_hooks": "0.0.1",
     "qrcode.react": "^1.0.1",
     "react": "^17.0.0",

@@ -54,12 +54,13 @@ const fetchWalletCollectionsEpic: RootEpic = (
       withLatestFrom(state$.pipe(map(baseUrlSelector))),
       switchMap(([action, stateBaseUrl]) => {        
         const {
-          payload: { pubKey, query },
+          payload: { pubKey, query, ownAuctions },
         } = action as CollectiblesOnAuctionLoadActionType;
   
         return forkJoin([
           defer(() =>
-            connection(stateBaseUrl!).NFTExchangeApi("auctions").searchByAsset({senderPublicKey:pubKey}, undefined)
+            (ownAuctions)?connection(stateBaseUrl!).NFTExchangeApi("auctions").searchByAsset({senderPublicKey:pubKey}, undefined):
+            connection(stateBaseUrl!).NFTExchangeApi('auctions').getAllAuctions()
           ),
           defer(() =>
             connection(stateBaseUrl!).NFTBaseApi('assets').walletAssets(pubKey, query)
@@ -75,7 +76,17 @@ const fetchWalletCollectionsEpic: RootEpic = (
             let data:BaseResourcesTypes.Assets[] = [];
             for(let auction of auctionsResponse.body.data){
               for(let nftId of auction.nftAuction.nftIds){
-                for(let asset of assetsResponse.body.data){
+                for(let asset of assetsResponse.body.data){                  
+                  asset.attributes = { ...asset.attributes, 
+                      startAmount: auction.nftAuction.startAmount, 
+                      finalBiddingDate: auction.nftAuction.expiration.blockHeight,
+                      currentBid: 999,
+                  };
+                  if (!ownAuctions){
+                    asset.attributes = { ...asset.attributes, 
+                      yourBid: 888
+                    };
+                  }
                   if (nftId===asset.id){
                       data.push(asset);
                   }

@@ -100,4 +100,15 @@ html {
   --ion-color-light-contrast-rgb: 0, 0, 0;
   --ion-color-light-shade: #e0e0e0;
   --ion-color-light-tint: #ffffff;  
+
+  --ion-color-bidred: #E4132B;
+  --ion-color-bidgreen: #8AC828;
+  --ion-color-bidyellow: #FCCF45;
+  
+  $colors: (
+    bidgreen: (
+      base: transparent,
+      contrast: #8AC828
+    )
+  );
 }
