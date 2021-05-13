@@ -140,6 +140,8 @@ const CardStartAuction: FC = () => {
     setStateData({...data, [event.target.name] : event.target.value});
   }
 
+  const { assetId } = useParams<{ assetId: string }>();  
+
   const history = useHistory();
  
   const submitForm = useCallback(
@@ -153,10 +155,9 @@ const CardStartAuction: FC = () => {
       //history.push(`/home/card/startauctionaction/${assetId}/${data.minimumbid}/${data.minimumincrement}/${data.finalbiddingdate?.replaceAll('/','-')}`);      
       history.push(`/home/card/startauctionaction/${assetId}/${data.minimumbid}/5/${data.finalbiddingdate?.replaceAll('/','-')}`);      
     },
-    [formState.isValid, setStateData, data, history]
+    [formState.isValid, setStateData, data, history, assetId]
   );
   
-  const { assetId } = useParams<{ assetId: string }>();  
   const { assets } = useSelector(collectionSelector, shallowEqual);
   const asset = useMemo(() => assets.flat().find(({ id }) => id === assetId), [
     assets,

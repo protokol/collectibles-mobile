@@ -83,20 +83,6 @@ const reducer: Reducer<AuctionState, AUCTION_ACTION_TYPES> = (
         error: undefined,
       };
     }
-    case AuctionActions.AUCTIONS_LOAD_SUCCESS: {
-      const {
-        payload: { assets, query, isLastPage },
-      } = action as AuctionsLoadSuccessActionType;
-      return {
-        ...state,
-        isLoading: false,
-        query,
-        assets: [assets],
-        isLastPage,
-        isError: false,
-        error: undefined,
-      };
-    }
     case AuctionActions.AUCTIONS_LOAD_ERROR: {
       const {
         payload: { error },
