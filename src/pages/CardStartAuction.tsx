@@ -149,9 +149,11 @@ const CardStartAuction: FC = () => {
       }      
       setStateData({ minimumbid, minimumincrement, finalbiddingdate });      
       console.log("submitted:" + JSON.stringify(data, null, 2));    
-      //history.push(`/home/card/startauctionaction/${assetId}/${data.minimumbid}/${data.minimumincrement}/${data.finalbiddingdate?.replaceAll('/','-')}`);
+      //TBD Fixed minimum increment to 5
+      //history.push(`/home/card/startauctionaction/${assetId}/${data.minimumbid}/${data.minimumincrement}/${data.finalbiddingdate?.replaceAll('/','-')}`);      
+      history.push(`/home/card/startauctionaction/${assetId}/${data.minimumbid}/5/${data.finalbiddingdate?.replaceAll('/','-')}`);      
     },
-    [formState.isValid, setStateData, data]
+    [formState.isValid, setStateData, data, history]
   );
   
   const { assetId } = useParams<{ assetId: string }>();  
@@ -287,6 +289,8 @@ const CardStartAuction: FC = () => {
                     )}
                     control={control}
                     name="minimumincrement"
+                  />
+                    {/*  //TBD capped as is fixed to 5 increment by now
                     rules={{
                       required: 'Minimum Increment is required!',
                       pattern: {
@@ -295,9 +299,11 @@ const CardStartAuction: FC = () => {
                       },
                       validate: (value) => value > 0 || 'Minimum Increment should to be higher than 0',                        
                     }}
-                  />                                                                  
+                    */}                                                             
                 </IonItem>
+                {/*
                 <FormInputError errors={errors} name="minimumincrement" />
+                */}
               </IonList>
               <AmountIonLabel position="stacked">Set Minimum Increment</AmountIonLabel> 
             </IonCol>            
