@@ -76,7 +76,12 @@ const fetchWalletCollectionsEpic: RootEpic = (
             let data:BaseResourcesTypes.Assets[] = [];
             for(let auction of auctionsResponse.body.data){
               for(let nftId of auction.nftAuction.nftIds){
-                for(let asset of assetsResponse.body.data){                  
+                for(let asset of assetsResponse.body.data){   
+                  
+                  
+                  
+
+
                   asset.attributes = { ...asset.attributes, 
                       startAmount: auction.nftAuction.startAmount, 
                       finalBiddingDate: auction.nftAuction.expiration.blockHeight,

@@ -1,4 +1,5 @@
-import { defer, merge, of } from 'rxjs';
+import { defer, merge, of, forkJoin } from 'rxjs';
+import { fromFetch } from 'rxjs/fetch';
 import { catchError, map, switchMap, withLatestFrom } from 'rxjs/operators';
 import {
   ApiResponse,
@@ -19,6 +20,71 @@ import { Builders, Transactions as NFTTransactions } from "@protokol/nft-exchang
 import { Transactions, Utils } from "@arkecosystem/crypto";
 import { CryptoUtils } from '../../utils/crypto-utils';
 import { TransactionWaitForConfirmAction } from '../actions/transaction';
+import { Interfaces } from '@arkecosystem/crypto';
+import { Container, Contracts } from '@arkecosystem/core-kernel';
+
+class ConfigurationConstants {  
+  height: number;
+  reward: string;
+  activeDelegates: number;
+  blocktime: number;
+  block: any;
+  epoch: string;
+  fees: any;
+  vendorFieldLength: number;
+  multiPaymentLimit: number;
+  aip11: boolean; 
+
+  constructor(height: number, reward: string, activeDelegates: number, blocktime: number, block: any, 
+              epoch: string, fees: any, vendorFieldLength: number, multiPaymentLimit: number, aip11: boolean){
+    this.height = height;
+    this.reward = reward;
+    this.activeDelegates = activeDelegates;
+    this.blocktime = blocktime;
+    this.block = block;
+    this.epoch = epoch;
+    this.fees = fees;
+    this.vendorFieldLength = vendorFieldLength;
+    this.multiPaymentLimit = multiPaymentLimit;
+    this.aip11 = aip11;
+  }
+}
+
+class ConfigurationData {  
+  core: any;
+  nethash: string;
+  slip44: number;
+  wif: number;
+  token: string;
+  symbol: string;
+  explorer: string;
+  version: number;
+  ports: any;
+  constants: ConfigurationConstants;
+  transactionPool: any;
+
+  constructor(core: any, nethash: string, slip44: number, wif: number, token: string, symbol: string, explorer: string, version: number, ports: any, constants: ConfigurationConstants, transactionPool: any){
+    this.core = core;
+    this.nethash = nethash;
+    this.slip44 = slip44;
+    this.wif = wif;
+    this.token = token;
+    this.symbol = symbol;
+    this.explorer = explorer;
+    this.version = version;
+    this.ports = ports;
+    this.constants =  constants;
+    this.transactionPool = transactionPool;
+  }  
+}
+
+class ConfigurationResponse{
+  data: ConfigurationData;
+
+  constructor(data: ConfigurationData){
+    this.data = data;
+  }
+}
 
 const fetchAuctionsEpic: RootEpic = (
   action$,
@@ -30,8 +96,8 @@ const fetchAuctionsEpic: RootEpic = (
     switchMap(([action, stateBaseUrl]) => {
       const {
         payload: { query },
-      } = action as AuctionsLoadActionType;   
-      
+      } = action as AuctionsLoadActionType;          
+
       return defer(() =>
         connection(stateBaseUrl!)
           .NFTExchangeApi('auctions')
@@ -72,29 +138,9 @@ const startAuctionEpic: RootEpic = (
             },
         } = action as StartAuctionActionType;              
 
-        Transactions.TransactionRegistry.registerTransactionType(NFTTransactions.NFTAuctionTransaction);
-        //connection(stateBaseUrl!).api("blocks").last();
-        //const lastBlock: Interfaces.IBlock = app.get<any>(Container.Identifiers.StateStore).getLastBlock();
-        //obtain blocktime from https://nascar-explorer.protokol.sh/api/node/configuration -->stateBaseurl mejor
-        /* {"data": {
-              "core": {
-                  "version": "3.0.0-next.23"
-              },
-              "nethash": "de573f53b5037d0f6a97b540747b4742816bf8173824b7ab9662ecc3a7a90c2e",
-              "slip44": 1,
-              "wif": 255,
-              "token": "PROTO",
-              "symbol": "Þ",
-              "explorer": "https://proto-devnet.protokol.sh",
-              "version": 55,
-              "ports": {},
-              "constants": {
-                  "height": 1,
-                  "reward": "0",
-                  "activeDelegates": 17,
-                  -------------> "blocktime": 6,
-        */      
-
+        let app: Contracts.Kernel.Application;        
+/*
+        Transactions.TransactionRegistry.registerTransactionType(NFTTransactions.NFTAuctionTransaction);   
         const transaction = new Builders.NFTAuctionBuilder()
             .NFTAuctionAsset({
                 startAmount: Utils.BigNumber.make(minimumBid),                
@@ -106,7 +152,8 @@ const startAuctionEpic: RootEpic = (
             //.fee("0")
             .nonce(CryptoUtils.getWalletNextNonce())
             .sign(passphrase);
-
+            */
+        /*
         return defer(() =>
             connection(stateBaseUrl!)
               .api("transactions")
@@ -130,7 +177,63 @@ const startAuctionEpic: RootEpic = (
               ),
               catchError((err) => of(StartAuctionErrorAction(err))
             )    
-        );                      
+        ); 
+        */
+
+        return forkJoin([
+            fromFetch(`${stateBaseUrl}/api/node/configuration`),
+            defer(() => connection(stateBaseUrl!).api("blocks").last()),            
+        ]).pipe(  
+          switchMap(([confResponse, blockResponse]) => {
+            
+            if (!confResponse.ok) {
+              return of(StartAuctionErrorAction({name:"Error", message:"Error reading node configuration"}));              
+            }
+            if (blockResponse?.body?.errors) {
+              return of(StartAuctionErrorAction(blockResponse?.body?.errors));
+            }
+            const conf = confResponse.json() as unknown as ConfigurationResponse;         
+            const blockTime = conf.data.constants.blocktime;
+            const currentBlock: Interfaces.IBlock = app.get<any>(Container.Identifiers.StateStore).getLastBlock();
+
+
+            Transactions.TransactionRegistry.registerTransactionType(NFTTransactions.NFTAuctionTransaction);   
+            const transaction = new Builders.NFTAuctionBuilder()
+            .NFTAuctionAsset({
+                startAmount: Utils.BigNumber.make(minimumBid),                
+                expiration: {
+                    blockHeight: 1000000,
+                },
+                nftIds: [cardId],
+            }) 
+            //.fee("0")
+            .nonce(CryptoUtils.getWalletNextNonce())
+            .sign(passphrase);            
+            
+            return defer(() => 
+              connection(stateBaseUrl!).api("transactions").create({ transactions: [transaction.getStruct()] }))
+            .pipe(              
+              switchMap(
+                ({ body: { data, errors } }: ApiResponse<CreateTransactionApiResponse>) => {
+                  console.log(JSON.stringify(data, null, 4));
+                  console.log(JSON.stringify(errors, null, 4));
+                  const [accepted] = data.accept;
+                  if (!!accepted) {
+                    return merge(
+                      of(StartAuctionSuccessAction(accepted)),
+                      of(TransactionWaitForConfirmAction(txUuid, accepted))
+                    );
+                  }
+                  const [invalid] = data.invalid;
+                  const err = errors[invalid].message;
+                  return of(StartAuctionErrorAction(err));
+                }
+              ),
+              catchError((err) => of(StartAuctionErrorAction(err)))
+            );               
+          }),
+          catchError((err) => of(StartAuctionErrorAction(err)))
+        );
     })
   );
 

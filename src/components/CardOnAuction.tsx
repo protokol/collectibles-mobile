@@ -105,7 +105,7 @@ const CardOnAuction: FC<{
                 <IonCol>
                   {finalBiddingDate && (
                     <CardSubTitle className="ion-no-padding" fontSize={FontSize.SM}>{finalBiddingDate}</CardSubTitle>
-                  )}
+                  )} 
                 </IonCol>
               </IonRow>                                          
             </IonGrid>                                
