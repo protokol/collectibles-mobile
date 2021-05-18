@@ -17,7 +17,7 @@ import { FontSize } from '../constants/font-size';
 import { FontWeight } from '../constants/font-weight';
 import useIsMounted from '../hooks/use-is-mounted';
 import { CardTagType } from './CardTag';
-import { AuthLoginContext } from '../providers/AuthLoginProvider';
+import { AuthLoginContext } from '../providers/git aAuthLoginProvider';
 import { CollectiblesOnAuctionLoadAction } from '../store/actions/collections';
 import { collectionSelector } from '../store/selectors/collections';
 import { auctionImage } from '../constants/images';
@@ -85,7 +85,7 @@ const AuctionSellView: FC = () => {
       if (publicKeyIn) {        
         dispatch(CollectiblesOnAuctionLoadAction(publicKeyIn!, true, undefined));
       }
-    }, [query, dispatch, publicKeyIn]);
+    }, [dispatch, publicKeyIn]);
   
     const flatAssets = useMemo(() => assets.flat(), [assets]);
   
