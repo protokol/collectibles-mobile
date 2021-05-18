@@ -1,4 +1,5 @@
-import { FC, useCallback, useContext, useState, useEffect, useMemo } from 'react';
+import { FC, useCallback, useContext, useEffect, useMemo } from 'react';
+import { useHistory } from 'react-router';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import {
@@ -8,7 +9,6 @@ import {
   IonSpinner,
 } from '@ionic/react';
 import Card from './Card';
-import CardOnAuction from './CardOnAuction';
 import { JSX } from '@ionic/core';
 import Button from './ionic/Button';
 import Label from './ionic/Label';
@@ -19,7 +19,7 @@ import useIsMounted from '../hooks/use-is-mounted';
 import useMediaQuery from '../hooks/use-media-query';
 import { CardTagType } from './CardTag';
 import { AuthLoginContext } from '../providers/AuthLoginProvider';
-import { CollectiblesLoadAction, CollectiblesOnAuctionLoadAction } from '../store/actions/collections';
+import { CollectiblesLoadAction } from '../store/actions/collections';
 import { collectionSelector } from '../store/selectors/collections';
 import { auctionImage } from '../constants/images';
 
@@ -63,17 +63,7 @@ const CardContainer = styled(IonCol)`
   }
 `;
 
-const StartAuctionButton = styled(Button)<JSX.IonButton>`  
-  text-decoration: none;
-  text-transform: capitalize;  
-`;
-
 const CardsOnAuctionButton = styled(Button)<JSX.IonButton>`
-  text-decoration: none;
-  text-transform: capitalize;
-`;
-
-const BiddedCardsButton = styled(Button)<JSX.IonButton>`
   text-decoration: none;
   text-transform: capitalize;
 `;
@@ -84,28 +74,13 @@ const CollectablesIonRow = styled(IonRow)`
 `;
 
 const AuctionSell: FC = () => {    
+    const history = useHistory();
     const isMedium = useMediaQuery('(min-height: 992px)');
     const isLarge = useMediaQuery('(min-height: 1200px)');
     const { isError, error, isLoading, assets, isLastPage, query } = useSelector(
       collectionSelector,
       shallowEqual
     );
-    const [submenu, setAuctionSellSubMenu] = useState(1)
-    const auctionStart = submenu===1;
-    const cardsOnAuction = submenu===2;
-    const biddedCards = submenu===3;
-
-    const StartAuction = () => {
-      setAuctionSellSubMenu(1);
-    }
-
-    const CardsOnAuction = () => {
-      setAuctionSellSubMenu(2);
-    }
-
-    const BiddedCards = () => {
-      setAuctionSellSubMenu(3);
-    }
 
     const dispatch = useDispatch();
     const {
@@ -117,40 +92,21 @@ const AuctionSell: FC = () => {
     const isMounted = useIsMounted();
     useEffect(() => {
       if (publicKeyIn && isMounted) {
-        if (auctionStart){
           dispatch(CollectiblesLoadAction(publicKeyIn!));
-        }else if (cardsOnAuction){
-          dispatch(CollectiblesOnAuctionLoadAction(publicKeyIn!, true, undefined));
-        }else if (biddedCards){
-          //dispatch(CollectiblesBiddedLoadAction(publicKeyIn!));
-        }
       }
-    }, [isMounted, dispatch, publicKeyIn, auctionStart, cardsOnAuction, biddedCards]);
+    }, [isMounted, dispatch, publicKeyIn]);
   
     const loadNextPage = useCallback(() => {
       if (publicKeyIn) {
         const { page } = query ?? { page: 1 };
-        if (auctionStart){
-          dispatch(
-            CollectiblesLoadAction(publicKeyIn!, {
-              ...query,
-              page: page! + 1,
-            })
-          );
-        }else if (cardsOnAuction){
-          dispatch(CollectiblesOnAuctionLoadAction(publicKeyIn!, true, undefined));
-        }else if (biddedCards){
-          /*
-          dispatch(
-            CollectiblesBiddedLoadAction(publicKeyIn!, {
-              ...query,
-              page: page! + 1,
-            })
-          );
-          */
-        }        
+        dispatch(
+          CollectiblesLoadAction(publicKeyIn!, {
+            ...query,
+            page: page! + 1,
+          })
+        );
       }
-    }, [query, dispatch, publicKeyIn, auctionStart, cardsOnAuction, biddedCards]);
+    }, [query, dispatch, publicKeyIn]);
   
     const flatAssets = useMemo(() => assets.flat(), [assets]);
   
@@ -181,6 +137,7 @@ const AuctionSell: FC = () => {
       <IonRow>
         <ImageBgCol size="12">
           <Label
+            style={{maxWidth:"256px"}}
             color="light"
             fontSize={FontSize.L}
             fontWeight={FontWeight.BOLD}
@@ -189,53 +146,29 @@ const AuctionSell: FC = () => {
           </Label>
           <br />
           <Text
+            style={{maxWidth:"256px"}}
             className="ion-margin-vertical"
             color="light"
             fontSize={FontSize.XS}
           >
-            ...or start bidding on your favourite cards. 
-            Make sure to follow up with your cards, 
-            since some disappear at a racing speed!
+            This is your auction screen. Simply click on a card that you want to put on offer, 
+            or check in with your current open auctions.
           </Text>
           <br />
           <IonGrid class="ion-justify-content-center">
-            <IonRow class="ion-justify-content-center">
-              <IonCol class="ion-align-self-center">
-                <StartAuctionButton
-                  className="ion-float-left"                                  
-                  fill="clear"
-                  fontSize={FontSize.SM}                  
-                  color={(auctionStart)?"warning":"light"}
-                  fontWeight={(auctionStart)?FontWeight.BOLD:FontWeight.NORMAL}
-                  onClick={() => StartAuction()}
-                >
-                  Start Auction
-                </StartAuctionButton>
-              </IonCol>              
+            <IonRow class="ion-justify-content-center">             
               <IonCol class="ion-align-self-center">
                 <CardsOnAuctionButton
-                  className="ion-float-center"                  
+                  className="ion-float-right"                  
                   fill="clear"
                   fontSize={FontSize.SM}      
-                  color={(cardsOnAuction)?"warning":"light"}
-                  fontWeight={(cardsOnAuction)?FontWeight.BOLD:FontWeight.NORMAL}
-                  onClick={() => CardsOnAuction()}
+                  color="light"
+                  fontWeight={FontWeight.BOLD}
+                  onClick={() => history.push("/market/myauctions")}
                 >
-                  Cards On Auction
-                </CardsOnAuctionButton>                 
-              </IonCol>              
-              <IonCol class="ion-align-self-center">
-                <BiddedCardsButton
-                  className="ion-float-right"
-                  fill="clear"
-                  fontSize={FontSize.SM}
-                  color={(biddedCards)?"warning":"light"}
-                  fontWeight={(biddedCards)?FontWeight.BOLD:FontWeight.NORMAL}
-                  onClick={() => BiddedCards()}
-                >
-                  Bidded Cards
-                </BiddedCardsButton>                   
-              </IonCol>              
+                  My Open Auctions
+                </CardsOnAuctionButton>             
+              </IonCol>                           
             </IonRow>
           </IonGrid>                         
         </ImageBgCol>
@@ -277,30 +210,16 @@ const AuctionSell: FC = () => {
 
                 return (
                   <>
-                    {(cardsOnAuction || biddedCards) && (
-                      <CardOnAuction
+                    <CardContainer key={id} size={cardColSize().toString()}>  
+                      <Card
                         id={id}
                         title={title}
+                        subtitle={subtitle}
                         imgIpfsHash={ipfsHashImageFront}
                         type={type}
-                        linkto={"/home/card/startauction/"+id}  
-                        finalBiddingDate={finalBiddingDate}                   
-                        currentBid={currentBid}
-                        yourBid={yourBid}
-                      />
-                    )}                    
-                    {!cardsOnAuction && !biddedCards && (
-                      <CardContainer key={id} size={cardColSize().toString()}>  
-                        <Card
-                          id={id}
-                          title={title}
-                          subtitle={subtitle}
-                          imgIpfsHash={ipfsHashImageFront}
-                          type={type}
-                          linkto={"/home/card/startauction/"+id}                      
-                        />    
-                      </CardContainer>                  
-                    )}       
+                        linkto={"/home/card/startauction/"+id}                      
+                      />    
+                    </CardContainer>                  
                   </>           
                 );
               })}

@@ -6,6 +6,10 @@ const auctionImagePath1x = '/assets/images/auction-screen.png';
 const auctionImagePath2x = '/assets/images/auction-screen@2x.png';
 const auctionImagePath3x = '/assets/images/auction-screen@3x.png';
 
+const auctionBalloonImagePath1x = '/assets/images/auction-balloon-screen.png';
+const auctionBalloonImagePath2x = '/assets/images/auction-balloon-screen@2x.png';
+const auctionBalloonImagePath3x = '/assets/images/auction-balloon-screen@3x.png';
+
 const flagImagePath1x = '/assets/images/flag-screen.png';
 const flagImagePath2x = '/assets/images/flag-screen@2x.png';
 const flagImagePath3x = '/assets/images/flag-screen@3x.png';
@@ -50,10 +54,16 @@ const auctionImage = {
   srcSet: `${addGHPagesPrefix()}${auctionImagePath1x} 1x, ${addGHPagesPrefix()}${auctionImagePath2x} 2x, ${addGHPagesPrefix()}${auctionImagePath3x} 3x`,
 };
 
+const auctionBalloonImage = {
+  alt: 'Auction',
+  src: `${process.env.PUBLIC_URL}${addGHPagesPrefix()}${auctionBalloonImagePath1x}`,
+  srcSet: `${addGHPagesPrefix()}${auctionBalloonImagePath1x} 1x, ${addGHPagesPrefix()}${auctionBalloonImagePath2x} 2x, ${addGHPagesPrefix()}${auctionBalloonImagePath3x} 3x`,
+};
+
 const driverHighResImage = {
   alt: 'Driver',
   src: `${addGHPagesPrefix()}${driverHighResImage1x}`,
   srcSet: `${addGHPagesPrefix()}${driverHighResImage1x} 1x, ${addGHPagesPrefix()}${driverHighResImage2x} 2x`,
 };
 
-export { addIPFSGatewayPrefix, welcomeImage, driverImage, flagImage, auctionImage, driverHighResImage };
+export { addIPFSGatewayPrefix, welcomeImage, driverImage, flagImage, auctionImage, auctionBalloonImage, driverHighResImage };

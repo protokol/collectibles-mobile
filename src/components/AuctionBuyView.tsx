@@ -7,11 +7,10 @@ import {
   IonGrid,
   IonRow,
   IonSpinner,
-  IonButton,
 } from '@ionic/react';
-import Card from './Card';
-import Button from './ionic/Button';
+import CardOnAuction from './CardOnAuction';
 import { JSX } from '@ionic/core';
+import Button from './ionic/Button';
 import Label from './ionic/Label';
 import Text from './ionic/Text';
 import { FontSize } from '../constants/font-size';
@@ -58,23 +57,12 @@ const BiddedCardsButton = styled(Button)<JSX.IonButton>`
   text-transform: capitalize;
 `;
 
-const CardContainer = styled(IonCol)` 
-  padding: 1.375rem;
-
-  &:nth-child(odd) {
-    padding-left: 0.6875rem;
-  }
-  &:nth-child(even) {
-    padding-right: 0.6875rem;
-  }
-`;
-
 const CollectablesIonRow = styled(IonRow)`
   overflow: auto;
   max-height: calc(100vh - 92px - 4.8rem);
 `;
 
-const AuctionBuy: FC = () => {    
+const AuctionBuyView: FC = () => {    
     const history = useHistory();
     const isMedium = useMediaQuery('(min-height: 992px)');
     const isLarge = useMediaQuery('(min-height: 1200px)');
@@ -193,6 +181,9 @@ const AuctionBuy: FC = () => {
                   subtitle,
                   ipfsHashImageFront,
                   tags,
+                  finalBiddingDate,
+                  currentBid,
+                  yourBid                  
                 } = attributes as any;
 
                 const type = 
@@ -201,16 +192,18 @@ const AuctionBuy: FC = () => {
                     : CardTagType.None;
 
                 return (
-                  <CardContainer key={id} size={cardColSize().toString()}>
-                    <Card
+                  <>
+                    <CardOnAuction
                       id={id}
                       title={title}
-                      subtitle={subtitle}
                       imgIpfsHash={ipfsHashImageFront}
                       type={type}
-                      linkto={"/home/card/startauction/"+id}
+                      linkto={"/market/editbid/"+id}  
+                      finalBiddingDate={finalBiddingDate}                   
+                      currentBid={currentBid}
+                      yourBid={yourBid}
                     />
-                  </CardContainer>
+                  </>
                 );
               })}
             </>
@@ -237,4 +230,4 @@ const AuctionBuy: FC = () => {
   );
 };
 
-export default AuctionBuy;
+export default AuctionBuyView;

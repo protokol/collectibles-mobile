@@ -9,6 +9,7 @@ import { FontSize } from '../constants/font-size';
 import { FontWeight } from '../constants/font-weight';
 import { flagImage } from '../constants/images';
 import AuctionSell from './AuctionSell';
+import AuctionSellView from './AuctionSellView';
 import AuctionBuy from './AuctionBuy';
 
 const ImageBgCol = styled(IonCol)`
@@ -73,21 +74,29 @@ const HomeMarket: FC = () => {
   const history = useHistory();
   const [submenu, setMarketSubMenu] = useState(0)
   const auctionSell = submenu===1;
-  const auctionBuy = submenu===2;
+  const auctionSellView = submenu===2;
+  const auctionBuy = submenu===3;
  
   const auctionSellHandler = () => {    
     setMarketSubMenu(1);   
   }
 
-  const auctionBuyHandler = () => {    
+  const auctionSellViewHandler = () => {    
     setMarketSubMenu(2);   
+  }  
+
+  const auctionBuyHandler = () => {    
+    setMarketSubMenu(3);   
   }
 
   return (  
     <>
     {auctionSell && (
-      <AuctionSell/>
+      <AuctionSell />
     )}  
+    {auctionSellView && (
+      <AuctionSellView />
+    )}      
     {auctionBuy && (
       <AuctionBuy/>
     )}      
@@ -96,6 +105,7 @@ const HomeMarket: FC = () => {
         <IonRow>
           <ImageBgCol size="12">
             <Label
+              style={{maxWidth:"256px"}}
               color="light"
               fontSize={FontSize.L}
               fontWeight={FontWeight.BOLD}
@@ -104,11 +114,12 @@ const HomeMarket: FC = () => {
             </Label>
             <br />
             <Text
+              style={{maxWidth:"256px"}}
               className="ion-margin-vertical"
               color="light"
               fontSize={FontSize.XS}
             >
-              Welcome to the e-market where you can buy new cards, trade them with other fans,
+              Welcome to the e-market where you can buy new cards, trade them with other fans, 
               or put them on an auction, and sell them to the highest bidder.
             </Text>
             <br />
@@ -132,7 +143,7 @@ const HomeMarket: FC = () => {
               Buy cards
             </ActionButton>
             <ActionButton
-              expand="block"
+              expand="full"
               radius={false}
               className="ion-text-uppercase ion-no-margin bg-dark-blue-magenta"
               fontSize={FontSize.SM}
@@ -142,7 +153,7 @@ const HomeMarket: FC = () => {
               Sell cards
             </ActionButton>
             <ActionButton
-              expand="block"
+              expand="full"
               radius={false}
               className="ion-text-uppercase ion-no-margin bg-charade"
               fontSize={FontSize.SM}
@@ -161,6 +172,16 @@ const HomeMarket: FC = () => {
             >
               Start an auction
             </ActionButton>
+            <ActionButton
+              expand="block"
+              radius={false}
+              className="ion-text-uppercase ion-no-margin bg-dark-blue-magenta"
+              fontSize={FontSize.SM}
+              fontWeight={FontWeight.BOLD}
+              onClick={auctionSellViewHandler}
+            >
+              View my open auctions
+            </ActionButton>            
             <ActionButton
               expand="block"
               radius={false}

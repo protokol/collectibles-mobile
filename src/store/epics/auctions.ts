@@ -206,9 +206,9 @@ const startAuctionEpic: RootEpic = (
                 },
                 nftIds: [cardId],
             }) 
-            //.fee("0")
-            .nonce(CryptoUtils.getWalletNextNonce())
-            .sign(passphrase);            
+            //.fee("0")                   
+            //.nonce(CryptoUtils.getWalletNextNonce())
+            //.sign(passphrase);            
             
             return defer(() => 
               connection(stateBaseUrl!).api("transactions").create({ transactions: [transaction.getStruct()] }))
