@@ -20,8 +20,6 @@ import { Builders, Transactions as NFTTransactions } from "@protokol/nft-exchang
 import { Transactions, Utils } from "@arkecosystem/crypto";
 import { CryptoUtils } from '../../utils/crypto-utils';
 import { TransactionWaitForConfirmAction } from '../actions/transaction';
-import { Interfaces } from '@arkecosystem/crypto';
-import { Container, Contracts } from '@arkecosystem/core-kernel';
 
 class ConfigurationConstants {  
   height: number;
@@ -129,16 +127,15 @@ const startAuctionEpic: RootEpic = (
         const {
             payload: {             
                 minimumBid,
-                /*minimumIncrement,
-                finalBiddingDate,*/
+                /*minimumIncrement,*/
+                finalBiddingDate,
                 cardId,
                 /*recipientId,*/
                 passphrase,
                 txUuid
             },
         } = action as StartAuctionActionType;              
-
-        let app: Contracts.Kernel.Application;        
+    
 /*
         Transactions.TransactionRegistry.registerTransactionType(NFTTransactions.NFTAuctionTransaction);   
         const transaction = new Builders.NFTAuctionBuilder()
@@ -194,21 +191,25 @@ const startAuctionEpic: RootEpic = (
             }
             const conf = confResponse.json() as unknown as ConfigurationResponse;         
             const blockTime = conf.data.constants.blocktime;
-            const currentBlock: Interfaces.IBlock = app.get<any>(Container.Identifiers.StateStore).getLastBlock();
+            const currentBlock = blockResponse.body.data.height;
 
+            const now = new Date().getTime();
+            const fbd = new Date(finalBiddingDate.replaceAll('-','/')).getTime();
+            const diffSeconds = (fbd - now) / 1000;
+            const addedHeight = currentBlock + Math.ceil(diffSeconds/blockTime);
 
             Transactions.TransactionRegistry.registerTransactionType(NFTTransactions.NFTAuctionTransaction);   
             const transaction = new Builders.NFTAuctionBuilder()
             .NFTAuctionAsset({
                 startAmount: Utils.BigNumber.make(minimumBid),                
                 expiration: {
-                    blockHeight: 1000000,
+                    blockHeight: addedHeight,
                 },
                 nftIds: [cardId],
             }) 
             //.fee("0")                   
-            //.nonce(CryptoUtils.getWalletNextNonce())
-            //.sign(passphrase);            
+            .nonce(CryptoUtils.getWalletNextNonce())
+            .sign(passphrase);            
             
             return defer(() => 
               connection(stateBaseUrl!).api("transactions").create({ transactions: [transaction.getStruct()] }))

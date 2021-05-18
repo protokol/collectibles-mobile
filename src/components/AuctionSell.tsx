@@ -64,8 +64,8 @@ const CardContainer = styled(IonCol)`
 `;
 
 const CardsOnAuctionButton = styled(Button)<JSX.IonButton>`
-  text-decoration: none;
-  text-transform: capitalize;
+  text-decoration: underline;
+  text-transform: uppercase;
 `;
 
 const CollectablesIonRow = styled(IonRow)`
@@ -197,10 +197,7 @@ const AuctionSell: FC = () => {
                   title,
                   subtitle,
                   ipfsHashImageFront,
-                  tags,
-                  finalBiddingDate,
-                  currentBid,
-                  yourBid
+                  tags
                 } = attributes as any;
 
                 const type = 

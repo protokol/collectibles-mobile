@@ -53,8 +53,8 @@ const ImageBgCol = styled(IonCol)`
 `;
 
 const BiddedCardsButton = styled(Button)<JSX.IonButton>`
-  text-decoration: none;
-  text-transform: capitalize;
+  text-decoration: underline;
+  text-transform: uppercase;
 `;
 
 const CollectablesIonRow = styled(IonRow)`

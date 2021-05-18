@@ -100,7 +100,7 @@ const HomeMarket: FC = () => {
     {auctionBuy && (
       <AuctionBuy/>
     )}      
-    {!auctionSell && !auctionBuy && (
+    {!auctionSell && !auctionSellView && !auctionBuy && (
       <IonGrid className="ion-no-padding">
         <IonRow>
           <ImageBgCol size="12">
@@ -126,9 +126,7 @@ const HomeMarket: FC = () => {
           </ImageBgCol>
           <BannerCol>
             <BannerText fontSize={FontSize.L} fontWeight={FontWeight.BOLD}>
-              Today I
-              <br />
-              want to...
+              Today I want to...
             </BannerText>
           </BannerCol>
           <IonCol size="12">

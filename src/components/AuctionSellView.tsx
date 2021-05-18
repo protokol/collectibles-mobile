@@ -16,7 +16,6 @@ import Text from './ionic/Text';
 import { FontSize } from '../constants/font-size';
 import { FontWeight } from '../constants/font-weight';
 import useIsMounted from '../hooks/use-is-mounted';
-import useMediaQuery from '../hooks/use-media-query';
 import { CardTagType } from './CardTag';
 import { AuthLoginContext } from '../providers/AuthLoginProvider';
 import { CollectiblesOnAuctionLoadAction } from '../store/actions/collections';
@@ -53,8 +52,8 @@ const ImageBgCol = styled(IonCol)`
 `;
 
 const StartAuctionButton = styled(Button)<JSX.IonButton>`  
-  text-decoration: none;
-  text-transform: capitalize;  
+  text-decoration: underline;
+  text-transform: uppercase;
 `;
 
 const CollectablesIonRow = styled(IonRow)`
@@ -64,8 +63,6 @@ const CollectablesIonRow = styled(IonRow)`
 
 const AuctionSellView: FC = () => {    
     const history = useHistory();
-    const isMedium = useMediaQuery('(min-height: 992px)');
-    const isLarge = useMediaQuery('(min-height: 1200px)');
     const { isError, error, isLoading, assets, isLastPage, query } = useSelector(
       collectionSelector,
       shallowEqual
@@ -85,8 +82,7 @@ const AuctionSellView: FC = () => {
     }, [isMounted, dispatch, publicKeyIn]);
   
     const loadNextPage = useCallback(() => {
-      if (publicKeyIn) {
-        const { page } = query ?? { page: 1 };
+      if (publicKeyIn) {        
         dispatch(CollectiblesOnAuctionLoadAction(publicKeyIn!, true, undefined));
       }
     }, [query, dispatch, publicKeyIn]);
@@ -103,16 +99,6 @@ const AuctionSellView: FC = () => {
       },
       [loadNextPage, isLastPage, isLoading]
     );
-  
-    const cardColSize = useCallback(() => {
-      if (isLarge) {
-        return 3;
-      }
-      if (isMedium) {
-        return 4;
-      }
-      return 6;
-    }, [isMedium, isLarge]);
     
   return (
       <>
@@ -179,7 +165,6 @@ const AuctionSellView: FC = () => {
               {flatAssets.map(({ id, attributes }) => {
                 const {
                   title,
-                  subtitle,
                   ipfsHashImageFront,
                   tags,
                   finalBiddingDate,

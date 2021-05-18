@@ -7,7 +7,6 @@ import {
   IonGrid,
   IonRow,
   IonSpinner,
-  IonButton,
 } from '@ionic/react';
 import Card from './Card';
 import Button from './ionic/Button';
@@ -54,8 +53,8 @@ const ImageBgCol = styled(IonCol)`
 `;
 
 const BiddedCardsButton = styled(Button)<JSX.IonButton>`
-  text-decoration: none;
-  text-transform: capitalize;
+  text-decoration: underline;
+  text-transform: uppercase;
 `;
 
 const CardContainer = styled(IonCol)` 
@@ -148,9 +147,8 @@ const AuctionBuy: FC = () => {
           >
             Discover the latest auction cards, pick your favourite, 
             and let the bidding war begin!
-          </Text>                      
-        </ImageBgCol>
-        <br />
+          </Text>    
+          <br />
           <IonGrid class="ion-justify-content-center">
             <IonRow class="ion-justify-content-center">              
               <IonCol class="ion-align-self-center">
@@ -158,7 +156,7 @@ const AuctionBuy: FC = () => {
                   className="ion-float-right"
                   fill="clear"
                   fontSize={FontSize.SM}
-                  color="warning"
+                  color="light"
                   fontWeight={FontWeight.BOLD}
                   onClick={() => history.push("/market/mybids")}
                 >
@@ -166,7 +164,8 @@ const AuctionBuy: FC = () => {
                 </BiddedCardsButton>                   
               </IonCol>              
             </IonRow>
-          </IonGrid>             
+          </IonGrid>                             
+        </ImageBgCol>            
       </IonRow>
     </IonGrid>    
     <IonGrid className="ion-no-padding">
