@@ -63,7 +63,7 @@ const CollectablesIonRow = styled(IonRow)`
 
 const AuctionSellView: FC = () => {    
     const history = useHistory();
-    const { isError, error, isLoading, assets, isLastPage, query } = useSelector(
+    const { isError, error, isLoading, assets, isLastPage } = useSelector(
       collectionSelector,
       shallowEqual
     );    

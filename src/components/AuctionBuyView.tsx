@@ -16,7 +16,6 @@ import Text from './ionic/Text';
 import { FontSize } from '../constants/font-size';
 import { FontWeight } from '../constants/font-weight';
 import useIsMounted from '../hooks/use-is-mounted';
-import useMediaQuery from '../hooks/use-media-query';
 import { CardTagType } from './CardTag';
 import { AuthLoginContext } from '../providers/AuthLoginProvider';
 import { CollectiblesOnAuctionLoadAction } from '../store/actions/collections';
