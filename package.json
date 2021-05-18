@@ -12,7 +12,7 @@
   "engines": {
     "node": ">=12.20.1"
   },
-  "dependencies": {    
+  "dependencies": {
     "@arkecosystem/crypto": "^3.0.0-next.25",
     "@capacitor/android": "^2.4.6",
     "@capacitor/core": "2.4.7",
