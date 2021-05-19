@@ -1,4 +1,4 @@
-import { FC, useCallback, useContext, useEffect, useMemo } from 'react';
+import { FC, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { useHistory } from 'react-router';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
@@ -8,19 +8,20 @@ import {
   IonRow,
   IonSpinner,
 } from '@ionic/react';
-import CardOnAuction from './CardOnAuction';
+import CardOnAuction from '../components/CardOnAuction';
 import { JSX } from '@ionic/core';
-import Button from './ionic/Button';
-import Label from './ionic/Label';
-import Text from './ionic/Text';
+import Button from '../components/ionic/Button';
+import Label from '../components/ionic/Label';
+import Text from '../components/ionic/Text';
 import { FontSize } from '../constants/font-size';
 import { FontWeight } from '../constants/font-weight';
 import useIsMounted from '../hooks/use-is-mounted';
-import { CardTagType } from './CardTag';
-import { AuthLoginContext } from '../providers/git aAuthLoginProvider';
+import { CardTagType } from '../components/CardTag';
+import { AuthLoginContext } from '../providers/AuthLoginProvider';
 import { CollectiblesOnAuctionLoadAction } from '../store/actions/collections';
 import { collectionSelector } from '../store/selectors/collections';
 import { auctionImage } from '../constants/images';
+import AuctionableCardsPage from './AuctionableCardsPage';
 
 const ImageBgCol = styled(IonCol)`
   position: relative;
@@ -61,12 +62,18 @@ const CollectablesIonRow = styled(IonRow)`
   max-height: calc(100vh - 92px - 4.8rem);
 `;
 
-const AuctionSellView: FC = () => {    
+const AuctionsOwnedPage: FC = () => {    
     const history = useHistory();
     const { isError, error, isLoading, assets, isLastPage } = useSelector(
       collectionSelector,
       shallowEqual
     );    
+    const [navToStartAuction, setNavToStartAuction] = useState(false);
+
+    const navigateStartAuction = () => {    
+      setNavToStartAuction(true);   
+    }    
+
     const dispatch = useDispatch();
     const {
       session: { publicKey },
@@ -102,6 +109,9 @@ const AuctionSellView: FC = () => {
     
   return (
       <>
+    {navToStartAuction && (
+      <AuctionableCardsPage />
+    )}        
     <IonGrid className="ion-no-padding">
       <IonRow>
         <ImageBgCol size="12">
@@ -134,7 +144,7 @@ const AuctionSellView: FC = () => {
                   fontSize={FontSize.SM}                  
                   color="light"
                   fontWeight={FontWeight.BOLD}
-                  onClick={() => history.push("/market/startauction")}
+                  onClick={navigateStartAuction}
                 >
                   Start Auction
                 </StartAuctionButton>
@@ -184,7 +194,7 @@ const AuctionSellView: FC = () => {
                       title={title}
                       imgIpfsHash={ipfsHashImageFront}
                       type={type}
-                      linkto={"/home/card/startauction/"+id}  
+                      linkto={"/market/card/startauction/"+id}  
                       finalBiddingDate={finalBiddingDate}                   
                       currentBid={currentBid}
                       yourBid={yourBid}
@@ -216,4 +226,4 @@ const AuctionSellView: FC = () => {
   );
 };
 
-export default AuctionSellView;
+export default AuctionsOwnedPage;

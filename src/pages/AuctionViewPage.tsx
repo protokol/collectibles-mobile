@@ -24,9 +24,8 @@ import { FontWeight } from '../constants/font-weight';
 import { driverHighResImage } from '../constants/images';
 import useIsMounted from '../hooks/use-is-mounted';
 import { AuthLoginContext } from '../providers/AuthLoginProvider';
-import { ClaimAssetAction } from '../store/actions/asset-claim';
-import { CollectiblesLoadAction } from '../store/actions/collections';
-import { assetClaimSelector } from '../store/selectors/asset-claim';
+import { StartAuctionAction } from '../store/actions/auctions';
+import { auctionSelector } from '../store/selectors/auctions';
 import { transactionsSelector } from '../store/selectors/transaction';
 
 const ImageBgCol = styled(IonCol)`
@@ -85,46 +84,43 @@ const ViewCardButton = styled(Button)`
 
 const txUuid = uuid();
 
-const CollectCardPage: FC = () => {
-  const { collectionId } = useParams<{ collectionId: string }>();
+const AuctionViewPage: FC = () => {  
+
+  const { cardId, minimumBid, minimumIncrement, finalBiddingDate } = useParams<{ cardId: string, minimumBid: string, minimumIncrement: string, finalBiddingDate: string}>();
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const {
-    session: { publicKey },
-  } = useContext(AuthLoginContext);
-
-  const assetClaimRequest = useSelector(assetClaimSelector, shallowEqual);
+  const startAuctionRequest = useSelector(auctionSelector, shallowEqual);
   const transactions = useSelector(transactionsSelector, shallowEqual);
   const tx = useMemo(() => transactions[txUuid], [transactions]);
 
   const isLoading = useCallback(() => {
-    return assetClaimRequest?.isLoading || tx?.isLoading;
-  }, [assetClaimRequest, tx]);
+    return startAuctionRequest?.isLoading || tx?.isLoading;
+  }, [startAuctionRequest, tx]);
 
   const isError = useCallback(() => {
-    return assetClaimRequest?.isError || tx?.isError;
-  }, [assetClaimRequest, tx]);
+    return startAuctionRequest?.isError || tx?.isError;
+  }, [startAuctionRequest, tx]);
 
   const error = useCallback(() => {
-    return `${assetClaimRequest?.error}${tx?.error}`;
-  }, [assetClaimRequest, tx]);
+    return `${startAuctionRequest?.error}${tx?.error}`;
+  }, [startAuctionRequest, tx]);
 
   const {
-    session: { address },
-  } = useContext(AuthLoginContext);
+    session: { address, passphrase },
+  } = useContext(AuthLoginContext);  
 
-  const isMounted = useIsMounted();
-  useEffect(() => {
-    if (isMounted && collectionId && address) {
-      dispatch(ClaimAssetAction(collectionId, address!, txUuid));
+  const isMounted = useIsMounted();  
+  useEffect(() => {        
+    if (isMounted && minimumBid && minimumIncrement && finalBiddingDate && cardId && address) {            
+      dispatch(StartAuctionAction(Number(minimumBid), Number(minimumIncrement), finalBiddingDate, cardId, address!, passphrase!, txUuid));
     }
-  }, [isMounted, dispatch, collectionId, address]);
+  }, [isMounted, dispatch, minimumBid, minimumIncrement, finalBiddingDate, cardId, address, passphrase]);  
 
   return (
     <IonPage>
-      <Header
-        title="Collect Cards"
+      <Header 
+        title="Start Card Auction"
         buttonTopLeft={
           <IonButton onClick={() => history.replace('/home')}>
             <IonIcon color="light" slot="icon-only" icon={arrowBackOutline} />
@@ -147,13 +143,13 @@ const CollectCardPage: FC = () => {
                     fontSize={FontSize.SM}
                     color="light"
                   >
-                    {error}
+                  {error}
                   </Text>
                 </>
               )}
               {!isLoading() && !isError() && (
                 <>
-                  <Text color="success" fontSize={FontSize.XXL}>
+                  <Text color="warning" fontSize={FontSize.XXL} fontWeight={FontWeight.BOLD}>
                     Hooray!
                   </Text>
                   <Text
@@ -161,7 +157,7 @@ const CollectCardPage: FC = () => {
                     fontSize={FontSize.L}
                     color="light"
                   >
-                    You just received a new hero card!
+                    The auction is now live!
                   </Text>
                 </>
               )}
@@ -169,6 +165,7 @@ const CollectCardPage: FC = () => {
           </IonRow>
         </IonGrid>
       </IonContent>
+
       {!isLoading() && !isError() && (
         <Footer className="ion-no-border">
           <IonToolbar>
@@ -181,11 +178,11 @@ const CollectCardPage: FC = () => {
               expand="block"
               onClick={() => {
                 const { txId } = tx;
-                dispatch(CollectiblesLoadAction(publicKey!));
-                history.push(`/home/card/${txId}`);
-              }}
+                //dispatch(CollectiblesLoadAction(publicKey!));
+                history.push(`/home/auction/${txId}`);
+              }}              
             >
-              View Card
+              View Auction
             </ViewCardButton>
           </IonToolbar>
         </Footer>
@@ -194,4 +191,4 @@ const CollectCardPage: FC = () => {
   );
 };
 
-export default CollectCardPage;
+export default AuctionViewPage;

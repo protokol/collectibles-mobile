@@ -8,8 +8,8 @@ import Text from '../components/ionic/Text';
 import { FontSize } from '../constants/font-size';
 import { FontWeight } from '../constants/font-weight';
 import { flagImage } from '../constants/images';
-import AuctionSell from './AuctionSell';
-import AuctionSellView from './AuctionSellView';
+import AuctionableCardsPage from '../pages/AuctionableCardsPage';
+import AuctionsOwnedPage from '../pages/AuctionsOwnedPage';
 import AuctionBuy from './AuctionBuy';
 
 const ImageBgCol = styled(IonCol)`
@@ -92,10 +92,10 @@ const HomeMarket: FC = () => {
   return (  
     <>
     {auctionSell && (
-      <AuctionSell />
+      <AuctionableCardsPage />
     )}  
     {auctionSellView && (
-      <AuctionSellView />
+      <AuctionsOwnedPage />
     )}      
     {auctionBuy && (
       <AuctionBuy/>
@@ -136,7 +136,7 @@ const HomeMarket: FC = () => {
               className="ion-text-uppercase ion-no-margin bg-gray"
               fontSize={FontSize.SM}
               fontWeight={FontWeight.BOLD}
-              onClick={() => history.push('/home/buycards')}
+              onClick={() => history.replace('/home/buycards')}
             >
               Buy cards
             </ActionButton>
@@ -146,7 +146,7 @@ const HomeMarket: FC = () => {
               className="ion-text-uppercase ion-no-margin bg-dark-blue-magenta"
               fontSize={FontSize.SM}
               fontWeight={FontWeight.BOLD}
-              onClick={() => history.push('/home/sellcards')}
+              onClick={() => history.replace('/home/sellcards')}
             >
               Sell cards
             </ActionButton>
@@ -156,7 +156,7 @@ const HomeMarket: FC = () => {
               className="ion-text-uppercase ion-no-margin bg-charade"
               fontSize={FontSize.SM}
               fontWeight={FontWeight.BOLD}
-              onClick={() => history.push('/home/tradecards')}
+              onClick={() => history.replace('/home/tradecards')}
             >
               Trade cards
             </ActionButton>

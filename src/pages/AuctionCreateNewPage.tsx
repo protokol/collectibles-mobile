@@ -126,7 +126,7 @@ interface stateData{
   finalbiddingdate?: string;
 }
 
-const CardStartAuction: FC = () => {
+const AuctionCreateNewPage: FC = () => {
   
   const [data, setStateData] = useState<stateData>(initialValues);
   const { control, handleSubmit, formState, errors } = useForm({
@@ -153,7 +153,7 @@ const CardStartAuction: FC = () => {
       console.log("submitted:" + JSON.stringify(data, null, 2));    
       //TBD Fixed minimum increment to 5
       //history.push(`/home/card/startauctionaction/${assetId}/${data.minimumbid}/${data.minimumincrement}/${data.finalbiddingdate?.replaceAll('/','-')}`);      
-      history.push(`/home/card/startauctionaction/${assetId}/${data.minimumbid}/5/${data.finalbiddingdate?.replaceAll('/','-')}`);      
+      history.push(`/market/card/createnewauction/${assetId}/${data.minimumbid}/5/${data.finalbiddingdate?.replaceAll('/','-')}`);      
     },
     [formState.isValid, setStateData, data, history, assetId]
   );
@@ -351,4 +351,4 @@ const CardStartAuction: FC = () => {
   );
 };
 
-export default CardStartAuction;
+export default AuctionCreateNewPage;

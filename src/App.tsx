@@ -9,12 +9,15 @@ import MainMenu from './components/MainMenu';
 import ProtectedRoute from './components/ProtectedRoute';
 import useIsMounted from './hooks/use-is-mounted';
 import CardDetails from './pages/CardDetails';
-import CardStartAuction from './pages/CardStartAuction';
-import CollectCardPage from './pages/CollectCardPage';
+import CardStartAuction from './pages/AuctionCreateNewPage';
+import CardCollectingAndConfirmationPage from './pages/CardCollectingAndConfirmationPage';
 import HomePage from './pages/HomePage';
 import PasscodePage from './pages/PasscodePage';
 import PassphrasePage from './pages/PassphrasePage';
-import StartAuctionPage from './pages/StartAuctionPage';
+import StartAuctionPage from './pages/AuctionCreationAndConfirmation';
+import AuctionViewPage from './pages/AuctionViewPage';
+import AuctionsOwnedPage from './pages/AuctionsOwnedPage';
+import AuctionableCardsPage from './pages/AuctionableCardsPage';
 import ProfilePage from './pages/ProfilePage';
 import QrCodeGeneratorPage from './pages/QrCodeGeneratorPage';
 import ScanQRPage from './pages/ScanQRPage';
@@ -26,8 +29,6 @@ import { SetBaseUrlAppAction } from './store/actions/app';
 import './theme/ionic-theme';
 
 const { SplashScreen } = Plugins;
-
-
 
 const App: FC = () => {
   const dispatch = useDispatch();
@@ -111,18 +112,33 @@ const App: FC = () => {
                   exact
                 />
                 <ProtectedRoute
-                  path="/home/card/startauction/:assetId"
+                  path="/market/startauction"
+                  component={AuctionableCardsPage}
+                  exact
+                />                 
+                <ProtectedRoute
+                  path="/market/card/startauction/:assetId"
                   component={CardStartAuction}
                   exact
                 />  
                 <ProtectedRoute
-                  path="/home/card/startauctionaction/:cardId/:minimumBid/:minimumIncrement/:finalBiddingDate"
+                  path="/market/card/auctionview/:assetId"
+                  component={AuctionViewPage}
+                  exact
+                />     
+                <ProtectedRoute
+                  path="/market/myauctions"
+                  component={AuctionsOwnedPage}
+                  exact
+                />                              
+                <ProtectedRoute
+                  path="/market/card/createnewauction/:cardId/:minimumBid/:minimumIncrement/:finalBiddingDate"
                   component={StartAuctionPage}
                   exact
                 />                               
                 <ProtectedRoute
                   path="/home/collect-card/:collectionId"
-                  component={CollectCardPage}
+                  component={CardCollectingAndConfirmationPage}
                   exact
                 />                          
               </IonRouterOutlet>

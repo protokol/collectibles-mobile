@@ -84,7 +84,7 @@ const ViewCardButton = styled(Button)`
 
 const txUuid = uuid();
 
-const StartAuctionPage: FC = () => {  
+const AuctionCreationAndConfirmation: FC = () => {  
 
   const { cardId, minimumBid, minimumIncrement, finalBiddingDate } = useParams<{ cardId: string, minimumBid: string, minimumIncrement: string, finalBiddingDate: string}>();
   const history = useHistory();
@@ -102,8 +102,8 @@ const StartAuctionPage: FC = () => {
     return startAuctionRequest?.isError || tx?.isError;
   }, [startAuctionRequest, tx]);
 
-  const error = useCallback(() => {
-    return `${startAuctionRequest?.error}${tx?.error}`;
+  const error = useCallback(() => {    
+    return (startAuctionRequest?.isError)? `${startAuctionRequest?.error}`:`${tx?.error?.message}`;
   }, [startAuctionRequest, tx]);
 
   const {
@@ -143,7 +143,7 @@ const StartAuctionPage: FC = () => {
                     fontSize={FontSize.SM}
                     color="light"
                   >
-                  {error}
+                  {error()}
                   </Text>
                 </>
               )}
@@ -177,9 +177,9 @@ const StartAuctionPage: FC = () => {
               radius={false}
               expand="block"
               onClick={() => {
-                const { txId } = tx;
-                //dispatch(CollectiblesLoadAction(publicKey!));
-                history.push(`/home/auction/${txId}`);
+                // const { txId } = tx;
+                // dispatch(CollectiblesLoadAction(publicKey!));
+                history.push(`/market/myauctions`);
               }}              
             >
               View Auction
@@ -191,4 +191,4 @@ const StartAuctionPage: FC = () => {
   );
 };
 
-export default StartAuctionPage;
+export default AuctionCreationAndConfirmation;

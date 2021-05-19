@@ -37,11 +37,11 @@ const Card: FC<{
   details?: string;
   type?: CardTagType;
   linkto: string;
-}> = ({ title, subtitle, details, imgIpfsHash, type, linkto }) => {
+}> = ({ id, title, subtitle, details, imgIpfsHash, type, linkto }) => {
   const history = useHistory();
 
   return (
-    <CardStyled onClick={() => history.push(`${linkto}`)}>
+    <CardStyled key={id} onClick={() => history.push(`${linkto}`)}>
       <CardTag type={type} />
       <Img src={addIPFSGatewayPrefix(imgIpfsHash)} />
       {title && (

@@ -176,6 +176,7 @@ const startAuctionEpic: RootEpic = (
             )    
         ); 
         */
+        console.log("Passing test 1.");
 
         return forkJoin([
             fromFetch(`${stateBaseUrl}/api/node/configuration`),
@@ -183,21 +184,38 @@ const startAuctionEpic: RootEpic = (
         ]).pipe(  
           switchMap(([confResponse, blockResponse]) => {
             
+            console.log("Passing test 2");
+
             if (!confResponse.ok) {
               return of(StartAuctionErrorAction({name:"Error", message:"Error reading node configuration"}));              
             }
             if (blockResponse?.body?.errors) {
               return of(StartAuctionErrorAction(blockResponse?.body?.errors));
             }
-            const conf = confResponse.json() as unknown as ConfigurationResponse;         
-            const blockTime = conf.data.constants.blocktime;
-            const currentBlock = blockResponse.body.data.height;
 
+            console.log("Passing test 3");
+
+            // const conf = confResponse.json() as unknown as ConfigurationResponse;         
+            // const blockTime = conf.data.constants.blocktime;
+            let blockTime = 5;
+
+            console.log(JSON.stringify(confResponse));
+
+            confResponse.json().then((body) => blockTime=body?.data?.constants?.blocktime)
+            const currentBlock = blockResponse.body?.data?.height;
+
+            console.log("Passing test 4");
             const now = new Date().getTime();
             const fbd = new Date(finalBiddingDate.replaceAll('-','/')).getTime();
-            const diffSeconds = (fbd - now) / 1000;
+            const diffSeconds = Math.abs(fbd - now) / 1000;
             const addedHeight = currentBlock + Math.ceil(diffSeconds/blockTime);
 
+            console.log(blockTime + "   " + now + "   " +  fbd + "   " + diffSeconds + "   " + currentBlock + "   " + addedHeight);
+
+            // For debug purposes:
+            // return of(StartAuctionErrorAction({name:"Test", message:"Testing exit"}));
+
+            const nextNonce = CryptoUtils.getWalletNextNonce();
             Transactions.TransactionRegistry.registerTransactionType(NFTTransactions.NFTAuctionTransaction);   
             const transaction = new Builders.NFTAuctionBuilder()
             .NFTAuctionAsset({
@@ -208,8 +226,8 @@ const startAuctionEpic: RootEpic = (
                 nftIds: [cardId],
             }) 
             //.fee("0")                   
-            .nonce(CryptoUtils.getWalletNextNonce())
-            .sign(passphrase);            
+            .nonce((nextNonce==="1")?"2":nextNonce)
+            .sign(passphrase);
             
             return defer(() => 
               connection(stateBaseUrl!).api("transactions").create({ transactions: [transaction.getStruct()] }))
