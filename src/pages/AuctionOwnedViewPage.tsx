@@ -14,7 +14,7 @@ import Title from '../components/ionic/Title';
 import Button from '../components/ionic/Button';
 import { JSX } from '@ionic/core';
 
-import { 
+import {
   IonList,
   IonButton,
   IonItem,
@@ -75,7 +75,7 @@ const CardIonDatetime = styled(IonDatetime)`
   text-align: left;
   font: normal normal bold 14px/19px Open Sans;
   letter-spacing: 0px;
-  color: #F8C938;
+  color: #707070;
   opacity: 1;
   width: 90%;   
 `;
@@ -110,60 +110,28 @@ const ViewCardIonButton = styled(Button)<JSX.IonButton>`
   box-shadow: none !important;
 `;
 
-const d = new Date();
-const dateDefault = (d.getMonth()+1) + "/" + d.getDate() + "/" + d.getFullYear();
-const datePlaceHolder = (d.getMonth()+1) + " / " + d.getDate() + " / " + d.getFullYear();
-
-let initialValues = {
-  minimumbid: "",
-  minimumincrement: "",
-  finalbiddingdate: dateDefault,
-}
-
-interface stateData{
-  minimumbid?: string;
-  minimumincrement?: string;
-  finalbiddingdate?: string;
-}
-
-const AuctionCreateNewPage: FC = () => {
+const AuctionOwnedViewPage: FC = () => {
   
-  const [data, setStateData] = useState<stateData>(initialValues);
-  const { control, handleSubmit, formState, errors } = useForm({
-    defaultValues: { ...initialValues },
-    mode: "onChange"
-  });  
-
-  const onIonChange = (event) => {    
-    event.preventDefault();
-    event.stopPropagation();    
-    setStateData({...data, [event.target.name] : event.target.value});
-  }
-
-  const { assetId } = useParams<{ assetId: string }>();  
-
+  const { handleSubmit, control } = useForm();  
+  const { auctionId, assetId } = useParams<{ auctionId: string, assetId: string }>();  
   const history = useHistory();
- 
+
   const submitForm = useCallback(
-    ({ minimumbid, minimumincrement, finalbiddingdate }: stateData) => {
-      if (!formState.isValid) {
-        return;
-      }      
-      setStateData({ minimumbid, minimumincrement, finalbiddingdate });      
+    () => {  
       //console.log("submitted:" + JSON.stringify(data, null, 2));    
       //TBD Fixed minimum increment to 5
       //history.push(`/home/card/startauctionaction/${assetId}/${data.minimumbid}/${data.minimumincrement}/${data.finalbiddingdate?.replaceAll('/','-')}`);      
-      history.push(`/market/card/createnewauction/${assetId}/${data.minimumbid}/5/${data.finalbiddingdate?.replaceAll('/','-')}`);      
+      history.push(`/market/card/cancelauction/${auctionId}`);
     },
-    [formState.isValid, setStateData, data, history, assetId]
+    [auctionId, history]
   );
   
   const { assets } = useSelector(collectionSelector, shallowEqual);
   const asset = useMemo(() => assets.flat().find(({ id }) => id === assetId), [
     assets,
     assetId,
-  ]) as BaseResourcesTypes.Assets;  
-
+  ]) as BaseResourcesTypes.Assets; 
+  
   if (!asset) {
     return <IonSpinner color="light" />;
   }
@@ -176,7 +144,10 @@ const AuctionCreateNewPage: FC = () => {
     ipfsHashImageFront,
     title,
     subtitle,
-    issuedDate
+    minimumBid,
+    finalBiddingDate,
+    issuedDate,
+    currentBid    
   } = attributes as any;
 
   return (    
@@ -240,32 +211,18 @@ const AuctionCreateNewPage: FC = () => {
                     render={({ onChange }) => (
                       <AmountIonInput
                         type="text"
-                        name="minimumbid"                        
-                        inputmode="numeric"                        
-                        placeholder="$0.00"
-                        onIonInput={onIonChange} 
-                        onIonChange={({
-                          detail: { value },
-                        }: CustomEvent<InputChangeEventDetail>) =>
-                          onChange(value)
-                        }
+                        color="warning"
+                        name="minimumbid"
+                        value={"$" + minimumBid}
+                        disabled={true}                        
                       />
                     )}
                     control={control}
                     name="minimumbid"
-                    rules={{
-                      required: 'Minimum Bid is required!',
-                      pattern: {
-                        value: /^[0-9]/,
-                        message: 'Minimum Bid should be a number',
-                      },
-                      validate: (value) => value > 0 || 'Minimum Bid should to be higher than 0',                        
-                    }}
                   />                            
-                </IonItem>
-                <FormInputError errors={errors} name="minimumbid" />                
+                </IonItem>             
               </IonList>
-              <AmountIonLabel position="stacked">Set Minimum Bid</AmountIonLabel> 
+              <AmountIonLabel position="stacked">Minimum Bid</AmountIonLabel> 
             </IonCol>
             <VerticalLine/>
             <IonCol className="ion-text-center" >              
@@ -275,54 +232,38 @@ const AuctionCreateNewPage: FC = () => {
                     render={({ onChange }) => (
                       <AmountIonInput
                         type="text"
-                        name="minimumincrement"                        
-                        inputmode="numeric"                        
-                        placeholder="$0.00"
-                        value="5"
-                        disabled={true}
-                        onIonInput={onIonChange} 
-                        onIonChange={({
-                          detail: { value },
-                        }: CustomEvent<InputChangeEventDetail>) =>
-                          onChange(value)
-                        }
+                        color="success"
+                        name="highestbid"                          
+                        value={"$" + currentBid}
+                        disabled={true}                        
                       />
                     )}
                     control={control}
-                    name="minimumincrement"
-                  />
-                    {/*  //TBD capped as is fixed to 5 increment by now
-                    rules={{
-                      required: 'Minimum Increment is required!',
-                      pattern: {
-                        value: /^[0-9]/,
-                        message: 'Minimum Increment should be a number',
-                      },
-                      validate: (value) => value > 0 || 'Minimum Increment should to be higher than 0',                        
-                    }}
-                    */}                                                             
+                    name="highestbid"
+                  />                                                             
                 </IonItem>
-                {/*
-                <FormInputError errors={errors} name="minimumincrement" />
-                */}
               </IonList>
-              <AmountIonLabel position="stacked">Set Minimum Increment</AmountIonLabel> 
+              <AmountIonLabel position="stacked">Current Highest Bid</AmountIonLabel> 
             </IonCol>            
           </IonRow>
           <HorizontalLine/>
           <IonRow style={{marginTop:"10px"}}>
             <IonCol size="10" offset="1">              
-              <AmountIonLabel position="stacked" style={{marginLeft:"30px"}}>Set Final Bidding Date</AmountIonLabel> 
+              <AmountIonLabel position="stacked" style={{marginLeft:"30px"}}>Auction Ends On:</AmountIonLabel> 
               <IonList no-lines>
-                <IonItem style={{border:"1px solid #F8C938"}} className="ion-text-center">        
+                <IonItem style={{border:"1px solid #707070"}} className="ion-text-center">              
+                  {finalBiddingDate}
+                  { /*
                   <Controller
                       as={
-                        <CardIonDatetime value={data.finalbiddingdate} onIonChange={onIonChange} color="auctiondatetime" className="ion-text-left" displayFormat="MM / DD / YYYY" placeholder={datePlaceHolder} max="2100" min={new Date().toISOString()}/>              
-                      } 
+                        <CardIonDatetime value={new Date(finalBiddingDate).toISOString()} className="ion-text-left" displayFormat="MM / DD / YYYY"/>              
+                      }                      
+                      disabled={true}
                       control={control}
                       name="finalbiddingdate"      
-                  />                                     
-                  <CalendarOutline color={'#F8C938'} title="Final Bidding Date"/>
+                  /> 
+                  */ }                                    
+                  <CalendarOutline color={'#707070'} title="Final Bidding Date"/>
                 </IonItem>                
               </IonList>
             </IonCol>
@@ -331,17 +272,16 @@ const AuctionCreateNewPage: FC = () => {
         <Footer className="ion-no-border">
           <IonToolbar>
             <FooterButton
-              color="auction"
+              color="danger"
               size="large"
               type="submit"
               className="ion-text-uppercase ion-no-margin"
               fontSize={FontSize.SM}
               fontWeight={FontWeight.BOLD}
               radius={false}
-              expand="block"   
-              disabled={formState.isValid === false}           
-            >
-              Start Auction
+              expand="block"
+              >
+              Cancel Auction
             </FooterButton>
           </IonToolbar>
         </Footer>  
@@ -351,4 +291,4 @@ const AuctionCreateNewPage: FC = () => {
   );
 };
 
-export default AuctionCreateNewPage;
+export default AuctionOwnedViewPage;

@@ -16,7 +16,7 @@ const BidIonLabel = styled(IonLabel)`
   color: #252732;
   opacity: 1;
   margin-left: 5px;  
-  float: right;
+  float: right;  
   font-weight: bold;
 `;
 
@@ -41,6 +41,9 @@ const CardSubTitle = styled(Title)`
   color: #252732;
   opacity: 1;
   margin-left: 5px;
+  max-width: 120px;  
+  overflow: hidden;
+  white-space: nowrap;
 `;
 
 const CardOnAuction: FC<{
@@ -49,10 +52,11 @@ const CardOnAuction: FC<{
   imgIpfsHash: string;
   type?: CardTagType;
   linkto: string;
-  finalBiddingDate: string;
+  timeRemaining: string;
   currentBid: number;
+  minimumBid?: number;
   yourBid?: number;
-}> = ({ id, title, imgIpfsHash, type, linkto, finalBiddingDate, currentBid, yourBid }) => {
+}> = ({ id, title, imgIpfsHash, type, linkto, timeRemaining, currentBid, minimumBid, yourBid }) => {
   const history = useHistory();
 
   const currentBidColor = (yourBid===undefined || currentBid < yourBid) ? "success" : "warning";
@@ -78,6 +82,16 @@ const CardOnAuction: FC<{
                   )}
                 </IonCol>
               </IonRow>
+              {minimumBid && (
+              <IonRow className="ion-margin-bottom">
+                <IonCol>
+                <CardTitle className="ion-no-padding ion-text-left" fontWeight={FontWeight.BOLD}>Minimum Bid</CardTitle>
+                </IonCol>
+                <IonCol>                    
+                    <BidIonLabel color="warning" className="ion-no-padding ion-text-right">${minimumBid}</BidIonLabel>
+                </IonCol>
+              </IonRow>
+              )}               
               <IonRow className="ion-margin-bottom">
                 <IonCol>
                     <CardTitle className="ion-no-padding ion-text-left" fontWeight={FontWeight.BOLD}>Current Bid</CardTitle>
@@ -87,7 +101,7 @@ const CardOnAuction: FC<{
                     <BidIonLabel color={currentBidColor} className="ion-no-padding ion-text-right">${currentBid}</BidIonLabel>
                   )}
                 </IonCol>
-              </IonRow>              
+              </IonRow>                          
               {yourBid && (
               <IonRow className="ion-margin-bottom">
                 <IonCol>
@@ -97,14 +111,14 @@ const CardOnAuction: FC<{
                     <BidIonLabel color={yourBidColor} className="ion-no-padding ion-text-right">${yourBid}</BidIonLabel>
                 </IonCol>
               </IonRow>
-              )}
-              <IonRow className="ion-margin-bottom">
+              )}             
+              <IonRow>
                 <IonCol>
                   <CardTitle className="ion-no-padding ion-text-left" fontWeight={FontWeight.BOLD}>Bidding Ends</CardTitle>
                 </IonCol>
                 <IonCol>
-                  {finalBiddingDate && (
-                    <CardSubTitle className="ion-no-padding" fontSize={FontSize.SM}>{finalBiddingDate}</CardSubTitle>
+                  {timeRemaining && (
+                    <CardSubTitle className="ion-no-padding" fontSize={FontSize.SM}>{timeRemaining}</CardSubTitle>
                   )} 
                 </IonCol>
               </IonRow>                                          

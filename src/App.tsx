@@ -9,13 +9,14 @@ import MainMenu from './components/MainMenu';
 import ProtectedRoute from './components/ProtectedRoute';
 import useIsMounted from './hooks/use-is-mounted';
 import CardDetails from './pages/CardDetails';
-import CardStartAuction from './pages/AuctionCreateNewPage';
+import AuctionCreateNewPage from './pages/AuctionCreateNewPage';
+import AuctionCancellationAndConfirmationPage from './pages/AuctionCancellationAndConfirmationPage';
 import CardCollectingAndConfirmationPage from './pages/CardCollectingAndConfirmationPage';
 import HomePage from './pages/HomePage';
 import PasscodePage from './pages/PasscodePage';
 import PassphrasePage from './pages/PassphrasePage';
 import StartAuctionPage from './pages/AuctionCreationAndConfirmation';
-import AuctionViewPage from './pages/AuctionViewPage';
+import AuctionOwnedViewPage from './pages/AuctionOwnedViewPage';
 import AuctionsOwnedPage from './pages/AuctionsOwnedPage';
 import AuctionableCardsPage from './pages/AuctionableCardsPage';
 import ProfilePage from './pages/ProfilePage';
@@ -118,12 +119,17 @@ const App: FC = () => {
                 />                 
                 <ProtectedRoute
                   path="/market/card/startauction/:assetId"
-                  component={CardStartAuction}
+                  component={AuctionCreateNewPage}
                   exact
                 />  
                 <ProtectedRoute
-                  path="/market/card/auctionview/:assetId"
-                  component={AuctionViewPage}
+                  path="/market/card/cancelauction/:auctionId"
+                  component={AuctionCancellationAndConfirmationPage}
+                  exact
+                />                  
+                <ProtectedRoute
+                  path="/market/card/auctionview/:auctionId/:assetId"
+                  component={AuctionOwnedViewPage}
                   exact
                 />     
                 <ProtectedRoute

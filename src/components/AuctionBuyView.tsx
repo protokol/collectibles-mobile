@@ -167,7 +167,7 @@ const AuctionBuyView: FC = () => {
                   title,
                   ipfsHashImageFront,
                   tags,
-                  finalBiddingDate,
+                  timeRemaining,
                   currentBid,
                   yourBid                  
                 } = attributes as any;
@@ -185,7 +185,7 @@ const AuctionBuyView: FC = () => {
                       imgIpfsHash={ipfsHashImageFront}
                       type={type}
                       linkto={"/market/editbid/"+id}  
-                      finalBiddingDate={finalBiddingDate}                   
+                      timeRemaining={timeRemaining}                   
                       currentBid={currentBid}
                       yourBid={yourBid}
                     />
@@ -198,7 +198,7 @@ const AuctionBuyView: FC = () => {
             <IonCol size="12" class="ion-text-center">
               <Text
                 className="ion-padding-top"
-                fontSize={FontSize.L}
+                fontSize={FontSize.L} 
                 color="primary"
               >
                 No available auctions yet!

@@ -3,7 +3,7 @@ import { ExchangeResourcesTypes } from '@protokol/client';
 import {
   AuctionActions,
   AUCTION_ACTION_TYPES,
-  AuctionsLoadSuccessActionType,  
+  AuctionsLoadSuccessActionType,    
 } from '../actions/auctions';
 
 export interface AuctionState {
@@ -58,6 +58,34 @@ const reducer: Reducer<AuctionState, AUCTION_ACTION_TYPES> = (
         error,
       };
     }
+    case AuctionActions.CANCEL_AUCTION: {
+      return {
+        ...initialState,
+        isLoading: true,
+      };
+    }
+    case AuctionActions.CANCEL_AUCTION_SUCCESS: {
+      const {
+        payload: { txId },
+      } = action;
+      return {
+        ...state,
+        isLoading: false,
+        isError: false,
+        txId,
+      };
+    }
+    case AuctionActions.CANCEL_AUCTION_ERROR: {
+      const {
+        payload: { error },
+      } = action;
+      return {
+        ...state,
+        isLoading: false,
+        isError: true,
+        error,
+      };
+    }    
     case AuctionActions.AUCTIONS_LOAD: {
       return {
         ...state,

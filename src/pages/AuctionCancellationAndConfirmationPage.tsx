@@ -24,9 +24,10 @@ import { FontWeight } from '../constants/font-weight';
 import { driverHighResImage } from '../constants/images';
 import useIsMounted from '../hooks/use-is-mounted';
 import { AuthLoginContext } from '../providers/AuthLoginProvider';
-import { StartAuctionAction } from '../store/actions/auctions';
+import { CancelAuctionAction } from '../store/actions/auctions';
 import { auctionSelector } from '../store/selectors/auctions';
 import { transactionsSelector } from '../store/selectors/transaction';
+import { PublicKey } from '@arkecosystem/crypto/dist/identities';
 
 const ImageBgCol = styled(IonCol)`
   display: flex;
@@ -78,44 +79,44 @@ const Footer = styled(IonFooter)`
 `;
 
 const ViewCardButton = styled(Button)`
-  --background: var(--app-color-green-bg);
-  background: var(--app-color-green-bg);
+  --background: var(--app-color-yellow-bg);
+  background: var(--app-color-yellow-bg);
 `;
 
 const txUuid = uuid();
 
-const AuctionViewPage: FC = () => {  
+const AuctionCancellationAndConfirmation: FC = () => {  
 
-  const { cardId, minimumBid, minimumIncrement, finalBiddingDate } = useParams<{ cardId: string, minimumBid: string, minimumIncrement: string, finalBiddingDate: string}>();
+  const { auctionId } = useParams<{ auctionId: string}>();
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const startAuctionRequest = useSelector(auctionSelector, shallowEqual);
+  const cancelAuctionRequest = useSelector(auctionSelector, shallowEqual);
   const transactions = useSelector(transactionsSelector, shallowEqual);
   const tx = useMemo(() => transactions[txUuid], [transactions]);
 
   const isLoading = useCallback(() => {
-    return startAuctionRequest?.isLoading || tx?.isLoading;
-  }, [startAuctionRequest, tx]);
+    return cancelAuctionRequest?.isLoading || tx?.isLoading;
+  }, [cancelAuctionRequest, tx]);
 
   const isError = useCallback(() => {
-    return startAuctionRequest?.isError || tx?.isError;
-  }, [startAuctionRequest, tx]);
+    return cancelAuctionRequest?.isError || tx?.isError;
+  }, [cancelAuctionRequest, tx]);
 
-  const error = useCallback(() => {
-    return `${startAuctionRequest?.error}${tx?.error}`;
-  }, [startAuctionRequest, tx]);
+  const error = useCallback(() => {    
+    return (cancelAuctionRequest?.isError)? `${cancelAuctionRequest?.error}`:`${tx?.error?.message}`;
+  }, [cancelAuctionRequest, tx]);
 
   const {
-    session: { address, passphrase },
+    session: { publicKey, passphrase },
   } = useContext(AuthLoginContext);  
 
   const isMounted = useIsMounted();  
   useEffect(() => {        
-    if (isMounted && minimumBid && minimumIncrement && finalBiddingDate && cardId && address) {            
-      dispatch(StartAuctionAction(Number(minimumBid), Number(minimumIncrement), finalBiddingDate, cardId, address!, passphrase!, txUuid));
+    if (isMounted && auctionId && publicKey) {            
+      dispatch(CancelAuctionAction(auctionId, publicKey, passphrase!, txUuid));
     }
-  }, [isMounted, dispatch, minimumBid, minimumIncrement, finalBiddingDate, cardId, address, passphrase]);  
+  }, [isMounted, dispatch, auctionId, PublicKey, passphrase, txUuid]);  
 
   return (
     <IonPage>
@@ -143,21 +144,22 @@ const AuctionViewPage: FC = () => {
                     fontSize={FontSize.SM}
                     color="light"
                   >
-                  {error}
+                  {error()}
                   </Text>
                 </>
               )}
               {!isLoading() && !isError() && (
                 <>
                   <Text color="warning" fontSize={FontSize.XXL} fontWeight={FontWeight.BOLD}>
-                    Hooray!
+                    Auction<br/>
+                    Cancelled
                   </Text>
                   <Text
                     className="ion-padding-top"
                     fontSize={FontSize.L}
                     color="light"
                   >
-                    The auction is now live!
+                    The auction is <b>cancelled</b>.
                   </Text>
                 </>
               )}
@@ -177,12 +179,12 @@ const AuctionViewPage: FC = () => {
               radius={false}
               expand="block"
               onClick={() => {
-                const { txId } = tx;
-                //dispatch(CollectiblesLoadAction(publicKey!));
-                history.push(`/home/auction/${txId}`);
+                // const { txId } = tx;
+                // dispatch(CollectiblesLoadAction(publicKey!));
+                history.push(`/market/myauctions`);
               }}              
             >
-              View Auction
+              View Open Auctions
             </ViewCardButton>
           </IonToolbar>
         </Footer>
@@ -191,4 +193,4 @@ const AuctionViewPage: FC = () => {
   );
 };
 
-export default AuctionViewPage;
+export default AuctionCancellationAndConfirmation;

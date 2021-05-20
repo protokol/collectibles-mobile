@@ -69,11 +69,11 @@ const HomeCollectibles: FC = () => {
 
   const dispatch = useDispatch();
   const {
-    session: { publicKey, address },
+    session: { publicKey },
   } = useContext(AuthLoginContext);
 
   //console.log(publicKey);
-  console.log(address);
+  //console.log(address);
 
   const publicKeyIn = publicKey;  
 

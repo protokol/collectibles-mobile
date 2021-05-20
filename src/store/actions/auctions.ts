@@ -9,6 +9,9 @@ enum AuctionActions {
   START_AUCTION = '@Auctions/START_AUCTION',
   START_AUCTION_SUCCESS = '@Auctions/START_AUCTION_SUCCESS',
   START_AUCTION_ERROR = '@Auctions/START_AUCTION_ERROR',  
+  CANCEL_AUCTION = '@Auctions/CANCEL_AUCTION',
+  CANCEL_AUCTION_SUCCESS = '@Auctions/CANCEL_AUCTION_SUCCESS',
+  CANCEL_AUCTION_ERROR = '@Auctions/CANCEL_AUCTION_ERROR',  
 }
 
 //Start an Auction
@@ -34,6 +37,31 @@ export interface StartAuctionSuccessActionType
 
 export interface StartAuctionErrorActionType
   extends Action<AuctionActions.START_AUCTION_ERROR> {
+  payload: {
+    error: Error;
+  };
+}
+
+//Cancel an Auction
+export interface CancelAuctionActionType
+  extends Action<AuctionActions.CANCEL_AUCTION> {
+  payload: {
+    auctionId: string;
+    pubKey: string;
+    passphrase: string;
+    txUuid: string;
+  };
+}
+
+export interface CancelAuctionSuccessActionType
+  extends Action<AuctionActions.CANCEL_AUCTION_SUCCESS> {
+  payload: {
+    txId: string;
+  };
+}
+
+export interface CancelAuctionErrorActionType
+  extends Action<AuctionActions.CANCEL_AUCTION_ERROR> {
   payload: {
     error: Error;
   };
@@ -102,6 +130,39 @@ const StartAuctionErrorAction = (error: Error): StartAuctionErrorActionType => (
   },
 });
 
+const CancelAuctionAction = (
+  auctionId: string,
+  pubKey: string,
+  passphrase: string,
+  txUuid: string
+): CancelAuctionActionType => ({
+  type: AuctionActions.CANCEL_AUCTION,
+  payload: {
+    auctionId,
+    pubKey,
+    passphrase,
+    txUuid,
+  },
+});
+
+const CancelAuctionSuccessAction = (
+  txId: string
+): CancelAuctionSuccessActionType => ({
+  type: AuctionActions.CANCEL_AUCTION_SUCCESS,
+  payload: {
+    txId,
+  },
+});
+
+const CancelAuctionErrorAction = (error: Error): CancelAuctionErrorActionType => ({
+  type: AuctionActions.CANCEL_AUCTION_ERROR,
+  payload: {
+    error,
+  },
+});
+
+
+
 const AuctionsLoadAction = (
   pubKey: string,
   query?: ExchangeResourcesTypes.AllAuctionsQuery
@@ -140,7 +201,10 @@ export type AUCTION_ACTION_TYPES = AuctionsLoadActionType &
   AuctionsLoadErrorActionType & 
   StartAuctionActionType &
   StartAuctionSuccessActionType &
-  StartAuctionErrorActionType
+  StartAuctionErrorActionType &
+  CancelAuctionActionType &
+  CancelAuctionSuccessActionType &
+  CancelAuctionErrorActionType
   ;
 
 export {
@@ -148,6 +212,9 @@ export {
   StartAuctionAction,
   StartAuctionSuccessAction,
   StartAuctionErrorAction,
+  CancelAuctionAction,
+  CancelAuctionSuccessAction,
+  CancelAuctionErrorAction,  
   AuctionsLoadAction,
   AuctionsLoadSuccessAction,
   AuctionsLoadErrorAction,  

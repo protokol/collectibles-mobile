@@ -15,6 +15,9 @@ import {
   StartAuctionActionType,
   StartAuctionSuccessActionType,
   StartAuctionErrorActionType,
+  CancelAuctionActionType,
+  CancelAuctionSuccessActionType,
+  CancelAuctionErrorActionType,
   AuctionsLoadActionType,
   AuctionsLoadSuccessActionType,
   AuctionsLoadErrorActionType,
@@ -67,6 +70,9 @@ export type RootActions =
   | StartAuctionActionType
   | StartAuctionSuccessActionType
   | StartAuctionErrorActionType
+  | CancelAuctionActionType
+  | CancelAuctionSuccessActionType
+  | CancelAuctionErrorActionType  
   | AuctionsLoadActionType
   | AuctionsLoadSuccessActionType
   | AuctionsLoadErrorActionType

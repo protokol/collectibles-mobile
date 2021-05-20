@@ -1,7 +1,8 @@
-import { defer, merge, of, forkJoin } from 'rxjs';
+import { defer, merge, of, forkJoin, scheduled } from 'rxjs';
 import { fromFetch } from 'rxjs/fetch';
 import { catchError, map, switchMap, withLatestFrom } from 'rxjs/operators';
 import {
+  Wallet,
   ApiResponse,
   CreateTransactionApiResponse,
 } from '@arkecosystem/client';
@@ -10,6 +11,9 @@ import {
     StartAuctionSuccessAction,
     StartAuctionErrorAction,
     StartAuctionActionType,
+    CancelAuctionSuccessAction,
+    CancelAuctionErrorAction,
+    CancelAuctionActionType,
     AuctionsLoadSuccessAction,
     AuctionsLoadErrorAction,      
     AuctionsLoadActionType,
@@ -256,6 +260,73 @@ const startAuctionEpic: RootEpic = (
     })
   );
 
-const epics = [fetchAuctionsEpic, startAuctionEpic];
+  const cancelAuctionEpic: RootEpic = (
+    action$,
+    state$,
+    { connection }
+  ) =>  
+  action$.ofType(AuctionActions.CANCEL_AUCTION).pipe(    
+    withLatestFrom(state$.pipe(map(baseUrlSelector))),
+    switchMap(([action, stateBaseUrl]) => {
+        const {
+            payload: {             
+                auctionId,
+                pubKey,
+                passphrase,
+                txUuid
+            },
+        } = action as CancelAuctionActionType;                      
+        
+        return defer(() =>
+          connection(stateBaseUrl!).api("wallets").get(pubKey)
+        ).pipe(
+           switchMap(({ body: { data, errors } }: ApiResponse<Wallet>) => {
+                console.log(JSON.stringify(data, null, 4));
+                console.log(JSON.stringify(errors, null, 4));
+                if (errors){
+                  return of(CancelAuctionErrorAction({name:"Error getting wallet", message: errors.message}));
+                }
+                // return of(CancelAuctionSuccessAction(txUuid));                              
+
+                Transactions.TransactionRegistry.registerTransactionType(NFTTransactions.NFTAuctionCancelTransaction);   
+                const transaction = new Builders.NFTAuctionCancelBuilder()
+                    .NFTAuctionCancelAsset({
+                        auctionId: auctionId,
+                    })
+                    //.fee("0")
+                    .nonce(CryptoUtils.getWalletNextNonce(data))
+                    .sign(passphrase);
+
+                return defer(() =>
+                  connection(stateBaseUrl!).api("transactions").create({ transactions: [transaction.getStruct()] })
+                ).pipe(       
+                  switchMap(
+                    ({ body: { data, errors } }: ApiResponse<CreateTransactionApiResponse>) => {
+                      console.log(JSON.stringify(data, null, 4));
+                      console.log(JSON.stringify(errors, null, 4));
+                      const [accepted] = data.accept;
+                      if (!!accepted) {                                                
+                        return merge(
+                          of(CancelAuctionSuccessAction(accepted)),
+                          of(TransactionWaitForConfirmAction(txUuid, accepted))
+                        );                        
+                      }
+                      const [invalid] = data.invalid;
+                      const err = errors[invalid].message;
+                      return of(CancelAuctionErrorAction(err));                     
+                    }
+                  ),
+                  catchError((err) => of(CancelAuctionErrorAction(err)))
+                ); 
+                              
+        }),
+        catchError((err) => of(CancelAuctionErrorAction(err))
+      )    
+    );         
+   })
+  );
+
+
+const epics = [fetchAuctionsEpic, startAuctionEpic, cancelAuctionEpic];
 
 export default epics;

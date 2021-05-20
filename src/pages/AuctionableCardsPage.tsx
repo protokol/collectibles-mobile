@@ -141,7 +141,9 @@ const AuctionableCardsPage: FC = () => {
     <>
     {navToMyAuctions && (
       <AuctionsOwnedPage />
-    )}     
+    )}
+    {!navToMyAuctions && (
+    <>     
     <IonGrid className="ion-no-padding">
       <IonRow>
         <ImageBgCol size="12">
@@ -249,6 +251,8 @@ const AuctionableCardsPage: FC = () => {
           )}
         </CollectablesIonRow>      
     </IonGrid>   
+    </>
+    )} 
     </>
   );
 };

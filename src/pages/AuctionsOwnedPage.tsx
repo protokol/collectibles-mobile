@@ -62,6 +62,15 @@ const CollectablesIonRow = styled(IonRow)`
   max-height: calc(100vh - 92px - 4.8rem);
 `;
 
+const HorizontalLine = styled.div`
+  width:1px;
+  height:1px;
+  width: 80%;
+  margin-left: 10%;  
+  background:#E6E6E6;
+  position: relative;
+`;
+
 const AuctionsOwnedPage: FC = () => {    
     const history = useHistory();
     const { isError, error, isLoading, assets, isLastPage } = useSelector(
@@ -107,11 +116,13 @@ const AuctionsOwnedPage: FC = () => {
       [loadNextPage, isLastPage, isLoading]
     );
     
-  return (
-      <>
+  return (      
+    <>
     {navToStartAuction && (
       <AuctionableCardsPage />
-    )}        
+    )}  
+    {!navToStartAuction && (      
+    <>
     <IonGrid className="ion-no-padding">
       <IonRow>
         <ImageBgCol size="12">
@@ -139,14 +150,14 @@ const AuctionsOwnedPage: FC = () => {
             <IonRow class="ion-justify-content-center">
               <IonCol class="ion-align-self-center">
                 <StartAuctionButton
-                  className="ion-float-left"                                  
+                  className="ion-float-right"                                  
                   fill="clear"
                   fontSize={FontSize.SM}                  
                   color="light"
                   fontWeight={FontWeight.BOLD}
                   onClick={navigateStartAuction}
                 >
-                  Start Auction
+                  Start a new Auction
                 </StartAuctionButton>
               </IonCol>              
             </IonRow>
@@ -177,8 +188,10 @@ const AuctionsOwnedPage: FC = () => {
                   title,
                   ipfsHashImageFront,
                   tags,
-                  finalBiddingDate,
+                  timeRemaining,
+                  minimumBid,
                   currentBid,
+                  auctionId,
                   yourBid
                 } = attributes as any;
 
@@ -194,11 +207,13 @@ const AuctionsOwnedPage: FC = () => {
                       title={title}
                       imgIpfsHash={ipfsHashImageFront}
                       type={type}
-                      linkto={"/market/card/startauction/"+id}  
-                      finalBiddingDate={finalBiddingDate}                   
+                      linkto={"/market/card/auctionview/" + auctionId + "/" + id}  
+                      timeRemaining={timeRemaining}                   
+                      minimumBid={minimumBid}
                       currentBid={currentBid}
                       yourBid={yourBid}
                     />
+                    <HorizontalLine/>
                   </>           
                 );
               })}
@@ -221,8 +236,10 @@ const AuctionsOwnedPage: FC = () => {
             </IonCol>
           )}
         </CollectablesIonRow>      
-    </IonGrid>   
+    </IonGrid>      
     </>
+    )} 
+    </>    
   );
 };
 
