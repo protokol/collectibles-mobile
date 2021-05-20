@@ -1,15 +1,13 @@
-import { FC, useMemo, useState, useCallback } from 'react';
+import { FC, useMemo, useCallback } from 'react';
 import { arrowBackOutline } from 'ionicons/icons';
 import { CalendarOutline } from 'react-ionicons'
 import { Controller, useForm } from 'react-hook-form';
 import { shallowEqual, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router';
-import { InputChangeEventDetail } from '@ionic/core';
 import styled from 'styled-components';
 import { Styles } from '../utils/styles';
 import { FontSize } from '../constants/font-size';
 import { FontWeight } from '../constants/font-weight';
-import FormInputError from '../components/ionic/ErrorMessage';
 import Title from '../components/ionic/Title';
 import Button from '../components/ionic/Button';
 import { JSX } from '@ionic/core';
@@ -28,8 +26,7 @@ import {
   IonPage,
   IonRow,
   IonIcon,
-  IonSpinner,
-  IonDatetime,
+  IonSpinner,  
 } from '@ionic/react';
 import { BaseResourcesTypes } from '@protokol/client';
 import Header from '../components/Header';
@@ -71,6 +68,7 @@ const AmountIonLabel = styled(IonLabel)`
   opacity: 1;
 `;
 
+/*
 const CardIonDatetime = styled(IonDatetime)`
   text-align: left;
   font: normal normal bold 14px/19px Open Sans;
@@ -79,7 +77,7 @@ const CardIonDatetime = styled(IonDatetime)`
   opacity: 1;
   width: 90%;   
 `;
-
+*/
 const HorizontalLine = styled.div`
   width:1px;
   height:1px;
@@ -116,7 +114,7 @@ const AuctionOwnedViewPage: FC = () => {
   const { auctionId, assetId } = useParams<{ auctionId: string, assetId: string }>();  
   const history = useHistory();
 
-  const submitForm = useCallback(
+  const submitForm = useCallback( 
     () => {  
       //console.log("submitted:" + JSON.stringify(data, null, 2));    
       //TBD Fixed minimum increment to 5
@@ -208,7 +206,7 @@ const AuctionOwnedViewPage: FC = () => {
               <IonList no-lines lines="none">
                 <IonItem className="ion-text-center" no-lines>     
                   <Controller
-                    render={({ onChange }) => (
+                    render={() => (
                       <AmountIonInput
                         type="text"
                         color="warning"
@@ -229,7 +227,7 @@ const AuctionOwnedViewPage: FC = () => {
               <IonList no-lines lines="none">
                 <IonItem className="ion-text-center" no-lines>
                 <Controller
-                    render={({ onChange }) => (
+                    render={() => (
                       <AmountIonInput
                         type="text"
                         color="success"

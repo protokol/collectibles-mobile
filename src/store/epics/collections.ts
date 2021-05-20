@@ -1,5 +1,6 @@
 import { defer, forkJoin, of } from 'rxjs';
 import { catchError, map, switchMap, withLatestFrom } from 'rxjs/operators';
+// eslint-disable-next-line
 import { fromFetch } from 'rxjs/fetch';
 import {
   CollectionsActions,
@@ -178,7 +179,7 @@ const fetchCardsOnAuctionEpic: RootEpic = (
             return CollectiblesOnAuctionLoadErrorAction(assetsResponse?.body?.errors);
           }
           let data:BaseResourcesTypes.Assets[] = [];
-          for(let auction of auctionsResponse.body.data){
+          for(let auction of auctionsResponse.body.data){            
             for(let nftId of auction.nftAuction.nftIds){
               for(let asset of assetsResponse.body.data){   
                  asset.attributes = { ...asset.attributes, 

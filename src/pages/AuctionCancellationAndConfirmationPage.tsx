@@ -1,5 +1,5 @@
 import { arrowBackOutline } from 'ionicons/icons';
-import { FC, useCallback, useContext, useEffect, useMemo } from 'react';
+import { FC, useCallback, useContext, useEffect, useState, useMemo } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router';
 import styled from 'styled-components';
@@ -25,9 +25,9 @@ import { driverHighResImage } from '../constants/images';
 import useIsMounted from '../hooks/use-is-mounted';
 import { AuthLoginContext } from '../providers/AuthLoginProvider';
 import { CancelAuctionAction } from '../store/actions/auctions';
+import AuctionsOwnedPage from './AuctionsOwnedPage';
 import { auctionSelector } from '../store/selectors/auctions';
 import { transactionsSelector } from '../store/selectors/transaction';
-import { PublicKey } from '@arkecosystem/crypto/dist/identities';
 
 const ImageBgCol = styled(IonCol)`
   display: flex;
@@ -95,6 +95,12 @@ const AuctionCancellationAndConfirmation: FC = () => {
   const transactions = useSelector(transactionsSelector, shallowEqual);
   const tx = useMemo(() => transactions[txUuid], [transactions]);
 
+  const [navToAuctions, setNavToAuctions] = useState(false);
+
+  const navigateAuctions = () => {    
+    setNavToAuctions(true);   
+  }     
+
   const isLoading = useCallback(() => {
     return cancelAuctionRequest?.isLoading || tx?.isLoading;
   }, [cancelAuctionRequest, tx]);
@@ -116,9 +122,14 @@ const AuctionCancellationAndConfirmation: FC = () => {
     if (isMounted && auctionId && publicKey) {            
       dispatch(CancelAuctionAction(auctionId, publicKey, passphrase!, txUuid));
     }
-  }, [isMounted, dispatch, auctionId, PublicKey, passphrase, txUuid]);  
+  }, [isMounted, dispatch, auctionId, publicKey, passphrase]);  
 
   return (
+    <>
+    {navToAuctions && (
+      <AuctionsOwnedPage />
+    )} 
+    {!navToAuctions && (    
     <IonPage>
       <Header 
         title="Start Card Auction"
@@ -178,18 +189,16 @@ const AuctionCancellationAndConfirmation: FC = () => {
               fontWeight={FontWeight.BOLD}
               radius={false}
               expand="block"
-              onClick={() => {
-                // const { txId } = tx;
-                // dispatch(CollectiblesLoadAction(publicKey!));
-                history.push(`/market/myauctions`);
-              }}              
+              onClick={navigateAuctions}           
             >
               View Open Auctions
             </ViewCardButton>
           </IonToolbar>
         </Footer>
       )}
-    </IonPage>
+    </IonPage>    
+    )}  
+    </>
   );
 };
 

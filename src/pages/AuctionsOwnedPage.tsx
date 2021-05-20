@@ -1,5 +1,4 @@
 import { FC, useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import { useHistory } from 'react-router';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import {
@@ -71,8 +70,7 @@ const HorizontalLine = styled.div`
   position: relative;
 `;
 
-const AuctionsOwnedPage: FC = () => {    
-    const history = useHistory();
+const AuctionsOwnedPage: FC = () => {        
     const { isError, error, isLoading, assets, isLastPage } = useSelector(
       collectionSelector,
       shallowEqual

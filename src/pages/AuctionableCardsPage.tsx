@@ -1,5 +1,4 @@
 import { FC, useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import { useHistory } from 'react-router';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import {
@@ -74,8 +73,7 @@ const CollectablesIonRow = styled(IonRow)`
   max-height: calc(100vh - 92px - 4.8rem);
 `;
 
-const AuctionableCardsPage: FC = () => {    
-    const history = useHistory();
+const AuctionableCardsPage: FC = () => {
     const isMedium = useMediaQuery('(min-height: 992px)');
     const isLarge = useMediaQuery('(min-height: 1200px)');
     const { isError, error, isLoading, assets, isLastPage, query } = useSelector(

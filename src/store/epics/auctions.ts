@@ -1,4 +1,4 @@
-import { defer, merge, of, forkJoin, scheduled } from 'rxjs';
+import { defer, merge, of, forkJoin } from 'rxjs';
 import { fromFetch } from 'rxjs/fetch';
 import { catchError, map, switchMap, withLatestFrom } from 'rxjs/operators';
 import {
@@ -24,69 +24,6 @@ import { Builders, Transactions as NFTTransactions } from "@protokol/nft-exchang
 import { Transactions, Utils } from "@arkecosystem/crypto";
 import { CryptoUtils } from '../../utils/crypto-utils';
 import { TransactionWaitForConfirmAction } from '../actions/transaction';
-
-class ConfigurationConstants {  
-  height: number;
-  reward: string;
-  activeDelegates: number;
-  blocktime: number;
-  block: any;
-  epoch: string;
-  fees: any;
-  vendorFieldLength: number;
-  multiPaymentLimit: number;
-  aip11: boolean; 
-
-  constructor(height: number, reward: string, activeDelegates: number, blocktime: number, block: any, 
-              epoch: string, fees: any, vendorFieldLength: number, multiPaymentLimit: number, aip11: boolean){
-    this.height = height;
-    this.reward = reward;
-    this.activeDelegates = activeDelegates;
-    this.blocktime = blocktime;
-    this.block = block;
-    this.epoch = epoch;
-    this.fees = fees;
-    this.vendorFieldLength = vendorFieldLength;
-    this.multiPaymentLimit = multiPaymentLimit;
-    this.aip11 = aip11;
-  }
-}
-
-class ConfigurationData {  
-  core: any;
-  nethash: string;
-  slip44: number;
-  wif: number;
-  token: string;
-  symbol: string;
-  explorer: string;
-  version: number;
-  ports: any;
-  constants: ConfigurationConstants;
-  transactionPool: any;
-
-  constructor(core: any, nethash: string, slip44: number, wif: number, token: string, symbol: string, explorer: string, version: number, ports: any, constants: ConfigurationConstants, transactionPool: any){
-    this.core = core;
-    this.nethash = nethash;
-    this.slip44 = slip44;
-    this.wif = wif;
-    this.token = token;
-    this.symbol = symbol;
-    this.explorer = explorer;
-    this.version = version;
-    this.ports = ports;
-    this.constants =  constants;
-    this.transactionPool = transactionPool;
-  }  
-}
-
-class ConfigurationResponse{
-  data: ConfigurationData;
-
-  constructor(data: ConfigurationData){
-    this.data = data;
-  }
-}
 
 const fetchAuctionsEpic: RootEpic = (
   action$,
