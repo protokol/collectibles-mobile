@@ -72,6 +72,7 @@ const startAuctionEpic: RootEpic = (
                 finalBiddingDate,
                 cardId,
                 /*recipientId,*/
+                pubKey,
                 passphrase,
                 txUuid
             },
@@ -121,9 +122,10 @@ const startAuctionEpic: RootEpic = (
 
         return forkJoin([
             fromFetch(`${stateBaseUrl}/api/node/configuration`),
-            defer(() => connection(stateBaseUrl!).api("blocks").last()),            
+            defer(() => connection(stateBaseUrl!).api("blocks").last()),   
+            connection(stateBaseUrl!).api("wallets").get(pubKey),         
         ]).pipe(  
-          switchMap(([confResponse, blockResponse]) => {
+          switchMap(([confResponse, blockResponse, walletResponse]) => {
             
             console.log("Passing test 2");
 
@@ -132,6 +134,9 @@ const startAuctionEpic: RootEpic = (
             }
             if (blockResponse?.body?.errors) {
               return of(StartAuctionErrorAction(blockResponse?.body?.errors));
+            }
+            if(walletResponse.body?.errors){
+              return of(StartAuctionErrorAction(walletResponse?.body?.errors));
             }
 
             console.log("Passing test 3");
@@ -155,8 +160,7 @@ const startAuctionEpic: RootEpic = (
 
             // For debug purposes:
             // return of(StartAuctionErrorAction({name:"Test", message:"Testing exit"}));
-
-            const nextNonce = CryptoUtils.getWalletNextNonce();
+            
             Transactions.TransactionRegistry.registerTransactionType(NFTTransactions.NFTAuctionTransaction);   
             const transaction = new Builders.NFTAuctionBuilder()
             .NFTAuctionAsset({
@@ -167,7 +171,7 @@ const startAuctionEpic: RootEpic = (
                 nftIds: [cardId],
             }) 
             //.fee("0")                   
-            .nonce((nextNonce==="1")?"2":nextNonce)
+            .nonce(CryptoUtils.getWalletNextNonce(walletResponse.body?.data))
             .sign(passphrase);
             
             return defer(() => 

@@ -10,7 +10,7 @@ import { FontWeight } from '../constants/font-weight';
 import { flagImage } from '../constants/images';
 import AuctionableCardsPage from '../pages/AuctionableCardsPage';
 import AuctionsOwnedPage from '../pages/AuctionsOwnedPage';
-import AuctionBuy from './AuctionBuy';
+import AuctionParticipateIn from '../pages/AuctionParticipateInPage';
 
 const ImageBgCol = styled(IonCol)`
   position: relative;
@@ -98,7 +98,7 @@ const HomeMarket: FC = () => {
       <AuctionsOwnedPage />
     )}      
     {auctionBuy && (
-      <AuctionBuy/>
+      <AuctionParticipateIn/>
     )}      
     {!auctionSell && !auctionSellView && !auctionBuy && (
       <IonGrid className="ion-no-padding">

@@ -8,14 +8,14 @@ import { IonReactHashRouter } from '@ionic/react-router';
 import MainMenu from './components/MainMenu';
 import ProtectedRoute from './components/ProtectedRoute';
 import useIsMounted from './hooks/use-is-mounted';
-import CardDetails from './pages/CardDetails';
+import CardDetailsPage from './pages/CardDetailsPage';
 import AuctionCreateNewPage from './pages/AuctionCreateNewPage';
 import AuctionCancellationAndConfirmationPage from './pages/AuctionCancellationAndConfirmationPage';
 import CardCollectingAndConfirmationPage from './pages/CardCollectingAndConfirmationPage';
 import HomePage from './pages/HomePage';
 import PasscodePage from './pages/PasscodePage';
 import PassphrasePage from './pages/PassphrasePage';
-import StartAuctionPage from './pages/AuctionCreationAndConfirmation';
+import StartAuctionPage from './pages/AuctionCreationAndConfirmationPage';
 import AuctionOwnedViewPage from './pages/AuctionOwnedViewPage';
 import AuctionsOwnedPage from './pages/AuctionsOwnedPage';
 import AuctionableCardsPage from './pages/AuctionableCardsPage';
@@ -28,6 +28,7 @@ import AuthLoginContextProvider from './providers/AuthLoginProvider';
 import AuthRegisterContextProvider from './providers/AuthRegisterProvider';
 import { SetBaseUrlAppAction } from './store/actions/app';
 import './theme/ionic-theme';
+import AuctionNewBidPage from './pages/AuctionNewBidPage';
 
 const { SplashScreen } = Plugins;
 
@@ -109,7 +110,7 @@ const App: FC = () => {
                 />
                 <ProtectedRoute
                   path="/home/card/:assetId"
-                  component={CardDetails}
+                  component={CardDetailsPage}
                   exact
                 />
                 <ProtectedRoute
@@ -136,7 +137,12 @@ const App: FC = () => {
                   path="/market/myauctions"
                   component={AuctionsOwnedPage}
                   exact
-                />                              
+                />     
+                <ProtectedRoute
+                  path="/market/card/newbid/:assetId"
+                  component={AuctionNewBidPage}
+                  exact
+                />                     
                 <ProtectedRoute
                   path="/market/card/createnewauction/:cardId/:minimumBid/:minimumIncrement/:finalBiddingDate"
                   component={StartAuctionPage}

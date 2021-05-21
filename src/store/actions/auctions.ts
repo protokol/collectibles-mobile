@@ -23,6 +23,7 @@ export interface StartAuctionActionType
     finalBiddingDate: string;
     cardId: string;
     recipientId: string;
+    pubKey: string;
     passphrase: string;
     txUuid: string;
   };
@@ -99,6 +100,7 @@ const StartAuctionAction = (
   finalBiddingDate: string,
   cardId: string,
   recipientId: string,
+  pubKey: string,
   passphrase: string,
   txUuid: string
 ): StartAuctionActionType => ({
@@ -109,6 +111,7 @@ const StartAuctionAction = (
     finalBiddingDate,
     cardId,
     recipientId,
+    pubKey,
     passphrase,
     txUuid,
   },

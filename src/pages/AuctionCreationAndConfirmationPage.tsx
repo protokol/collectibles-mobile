@@ -84,7 +84,7 @@ const ViewCardButton = styled(Button)`
 
 const txUuid = uuid();
 
-const AuctionCreationAndConfirmation: FC = () => {  
+const AuctionCreationAndConfirmationPage: FC = () => {  
 
   const { cardId, minimumBid, minimumIncrement, finalBiddingDate } = useParams<{ cardId: string, minimumBid: string, minimumIncrement: string, finalBiddingDate: string}>();
   const history = useHistory();
@@ -107,15 +107,17 @@ const AuctionCreationAndConfirmation: FC = () => {
   }, [startAuctionRequest, tx]);
 
   const {
-    session: { address, passphrase },
+    session: { address, passphrase, publicKey },
   } = useContext(AuthLoginContext);  
+
+  console.log(address);
 
   const isMounted = useIsMounted();  
   useEffect(() => {        
     if (isMounted && minimumBid && minimumIncrement && finalBiddingDate && cardId && address) {            
-      dispatch(StartAuctionAction(Number(minimumBid), Number(minimumIncrement), finalBiddingDate, cardId, address!, passphrase!, txUuid));
+      dispatch(StartAuctionAction(Number(minimumBid), Number(minimumIncrement), finalBiddingDate, cardId, address!, publicKey!, passphrase!, txUuid));
     }
-  }, [isMounted, dispatch, minimumBid, minimumIncrement, finalBiddingDate, cardId, address, passphrase]);  
+  }, [isMounted, dispatch, minimumBid, minimumIncrement, finalBiddingDate, cardId, address, publicKey, passphrase]);  
 
   return (
     <IonPage>
@@ -191,4 +193,4 @@ const AuctionCreationAndConfirmation: FC = () => {
   );
 };
 
-export default AuctionCreationAndConfirmation;
+export default AuctionCreationAndConfirmationPage;

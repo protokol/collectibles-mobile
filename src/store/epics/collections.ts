@@ -168,7 +168,8 @@ const fetchCardsOnAuctionEpic: RootEpic = (
           connection(stateBaseUrl!).NFTExchangeApi('auctions').getAllAuctions()
         ),
         defer(() =>
-          connection(stateBaseUrl!).NFTBaseApi('assets').walletAssets(pubKey, query)
+          (ownAuctions)?connection(stateBaseUrl!).NFTBaseApi('assets').walletAssets(pubKey, query):
+          connection(stateBaseUrl!).NFTBaseApi('assets').all()
         ),
       ]).pipe(
         map(([auctionsResponse, assetsResponse]) => {
@@ -180,8 +181,10 @@ const fetchCardsOnAuctionEpic: RootEpic = (
           }
           let data:BaseResourcesTypes.Assets[] = [];
           for(let auction of auctionsResponse.body.data){            
+            console.log(ownAuctions + "  " + auction.senderPublicKey + "  " + pubKey);
+            if (!ownAuctions && auction.senderPublicKey === pubKey) continue;
             for(let nftId of auction.nftAuction.nftIds){
-              for(let asset of assetsResponse.body.data){   
+              for(let asset of assetsResponse.body.data){
                  asset.attributes = { ...asset.attributes, 
                     auctionId: auction.id,
                     minimumBid: auction.nftAuction.startAmount, 

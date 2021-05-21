@@ -39,7 +39,7 @@ const GoogleMapContainer = styled.div`
   padding: 0.25rem 1.25rem 2rem;
 `;
 
-const CardDetails: FC = () => {
+const CardDetailsPage: FC = () => {
   const { assetId } = useParams<{ assetId: string }>();
   const history = useHistory();
   const { assets } = useSelector(collectionSelector, shallowEqual);
@@ -156,4 +156,4 @@ const CardDetails: FC = () => {
   );
 };
 
-export default CardDetails;
+export default CardDetailsPage;

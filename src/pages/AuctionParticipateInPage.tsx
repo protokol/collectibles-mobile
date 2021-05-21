@@ -8,16 +8,16 @@ import {
   IonRow,
   IonSpinner,
 } from '@ionic/react';
-import Card from './Card';
-import Button from './ionic/Button';
+import Card from '../components/Card';
+import Button from '../components/ionic/Button';
 import { JSX } from '@ionic/core';
-import Label from './ionic/Label';
-import Text from './ionic/Text';
+import Label from '../components/ionic/Label';
+import Text from '../components/ionic/Text';
 import { FontSize } from '../constants/font-size';
 import { FontWeight } from '../constants/font-weight';
 import useIsMounted from '../hooks/use-is-mounted';
 import useMediaQuery from '../hooks/use-media-query';
-import { CardTagType } from './CardTag';
+import { CardTagType } from '../components/CardTag';
 import { AuthLoginContext } from '../providers/AuthLoginProvider';
 import { CollectiblesOnAuctionLoadAction } from '../store/actions/collections';
 import { cardsOnAuctionSelector } from '../store/selectors/collections';
@@ -73,7 +73,7 @@ const CollectablesIonRow = styled(IonRow)`
   max-height: calc(100vh - 92px - 4.8rem);
 `;
 
-const AuctionBuy: FC = () => {    
+const AuctionParticipateIn: FC = () => {    
     const history = useHistory();
     const isMedium = useMediaQuery('(min-height: 992px)');
     const isLarge = useMediaQuery('(min-height: 1200px)');
@@ -136,7 +136,7 @@ const AuctionBuy: FC = () => {
             fontSize={FontSize.L}
             fontWeight={FontWeight.BOLD}
           >
-            Find your new favourite card…
+            Are you still the highest bidder?
           </Label>
           <br />
           <Text
@@ -145,8 +145,8 @@ const AuctionBuy: FC = () => {
             color="light"
             fontSize={FontSize.XS}
           >
-            Discover the latest auction cards, pick your favourite, 
-            and let the bidding war begin!
+            Keep an eye on all your bids, and 
+            make sure you don’t loose your cards.
           </Text>    
           <br />
           <IonGrid class="ion-justify-content-center">
@@ -160,7 +160,7 @@ const AuctionBuy: FC = () => {
                   fontWeight={FontWeight.BOLD}
                   onClick={() => history.push("/market/mybids")}
                 >
-                  Bidded Cards
+                  My Bids
                 </BiddedCardsButton>                   
               </IonCol>              
             </IonRow>
@@ -207,7 +207,7 @@ const AuctionBuy: FC = () => {
                       subtitle={subtitle}
                       imgIpfsHash={ipfsHashImageFront}
                       type={type}
-                      linkto={"/home/card/startauction/"+id}
+                      linkto={"/market/card/newbid/"+id}
                     />
                   </CardContainer>
                 );
@@ -236,4 +236,4 @@ const AuctionBuy: FC = () => {
   );
 };
 
-export default AuctionBuy;
+export default AuctionParticipateIn;

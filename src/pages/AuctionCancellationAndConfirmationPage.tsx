@@ -85,7 +85,7 @@ const ViewCardButton = styled(Button)`
 
 const txUuid = uuid();
 
-const AuctionCancellationAndConfirmation: FC = () => {  
+const AuctionCancellationAndConfirmationPage: FC = () => {  
 
   const { auctionId } = useParams<{ auctionId: string}>();
   const history = useHistory();
@@ -202,4 +202,4 @@ const AuctionCancellationAndConfirmation: FC = () => {
   );
 };
 
-export default AuctionCancellationAndConfirmation;
+export default AuctionCancellationAndConfirmationPage;
