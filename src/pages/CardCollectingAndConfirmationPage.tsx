@@ -181,7 +181,7 @@ const CardCollectingAndConfirmationPage: FC = () => {
               expand="block"
               onClick={() => {
                 const { txId } = tx;
-                dispatch(CollectiblesLoadAction(publicKey!));
+                dispatch(CollectiblesLoadAction(publicKey!, true));
                 history.push(`/home/card/${txId}`);
               }}
             >

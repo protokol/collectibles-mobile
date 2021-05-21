@@ -14,8 +14,9 @@ enum CollectionsActions {
 export interface CollectiblesLoadActionType
   extends Action<CollectionsActions.COLLECTIBLES_LOAD> {
   payload: {
-    query?: BaseResourcesTypes.AllAssetsQuery;
-    pubKey: string;    
+    pubKey: string;
+    includeInAuctionAssets: boolean;
+    query?: BaseResourcesTypes.AllAssetsQuery;    
   };
 }
 
@@ -63,11 +64,13 @@ export interface CollectiblesOnAuctionLoadErrorActionType
 // Action creators
 const CollectiblesLoadAction = (
   pubKey: string,
+  includeInAuctionAssets: boolean,
   query?: BaseResourcesTypes.AllAssetsQuery,  
 ): CollectiblesLoadActionType => ({
   type: CollectionsActions.COLLECTIBLES_LOAD,
   payload: {
     query,
+    includeInAuctionAssets,
     pubKey,    
   },
 });

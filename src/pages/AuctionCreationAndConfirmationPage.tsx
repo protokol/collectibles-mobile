@@ -1,5 +1,5 @@
 import { arrowBackOutline } from 'ionicons/icons';
-import { FC, useCallback, useContext, useEffect, useMemo } from 'react';
+import { FC, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router';
 import styled from 'styled-components';
@@ -25,6 +25,7 @@ import { driverHighResImage } from '../constants/images';
 import useIsMounted from '../hooks/use-is-mounted';
 import { AuthLoginContext } from '../providers/AuthLoginProvider';
 import { StartAuctionAction } from '../store/actions/auctions';
+import AuctionsOwnedPage from './AuctionsOwnedPage';
 import { auctionSelector } from '../store/selectors/auctions';
 import { transactionsSelector } from '../store/selectors/transaction';
 
@@ -94,6 +95,12 @@ const AuctionCreationAndConfirmationPage: FC = () => {
   const transactions = useSelector(transactionsSelector, shallowEqual);
   const tx = useMemo(() => transactions[txUuid], [transactions]);
 
+  const [navToMyAuctions, setNavToMyAuctions] = useState(false);
+
+  const navigateMyAuctions = () => {    
+    setNavToMyAuctions(true);   
+  }     
+
   const isLoading = useCallback(() => {
     return startAuctionRequest?.isLoading || tx?.isLoading;
   }, [startAuctionRequest, tx]);
@@ -120,6 +127,11 @@ const AuctionCreationAndConfirmationPage: FC = () => {
   }, [isMounted, dispatch, minimumBid, minimumIncrement, finalBiddingDate, cardId, address, publicKey, passphrase]);  
 
   return (
+    <>
+    {navToMyAuctions && (
+      <AuctionsOwnedPage />
+    )} 
+    {!navToMyAuctions && ( 
     <IonPage>
       <Header 
         title="Start Card Auction"
@@ -178,11 +190,7 @@ const AuctionCreationAndConfirmationPage: FC = () => {
               fontWeight={FontWeight.BOLD}
               radius={false}
               expand="block"
-              onClick={() => {
-                // const { txId } = tx;
-                // dispatch(CollectiblesLoadAction(publicKey!));
-                history.push(`/market/myauctions`);
-              }}              
+              onClick={navigateMyAuctions}              
             >
               View Auction
             </ViewCardButton>
@@ -190,6 +198,8 @@ const AuctionCreationAndConfirmationPage: FC = () => {
         </Footer>
       )}
     </IonPage>
+    )}  
+    </>    
   );
 };
 

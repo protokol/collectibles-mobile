@@ -80,7 +80,7 @@ const HomeCollectibles: FC = () => {
   const isMounted = useIsMounted();
   useEffect(() => {
     if (publicKeyIn && isMounted) {
-      dispatch(CollectiblesLoadAction(publicKeyIn!));
+      dispatch(CollectiblesLoadAction(publicKeyIn!, true));
     }
   }, [isMounted, dispatch, publicKeyIn]);
 
@@ -88,7 +88,7 @@ const HomeCollectibles: FC = () => {
     if (publicKeyIn) {
       const { page } = query ?? { page: 1 };
       dispatch(
-        CollectiblesLoadAction(publicKeyIn!, {
+        CollectiblesLoadAction(publicKeyIn!, true, {
           ...query,
           page: page! + 1,
         })

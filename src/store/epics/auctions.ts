@@ -1,3 +1,4 @@
+import { ExchangeResourcesTypes } from '@protokol/client';
 import { defer, merge, of, forkJoin } from 'rxjs';
 import { fromFetch } from 'rxjs/fetch';
 import { catchError, map, switchMap, withLatestFrom } from 'rxjs/operators';
@@ -37,23 +38,30 @@ const fetchAuctionsEpic: RootEpic = (
         payload: { query },
       } = action as AuctionsLoadActionType;          
 
-      return defer(() =>
-        connection(stateBaseUrl!)
-          .NFTExchangeApi('auctions')
-          .getAllAuctions()          
-      ).pipe(
-        map(({ body: { data, errors } }) => {
-          if (errors) {
-            return AuctionsLoadErrorAction(errors);
+      return forkJoin([
+        connection(stateBaseUrl!).NFTExchangeApi('auctions').getAllAuctions(),
+        connection(stateBaseUrl!).NFTExchangeApi('auctions').getAllCanceledAuctions(),
+      ]).pipe(  
+        map(([allResponse, cancelledResponse]) => {
+          if (allResponse?.body?.errors) {
+            return AuctionsLoadErrorAction(allResponse?.body?.errors);
+          }
+          if (cancelledResponse?.body?.errors) {
+            return AuctionsLoadErrorAction(cancelledResponse?.body?.errors);
           }
           const q = query || {
             page: 1,
             limit: 100,
           };
+          let data:ExchangeResourcesTypes.Auctions[] = [];
+          for(let auction of allResponse.body.data){  
+            if (cancelledResponse.body.data.some(a => a.nftAuctionCancel.auctionId === auction.id)) continue;
+            data.push(auction);
+          }  
           return AuctionsLoadSuccessAction(q, data, data.length < q.limit!);
         }),
         catchError((err) => of(AuctionsLoadErrorAction(err)))
-      );      
+      );
     })
   );
 

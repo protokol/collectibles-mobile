@@ -96,7 +96,7 @@ const AuctionableCardsPage: FC = () => {
     const isMounted = useIsMounted();
     useEffect(() => {
       if (publicKeyIn && isMounted) {
-          dispatch(CollectiblesLoadAction(publicKeyIn!));
+          dispatch(CollectiblesLoadAction(publicKeyIn!, false));
       }
     }, [isMounted, dispatch, publicKeyIn]);
   
@@ -104,7 +104,7 @@ const AuctionableCardsPage: FC = () => {
       if (publicKeyIn) {
         const { page } = query ?? { page: 1 };
         dispatch(
-          CollectiblesLoadAction(publicKeyIn!, {
+          CollectiblesLoadAction(publicKeyIn!, false, {
             ...query,
             page: page! + 1,
           })

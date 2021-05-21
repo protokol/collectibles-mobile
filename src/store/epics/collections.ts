@@ -13,7 +13,7 @@ import {
 } from '../actions/collections';
 import { baseUrlSelector } from '../selectors/app';
 import { RootEpic } from '../types';
-import { BaseResourcesTypes } from '@protokol/client';
+import { BaseResourcesTypes, ExchangeResourcesTypes } from '@protokol/client';
 
 const fetchWalletCollectionsEpic: RootEpic = (
   action$,
@@ -24,26 +24,56 @@ const fetchWalletCollectionsEpic: RootEpic = (
     withLatestFrom(state$.pipe(map(baseUrlSelector))),
     switchMap(([action, stateBaseUrl]) => {
       const {
-        payload: { pubKey, query },
+        payload: { pubKey, includeInAuctionAssets, query },
       } = action as CollectiblesLoadActionType;   
 
-      return defer(() =>
-        connection(stateBaseUrl!)
-          .NFTBaseApi('assets')
-          .walletAssets(pubKey, query)
-      ).pipe(
-        map(({ body: { data, errors } }) => {
-          if (errors) {
-            return CollectiblesLoadErrorAction(errors);
-          }
-          const q = query || {
-            page: 1,
-            limit: 100,
-          };
-          return CollectiblesLoadSuccessAction(q, data, data.length < q.limit!);
-        }),
-        catchError((err) => of(CollectiblesLoadErrorAction(err)))
-      );
+      if (includeInAuctionAssets){
+        return defer(() =>
+          connection(stateBaseUrl!).NFTBaseApi('assets').walletAssets(pubKey, query)
+        ).pipe(
+          map(({ body: { data, errors } }) => {
+            if (errors) {
+              return CollectiblesLoadErrorAction(errors);
+            }
+            const q = query || {
+              page: 1,
+              limit: 100,
+            };
+            return CollectiblesLoadSuccessAction(q, data, data.length < q.limit!);
+          }),
+          catchError((err) => of(CollectiblesLoadErrorAction(err)))
+        );
+      }else{
+        return forkJoin([
+          connection(stateBaseUrl!).NFTBaseApi('assets').walletAssets(pubKey, query),
+          connection(stateBaseUrl!).NFTExchangeApi('auctions').getAllAuctions(),
+          connection(stateBaseUrl!).NFTExchangeApi('auctions').getAllCanceledAuctions()
+        ]).pipe(  
+          map(([assetsResponse, allAuctionsResponse, cancelledAuctionsResponse]) => {
+            if (assetsResponse?.body?.errors) {
+              return CollectiblesLoadErrorAction(assetsResponse?.body?.errors);
+            }
+            if (allAuctionsResponse?.body?.errors) {
+              return CollectiblesLoadErrorAction(allAuctionsResponse?.body?.errors);
+            }            
+            if (cancelledAuctionsResponse?.body?.errors) {
+              return CollectiblesLoadErrorAction(cancelledAuctionsResponse?.body?.errors);
+            }            
+            const q = query || {
+              page: 1,
+              limit: 100,
+            };
+            let data:BaseResourcesTypes.Assets[] = [];
+            let activeAuctions:ExchangeResourcesTypes.Auctions[] = allAuctionsResponse.body.data.filter(a => cancelledAuctionsResponse.body.data.filter(ac => ac.nftAuctionCancel.auctionId === a.id));
+            for(let asset of assetsResponse.body.data){
+              if (activeAuctions.some(a => a.nftAuction.nftIds.some(as => as === asset.id))) continue;
+              data.push(asset);
+            }
+            return CollectiblesLoadSuccessAction(q, data, data.length < q.limit!);
+          }),
+          catchError((err) => of(CollectiblesLoadErrorAction(err)))
+        );            
+      }
     })
   );
 /*
@@ -167,21 +197,28 @@ const fetchCardsOnAuctionEpic: RootEpic = (
           (ownAuctions)?connection(stateBaseUrl!).NFTExchangeApi("auctions").searchByAsset({senderPublicKey:pubKey}, undefined):
           connection(stateBaseUrl!).NFTExchangeApi('auctions').getAllAuctions()
         ),
+        defer(() =>          
+          connection(stateBaseUrl!).NFTExchangeApi('auctions').getAllCanceledAuctions()
+        ),        
         defer(() =>
           (ownAuctions)?connection(stateBaseUrl!).NFTBaseApi('assets').walletAssets(pubKey, query):
           connection(stateBaseUrl!).NFTBaseApi('assets').all()
         ),
       ]).pipe(
-        map(([auctionsResponse, assetsResponse]) => {
+        map(([auctionsResponse, cancelledAuctionsResponse, assetsResponse]) => {
           if (auctionsResponse?.body?.errors) {
             return CollectiblesOnAuctionLoadErrorAction(auctionsResponse?.body?.errors);
           }
+          if (cancelledAuctionsResponse?.body?.errors) {
+            return CollectiblesOnAuctionLoadErrorAction(cancelledAuctionsResponse?.body?.errors);
+          }          
           if (assetsResponse?.body?.errors) {
             return CollectiblesOnAuctionLoadErrorAction(assetsResponse?.body?.errors);
           }
           let data:BaseResourcesTypes.Assets[] = [];
           for(let auction of auctionsResponse.body.data){            
-            console.log(ownAuctions + "  " + auction.senderPublicKey + "  " + pubKey);
+            //console.log(ownAuctions + "  " + auction.senderPublicKey + "  " + pubKey);
+            if (cancelledAuctionsResponse.body.data.some(a => a.nftAuctionCancel.auctionId === auction.id)) continue;
             if (!ownAuctions && auction.senderPublicKey === pubKey) continue;
             for(let nftId of auction.nftAuction.nftIds){
               for(let asset of assetsResponse.body.data){
