@@ -85,33 +85,33 @@ const ViewCardButton = styled(Button)`
 
 const txUuid = uuid();
 
-const AuctionCreationAndConfirmationPage: FC = () => {  
+const AuctionPlaceBidAndConfirmationPage: FC = () => {  
 
-  const { cardId, minimumBid, minimumIncrement, finalBiddingDate } = useParams<{ cardId: string, minimumBid: string, minimumIncrement: string, finalBiddingDate: string}>();
+  const { cardId, bidAmount } = useParams<{ cardId: string, bidAmount: string}>();
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const startAuctionRequest = useSelector(auctionSelector, shallowEqual);
+  const placeBidRequest = useSelector(auctionSelector, shallowEqual);
   const transactions = useSelector(transactionsSelector, shallowEqual);
   const tx = useMemo(() => transactions[txUuid], [transactions]);
 
-  const [navToMyAuctions, setNavToMyAuctions] = useState(false);
+  const [navToMyBiddedCards, setNavToMyBiddedCards] = useState(false);
 
-  const navigateMyAuctions = () => {    
-    setNavToMyAuctions(true);   
+  const navigateToMyBiddedCards = () => {    
+    setNavToMyBiddedCards(true);   
   }     
 
   const isLoading = useCallback(() => {
-    return startAuctionRequest?.isLoading || tx?.isLoading;
-  }, [startAuctionRequest, tx]);
+    return placeBidRequest?.isLoading || tx?.isLoading;
+  }, [placeBidRequest, tx]);
 
   const isError = useCallback(() => {
-    return startAuctionRequest?.isError || tx?.isError;
-  }, [startAuctionRequest, tx]);
+    return placeBidRequest?.isError || tx?.isError;
+  }, [placeBidRequest, tx]);
 
   const error = useCallback(() => {    
-    return (startAuctionRequest?.isError)? `${startAuctionRequest?.error}`:`${tx?.error?.message}`;
-  }, [startAuctionRequest, tx]);
+    return (placeBidRequest?.isError)? `${placeBidRequest?.error}`:`${tx?.error?.message}`;
+  }, [placeBidRequest, tx]);
 
   const {
     session: { address, passphrase, publicKey },
@@ -121,17 +121,17 @@ const AuctionCreationAndConfirmationPage: FC = () => {
 
   const isMounted = useIsMounted();  
   useEffect(() => {        
-    if (isMounted && minimumBid && minimumIncrement && finalBiddingDate && cardId && address) {            
-      dispatch(StartAuctionAction(Number(minimumBid), Number(minimumIncrement), finalBiddingDate, cardId, address!, publicKey!, passphrase!, txUuid));
+    if (isMounted && bidAmount && cardId) {            
+      dispatch(PlaceBidAction(Number(bidAmount), cardId, passphrase!, txUuid));
     }
-  }, [isMounted, dispatch, minimumBid, minimumIncrement, finalBiddingDate, cardId, address, publicKey, passphrase]);  
+  }, [isMounted, dispatch, bidAmount, cardId, passphrase]);  
 
   return (
     <>
-    {navToMyAuctions && (
-      <AuctionsOwnedPage />
+    {navToMyBiddedCards && (
+      <AuctionsMyBiddedCardsPage />
     )} 
-    {!navToMyAuctions && ( 
+    {!navToMyBiddedCards && ( 
     <IonPage>
       <Header 
         title="Start Card Auction"
@@ -164,14 +164,17 @@ const AuctionCreationAndConfirmationPage: FC = () => {
               {!isLoading() && !isError() && (
                 <>
                   <Text color="warning" fontSize={FontSize.XXL} fontWeight={FontWeight.BOLD}>
-                    Hooray!
+                    Awesome!
                   </Text>
                   <Text
                     className="ion-padding-top"
                     fontSize={FontSize.L}
                     color="light"
                   >
-                    The auction is now live!
+                    You successfully put a bid on the hero card. 
+                    Don’t forget to follow the cards so no one 
+                    bids it higher than you!
+                    TODO: Social sharing icons
                   </Text>
                 </>
               )}
@@ -190,9 +193,9 @@ const AuctionCreationAndConfirmationPage: FC = () => {
               fontWeight={FontWeight.BOLD}
               radius={false}
               expand="block"
-              onClick={navigateMyAuctions}              
+              onClick={navigateToMyBiddedCards}              
             >
-              View Auction
+              View Bidded Cards
             </ViewCardButton>
           </IonToolbar>
         </Footer>
@@ -203,4 +206,4 @@ const AuctionCreationAndConfirmationPage: FC = () => {
   );
 };
 
-export default AuctionCreationAndConfirmationPage;
+export default AuctionPlaceBidAndConfirmationPage;
