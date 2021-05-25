@@ -1,31 +1,23 @@
 import { format } from 'date-fns';
 import { FC, useMemo, useState, useCallback } from 'react';
 import { arrowBackOutline } from 'ionicons/icons';
-import { CalendarOutline } from 'react-ionicons'
-import { Controller, useForm } from 'react-hook-form';
 import { shallowEqual, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router';
-import { InputChangeEventDetail } from '@ionic/core';
 import styled from 'styled-components';
 import { Styles } from '../utils/styles';
 import { FontSize } from '../constants/font-size';
 import { FontWeight } from '../constants/font-weight';
-import FormInputError from '../components/ionic/ErrorMessage';
 import Title from '../components/ionic/Title';
 import Button from '../components/ionic/Button';
 import { JSX } from '@ionic/core';
 import {
   DetailCard,
   DetailCards,
-  DetailIconCard,
 } from '../components/DetailCards';
 import { 
-  IonList,
-  IonButton,
-  IonItem,
+  IonButton,  
   IonFooter,
   IonToolbar,
-  IonInput,
   IonLabel,
   IonCol,
   IonContent,
@@ -33,8 +25,7 @@ import {
   IonPage,
   IonRow,
   IonIcon,
-  IonSpinner,
-  IonDatetime,
+  IonSpinner
 } from '@ionic/react';
 import { BaseResourcesTypes } from '@protokol/client';
 import Header from '../components/Header';
@@ -60,10 +51,10 @@ const ViewCardButton = styled(Button)`
 const IncrementIonButton = styled(Button)`
   --background: var(--app-color-transparent-bg);
   background: var(--app-color-transparent-bg);
-  border: 3px solid;
-  color: #F8C938;
+  border: 3px solid;  
   font-size: 20px;
   margin: 12px 0px 12px 0px;
+  ${props => props.disabled ? `color: #252732;`:`color: #F8C938;`};
 `;
 
 const ViewCardIonButton = styled(Button)<JSX.IonButton>`
@@ -84,6 +75,8 @@ const AuctionNewBidPage: FC = () => {
 
   const { assetId } = useParams<{ assetId: string }>();
   const history = useHistory(); 
+
+  const increment = 5;
 
   const sendBid = useCallback(
     () => {      
@@ -118,16 +111,16 @@ const AuctionNewBidPage: FC = () => {
   } = attributes as any;
 
   if(bidAmount===0){
-    setStateData(currentBid+5);
+    setStateData(currentBid+increment);
   }
 
   const incrementBid = () => {    
-    setStateData(bidAmount + 5);
+    setStateData(bidAmount + increment);
   }
 
   const decrementBid = () => {    
-    if (bidAmount-5 >= currentBid+5){
-      setStateData(bidAmount - 5);
+    if (bidAmount - increment >= currentBid + increment){
+      setStateData(bidAmount - increment);
     }
   }
 
@@ -197,7 +190,7 @@ const AuctionNewBidPage: FC = () => {
           </IonRow>        
           <IonRow style={{paddingLeft:"60px", paddingRight:"60px", paddingTop:"40px"}}>
             <IonCol className="ion-text-left">
-                <IncrementIonButton onClick={decrementBid}>-</IncrementIonButton>
+                <IncrementIonButton disabled={bidAmount-increment===currentBid} onClick={decrementBid}>-</IncrementIonButton>
             </IonCol>
             <IonCol className="ion-text-center">
                 <IonLabel style={{fontFamily:"Open Sans", fontSize:"40px", color:"#F8C938", fontWeight:"bold"}}>${bidAmount}</IonLabel>

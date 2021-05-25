@@ -209,6 +209,7 @@ const AuctionParticipateIn: FC = () => {
                       type={type}
                       linkto={"/market/card/newbid/"+id}
                     />
+                    TODO Filter cards when i have bids
                   </CardContainer>
                 );
               })}

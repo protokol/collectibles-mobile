@@ -94,16 +94,22 @@ const fetchWalletCollectionsEpic: RootEpic = (
             (ownAuctions)?connection(stateBaseUrl!).NFTExchangeApi("auctions").searchByAsset({senderPublicKey:pubKey}, undefined):
             connection(stateBaseUrl!).NFTExchangeApi('auctions').getAllAuctions()
           ),
+          defer(() =>          
+            connection(stateBaseUrl!).NFTExchangeApi('auctions').getAllCanceledAuctions()
+          ),             
           defer(() =>
             connection(stateBaseUrl!).NFTBaseApi('assets').walletAssets(pubKey, query)
           ),
           fromFetch(`${stateBaseUrl}/api/node/configuration`),
           defer(() => connection(stateBaseUrl!).api("blocks").last())          
         ]).pipe(
-          map(([auctionsResponse, assetsResponse, confResponse, blockResponse]) => {
+          map(([auctionsResponse, cancelledAuctionsResponse, assetsResponse, confResponse, blockResponse]) => {
             if (auctionsResponse?.body?.errors) {
               return CollectiblesOnAuctionLoadErrorAction(auctionsResponse?.body?.errors);
             }
+            if (cancelledAuctionsResponse?.body?.errors) {
+              return CollectiblesOnAuctionLoadErrorAction(cancelledAuctionsResponse?.body?.errors);
+            }               
             if (assetsResponse?.body?.errors) {
               return CollectiblesOnAuctionLoadErrorAction(assetsResponse?.body?.errors);
             }
