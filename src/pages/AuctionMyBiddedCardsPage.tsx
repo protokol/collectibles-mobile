@@ -210,7 +210,7 @@ const AuctionMyBiddedCardsPage: FC = () => {
                 fontSize={FontSize.L} 
                 color="primary"
               >
-                No available auctions yet!
+                You don't have bids yet!
               </Text>
             </IonCol>
           )}
