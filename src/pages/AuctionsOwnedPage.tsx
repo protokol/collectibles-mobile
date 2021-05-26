@@ -200,7 +200,8 @@ const AuctionsOwnedPage: FC = () => {
 
                 return (
                   <>
-                    <CardOnAuction
+                    <CardOnAuction       
+                      key={id}              
                       id={id}
                       title={title}
                       imgIpfsHash={ipfsHashImageFront}

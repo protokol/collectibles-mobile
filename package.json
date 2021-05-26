@@ -25,7 +25,7 @@
     "@ionic/react-router": "^5.0.7",
     "@opencensus/core": "0.0.22",
     "@pm2/io": "^5.0.0",
-    "@protokol/client": "1.0.0-beta.40",
+    "@protokol/client": "1.0.0-beta.41",
     "@protokol/nameservice-crypto": "^1.0.0-beta.2",
     "@protokol/nft-exchange-crypto": "1.0.0-beta.61",
     "aes-js": "^3.1.2",

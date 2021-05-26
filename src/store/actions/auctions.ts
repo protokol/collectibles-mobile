@@ -15,6 +15,9 @@ enum AuctionActions {
   PLACE_BID = '@Auctions/PLACE_BID_AUCTION',
   PLACE_BID_SUCCESS = '@Auctions/PLACE_BID_SUCCESS',
   PLACE_BID_ERROR = '@Auctions/PLACE_BID_ERROR',  
+  CANCEL_BID = '@Auctions/CANCEL_BID_AUCTION',
+  CANCEL_BID_SUCCESS = '@Auctions/CANCEL_BID_SUCCESS',
+  CANCEL_BID_ERROR = '@Auctions/CANCEL_BID_ERROR',  
 }
 
 //Start an Auction
@@ -122,6 +125,31 @@ export interface PlaceBidErrorActionType
   };
 }
 
+//Cancel a Bid
+export interface CancelBidActionType
+  extends Action<AuctionActions.CANCEL_BID> {
+  payload: {
+    bidId: string;
+    pubKey: string;
+    passphrase: string;
+    txUuid: string;
+  };
+}
+
+export interface CancelBidSuccessActionType
+  extends Action<AuctionActions.CANCEL_BID_SUCCESS> {
+  payload: {
+    txId: string;
+  };
+}
+
+export interface CancelBidErrorActionType
+  extends Action<AuctionActions.CANCEL_BID_ERROR> {
+  payload: {
+    error: Error;
+  };
+}
+
 // Action creators
 const StartAuctionAction = (
   minimumBid: number,
@@ -193,8 +221,6 @@ const CancelAuctionErrorAction = (error: Error): CancelAuctionErrorActionType =>
   },
 });
 
-
-
 const AuctionsLoadAction = (
   pubKey: string,
   query?: ExchangeResourcesTypes.AllAuctionsQuery
@@ -261,6 +287,38 @@ const PlaceBidErrorAction = (error: Error): PlaceBidErrorActionType => ({
   },
 });
 
+const CancelBidAction = (
+  bidId: string,
+  pubKey: string,
+  passphrase: string,
+  txUuid: string
+): CancelBidActionType => ({
+  type: AuctionActions.CANCEL_BID,
+  payload: {
+    bidId,
+    pubKey,
+    passphrase,
+    txUuid,
+  },
+});
+
+const CancelBidSuccessAction = (
+  txId: string
+): CancelBidSuccessActionType => ({
+  type: AuctionActions.CANCEL_BID_SUCCESS,
+  payload: {
+    txId,
+  },
+});
+
+const CancelBidErrorAction = (error: Error): CancelBidErrorActionType => ({
+  type: AuctionActions.CANCEL_BID_ERROR,
+  payload: {
+    error,
+  },
+});
+
+
 export type AUCTION_ACTION_TYPES = AuctionsLoadActionType &
   AuctionsLoadSuccessActionType &
   AuctionsLoadErrorActionType & 
@@ -272,20 +330,26 @@ export type AUCTION_ACTION_TYPES = AuctionsLoadActionType &
   CancelAuctionErrorActionType &
   PlaceBidActionType &
   PlaceBidSuccessActionType &
-  PlaceBidErrorActionType
-  ;
+  PlaceBidErrorActionType &
+  CancelBidActionType &
+  CancelBidSuccessActionType &
+  CancelBidErrorActionType
+;
 
 export {
   AuctionActions,
   StartAuctionAction,
   StartAuctionSuccessAction,
   StartAuctionErrorAction,
-  PlaceBidAction,
-  PlaceBidSuccessAction,
-  PlaceBidErrorAction,
   CancelAuctionAction,
   CancelAuctionSuccessAction,
   CancelAuctionErrorAction,  
+  PlaceBidAction,
+  PlaceBidSuccessAction,
+  PlaceBidErrorAction,
+  CancelBidAction,
+  CancelBidSuccessAction,
+  CancelBidErrorAction,  
   AuctionsLoadAction,
   AuctionsLoadSuccessAction,
   AuctionsLoadErrorAction,  

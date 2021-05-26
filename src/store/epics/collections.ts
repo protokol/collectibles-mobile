@@ -128,41 +128,52 @@ const fetchCardsOnAuctionEpic: RootEpic = (
 
           const blockTime = confResponse.data?.constants?.blocktime;
           const currentBlock = blockResponse.body?.data?.height;
-          const now = new Date(currentBlock/blockTime).getTime();
+          const currentMs = blockResponse.body?.data?.timestamp?.unix * 1000;
+          const nowMs = new Date().getTime();
 
           for(let auction of auctionsResponse.body.data){            
             //console.log(ownAuctions + "  " + auction.senderPublicKey + "  " + pubKey);
             if (cancelledAuctionsResponse.body.data.some(a => a.nftAuctionCancel.auctionId === auction.id)) continue;
             if (!ownAuctions && auction.senderPublicKey === pubKey) continue;
-            // TODO const maxBid = bidsResponse.body.data.data
-            const maxBid = 999;
-            const myBid = 888; 
+            const allBids = bidsResponse.body.data.filter(b => b.nftBid.auctionId === auction.id);
+            const allMyBids = bidsResponse.body.data.filter(b => b.nftBid.auctionId === auction.id && b.senderPublicKey === pubKey);            
+            const maxBid = (allBids.length === 0) ? 0 : Number(allBids.reduce((prev, curr) => (Number(prev.nftBid.bidAmount)>Number(curr.nftBid.bidAmount))?prev:curr).nftBid.bidAmount);
+            const myBid = (allMyBids.length === 0) ? 0 : Number(allMyBids.reduce((prev, curr) => (Number(prev.nftBid.bidAmount)>Number(curr.nftBid.bidAmount))?prev:curr).nftBid.bidAmount);
 
             for(let nftId of auction.nftAuction.nftIds){
-              for(let asset of assetsResponse.body.data){                
-                const fbd = new Date(auction.nftAuction.expiration.blockHeight);                    
-                const fbdMilli = fbd.getTime()
-                const total = Math.abs(fbdMilli - now);
-                //const seconds = Math.floor( (total/1000) % 60 );
-                const minutes = Math.floor( (total/1000/60) % 60 );
-                const hours = Math.floor( (total/(1000*60*60)) % 24 );
-                const days = Math.floor( total/(1000*60*60*24) );
-
+              const asset = assetsResponse.body.data.find(a => a.id===nftId);
+              if (asset === undefined) continue;
+              
+              const remainingBlocks = auction.nftAuction.expiration.blockHeight - currentBlock;
+              const remainingMs = remainingBlocks * blockTime * 1000;
+              //const seconds = Math.floor( (total/1000) % 60 );
+              const minutes = Math.floor( (remainingMs/1000/60) % 60 );
+              const hours = Math.floor( (remainingMs/(1000*60*60)) % 24 );
+              const days = Math.floor( remainingMs/(1000*60*60*24) );                                    
+              const humanExpirationDate = new Date(nowMs +currentMs + remainingMs);
+              
+              /*
+              // Debug block              
+              const humanSystemDate = new Date(nowMs);
+              const humanBlockDate = new Date(currentMs);              
+              //console.log("currentBlock:" + currentBlock + " currentMs:" + currentMs);
+              console.log("remainingBlocks:" + remainingBlocks + "  remainingMs:" + remainingMs);              
+              console.log("humanSystemDate:" + humanSystemDate + "  humanBlockDate:" + humanBlockDate + "  humanExpirationDate:" + humanExpirationDate);
+              console.log("humanSystemDate:" + humanSystemDate.toDateString() + "  humanBlockDate:" + humanBlockDate.toDateString() + " humanExpirationDate:" + humanExpirationDate.toDateString());
+              console.log("timeRemaining:" + days + "d" + hours + "h" + minutes + "m");
+              */
+              asset.attributes = { ...asset.attributes, 
+                  minimumBid: auction.nftAuction.startAmount, 
+                  finalBiddingDate: humanExpirationDate.toISOString(),
+                  timeRemaining: days + "d" + hours + "h" + minutes + "m",
+                  currentBid: maxBid,
+              };
+              if (!ownAuctions){
                 asset.attributes = { ...asset.attributes, 
-                    minimumBid: auction.nftAuction.startAmount, 
-                    finalBiddingDate: fbd.toISOString(),
-                    timeRemaining: days + "d" + hours + "h" + minutes + "m",
-                    currentBid: maxBid,
+                  yourBid: myBid                        
                 };
-                if (!ownAuctions){
-                  asset.attributes = { ...asset.attributes, 
-                    yourBid: myBid                        
-                  };
-                }
-                if (nftId===asset.id){
-                    data.push(asset);
-                }
               }
+              data.push(asset);                              
             }
           }  
           return CollectiblesOnAuctionLoadSuccessAction(data, query, true);

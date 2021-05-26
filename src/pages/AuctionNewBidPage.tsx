@@ -17,7 +17,7 @@ import {
   IonButton,  
   IonFooter,
   IonToolbar,
-  IonLabel,
+  IonLabel,  
   IonCol,
   IonContent,
   IonGrid,
@@ -47,6 +47,12 @@ const ViewCardButton = styled(Button)`
   background: var(--app-color-green-bg);
 `;
 
+const RetractBidIonButton = styled(Button)<JSX.IonButton>`
+  text-decoration: underline;
+  text-transform: uppercase;
+  color: red;
+`;
+
 const IncrementIonButton = styled(Button)`
   --background: var(--app-color-transparent-bg);
   background: var(--app-color-transparent-bg);
@@ -66,6 +72,15 @@ const ViewCardIonButton = styled(Button)<JSX.IonButton>`
   opacity: 1;
   border: 0px;
   box-shadow: none !important;
+`;
+
+const HorizontalLine = styled.div`
+  width:1px;
+  height:1px;
+  width: 80%;
+  margin-left: 10%;  
+  background:#E6E6E6;
+  position: relative;
 `;
 
 const AuctionNewBidPage: FC = () => {
@@ -211,8 +226,10 @@ const AuctionNewBidPage: FC = () => {
             </IonCol>            
           </IonRow>          
         </IonGrid>
+        <HorizontalLine/>
+        <IonLabel>Do you want to</IonLabel> <RetractBidIonButton color="danger" onClick={() => history.replace("/market/card/retractbid/" + auctionId)}>retract your bid?</RetractBidIonButton>
         <Footer className="ion-no-border">
-          <IonToolbar>
+          <IonToolbar>          
             <ViewCardButton
               size="large"
               className="ion-text-uppercase ion-no-margin"

@@ -216,7 +216,7 @@ const AuctionableCardsPage: FC = () => {
 
                 return (
                   <>
-                    <CardContainer size={cardColSize().toString()}>  
+                    <CardContainer size={cardColSize().toString()} key={id}>  
                       <Card
                         key={id}
                         id={id}

@@ -24,6 +24,9 @@ import {
   PlaceBidActionType,
   PlaceBidSuccessActionType,
   PlaceBidErrorActionType,
+  CancelBidActionType,
+  CancelBidSuccessActionType,
+  CancelBidErrorActionType,
 } from './actions/auctions';
 
 import {
@@ -82,6 +85,9 @@ export type RootActions =
   | PlaceBidActionType
   | PlaceBidSuccessActionType
   | PlaceBidErrorActionType
+  | CancelBidActionType
+  | CancelBidSuccessActionType
+  | CancelBidErrorActionType
   | CollectiblesOnAuctionLoadActionType
   | CollectiblesOnAuctionLoadSuccessActionType
   | CollectiblesOnAuctionLoadErrorActionType

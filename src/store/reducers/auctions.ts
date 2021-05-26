@@ -150,6 +150,34 @@ const reducer: Reducer<AuctionState, AUCTION_ACTION_TYPES> = (
         error,
       };
     }    
+    case AuctionActions.CANCEL_BID: {
+      return {
+        ...initialState,
+        isLoading: true,
+      };
+    }
+    case AuctionActions.CANCEL_BID_SUCCESS: {
+      const {
+        payload: { txId },
+      } = action;
+      return {
+        ...state,
+        isLoading: false,
+        isError: false,
+        txId,
+      };
+    }
+    case AuctionActions.CANCEL_BID_ERROR: {
+      const {
+        payload: { error },
+      } = action;
+      return {
+        ...state,
+        isLoading: false,
+        isError: true,
+        error,
+      };
+    }        
     default:
       return state;
   }
