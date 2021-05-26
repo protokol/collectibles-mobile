@@ -118,7 +118,7 @@ const CardOnAuction: FC<{
                 </IonCol>
                 <IonCol>
                   {timeRemaining && (
-                    <CardSubTitle className="ion-no-padding" fontSize={FontSize.SM}>{timeRemaining}</CardSubTitle>
+                    <CardSubTitle className="ion-no-padding" color={timeRemaining.startsWith("-")?"danger":"light"} fontSize={FontSize.SM}>{timeRemaining}</CardSubTitle>
                   )} 
                 </IonCol>
               </IonRow>                                          

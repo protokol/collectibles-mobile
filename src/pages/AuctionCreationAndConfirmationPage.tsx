@@ -25,7 +25,7 @@ import { driverHighResImage } from '../constants/images';
 import useIsMounted from '../hooks/use-is-mounted';
 import { AuthLoginContext } from '../providers/AuthLoginProvider';
 import { StartAuctionAction } from '../store/actions/auctions';
-import AuctionsOwnedPage from './AuctionsOwnedPage';
+import AuctionsMyAuctionsPage from './AuctionsMyAuctionsPage';
 import { auctionSelector } from '../store/selectors/auctions';
 import { transactionsSelector } from '../store/selectors/transaction';
 
@@ -129,7 +129,7 @@ const AuctionCreationAndConfirmationPage: FC = () => {
   return (
     <>
     {navToMyAuctions && (
-      <AuctionsOwnedPage />
+      <AuctionsMyAuctionsPage />
     )} 
     {!navToMyAuctions && ( 
     <IonPage>

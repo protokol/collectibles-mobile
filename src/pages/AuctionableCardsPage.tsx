@@ -21,7 +21,7 @@ import { AuthLoginContext } from '../providers/AuthLoginProvider';
 import { CollectiblesLoadAction } from '../store/actions/collections';
 import { collectionSelector } from '../store/selectors/collections';
 import { auctionImage } from '../constants/images';
-import AuctionsOwnedPage from './AuctionsOwnedPage';
+import AuctionsMyAuctionsPage from './AuctionsMyAuctionsPage';
 
 const ImageBgCol = styled(IonCol)`
   position: relative;
@@ -138,7 +138,7 @@ const AuctionableCardsPage: FC = () => {
   return (
     <>
     {navToMyAuctions && (
-      <AuctionsOwnedPage />
+      <AuctionsMyAuctionsPage />
     )}
     {!navToMyAuctions && (
     <>     

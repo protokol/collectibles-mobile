@@ -1,5 +1,4 @@
-import { FC, useCallback, useContext, useEffect, useMemo } from 'react';
-import { useHistory } from 'react-router';
+import { FC, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import {
@@ -22,6 +21,7 @@ import { AuthLoginContext } from '../providers/AuthLoginProvider';
 import { CollectiblesOnAuctionLoadAction } from '../store/actions/collections';
 import { collectionSelector } from '../store/selectors/collections';
 import { auctionBalloonImage } from '../constants/images';
+import AuctionMyBiddedCardsPage from './AuctionMyBiddedCardsPage';
 
 const ImageBgCol = styled(IonCol)`
   position: relative;
@@ -73,11 +73,17 @@ const CollectablesIonRow = styled(IonRow)`
   max-height: calc(100vh - 92px - 4.8rem);
 `;
 
-const AuctionParticipateIn: FC = () => {    
-    const history = useHistory();
+const AuctionParticipateInPage: FC = () => {    
     const isMedium = useMediaQuery('(min-height: 992px)');
     const isLarge = useMediaQuery('(min-height: 1200px)');
     const { isError, error, isLoading, assets, isLastPage /*, query*/ } = useSelector(collectionSelector, shallowEqual); 
+
+    const [navToMyBiddedCards, setNavToMyBiddedCards] = useState(false);
+
+    const navigateMyBids = () => {    
+      setNavToMyBiddedCards(true);   
+    }    
+
 
     const dispatch = useDispatch();
     const {
@@ -88,14 +94,14 @@ const AuctionParticipateIn: FC = () => {
     const isMounted = useIsMounted();
     useEffect(() => {
       if (publicKey && isMounted) {
-          dispatch(CollectiblesOnAuctionLoadAction(publicKey!, false, undefined));
+          dispatch(CollectiblesOnAuctionLoadAction(publicKey!, false, false, undefined));
       }
     }, [isMounted, dispatch, publicKey]);
   
     const loadNextPage = useCallback(() => {
       if (publicKey) {
         //const { page } = query ?? { page: 1 };
-        dispatch(CollectiblesOnAuctionLoadAction(publicKey!, false, undefined));
+        dispatch(CollectiblesOnAuctionLoadAction(publicKey!, false, false, undefined));
       }
     }, [/*query,*/ dispatch, publicKey]);
   
@@ -123,7 +129,12 @@ const AuctionParticipateIn: FC = () => {
     }, [isMedium, isLarge]);
     
   return (
-      <>
+    <>
+    {navToMyBiddedCards && (
+      <AuctionMyBiddedCardsPage />
+    )}  
+    {!navToMyBiddedCards && (      
+    <>
     <IonGrid className="ion-no-padding">
       <IonRow>
         <ImageBgCol size="12">
@@ -155,7 +166,7 @@ const AuctionParticipateIn: FC = () => {
                   fontSize={FontSize.SM}
                   color="light"
                   fontWeight={FontWeight.BOLD}
-                  onClick={() => history.push("/market/mybids")}
+                  onClick={navigateMyBids}
                 >
                   My Bids
                 </BiddedCardsButton>                   
@@ -205,8 +216,7 @@ const AuctionParticipateIn: FC = () => {
                       imgIpfsHash={ipfsHashImageFront}
                       type={type}
                       linkto={"/market/card/newbid/"+id}
-                    />
-                    TODO Filter cards when i have bids
+                    />                    
                   </CardContainer>
                 );
               })}
@@ -231,7 +241,9 @@ const AuctionParticipateIn: FC = () => {
         </CollectablesIonRow>      
     </IonGrid>   
     </>
+    )} 
+    </>
   );
 };
 
-export default AuctionParticipateIn;
+export default AuctionParticipateInPage;

@@ -108,7 +108,7 @@ const ViewCardIonButton = styled(Button)<JSX.IonButton>`
   box-shadow: none !important;
 `;
 
-const AuctionOwnedViewPage: FC = () => {
+const AuctionMyAuctionViewPage: FC = () => {
   
   const { handleSubmit, control } = useForm();  
   const { auctionId, assetId } = useParams<{ auctionId: string, assetId: string }>();  
@@ -289,4 +289,4 @@ const AuctionOwnedViewPage: FC = () => {
   );
 };
 
-export default AuctionOwnedViewPage;
+export default AuctionMyAuctionViewPage;

@@ -25,7 +25,7 @@ import { driverHighResImage } from '../constants/images';
 import useIsMounted from '../hooks/use-is-mounted';
 import { AuthLoginContext } from '../providers/AuthLoginProvider';
 import { CancelAuctionAction } from '../store/actions/auctions';
-import AuctionsOwnedPage from './AuctionsOwnedPage';
+import AuctionsMyAuctionsPage from './AuctionsMyAuctionsPage';
 import { auctionSelector } from '../store/selectors/auctions';
 import { transactionsSelector } from '../store/selectors/transaction';
 
@@ -127,7 +127,7 @@ const AuctionCancellationAndConfirmationPage: FC = () => {
   return (
     <>
     {navToAuctions && (
-      <AuctionsOwnedPage />
+      <AuctionsMyAuctionsPage />
     )} 
     {!navToAuctions && (    
     <IonPage>

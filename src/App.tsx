@@ -16,9 +16,11 @@ import HomePage from './pages/HomePage';
 import PasscodePage from './pages/PasscodePage';
 import PassphrasePage from './pages/PassphrasePage';
 import StartAuctionPage from './pages/AuctionCreationAndConfirmationPage';
-import AuctionOwnedViewPage from './pages/AuctionOwnedViewPage';
-import AuctionsOwnedPage from './pages/AuctionsOwnedPage';
+import AuctionMyAuctionViewPage from './pages/AuctionMyAuctionViewPage';
+import AuctionsMyAuctionsPage from './pages/AuctionsMyAuctionsPage';
+import AuctionMyBiddedCardsPage from './pages/AuctionMyBiddedCardsPage';
 import AuctionableCardsPage from './pages/AuctionableCardsPage';
+import AuctionParticipateInPage from './pages/AuctionParticipateInPage';
 import AuctionPlaceBidAndConfirmationPage from './pages/AuctionPlaceBidAndConfirmationPage';
 import ProfilePage from './pages/ProfilePage';
 import QrCodeGeneratorPage from './pages/QrCodeGeneratorPage';
@@ -29,7 +31,7 @@ import AuthLoginContextProvider from './providers/AuthLoginProvider';
 import AuthRegisterContextProvider from './providers/AuthRegisterProvider';
 import { SetBaseUrlAppAction } from './store/actions/app';
 import './theme/ionic-theme';
-import AuctionNewBidPage from './pages/AuctionNewBidPage';
+import AuctionPlaceBidPage from './pages/AuctionPlaceBidPage';
 
 const { SplashScreen } = Plugins;
 
@@ -131,17 +133,27 @@ const App: FC = () => {
                 />                  
                 <ProtectedRoute
                   path="/market/card/auctionview/:auctionId/:assetId"
-                  component={AuctionOwnedViewPage}
+                  component={AuctionMyAuctionViewPage}
                   exact
                 />     
                 <ProtectedRoute
                   path="/market/myauctions"
-                  component={AuctionsOwnedPage}
+                  component={AuctionsMyAuctionsPage}
+                  exact
+                />     
+                <ProtectedRoute
+                  path="/market/participateinauction"
+                  component={AuctionParticipateInPage}
+                  exact
+                />     
+                <ProtectedRoute
+                  path="/market/mybids"
+                  component={AuctionMyBiddedCardsPage}
                   exact
                 />     
                 <ProtectedRoute
                   path="/market/card/newbid/:assetId"
-                  component={AuctionNewBidPage}
+                  component={AuctionPlaceBidPage}
                   exact
                 />                  
                 <ProtectedRoute

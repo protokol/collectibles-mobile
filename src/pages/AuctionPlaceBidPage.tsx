@@ -24,7 +24,8 @@ import {
   IonPage,
   IonRow,
   IonIcon,
-  IonSpinner
+  IonSpinner,
+  IonItem
 } from '@ionic/react';
 import { BaseResourcesTypes } from '@protokol/client';
 import Header from '../components/Header';
@@ -51,6 +52,8 @@ const RetractBidIonButton = styled(Button)<JSX.IonButton>`
   text-decoration: underline;
   text-transform: uppercase;
   color: red;
+  --background: var(--app-color-transparent-bg);
+  background: var(--app-color-transparent-bg);
 `;
 
 const IncrementIonButton = styled(Button)`
@@ -83,7 +86,7 @@ const HorizontalLine = styled.div`
   position: relative;
 `;
 
-const AuctionNewBidPage: FC = () => {
+const AuctionPlaceBidPage: FC = () => {
     
   const [bidAmount, setStateData] = useState(0);
   const [auctionIdIn, setAuctionId] = useState(-1);
@@ -94,7 +97,8 @@ const AuctionNewBidPage: FC = () => {
   const increment = 5;
 
   const sendBid = useCallback(
-    () => {     
+    () => {  
+      console.log("AuctionNewBidPage:sendBid:::: " + auctionIdIn + ":" + bidAmount);
       if (auctionIdIn && bidAmount){
         history.push(`/market/card/placenewbid/${auctionIdIn}/${bidAmount}`);
       }
@@ -125,28 +129,34 @@ const AuctionNewBidPage: FC = () => {
     carNumber,
     season,
     auctionId,
-    currentBid
+    currentBid,
+    yourBid,
+    minimumBid
   } = attributes as any;
+
+  //console.log(JSON.stringify(asset));
 
   if (auctionIdIn===-1){
     setAuctionId(auctionId);
   }
 
   if(bidAmount===0){
-    setStateData(currentBid+increment);
-  }
-
-  if(bidAmount===0){
-    setStateData(currentBid+increment);
+    setStateData((currentBid===0)?Number(minimumBid):currentBid+increment);
   }
 
   const incrementBid = () => {    
     setStateData(bidAmount + increment);
   }
 
-  const decrementBid = () => {    
-    if (bidAmount - increment >= currentBid + increment){
-      setStateData(bidAmount - increment);
+  const decrementBid = () => {  
+    if (currentBid === 0){
+      if (bidAmount - increment >= minimumBid){
+        setStateData(bidAmount - increment);
+      }
+    }else{
+      if (bidAmount - increment >= currentBid + increment){
+        setStateData(bidAmount - increment);
+      }
     }
   }
 
@@ -216,7 +226,7 @@ const AuctionNewBidPage: FC = () => {
           </IonRow>        
           <IonRow style={{paddingLeft:"60px", paddingRight:"60px", paddingTop:"40px"}}>
             <IonCol className="ion-text-left">
-                <IncrementIonButton disabled={bidAmount-increment===currentBid} onClick={decrementBid}>-</IncrementIonButton>
+                <IncrementIonButton disabled={(currentBid===0)?bidAmount-increment<minimumBid:bidAmount-increment===currentBid} onClick={decrementBid}>-</IncrementIonButton>
             </IonCol>
             <IonCol className="ion-text-center">
                 <IonLabel style={{fontFamily:"Open Sans", fontSize:"40px", color:"#F8C938", fontWeight:"bold"}}>${bidAmount}</IonLabel>
@@ -225,9 +235,15 @@ const AuctionNewBidPage: FC = () => {
                 <IncrementIonButton onClick={incrementBid}>+</IncrementIonButton>
             </IonCol>            
           </IonRow>          
-        </IonGrid>
-        <HorizontalLine/>
-        <IonLabel>Do you want to</IonLabel> <RetractBidIonButton color="danger" onClick={() => history.replace("/market/card/retractbid/" + auctionId)}>retract your bid?</RetractBidIonButton>
+        </IonGrid>            
+        { yourBid > 0 && (
+          <>
+          <HorizontalLine/>        
+          <IonItem className="ion-text-center">
+            <IonLabel>Do you want to</IonLabel> <RetractBidIonButton color="danger" onClick={() => history.replace("/market/card/retractbid/" + auctionId)}>retract your bid?</RetractBidIonButton>
+          </IonItem>
+          </>
+        )}        
         <Footer className="ion-no-border">
           <IonToolbar>          
             <ViewCardButton
@@ -249,4 +265,4 @@ const AuctionNewBidPage: FC = () => {
   );
 };
 
-export default AuctionNewBidPage;
+export default AuctionPlaceBidPage;

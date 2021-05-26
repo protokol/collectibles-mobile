@@ -24,7 +24,11 @@ const fetchWalletCollectionsEpic: RootEpic = (
     withLatestFrom(state$.pipe(map(baseUrlSelector))),
     switchMap(([action, stateBaseUrl]) => {
       const {
-        payload: { pubKey, includeInAuctionAssets, query },
+        payload: { 
+          pubKey, 
+          includeInAuctionAssets,           
+          query 
+        },
       } = action as CollectiblesLoadActionType;   
 
       if (includeInAuctionAssets){
@@ -47,7 +51,7 @@ const fetchWalletCollectionsEpic: RootEpic = (
         return forkJoin([
           connection(stateBaseUrl!).NFTBaseApi('assets').walletAssets(pubKey, query),
           connection(stateBaseUrl!).NFTExchangeApi('auctions').getAllAuctions(),
-          connection(stateBaseUrl!).NFTExchangeApi('auctions').getAllCanceledAuctions()
+          connection(stateBaseUrl!).NFTExchangeApi('auctions').getAllCanceledAuctions(),          
         ]).pipe(  
           map(([assetsResponse, allAuctionsResponse, cancelledAuctionsResponse]) => {
             if (assetsResponse?.body?.errors) {
@@ -58,23 +62,24 @@ const fetchWalletCollectionsEpic: RootEpic = (
             }            
             if (cancelledAuctionsResponse?.body?.errors) {
               return CollectiblesLoadErrorAction(cancelledAuctionsResponse?.body?.errors);
-            }            
+            }                       
             const q = query || {
               page: 1,
               limit: 100,
             };
             let data:BaseResourcesTypes.Assets[] = [];
             let activeAuctions:ExchangeResourcesTypes.Auctions[] = allAuctionsResponse.body.data.filter(a => cancelledAuctionsResponse.body.data.filter(ac => ac.nftAuctionCancel.auctionId === a.id));
+
             for(let asset of assetsResponse.body.data){
               const auctionIn = activeAuctions.findIndex(a => a.nftAuction.nftIds.find(as => as === asset.id));
-              if (auctionIn !== -1){
+              if (auctionIn !== -1){                
                 const assetPlus = asset;
                 assetPlus.attributes = { ...assetPlus.attributes, 
                   auctionId: activeAuctions[auctionIn].id
                 }
                 data.push(assetPlus);
               }
-            }
+            }            
             return CollectiblesLoadSuccessAction(q, data, data.length < q.limit!);
           }),
           catchError((err) => of(CollectiblesLoadErrorAction(err)))
@@ -93,7 +98,7 @@ const fetchCardsOnAuctionEpic: RootEpic = (
     withLatestFrom(state$.pipe(map(baseUrlSelector))),
     switchMap(([action, stateBaseUrl]) => {        
       const {
-        payload: { pubKey, query, ownAuctions },
+        payload: { pubKey, query, ownAuctions, biddedAuctions },
       } = action as CollectiblesOnAuctionLoadActionType;
 
       return forkJoin([
@@ -131,10 +136,18 @@ const fetchCardsOnAuctionEpic: RootEpic = (
           const currentMs = blockResponse.body?.data?.timestamp?.unix * 1000;
           const nowMs = new Date().getTime();
 
-          for(let auction of auctionsResponse.body.data){            
+          for(let auction of auctionsResponse.body.data){    
             //console.log(ownAuctions + "  " + auction.senderPublicKey + "  " + pubKey);
             if (cancelledAuctionsResponse.body.data.some(a => a.nftAuctionCancel.auctionId === auction.id)) continue;
             if (!ownAuctions && auction.senderPublicKey === pubKey) continue;
+            //console.log("biddedAuctions:" + biddedAuctions);
+            //console.log("pubKey:" + pubKey);
+            if (biddedAuctions)
+            {
+              const biddedIn = bidsResponse.body.data.findIndex(b => b.nftBid.auctionId === auction.id && b.senderPublicKey === pubKey);
+              //console.log("biddedIn:" + biddedIn);
+              if (biddedIn === -1) continue;
+            }            
             const allBids = bidsResponse.body.data.filter(b => b.nftBid.auctionId === auction.id);
             const allMyBids = bidsResponse.body.data.filter(b => b.nftBid.auctionId === auction.id && b.senderPublicKey === pubKey);            
             const maxBid = (allBids.length === 0) ? 0 : Number(allBids.reduce((prev, curr) => (Number(prev.nftBid.bidAmount)>Number(curr.nftBid.bidAmount))?prev:curr).nftBid.bidAmount);
@@ -151,7 +164,7 @@ const fetchCardsOnAuctionEpic: RootEpic = (
               const hours = Math.floor( (remainingMs/(1000*60*60)) % 24 );
               const days = Math.floor( remainingMs/(1000*60*60*24) );                                    
               const humanExpirationDate = new Date(nowMs +currentMs + remainingMs);
-              
+
               /*
               // Debug block              
               const humanSystemDate = new Date(nowMs);
@@ -163,6 +176,7 @@ const fetchCardsOnAuctionEpic: RootEpic = (
               console.log("timeRemaining:" + days + "d" + hours + "h" + minutes + "m");
               */
               asset.attributes = { ...asset.attributes, 
+                  auctionId: auction.id,
                   minimumBid: auction.nftAuction.startAmount, 
                   finalBiddingDate: humanExpirationDate.toISOString(),
                   timeRemaining: days + "d" + hours + "h" + minutes + "m",
@@ -176,6 +190,7 @@ const fetchCardsOnAuctionEpic: RootEpic = (
               data.push(asset);                              
             }
           }  
+          //console.log(JSON.stringify(data, null, 2));
           return CollectiblesOnAuctionLoadSuccessAction(data, query, true);
         }),
         catchError((err) => of(CollectiblesOnAuctionLoadErrorAction(err)))
