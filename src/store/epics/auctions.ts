@@ -1,7 +1,7 @@
 import { ExchangeResourcesTypes } from '@protokol/client';
 import { defer, merge, of, forkJoin } from 'rxjs';
 import { fromFetch } from 'rxjs/fetch';
-import { catchError, map, switchMap, withLatestFrom } from 'rxjs/operators';
+import { catchError, map, mergeMap, switchMap, withLatestFrom } from 'rxjs/operators';
 import {
   Wallet,
   ApiResponse,
@@ -18,6 +18,9 @@ import {
     AuctionsLoadSuccessAction,
     AuctionsLoadErrorAction,      
     AuctionsLoadActionType,
+    PlaceBidSuccessAction,
+    PlaceBidErrorAction,      
+    PlaceBidActionType,
 } from '../actions/auctions';
 import { baseUrlSelector } from '../selectors/app';
 import { RootEpic } from '../types';
@@ -86,79 +89,38 @@ const startAuctionEpic: RootEpic = (
             },
         } = action as StartAuctionActionType;              
     
-/*
-        Transactions.TransactionRegistry.registerTransactionType(NFTTransactions.NFTAuctionTransaction);   
-        const transaction = new Builders.NFTAuctionBuilder()
-            .NFTAuctionAsset({
-                startAmount: Utils.BigNumber.make(minimumBid),                
-                expiration: {
-                    blockHeight: 1000000,
-                },
-                nftIds: [cardId],
-            })
-            //.fee("0")
-            .nonce(CryptoUtils.getWalletNextNonce())
-            .sign(passphrase);
-            */
-        /*
-        return defer(() =>
-            connection(stateBaseUrl!)
-              .api("transactions")
-              .create({ transactions: [transaction.getStruct()] })
-        ).pipe(       
-            switchMap(
-                ({ body: { data, errors } }: ApiResponse<CreateTransactionApiResponse>) => {
-                  console.log(JSON.stringify(data, null, 4));
-                  console.log(JSON.stringify(errors, null, 4));
-                  const [accepted] = data.accept;
-                  if (!!accepted) {
-                    return merge(
-                      of(StartAuctionSuccessAction(accepted)),
-                      of(TransactionWaitForConfirmAction(txUuid, accepted))
-                    );
-                  }
-                  const [invalid] = data.invalid;
-                  const err = errors[invalid].message;
-                  return of(StartAuctionErrorAction(err));
-                }
-              ),
-              catchError((err) => of(StartAuctionErrorAction(err))
-            )    
-        ); 
-        */
         console.log("Passing test 1.");
 
         return forkJoin([
-            fromFetch(`${stateBaseUrl}/api/node/configuration`),
-            defer(() => connection(stateBaseUrl!).api("blocks").last()),   
+            fromFetch(`${stateBaseUrl}/api/node/configuration`).pipe(mergeMap(response => response.json())),
+            connection(stateBaseUrl!).api("blocks").last(),
             connection(stateBaseUrl!).api("wallets").get(pubKey),         
         ]).pipe(  
           switchMap(([confResponse, blockResponse, walletResponse]) => {
             
             console.log("Passing test 2");
+            console.log(JSON.stringify(confResponse));
 
-            if (!confResponse.ok) {
+            if (!confResponse.data) {
               return of(StartAuctionErrorAction({name:"Error", message:"Error reading node configuration"}));              
             }
+            console.log("Passing test 4");
             if (blockResponse?.body?.errors) {
               return of(StartAuctionErrorAction(blockResponse?.body?.errors));
             }
+            console.log("Passing test 5");
             if(walletResponse.body?.errors){
               return of(StartAuctionErrorAction(walletResponse?.body?.errors));
             }
 
-            console.log("Passing test 3");
-
-            // const conf = confResponse.json() as unknown as ConfigurationResponse;         
-            // const blockTime = conf.data.constants.blocktime;
-            let blockTime = 5;
+            console.log("Passing test 6");
 
             console.log(JSON.stringify(confResponse));
-
-            confResponse.json().then((body) => blockTime=body?.data?.constants?.blocktime)
+            const blockTime = confResponse.data?.constants?.blocktime;                        
             const currentBlock = blockResponse.body?.data?.height;
 
-            console.log("Passing test 4");
+            console.log("Passing test 7");
+
             const now = new Date().getTime();
             const fbd = new Date(finalBiddingDate.replaceAll('-','/')).getTime();
             const diffSeconds = Math.abs(fbd - now) / 1000;
@@ -276,6 +238,73 @@ const startAuctionEpic: RootEpic = (
   );
 
 
-const epics = [fetchAuctionsEpic, startAuctionEpic, cancelAuctionEpic];
+  const placeBidEpic: RootEpic = (
+    action$,
+    state$,
+    { connection }
+  ) =>  
+  action$.ofType(AuctionActions.PLACE_BID).pipe(    
+    withLatestFrom(state$.pipe(map(baseUrlSelector))),
+    switchMap(([action, stateBaseUrl]) => {
+        const {
+            payload: {             
+                auctionId,
+                bidAmount,
+                pubKey,
+                passphrase,
+                txUuid
+            },
+        } = action as PlaceBidActionType;                      
+        
+        return defer(() =>
+          connection(stateBaseUrl!).api("wallets").get(pubKey)
+        ).pipe(
+           switchMap(({ body: { data, errors } }: ApiResponse<Wallet>) => {
+              console.log(JSON.stringify(data, null, 4));
+              console.log(JSON.stringify(errors, null, 4));
+              if (errors){
+                return of(PlaceBidErrorAction({name:"Error getting wallet", message: errors.message}));
+              }
+              //return of(PlaceBidSuccessAction(txUuid));                              
+              
+              Transactions.TransactionRegistry.registerTransactionType(NFTTransactions.NFTBidTransaction);   
+              const transaction = new Builders.NFTBidBuilder()
+                  .NFTBidAsset({
+                      auctionId: auctionId,
+                      bidAmount: Utils.BigNumber.make(bidAmount),
+                  })
+                  //.fee("0")
+                  .nonce(CryptoUtils.getWalletNextNonce(data))
+                  .sign(passphrase);
+
+              return defer(() =>
+                connection(stateBaseUrl!).api("transactions").create({ transactions: [transaction.getStruct()] })
+              ).pipe(       
+                switchMap(
+                  ({ body: { data, errors } }: ApiResponse<CreateTransactionApiResponse>) => {
+                    console.log(JSON.stringify(data, null, 4));
+                    console.log(JSON.stringify(errors, null, 4));
+                    const [accepted] = data.accept;
+                    if (!!accepted) {                                                
+                      return merge(
+                        of(PlaceBidSuccessAction(accepted)),
+                        of(TransactionWaitForConfirmAction(txUuid, accepted))
+                      );                        
+                    }
+                    const [invalid] = data.invalid;
+                    const err = errors[invalid].message;
+                    return of(PlaceBidErrorAction(err));                     
+                  }
+                ),
+                catchError((err) => of(PlaceBidErrorAction(err)))
+              );                              
+        }),
+        catchError((err) => of(PlaceBidErrorAction(err))
+      )    
+    );         
+   })
+  );
+
+const epics = [fetchAuctionsEpic, startAuctionEpic, cancelAuctionEpic, placeBidEpic];
 
 export default epics;

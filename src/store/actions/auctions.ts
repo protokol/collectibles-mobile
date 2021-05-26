@@ -12,6 +12,9 @@ enum AuctionActions {
   CANCEL_AUCTION = '@Auctions/CANCEL_AUCTION',
   CANCEL_AUCTION_SUCCESS = '@Auctions/CANCEL_AUCTION_SUCCESS',
   CANCEL_AUCTION_ERROR = '@Auctions/CANCEL_AUCTION_ERROR',  
+  PLACE_BID = '@Auctions/PLACE_BID_AUCTION',
+  PLACE_BID_SUCCESS = '@Auctions/PLACE_BID_SUCCESS',
+  PLACE_BID_ERROR = '@Auctions/PLACE_BID_ERROR',  
 }
 
 //Start an Auction
@@ -88,6 +91,32 @@ export interface AuctionsLoadSuccessActionType
 
 export interface AuctionsLoadErrorActionType
   extends Action<AuctionActions.AUCTIONS_LOAD_ERROR> {
+  payload: {
+    error: Error;
+  };
+}
+
+//Place new bid
+export interface PlaceBidActionType
+  extends Action<AuctionActions.PLACE_BID> {
+  payload: {
+    auctionId: string;
+    bidAmount: number;
+    pubKey: string;
+    passphrase: string;
+    txUuid: string;
+  };
+}
+
+export interface PlaceBidSuccessActionType
+  extends Action<AuctionActions.PLACE_BID_SUCCESS> {
+  payload: {
+    txId: string;
+  };
+}
+
+export interface PlaceBidErrorActionType
+  extends Action<AuctionActions.PLACE_BID_ERROR> {
   payload: {
     error: Error;
   };
@@ -199,6 +228,39 @@ const AuctionsLoadErrorAction = (
   },
 });
 
+const PlaceBidAction = (
+  auctionId: string,
+  bidAmount: number,
+  pubKey: string,
+  passphrase: string,
+  txUuid: string
+): PlaceBidActionType => ({
+  type: AuctionActions.PLACE_BID,
+  payload: {
+    auctionId,
+    bidAmount,
+    pubKey,
+    passphrase,
+    txUuid,
+  },
+});
+
+const PlaceBidSuccessAction = (
+  txId: string
+): PlaceBidSuccessActionType => ({
+  type: AuctionActions.PLACE_BID_SUCCESS,
+  payload: {
+    txId,
+  },
+});
+
+const PlaceBidErrorAction = (error: Error): PlaceBidErrorActionType => ({
+  type: AuctionActions.PLACE_BID_ERROR,
+  payload: {
+    error,
+  },
+});
+
 export type AUCTION_ACTION_TYPES = AuctionsLoadActionType &
   AuctionsLoadSuccessActionType &
   AuctionsLoadErrorActionType & 
@@ -207,7 +269,10 @@ export type AUCTION_ACTION_TYPES = AuctionsLoadActionType &
   StartAuctionErrorActionType &
   CancelAuctionActionType &
   CancelAuctionSuccessActionType &
-  CancelAuctionErrorActionType
+  CancelAuctionErrorActionType &
+  PlaceBidActionType &
+  PlaceBidSuccessActionType &
+  PlaceBidErrorActionType
   ;
 
 export {
@@ -215,6 +280,9 @@ export {
   StartAuctionAction,
   StartAuctionSuccessAction,
   StartAuctionErrorAction,
+  PlaceBidAction,
+  PlaceBidSuccessAction,
+  PlaceBidErrorAction,
   CancelAuctionAction,
   CancelAuctionSuccessAction,
   CancelAuctionErrorAction,  

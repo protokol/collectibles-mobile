@@ -4,7 +4,6 @@ import { arrowBackOutline } from 'ionicons/icons';
 import { shallowEqual, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router';
 import styled from 'styled-components';
-import { Styles } from '../utils/styles';
 import { FontSize } from '../constants/font-size';
 import { FontWeight } from '../constants/font-weight';
 import Title from '../components/ionic/Title';
@@ -72,6 +71,7 @@ const ViewCardIonButton = styled(Button)<JSX.IonButton>`
 const AuctionNewBidPage: FC = () => {
     
   const [bidAmount, setStateData] = useState(0);
+  const [auctionIdIn, setAuctionId] = useState(-1);
 
   const { assetId } = useParams<{ assetId: string }>();
   const history = useHistory(); 
@@ -79,10 +79,12 @@ const AuctionNewBidPage: FC = () => {
   const increment = 5;
 
   const sendBid = useCallback(
-    () => {      
-      history.push(`/market/card/placenewbid/${assetId}/${bidAmount}`);
+    () => {     
+      if (auctionIdIn && bidAmount){
+        history.push(`/market/card/placenewbid/${auctionIdIn}/${bidAmount}`);
+      }
     },
-    [assetId, history, bidAmount]
+    [history, auctionIdIn, bidAmount]
   );  
 
   const { assets } = useSelector(collectionSelector, shallowEqual);
@@ -107,8 +109,17 @@ const AuctionNewBidPage: FC = () => {
     issuedDate,
     carNumber,
     season,
+    auctionId,
     currentBid
   } = attributes as any;
+
+  if (auctionIdIn===-1){
+    setAuctionId(auctionId);
+  }
+
+  if(bidAmount===0){
+    setStateData(currentBid+increment);
+  }
 
   if(bidAmount===0){
     setStateData(currentBid+increment);

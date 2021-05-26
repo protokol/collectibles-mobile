@@ -19,7 +19,7 @@ import useIsMounted from '../hooks/use-is-mounted';
 import { CardTagType } from './CardTag';
 import { AuthLoginContext } from '../providers/AuthLoginProvider';
 import { CollectiblesOnAuctionLoadAction } from '../store/actions/collections';
-import { cardsOnAuctionSelector } from '../store/selectors/collections';
+import { collectionSelector } from '../store/selectors/collections';
 import { auctionBalloonImage } from '../constants/images';
 
 const ImageBgCol = styled(IonCol)`
@@ -30,7 +30,7 @@ const ImageBgCol = styled(IonCol)`
   height: 229px !important;
 
   &:before {
-    content: ' ';
+    content: ' '; 
     display: block;
     position: absolute;
     left: 0;
@@ -63,10 +63,7 @@ const CollectablesIonRow = styled(IonRow)`
 
 const AuctionBuyView: FC = () => {    
     const history = useHistory();
-    const { isError, error, isLoading, assets, isLastPage /*, query*/ } = useSelector(
-      cardsOnAuctionSelector,
-      shallowEqual
-    );
+    const { isError, error, isLoading, assets, isLastPage /*, query*/ } = useSelector(collectionSelector,shallowEqual);
 
     const dispatch = useDispatch();
     const {

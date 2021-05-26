@@ -20,7 +20,7 @@ import useMediaQuery from '../hooks/use-media-query';
 import { CardTagType } from '../components/CardTag';
 import { AuthLoginContext } from '../providers/AuthLoginProvider';
 import { CollectiblesOnAuctionLoadAction } from '../store/actions/collections';
-import { cardsOnAuctionSelector } from '../store/selectors/collections';
+import { collectionSelector } from '../store/selectors/collections';
 import { auctionBalloonImage } from '../constants/images';
 
 const ImageBgCol = styled(IonCol)`
@@ -77,10 +77,7 @@ const AuctionParticipateIn: FC = () => {
     const history = useHistory();
     const isMedium = useMediaQuery('(min-height: 992px)');
     const isLarge = useMediaQuery('(min-height: 1200px)');
-    const { isError, error, isLoading, assets, isLastPage /*, query*/ } = useSelector(
-      cardsOnAuctionSelector,
-      shallowEqual
-    );
+    const { isError, error, isLoading, assets, isLastPage /*, query*/ } = useSelector(collectionSelector, shallowEqual); 
 
     const dispatch = useDispatch();
     const {

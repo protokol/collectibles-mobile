@@ -218,6 +218,7 @@ const AuctionableCardsPage: FC = () => {
                   <>
                     <CardContainer size={cardColSize().toString()}>  
                       <Card
+                        key={id}
                         id={id}
                         title={title}
                         subtitle={subtitle}

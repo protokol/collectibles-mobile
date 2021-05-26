@@ -4,7 +4,6 @@ import app from './app';
 import assetClaim from './asset-claim';
 import auctions from './auctions';
 import collections from './collections';
-import cardsOnAuction from './collections';
 import network from './network';
 import transaction from './transaction';
 import wallets from './wallets';
@@ -16,6 +15,5 @@ export default combineReducers<RootState>({
   auctions,
   transaction,
   collections,
-  cardsOnAuction,
   wallets,
 } as ReducersMapObject<RootState>);

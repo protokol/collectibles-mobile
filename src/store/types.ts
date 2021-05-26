@@ -21,6 +21,9 @@ import {
   AuctionsLoadActionType,
   AuctionsLoadSuccessActionType,
   AuctionsLoadErrorActionType,
+  PlaceBidActionType,
+  PlaceBidSuccessActionType,
+  PlaceBidErrorActionType,
 } from './actions/auctions';
 
 import {
@@ -76,6 +79,9 @@ export type RootActions =
   | AuctionsLoadActionType
   | AuctionsLoadSuccessActionType
   | AuctionsLoadErrorActionType
+  | PlaceBidActionType
+  | PlaceBidSuccessActionType
+  | PlaceBidErrorActionType
   | CollectiblesOnAuctionLoadActionType
   | CollectiblesOnAuctionLoadSuccessActionType
   | CollectiblesOnAuctionLoadErrorActionType

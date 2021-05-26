@@ -19,6 +19,7 @@ import StartAuctionPage from './pages/AuctionCreationAndConfirmationPage';
 import AuctionOwnedViewPage from './pages/AuctionOwnedViewPage';
 import AuctionsOwnedPage from './pages/AuctionsOwnedPage';
 import AuctionableCardsPage from './pages/AuctionableCardsPage';
+import AuctionPlaceBidAndConfirmationPage from './pages/AuctionPlaceBidAndConfirmationPage';
 import ProfilePage from './pages/ProfilePage';
 import QrCodeGeneratorPage from './pages/QrCodeGeneratorPage';
 import ScanQRPage from './pages/ScanQRPage';
@@ -142,7 +143,12 @@ const App: FC = () => {
                   path="/market/card/newbid/:assetId"
                   component={AuctionNewBidPage}
                   exact
-                />                     
+                />                  
+                <ProtectedRoute
+                  path="/market/card/placenewbid/:auctionId/:bidAmount"
+                  component={AuctionPlaceBidAndConfirmationPage}
+                  exact
+                />                  
                 <ProtectedRoute
                   path="/market/card/createnewauction/:cardId/:minimumBid/:minimumIncrement/:finalBiddingDate"
                   component={StartAuctionPage}

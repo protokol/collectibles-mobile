@@ -24,8 +24,8 @@ import { FontWeight } from '../constants/font-weight';
 import { driverHighResImage } from '../constants/images';
 import useIsMounted from '../hooks/use-is-mounted';
 import { AuthLoginContext } from '../providers/AuthLoginProvider';
-import { StartAuctionAction } from '../store/actions/auctions';
-import AuctionsOwnedPage from './AuctionsOwnedPage';
+import { PlaceBidAction } from '../store/actions/auctions';
+import AuctionMyBiddedCardsPage from './AuctionMyBiddedCardsPage';
 import { auctionSelector } from '../store/selectors/auctions';
 import { transactionsSelector } from '../store/selectors/transaction';
 
@@ -87,7 +87,7 @@ const txUuid = uuid();
 
 const AuctionPlaceBidAndConfirmationPage: FC = () => {  
 
-  const { cardId, bidAmount } = useParams<{ cardId: string, bidAmount: string}>();
+  const { auctionId, bidAmount } = useParams<{ auctionId: string, bidAmount: string}>();
   const history = useHistory();
   const dispatch = useDispatch();
 
@@ -121,15 +121,15 @@ const AuctionPlaceBidAndConfirmationPage: FC = () => {
 
   const isMounted = useIsMounted();  
   useEffect(() => {        
-    if (isMounted && bidAmount && cardId) {            
-      dispatch(PlaceBidAction(Number(bidAmount), cardId, passphrase!, txUuid));
+    if (isMounted && bidAmount && auctionId && publicKey) {            
+      dispatch(PlaceBidAction(auctionId, Number(bidAmount), publicKey!, passphrase!, txUuid));
     }
-  }, [isMounted, dispatch, bidAmount, cardId, passphrase]);  
+  }, [isMounted, dispatch, bidAmount, auctionId, publicKey, passphrase]);  
 
   return (
     <>
     {navToMyBiddedCards && (
-      <AuctionsMyBiddedCardsPage />
+      <AuctionMyBiddedCardsPage /> 
     )} 
     {!navToMyBiddedCards && ( 
     <IonPage>
