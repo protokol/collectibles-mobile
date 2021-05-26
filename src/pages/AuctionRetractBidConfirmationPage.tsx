@@ -97,10 +97,12 @@ const AuctionRetractBidConfirmationPage: FC = () => {
 
   const [navToAuctions, setNavToAuctions] = useState(false);
 
+  /*
   const navigateAuctions = () => {    
     setNavToAuctions(true);   
   }     
-
+  */
+ 
   const isLoading = useCallback(() => {
     return cancelAuctionRequest?.isLoading || tx?.isLoading;
   }, [cancelAuctionRequest, tx]);
