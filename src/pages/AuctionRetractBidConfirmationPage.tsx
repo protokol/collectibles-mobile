@@ -1,5 +1,5 @@
 import { arrowBackOutline } from 'ionicons/icons';
-import { FC, useCallback, useContext, useEffect, useState, useMemo } from 'react';
+import { FC, useCallback, useContext, useEffect, useMemo } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router';
 import styled from 'styled-components';
@@ -95,14 +95,13 @@ const AuctionRetractBidConfirmationPage: FC = () => {
   const transactions = useSelector(transactionsSelector, shallowEqual);
   const tx = useMemo(() => transactions[txUuid], [transactions]);
 
+  /*
   const [navToAuctions, setNavToAuctions] = useState(false);
 
-  /*
   const navigateAuctions = () => {    
     setNavToAuctions(true);   
   }     
-  */
- 
+*/
   const isLoading = useCallback(() => {
     return cancelAuctionRequest?.isLoading || tx?.isLoading;
   }, [cancelAuctionRequest, tx]);
