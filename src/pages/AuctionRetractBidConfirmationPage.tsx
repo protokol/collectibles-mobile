@@ -127,19 +127,21 @@ const AuctionRetractBidConfirmationPage: FC = () => {
 
   return (
     <>
+    {/*
     {navToAuctions && (
       <AuctionsMyAuctionsPage />
     )} 
     {!navToAuctions && (    
+    */}
     <IonPage>
       <Header 
         title="Start Card Auction"
         buttonTopLeft={
           <IonButton onClick={() => history.replace('/home')}>
             <IonIcon color="light" slot="icon-only" icon={arrowBackOutline} />
-          </IonButton>
+          </IonButton> 
         }
-      />
+      /> 
 
       <IonContent fullscreen>
         <IonGrid className="ion-no-padding">
@@ -198,7 +200,7 @@ const AuctionRetractBidConfirmationPage: FC = () => {
         </Footer>
       )}
     </IonPage>    
-    )}  
+    {/* )}  */}
     </>
   );
 };

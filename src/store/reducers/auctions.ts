@@ -122,13 +122,19 @@ const reducer: Reducer<AuctionState, AUCTION_ACTION_TYPES> = (
         error,
       };
     }       
-    case AuctionActions.PLACE_BID: {
+    case AuctionActions.PLACE_BID: 
+    case AuctionActions.ACCEPT_BID:
+    case AuctionActions.CANCEL_BID:
+    {
       return {
         ...initialState,
         isLoading: true,
       };
     }
-    case AuctionActions.PLACE_BID_SUCCESS: {
+    case AuctionActions.PLACE_BID_SUCCESS:
+    case AuctionActions.ACCEPT_BID_SUCCESS:
+    case AuctionActions.CANCEL_BID_SUCCESS:
+    {
       const {
         payload: { txId },
       } = action;
@@ -139,7 +145,10 @@ const reducer: Reducer<AuctionState, AUCTION_ACTION_TYPES> = (
         txId,
       };
     }
-    case AuctionActions.PLACE_BID_ERROR: {
+    case AuctionActions.PLACE_BID_ERROR:
+    case AuctionActions.ACCEPT_BID_ERROR:
+    case AuctionActions.CANCEL_BID_ERROR:    
+    {
       const {
         payload: { error },
       } = action;
@@ -149,35 +158,7 @@ const reducer: Reducer<AuctionState, AUCTION_ACTION_TYPES> = (
         isError: true,
         error,
       };
-    }    
-    case AuctionActions.CANCEL_BID: {
-      return {
-        ...initialState,
-        isLoading: true,
-      };
-    }
-    case AuctionActions.CANCEL_BID_SUCCESS: {
-      const {
-        payload: { txId },
-      } = action;
-      return {
-        ...state,
-        isLoading: false,
-        isError: false,
-        txId,
-      };
-    }
-    case AuctionActions.CANCEL_BID_ERROR: {
-      const {
-        payload: { error },
-      } = action;
-      return {
-        ...state,
-        isLoading: false,
-        isError: true,
-        error,
-      };
-    }        
+    } 
     default:
       return state;
   }

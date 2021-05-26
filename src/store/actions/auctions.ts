@@ -15,6 +15,9 @@ enum AuctionActions {
   PLACE_BID = '@Auctions/PLACE_BID_AUCTION',
   PLACE_BID_SUCCESS = '@Auctions/PLACE_BID_SUCCESS',
   PLACE_BID_ERROR = '@Auctions/PLACE_BID_ERROR',  
+  ACCEPT_BID = '@Auctions/ACCEPT_BID_AUCTION',
+  ACCEPT_BID_SUCCESS = '@Auctions/ACEPT_BID_SUCCESS',
+  ACCEPT_BID_ERROR = '@Auctions/ACCEPT_BID_ERROR',  
   CANCEL_BID = '@Auctions/CANCEL_BID_AUCTION',
   CANCEL_BID_SUCCESS = '@Auctions/CANCEL_BID_SUCCESS',
   CANCEL_BID_ERROR = '@Auctions/CANCEL_BID_ERROR',  
@@ -120,6 +123,32 @@ export interface PlaceBidSuccessActionType
 
 export interface PlaceBidErrorActionType
   extends Action<AuctionActions.PLACE_BID_ERROR> {
+  payload: {
+    error: Error;
+  };
+}
+
+//Place new bid
+export interface AcceptBidActionType
+  extends Action<AuctionActions.ACCEPT_BID> {
+  payload: {
+    auctionId: string;
+    bidId: string;
+    pubKey: string;
+    passphrase: string;
+    txUuid: string;
+  };
+}
+
+export interface AcceptBidSuccessActionType
+  extends Action<AuctionActions.ACCEPT_BID_SUCCESS> {
+  payload: {
+    txId: string;
+  };
+}
+
+export interface AcceptBidErrorActionType
+  extends Action<AuctionActions.ACCEPT_BID_ERROR> {
   payload: {
     error: Error;
   };
@@ -287,6 +316,40 @@ const PlaceBidErrorAction = (error: Error): PlaceBidErrorActionType => ({
   },
 });
 
+const AcceptBidAction = (
+  auctionId: string,
+  bidId: string,
+  pubKey: string,
+  passphrase: string,
+  txUuid: string
+): AcceptBidActionType => ({
+  type: AuctionActions.ACCEPT_BID,
+  payload: {
+    auctionId,
+    bidId,
+    pubKey,
+    passphrase,
+    txUuid,
+  },
+});
+
+const AcceptBidSuccessAction = (
+  txId: string
+): AcceptBidSuccessActionType => ({
+  type: AuctionActions.ACCEPT_BID_SUCCESS,
+  payload: {
+    txId,
+  },
+});
+
+const AcceptBidErrorAction = (error: Error): AcceptBidErrorActionType => ({
+  type: AuctionActions.ACCEPT_BID_ERROR,
+  payload: {
+    error,
+  },
+});
+
+
 const CancelBidAction = (
   bidId: string,
   pubKey: string,
@@ -331,6 +394,9 @@ export type AUCTION_ACTION_TYPES = AuctionsLoadActionType &
   PlaceBidActionType &
   PlaceBidSuccessActionType &
   PlaceBidErrorActionType &
+  AcceptBidActionType &
+  AcceptBidSuccessActionType &
+  AcceptBidErrorActionType &
   CancelBidActionType &
   CancelBidSuccessActionType &
   CancelBidErrorActionType
@@ -347,6 +413,9 @@ export {
   PlaceBidAction,
   PlaceBidSuccessAction,
   PlaceBidErrorAction,
+  AcceptBidAction,
+  AcceptBidSuccessAction,
+  AcceptBidErrorAction,
   CancelBidAction,
   CancelBidSuccessAction,
   CancelBidErrorAction,  

@@ -24,6 +24,9 @@ import {
   PlaceBidActionType,
   PlaceBidSuccessActionType,
   PlaceBidErrorActionType,
+  AcceptBidActionType,
+  AcceptBidSuccessActionType,
+  AcceptBidErrorActionType,
   CancelBidActionType,
   CancelBidSuccessActionType,
   CancelBidErrorActionType,
@@ -85,6 +88,9 @@ export type RootActions =
   | PlaceBidActionType
   | PlaceBidSuccessActionType
   | PlaceBidErrorActionType
+  | AcceptBidActionType
+  | AcceptBidSuccessActionType
+  | AcceptBidErrorActionType
   | CancelBidActionType
   | CancelBidSuccessActionType
   | CancelBidErrorActionType

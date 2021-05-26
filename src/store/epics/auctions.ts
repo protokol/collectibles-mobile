@@ -21,6 +21,9 @@ import {
     PlaceBidSuccessAction,
     PlaceBidErrorAction,      
     PlaceBidActionType,
+    AcceptBidSuccessAction,
+    AcceptBidErrorAction,      
+    AcceptBidActionType,
     CancelBidSuccessAction,
     CancelBidErrorAction,
     CancelBidActionType,
@@ -371,6 +374,73 @@ const startAuctionEpic: RootEpic = (
    })
   );
 
-const epics = [fetchAuctionsEpic, startAuctionEpic, cancelAuctionEpic, placeBidEpic, cancelBidEpic];
+
+  const acceptBidEpic: RootEpic = (
+    action$,
+    state$,
+    { connection }
+  ) =>  
+  action$.ofType(AuctionActions.ACCEPT_BID).pipe(    
+    withLatestFrom(state$.pipe(map(baseUrlSelector))),
+    switchMap(([action, stateBaseUrl]) => {
+        const {
+            payload: { 
+                auctionId,            
+                bidId,
+                pubKey,
+                passphrase,
+                txUuid
+            },
+        } = action as AcceptBidActionType;                      
+        
+        return defer(() =>
+          connection(stateBaseUrl!).api("wallets").get(pubKey)
+        ).pipe(
+           switchMap(({ body: { data, errors } }: ApiResponse<Wallet>) => {
+                console.log(JSON.stringify(data, null, 4));
+                console.log(JSON.stringify(errors, null, 4));
+                if (errors){
+                  return of(AcceptBidErrorAction({name:"Error getting wallet", message: errors.message}));
+                }
+                Transactions.TransactionRegistry.registerTransactionType(NFTTransactions.NFTAcceptTradeTransaction);   
+                const transaction = new Builders.NftAcceptTradeBuilder()
+                    .NFTAcceptTradeAsset({                        
+                        auctionId: auctionId,
+                        bidId: bidId
+                    })
+                    //.fee("0")
+                    .nonce(CryptoUtils.getWalletNextNonce(data))
+                    .sign(passphrase);
+
+                return defer(() =>
+                  connection(stateBaseUrl!).api("transactions").create({ transactions: [transaction.getStruct()] })
+                ).pipe(       
+                  switchMap(
+                    ({ body: { data, errors } }: ApiResponse<CreateTransactionApiResponse>) => {
+                      console.log(JSON.stringify(data, null, 4));
+                      console.log(JSON.stringify(errors, null, 4));
+                      const [accepted] = data.accept;
+                      if (!!accepted) {                                                
+                        return merge(
+                          of(AcceptBidSuccessAction(accepted)),
+                          of(TransactionWaitForConfirmAction(txUuid, accepted))
+                        );                        
+                      }
+                      const [invalid] = data.invalid;
+                      const err = errors[invalid].message;
+                      return of(AcceptBidErrorAction(err));                     
+                    }
+                  ),
+                  catchError((err) => of(AcceptBidErrorAction(err)))
+                ); 
+                              
+        }),
+        catchError((err) => of(AcceptBidErrorAction(err))
+      )    
+    );         
+   })
+  );
+
+const epics = [fetchAuctionsEpic, startAuctionEpic, cancelAuctionEpic, placeBidEpic, cancelBidEpic, acceptBidEpic];
 
 export default epics;
