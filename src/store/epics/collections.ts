@@ -98,15 +98,15 @@ const fetchCardsOnAuctionEpic: RootEpic = (
     withLatestFrom(state$.pipe(map(baseUrlSelector))),
     switchMap(([action, stateBaseUrl]) => {        
       const {
-        payload: { pubKey, query, ownAuctions, biddedAuctions },
+        payload: { pubKey, query, onlyOwnAuctions, onlyBiddedAuctions, includeExpiredAuctions },
       } = action as CollectiblesOnAuctionLoadActionType;
 
       return forkJoin([
           fromFetch(`${stateBaseUrl}/api/node/configuration`).pipe(mergeMap(response => response.json())),
           connection(stateBaseUrl!).api("blocks").last(),
-          (ownAuctions)?connection(stateBaseUrl!).NFTExchangeApi("auctions").searchByAsset({senderPublicKey:pubKey}, undefined):connection(stateBaseUrl!).NFTExchangeApi('auctions').getAllAuctions(),
+          (onlyOwnAuctions)?connection(stateBaseUrl!).NFTExchangeApi("auctions").searchByAsset({senderPublicKey:pubKey}, undefined):connection(stateBaseUrl!).NFTExchangeApi('auctions').getAllAuctions(),
           connection(stateBaseUrl!).NFTExchangeApi('auctions').getAllCanceledAuctions(),        
-          (ownAuctions)?connection(stateBaseUrl!).NFTBaseApi('assets').walletAssets(pubKey, query):connection(stateBaseUrl!).NFTBaseApi('assets').all(),
+          (onlyOwnAuctions)?connection(stateBaseUrl!).NFTBaseApi('assets').walletAssets(pubKey, query):connection(stateBaseUrl!).NFTBaseApi('assets').all(),
           connection(stateBaseUrl!).NFTExchangeApi('bids').getAllBids()
       ]).pipe(
         map(([confResponse, blockResponse, auctionsResponse, cancelledAuctionsResponse, assetsResponse, bidsResponse]) => {
@@ -133,16 +133,17 @@ const fetchCardsOnAuctionEpic: RootEpic = (
 
           const blockTime = confResponse.data?.constants?.blocktime;
           const currentBlock = blockResponse.body?.data?.height;
-          const currentMs = blockResponse.body?.data?.timestamp?.unix * 1000;
+          //const currentMs = blockResponse.body?.data?.timestamp?.unix * 1000;
           const nowMs = new Date().getTime();
 
           for(let auction of auctionsResponse.body.data){    
             //console.log(ownAuctions + "  " + auction.senderPublicKey + "  " + pubKey);
             if (cancelledAuctionsResponse.body.data.some(a => a.nftAuctionCancel.auctionId === auction.id)) continue;
-            if (!ownAuctions && auction.senderPublicKey === pubKey) continue;
+            if (!onlyOwnAuctions && auction.senderPublicKey === pubKey) continue;
+            if (!includeExpiredAuctions && auction.nftAuction.expiration.blockHeight < currentBlock) continue;
             //console.log("biddedAuctions:" + biddedAuctions);
             //console.log("pubKey:" + pubKey);
-            if (biddedAuctions)
+            if (onlyBiddedAuctions)
             {
               const biddedIn = bidsResponse.body.data.findIndex(b => b.nftBid.auctionId === auction.id && b.senderPublicKey === pubKey);
               //console.log("biddedIn:" + biddedIn);
@@ -152,6 +153,7 @@ const fetchCardsOnAuctionEpic: RootEpic = (
             const allMyBids = bidsResponse.body.data.filter(b => b.nftBid.auctionId === auction.id && b.senderPublicKey === pubKey);            
             const maxBid = (allBids.length === 0) ? 0 : Number(allBids.reduce((prev, curr) => (Number(prev.nftBid.bidAmount)>Number(curr.nftBid.bidAmount))?prev:curr).nftBid.bidAmount);
             const myBid = (allMyBids.length === 0) ? 0 : Number(allMyBids.reduce((prev, curr) => (Number(prev.nftBid.bidAmount)>Number(curr.nftBid.bidAmount))?prev:curr).nftBid.bidAmount);
+            const highestBidId = (allMyBids.length === 0) ? 0 : Number(allMyBids.reduce((prev, curr) => (Number(prev.nftBid.bidAmount)>Number(curr.nftBid.bidAmount))?prev:curr).id);
 
             for(let nftId of auction.nftAuction.nftIds){
               const asset = assetsResponse.body.data.find(a => a.id===nftId);
@@ -163,7 +165,7 @@ const fetchCardsOnAuctionEpic: RootEpic = (
               const minutes = Math.floor( (remainingMs/1000/60) % 60 );
               const hours = Math.floor( (remainingMs/(1000*60*60)) % 24 );
               const days = Math.floor( remainingMs/(1000*60*60*24) );                                    
-              const humanExpirationDate = new Date(nowMs +currentMs + remainingMs);
+              const humanExpirationDate = new Date(nowMs + remainingMs);
 
               /*
               // Debug block              
@@ -179,10 +181,12 @@ const fetchCardsOnAuctionEpic: RootEpic = (
                   auctionId: auction.id,
                   minimumBid: auction.nftAuction.startAmount, 
                   finalBiddingDate: humanExpirationDate.toISOString(),
+                  startedBiddingDate: auction.timestamp.human,
                   timeRemaining: days + "d" + hours + "h" + minutes + "m",
+                  highestBidId: highestBidId,
                   currentBid: maxBid,
               };
-              if (!ownAuctions){
+              if (!onlyOwnAuctions){
                 asset.attributes = { ...asset.attributes, 
                   yourBid: myBid                        
                 };

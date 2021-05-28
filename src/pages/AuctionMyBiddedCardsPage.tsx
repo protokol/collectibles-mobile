@@ -80,14 +80,14 @@ const AuctionMyBiddedCardsPage: FC = () => {
     const isMounted = useIsMounted();
     useEffect(() => {
       if (publicKey && isMounted) {
-          dispatch(CollectiblesOnAuctionLoadAction(publicKey!, false, true, undefined));
+          dispatch(CollectiblesOnAuctionLoadAction(publicKey!, false, true, true, undefined));
       }
     }, [isMounted, dispatch, publicKey]);
   
     const loadNextPage = useCallback(() => {
       if (publicKey) {
         //const { page } = query ?? { page: 1 };
-        dispatch(CollectiblesOnAuctionLoadAction(publicKey!, false, true, undefined));
+        dispatch(CollectiblesOnAuctionLoadAction(publicKey!, false, true, true, undefined));
       }
     }, [/*query,*/ dispatch, publicKey]);
   

@@ -37,8 +37,7 @@ const CardTitle = styled(Title)`
 const CardSubTitle = styled(Title)`
   text-align: right;
   font: normal normal normal 12px/17px Open Sans;
-  letter-spacing: 0px;
-  color: #252732;
+  letter-spacing: 0px;  
   opacity: 1;
   margin-left: 5px;
   max-width: 120px;  
@@ -61,6 +60,12 @@ const CardOnAuction: FC<{
 
   const currentBidColor = (currentBid===0)?"muted":(yourBid===undefined || currentBid < yourBid) ? "success" : "warning";
   const yourBidColor = (yourBid!==undefined && currentBid > yourBid) ? "danger" : "success";
+
+  let timeRemainingColor = "light";
+  if (timeRemaining.trim().startsWith("-")){
+    timeRemainingColor = "danger";
+    timeRemaining = "Expired";
+  }
 
   return (
     <CardStyled onClick={() => history.push(`${linkto}`)} key={id}>
@@ -116,7 +121,7 @@ const CardOnAuction: FC<{
                 </IonCol>
                 <IonCol>
                   {timeRemaining && (
-                    <CardSubTitle className="ion-no-padding" color={timeRemaining.startsWith("-")?"danger":"light"} fontSize={FontSize.SM}>{timeRemaining}</CardSubTitle>
+                    <CardSubTitle className="ion-no-padding" color={timeRemainingColor} fontSize={FontSize.SM}>{timeRemaining}</CardSubTitle>
                   )} 
                 </IonCol>
               </IonRow>                                          

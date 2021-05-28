@@ -40,8 +40,9 @@ export interface CollectiblesOnAuctionLoadActionType
   extends Action<CollectionsActions.COLLECTIBLES_ON_AUCTION_LOAD> {
     payload: {
       pubKey: string;
-      ownAuctions: boolean;     
-      biddedAuctions: boolean; 
+      onlyOwnAuctions: boolean;     
+      onlyBiddedAuctions: boolean; 
+      includeExpiredAuctions: boolean; 
       query?: BaseResourcesTypes.AllAssetsQuery;
     };
 }
@@ -100,15 +101,17 @@ const CollectiblesLoadErrorAction = (
 
 const CollectiblesOnAuctionLoadAction = (
   pubKey: string,
-  ownAuctions: boolean,
-  biddedAuctions: boolean,  
+  onlyOwnAuctions: boolean,
+  onlyBiddedAuctions: boolean,  
+  includeExpiredAuctions: boolean,
   query?: BaseResourcesTypes.AllAssetsQuery
 ): CollectiblesOnAuctionLoadActionType => ({
   type: CollectionsActions.COLLECTIBLES_ON_AUCTION_LOAD,
   payload: {
     query,
-    ownAuctions,
-    biddedAuctions,
+    onlyOwnAuctions,
+    onlyBiddedAuctions,
+    includeExpiredAuctions, 
     pubKey,
   },
 });

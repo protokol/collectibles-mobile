@@ -126,13 +126,6 @@ const AuctionRetractBidConfirmationPage: FC = () => {
   }, [isMounted, dispatch, bidId, publicKey, passphrase]);  
 
   return (
-    <>
-    {/*
-    {navToAuctions && (
-      <AuctionsMyAuctionsPage />
-    )} 
-    {!navToAuctions && (    
-    */}
     <IonPage>
       <Header 
         title="Start Card Auction"
@@ -200,8 +193,6 @@ const AuctionRetractBidConfirmationPage: FC = () => {
         </Footer>
       )}
     </IonPage>    
-    {/* )}  */}
-    </>
   );
 };
 

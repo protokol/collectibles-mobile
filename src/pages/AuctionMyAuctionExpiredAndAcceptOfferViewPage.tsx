@@ -1,26 +1,19 @@
-import { FC, useMemo, useCallback } from 'react';
+import { FC, useMemo, useCallback, useState } from 'react';
 import Moment from 'moment';
 import { arrowBackOutline } from 'ionicons/icons';
-import { CalendarOutline } from 'react-ionicons'
-import { Controller, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { shallowEqual, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router';
 import styled from 'styled-components';
-import { Styles } from '../utils/styles';
 import { FontSize } from '../constants/font-size';
 import { FontWeight } from '../constants/font-weight';
 import Title from '../components/ionic/Title';
 import Button from '../components/ionic/Button';
 import { JSX } from '@ionic/core';
-
 import {
-  IonList,
   IonButton,
-  IonItem,
   IonFooter,
   IonToolbar,
-  IonInput,
-  IonLabel,
   IonCol,
   IonContent,
   IonGrid,
@@ -40,60 +33,18 @@ const Footer = styled(IonFooter)`
   bottom: 0;
 `;
 
-const AmountIonInput = styled(IonInput)<{
-  fontSize?: FontSize;
-}>`
-  ${({ fontSize }) => Styles.serializeFontSize(fontSize)} 
-  font: normal normal bold 21px/28px Open Sans;
-  letter-spacing: 0px;
-  color: #F8C938;
-  opacity: 1;
-`;
-
 const FooterButton = styled(Button)`
-  &.ion-color-auction {
-    --ion-color-base: var(--ion-color-auction-base);
-    --ion-color-base-rgb: var(--ion-color-warning-rgb);
-    --ion-color-contrast: var(--ion-color-auction-tint);
-    --ion-color-contrast-rgb: var(--ion-color-auction-tint);
-    --ion-color-shade: var(--ion-color-warning-shade);
-    --ion-color-tint: var(--ion-color-auction-tint);
-  }
+--background: var(--app-color-yellow-bg);
+background: var(--app-color-yellow-bg);
+color: white;
 `;
 
-const AmountIonLabel = styled(IonLabel)`
-  text-align: center;
-  font: italic normal normal 12px/17px Open Sans;
-  letter-spacing: 0px;
-  color: #707070;
-  opacity: 1;
-`;
-
-/*
-const CardIonDatetime = styled(IonDatetime)`
-  text-align: left;
-  font: normal normal bold 14px/19px Open Sans;
-  letter-spacing: 0px;
-  color: #707070;
-  opacity: 1;
-  width: 90%;   
-`;
-*/
 const HorizontalLine = styled.div`
   width:1px;
   height:1px;
   width: 80%;
   margin-left: 10%;  
   background:#E6E6E6;
-  position: relative;
-`;
-
-const VerticalLine = styled.div`
-  width:1px;
-  height:75px;
-  background:#E6E6E6;
-  margin-top: 15px;
-  margin-bottom: 15px;
   position: relative;
 `;
 
@@ -109,18 +60,24 @@ const ViewCardIonButton = styled(Button)<JSX.IonButton>`
   box-shadow: none !important;
 `;
 
-const AuctionMyAuctionViewPage: FC = () => {
+const AuctionMyAuctionExpiredAndAcceptOfferViewPage: FC = () => {
   
-  const { handleSubmit, control } = useForm();  
+  const { handleSubmit } = useForm();  
   const { auctionId, assetId } = useParams<{ auctionId: string, assetId: string }>();  
   const history = useHistory();
+  
+  const [currentBidIn, setCurrentBid] = useState(-1);
+  const [bidIdIn, setBidId] = useState(-1);
 
   const submitForm = useCallback( 
-    () => {  
-      //console.log("submitted:" + JSON.stringify(data, null, 2));    
-      history.push(`/market/card/cancelauctionconfirm/${auctionId}`);
+    () => {         
+      if (currentBidIn === 0){
+        history.push(`/market/card/cancelauction/${auctionId}`);
+      }else{
+        history.push(`/market/card/acceptoffer/${auctionId}/${bidIdIn}`);
+      }
     },
-    [auctionId, history]
+    [auctionId, history, currentBidIn, bidIdIn]
   );
   
   const { assets } = useSelector(collectionSelector, shallowEqual);
@@ -143,9 +100,16 @@ const AuctionMyAuctionViewPage: FC = () => {
     subtitle,
     minimumBid,
     finalBiddingDate,
+    startedBiddingDate,
     issuedDate,
+    highestBidId,
     currentBid    
   } = attributes as any;
+
+  if (bidIdIn === -1){
+    setCurrentBid(currentBid);
+    setBidId(highestBidId);
+  }
 
   return (    
     <IonPage>
@@ -200,76 +164,46 @@ const AuctionMyAuctionViewPage: FC = () => {
             </IonCol>
           </IonRow>
           <HorizontalLine/>          
-          <IonRow>            
-            <IonCol className="ion-text-center" >              
-              <IonList no-lines lines="none">
-                <IonItem className="ion-text-center" no-lines>     
-                  <Controller
-                    render={() => (
-                      <AmountIonInput
-                        type="text"
-                        color="warning"
-                        name="minimumbid"
-                        value={"$" + minimumBid}
-                        disabled={true}                        
-                      />
-                    )}
-                    control={control}
-                    name="minimumbid"
-                  />                            
-                </IonItem>             
-              </IonList>
-              <AmountIonLabel position="stacked">Minimum Bid</AmountIonLabel> 
+          <IonRow>
+            <IonCol className="ion-text-left ion-padding">
+              <Title fontSize={FontSize.M} fontWeight={FontWeight.BOLD} style={{fontFamily:"Open Sans",color:"#707070"}}>Minimum Set Bid</Title> 
             </IonCol>
-            <VerticalLine/>
-            <IonCol className="ion-text-center" >              
-              <IonList no-lines lines="none">
-                <IonItem className="ion-text-center" no-lines>
-                <Controller
-                    render={() => (
-                      <AmountIonInput
-                        type="text"
-                        color="success"
-                        name="highestbid"                          
-                        value={"$" + currentBid}
-                        disabled={true}                        
-                      />
-                    )}
-                    control={control}
-                    name="highestbid"
-                  />                                                             
-                </IonItem>
-              </IonList>
-              <AmountIonLabel position="stacked">Current Highest Bid</AmountIonLabel> 
-            </IonCol>            
+            <IonCol className="ion-text-right ion-padding">
+              <Title fontSize={FontSize.M} fontWeight={FontWeight.BOLD} style={{fontFamily:"Open Sans",color:"#FCCF45"}}>${minimumBid}</Title> 
+            </IonCol>
           </IonRow>
+          <IonRow>
+            <IonCol className="ion-text-left ion-padding" >              
+              <Title fontSize={FontSize.M} fontWeight={FontWeight.BOLD} style={{fontFamily:"Open Sans",color:"#707070"}}>Auction Started</Title> 
+            </IonCol>
+            <IonCol className="ion-text-right ion-padding">
+              <Title fontSize={FontSize.M} style={{fontFamily:"Open Sans",color:"#252732"}}>{Moment(startedBiddingDate).format('DD/MM/YYYY')}</Title> 
+            </IonCol>
+          </IonRow>
+          <IonRow>
+            <IonCol className="ion-text-left ion-padding" >              
+              <Title fontSize={FontSize.M} fontWeight={FontWeight.BOLD} style={{fontFamily:"Open Sans",color:"#707070"}}>Auction Ended</Title> 
+            </IonCol>
+            <IonCol className="ion-text-right ion-padding">
+              <Title fontSize={FontSize.M} style={{fontFamily:"Open Sans",color:"#252732"}}>{Moment(finalBiddingDate).format('DD/MM/YYYY')}</Title> 
+            </IonCol>
+          </IonRow>          
           <HorizontalLine/>
           <IonRow style={{marginTop:"10px"}}>
-            <IonCol size="10" offset="1">              
-              <AmountIonLabel position="stacked" style={{marginLeft:"30px"}}>Auction Ends On:</AmountIonLabel> 
-              <IonList no-lines>
-                <IonItem style={{border:"1px solid #707070"}} className="ion-text-center">              
-                  {Moment(finalBiddingDate).format('DD/MM/YYYY')}
-                  { /*
-                  <Controller
-                      as={
-                        <CardIonDatetime value={new Date(finalBiddingDate).toISOString()} className="ion-text-left" displayFormat="MM / DD / YYYY"/>              
-                      }                      
-                      disabled={true}
-                      control={control}
-                      name="finalbiddingdate"      
-                  /> 
-                  */ }                                    
-                  <CalendarOutline color={'#707070'} title="Final Bidding Date"/>
-                </IonItem>                
-              </IonList>
+            <IonCol size="10" offset="1" className="ion-text-center ion-padding">              
+              <Title fontSize={FontSize.XS} style={{fontFamily:"Open Sans",color:"#707070"}}>The highest received offer:</Title> 
             </IonCol>
           </IonRow>             
+          <IonRow style={{marginTop:"10px"}}>
+            <IonCol size="10" offset="1" className="ion-text-center">              
+              <Title fontSize={FontSize.XXL} fontWeight={FontWeight.BOLD} style={{fontFamily:"Open Sans",color:"#8AC827"}}>${currentBid}</Title> 
+            </IonCol>
+          </IonRow>          
+          <HorizontalLine/>         
         </IonGrid>
         <Footer className="ion-no-border">
           <IonToolbar>
             <FooterButton
-              color="danger"
               size="large"
               type="submit"
               className="ion-text-uppercase ion-no-margin"
@@ -278,7 +212,12 @@ const AuctionMyAuctionViewPage: FC = () => {
               radius={false}
               expand="block"
               >
-              Cancel Auction
+              {currentBid === 0 &&(
+                "Cancel Auction"
+              )}
+              {currentBid > 0 &&(
+                "Accept Offer"
+              )}  
             </FooterButton>
           </IonToolbar>
         </Footer>  
@@ -288,4 +227,4 @@ const AuctionMyAuctionViewPage: FC = () => {
   );
 };
 
-export default AuctionMyAuctionViewPage;
+export default AuctionMyAuctionExpiredAndAcceptOfferViewPage;

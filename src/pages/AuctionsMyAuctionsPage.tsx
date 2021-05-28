@@ -91,13 +91,13 @@ const AuctionsMyAuctionsPage: FC = () => {
     const isMounted = useIsMounted();
     useEffect(() => {
       if (publicKeyIn && isMounted) {
-        dispatch(CollectiblesOnAuctionLoadAction(publicKeyIn!, true, false, undefined));
+        dispatch(CollectiblesOnAuctionLoadAction(publicKeyIn!, true, false, true, undefined));
       }
     }, [isMounted, dispatch, publicKeyIn]);
   
     const loadNextPage = useCallback(() => {
       if (publicKeyIn) {        
-        dispatch(CollectiblesOnAuctionLoadAction(publicKeyIn!, true, false, undefined));
+        dispatch(CollectiblesOnAuctionLoadAction(publicKeyIn!, true, false, true, undefined));
       }
     }, [dispatch, publicKeyIn]);
   
@@ -193,6 +193,7 @@ const AuctionsMyAuctionsPage: FC = () => {
                   yourBid
                 } = attributes as any;
 
+                const expired = timeRemaining.trim().startsWith("-");
                 const type = 
                   Array.isArray(tags) && tags.length
                     ? tags[0]
@@ -206,7 +207,7 @@ const AuctionsMyAuctionsPage: FC = () => {
                       title={title}
                       imgIpfsHash={ipfsHashImageFront}
                       type={type}
-                      linkto={"/market/card/auctionview/" + auctionId + "/" + id}  
+                      linkto={(expired)?"/market/card/expiredauctionview/" + auctionId + "/" + id:"/market/card/auctionview/" + auctionId + "/" + id}
                       timeRemaining={timeRemaining}                   
                       minimumBid={minimumBid}
                       currentBid={Number(currentBid)}

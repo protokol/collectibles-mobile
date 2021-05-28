@@ -18,6 +18,7 @@ import AuctionCreateNewPage from './pages/AuctionCreateNewPage';
 import AuctionCancelFinalizationPage from './pages/AuctionCancelFinalizationPage';
 import AuctionCancelConfirmationPage from './pages/AuctionCancelConfirmationPage';
 import AuctionMyAuctionViewPage from './pages/AuctionMyAuctionViewPage';
+import AuctionMyAuctionExpiredAndAcceptOfferViewPage from './pages/AuctionMyAuctionExpiredAndAcceptOfferViewPage';
 import AuctionsMyAuctionsPage from './pages/AuctionsMyAuctionsPage';
 import AuctionMyBiddedCardsPage from './pages/AuctionMyBiddedCardsPage';
 import AuctionableCardsPage from './pages/AuctionableCardsPage';
@@ -142,6 +143,11 @@ const App: FC = () => {
                   component={AuctionMyAuctionViewPage}
                   exact
                 />     
+                <ProtectedRoute
+                  path="/market/card/expiredauctionview/:auctionId/:assetId"
+                  component={AuctionMyAuctionExpiredAndAcceptOfferViewPage}
+                  exact
+                />                    
                 <ProtectedRoute
                   path="/market/myauctions"
                   component={AuctionsMyAuctionsPage}

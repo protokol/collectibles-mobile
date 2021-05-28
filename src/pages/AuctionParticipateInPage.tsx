@@ -94,14 +94,14 @@ const AuctionParticipateInPage: FC = () => {
     const isMounted = useIsMounted();
     useEffect(() => {
       if (publicKey && isMounted) {
-          dispatch(CollectiblesOnAuctionLoadAction(publicKey!, false, false, undefined));
+          dispatch(CollectiblesOnAuctionLoadAction(publicKey!, false, false, false, undefined));
       }
     }, [isMounted, dispatch, publicKey]);
   
     const loadNextPage = useCallback(() => {
       if (publicKey) {
         //const { page } = query ?? { page: 1 };
-        dispatch(CollectiblesOnAuctionLoadAction(publicKey!, false, false, undefined));
+        dispatch(CollectiblesOnAuctionLoadAction(publicKey!, false, false, false, undefined));
       }
     }, [/*query,*/ dispatch, publicKey]);
   

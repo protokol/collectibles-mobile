@@ -35,6 +35,7 @@ import { Transactions, Utils } from "@arkecosystem/crypto";
 import { CryptoUtils } from '../../utils/crypto-utils';
 import { TransactionWaitForConfirmAction } from '../actions/transaction';
 
+// Notice: For collections on auction the app uses fetchCardsOnAuctionEpic from collections epic
 const fetchAuctionsEpic: RootEpic = (
   action$,
   state$,
@@ -361,7 +362,6 @@ const startAuctionEpic: RootEpic = (
     );         
    })
   );
-
 
   const acceptBidEpic: RootEpic = (
     action$,
