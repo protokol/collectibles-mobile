@@ -24,6 +24,7 @@ import AuctionMyBiddedCardsPage from './pages/AuctionMyBiddedCardsPage';
 import AuctionableCardsPage from './pages/AuctionableCardsPage';
 import AuctionParticipateInPage from './pages/AuctionParticipateInPage';
 import AuctionPlaceBidAndConfirmationPage from './pages/AuctionPlaceBidAndConfirmationPage';
+import AuctionOfferAcceptedConfirmationPage from './pages/AuctionOfferAcceptedConfirmationPage';
 import ProfilePage from './pages/ProfilePage';
 import QrCodeGeneratorPage from './pages/QrCodeGeneratorPage';
 import ScanQRPage from './pages/ScanQRPage';
@@ -147,7 +148,12 @@ const App: FC = () => {
                   path="/market/card/expiredauctionview/:auctionId/:assetId"
                   component={AuctionMyAuctionExpiredAndAcceptOfferViewPage}
                   exact
-                />                    
+                />
+                <ProtectedRoute
+                  path="/market/card/acceptoffer/:auctionId/:bidId"
+                  component={AuctionOfferAcceptedConfirmationPage}
+                  exact
+                />                  
                 <ProtectedRoute
                   path="/market/myauctions"
                   component={AuctionsMyAuctionsPage}
