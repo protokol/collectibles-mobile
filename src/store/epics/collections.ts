@@ -49,11 +49,15 @@ const fetchWalletCollectionsEpic: RootEpic = (
         );
       }else{
         return forkJoin([
+          connection(stateBaseUrl!).api("blocks").last(),
           connection(stateBaseUrl!).NFTBaseApi('assets').walletAssets(pubKey, query),
           connection(stateBaseUrl!).NFTExchangeApi('auctions').getAllAuctions(),
           connection(stateBaseUrl!).NFTExchangeApi('auctions').getAllCanceledAuctions(),          
         ]).pipe(  
-          map(([assetsResponse, allAuctionsResponse, cancelledAuctionsResponse]) => {
+          map(([blockResponse, assetsResponse, allAuctionsResponse, cancelledAuctionsResponse]) => {
+            if (blockResponse?.body?.errors) {
+              return CollectiblesLoadErrorAction(blockResponse?.body?.errors);
+            }                 
             if (assetsResponse?.body?.errors) {
               return CollectiblesLoadErrorAction(assetsResponse?.body?.errors);
             }
@@ -62,24 +66,29 @@ const fetchWalletCollectionsEpic: RootEpic = (
             }            
             if (cancelledAuctionsResponse?.body?.errors) {
               return CollectiblesLoadErrorAction(cancelledAuctionsResponse?.body?.errors);
-            }                       
+            } 
+            const currentBlock = blockResponse.body?.data?.height;                      
             const q = query || {
               page: 1,
               limit: 100,
             };
             let data:BaseResourcesTypes.Assets[] = [];
             let activeAuctions:ExchangeResourcesTypes.Auctions[] = allAuctionsResponse.body.data.filter(a => cancelledAuctionsResponse.body.data.filter(ac => ac.nftAuctionCancel.auctionId === a.id));
+            activeAuctions = activeAuctions.filter(a => a.nftAuction.expiration.blockHeight > currentBlock); 
+
+            //console.log(JSON.stringify(assetsResponse.body.data, null, 4));
+            //console.log(JSON.stringify(activeAuctions, null, 4));
 
             for(let asset of assetsResponse.body.data){
               const auctionIn = activeAuctions.findIndex(a => a.nftAuction.nftIds.find(as => as === asset.id));
-              if (auctionIn !== -1){                
-                const assetPlus = asset;
-                assetPlus.attributes = { ...assetPlus.attributes, 
-                  auctionId: activeAuctions[auctionIn].id
-                }
-                data.push(assetPlus);
-              }
-            }            
+              if (auctionIn === -1){                                
+                //asset.attributes = { ...asset.attributes, 
+                //  auctionId: activeAuctions[auctionIn].id
+                //}                
+                data.push(asset);
+              }              
+            }                
+            //console.log(JSON.stringify(data, null, 4));
             return CollectiblesLoadSuccessAction(q, data, data.length < q.limit!);
           }),
           catchError((err) => of(CollectiblesLoadErrorAction(err)))

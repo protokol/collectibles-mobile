@@ -19,6 +19,7 @@ import useMediaQuery from '../hooks/use-media-query';
 import { CardTagType } from '../components/CardTag';
 import { AuthLoginContext } from '../providers/AuthLoginProvider';
 import { CollectiblesLoadAction } from '../store/actions/collections';
+import { CollectiblesOnAuctionLoadAction } from '../store/actions/collections';
 import { collectionSelector } from '../store/selectors/collections';
 import { auctionImage } from '../constants/images';
 import AuctionsMyAuctionsPage from './AuctionsMyAuctionsPage';
@@ -173,7 +174,11 @@ const AuctionableCardsPage: FC = () => {
                   fontSize={FontSize.SM}      
                   color="light"
                   fontWeight={FontWeight.BOLD}
-                  onClick={navigateMyAuctions}
+                  onClick={() => {
+                      dispatch(CollectiblesOnAuctionLoadAction(publicKey!, true, false, false, undefined));
+                      navigateMyAuctions();
+                    }
+                  }
                 >
                   My Open Auctions
                 </CardsOnAuctionButton>             

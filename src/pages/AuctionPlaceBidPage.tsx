@@ -9,6 +9,7 @@ import { FontWeight } from '../constants/font-weight';
 import Title from '../components/ionic/Title';
 import Button from '../components/ionic/Button';
 import { JSX } from '@ionic/core';
+import Text from '../components/ionic/Text';
 import {
   DetailCard,
   DetailCards,
@@ -25,7 +26,7 @@ import {
   IonRow,
   IonIcon,
   IonSpinner,
-  IonItem
+  IonRouterLink
 } from '@ionic/react';
 import { BaseResourcesTypes } from '@protokol/client';
 import Header from '../components/Header';
@@ -44,16 +45,9 @@ const IonColCards = styled(IonCol)`
 `;
 
 const ViewCardButton = styled(Button)`
-  --background: var(--app-color-green-bg);
-  background: var(--app-color-green-bg);
-`;
-
-const RetractBidIonButton = styled(Button)<JSX.IonButton>`
-  text-decoration: underline;
-  text-transform: uppercase;
-  color: red;
-  --background: var(--app-color-transparent-bg);
-  background: var(--app-color-transparent-bg);
+  --background: var(--app-color-yellow-bg);
+  background: var(--app-color-yellow-bg);
+  color: white;
 `;
 
 const IncrementIonButton = styled(Button)`
@@ -84,6 +78,11 @@ const HorizontalLine = styled.div`
   margin-left: 10%;  
   background:#E6E6E6;
   position: relative;
+`;
+
+const IonRouterLinkStyled = styled(IonRouterLink)`
+  text-decoration: underline;
+  font-weight: bold;  
 `;
 
 const AuctionPlaceBidPage: FC = () => {
@@ -235,15 +234,19 @@ const AuctionPlaceBidPage: FC = () => {
                 <IncrementIonButton onClick={incrementBid}>+</IncrementIonButton>
             </IonCol>            
           </IonRow>          
-        </IonGrid>            
-        { yourBid > 0 && (
+          { yourBid > 0 && (
           <>
-          <HorizontalLine/>        
-          <IonItem className="ion-text-center">
-            <IonLabel>Do you want to</IonLabel> <RetractBidIonButton color="danger" onClick={() => history.replace("/market/card/retractbid/" + auctionId)}>retract your bid?</RetractBidIonButton>
-          </IonItem>
+            <HorizontalLine/>
+            <IonRow>
+              <IonCol className="ion-text-center ion-padding-top">
+                  <Text fontSize={FontSize.M} color="dark" >
+                    Do you want to <IonRouterLinkStyled color="danger" onClick={() => history.replace("/market/card/retractbid/" + auctionId)}>retract your ${yourBid} bid?</IonRouterLinkStyled>
+                  </Text>                
+              </IonCol>
+            </IonRow>
           </>
-        )}        
+          )}            
+        </IonGrid>                   
         <Footer className="ion-no-border">
           <IonToolbar>          
             <ViewCardButton
@@ -252,8 +255,7 @@ const AuctionPlaceBidPage: FC = () => {
               fontSize={FontSize.SM}
               fontWeight={FontWeight.BOLD}
               radius={false}
-              expand="block"
-              color="warning"
+              expand="block"              
               onClick={sendBid}              
             >
               Place a Bid

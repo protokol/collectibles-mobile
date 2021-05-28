@@ -25,6 +25,7 @@ import { driverHighResImage } from '../constants/images';
 import useIsMounted from '../hooks/use-is-mounted';
 import { AuthLoginContext } from '../providers/AuthLoginProvider';
 import { PlaceBidAction } from '../store/actions/auctions';
+import { CollectiblesOnAuctionLoadAction } from '../store/actions/collections';
 import AuctionMyBiddedCardsPage from './AuctionMyBiddedCardsPage';
 import { auctionSelector } from '../store/selectors/auctions';
 import { transactionsSelector } from '../store/selectors/transaction';
@@ -133,7 +134,7 @@ const AuctionPlaceBidAndConfirmationPage: FC = () => {
     {!navToMyBiddedCards && ( 
     <IonPage>
       <Header 
-        title="Start Card Auction"
+        title="Place Bid on Auction"
         buttonTopLeft={
           <IonButton onClick={() => history.replace('/home')}>
             <IonIcon color="light" slot="icon-only" icon={arrowBackOutline} />
@@ -143,7 +144,7 @@ const AuctionPlaceBidAndConfirmationPage: FC = () => {
 
       <IonContent fullscreen>
         <IonGrid className="ion-no-padding">
-          <IonRow style={{paddingLeft:"40px", paddingRight: "40px"}}>
+          <IonRow>
             <ImageBgCol size="12">
               {isLoading() && <IonSpinner color="light" />}
               {!isLoading() && isError() && (
@@ -166,7 +167,7 @@ const AuctionPlaceBidAndConfirmationPage: FC = () => {
                     Awesome!
                   </Text>
                   <Text
-                    className="ion-padding-top"
+                    className="ion-padding"
                     fontSize={FontSize.L}
                     color="light"
                   >
@@ -192,7 +193,11 @@ const AuctionPlaceBidAndConfirmationPage: FC = () => {
               fontWeight={FontWeight.BOLD}
               radius={false}
               expand="block"
-              onClick={navigateToMyBiddedCards}              
+              onClick={() => {
+                  dispatch(CollectiblesOnAuctionLoadAction(publicKey!, false, true, true, undefined));
+                  navigateToMyBiddedCards();
+                }
+              }
             >
               View Bidded Cards
             </ViewCardButton>

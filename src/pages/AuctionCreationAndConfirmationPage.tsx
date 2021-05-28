@@ -25,6 +25,7 @@ import { driverHighResImage } from '../constants/images';
 import useIsMounted from '../hooks/use-is-mounted';
 import { AuthLoginContext } from '../providers/AuthLoginProvider';
 import { StartAuctionAction } from '../store/actions/auctions';
+import { CollectiblesOnAuctionLoadAction } from '../store/actions/collections';
 import AuctionsMyAuctionsPage from './AuctionsMyAuctionsPage';
 import { auctionSelector } from '../store/selectors/auctions';
 import { transactionsSelector } from '../store/selectors/transaction';
@@ -190,7 +191,11 @@ const AuctionCreationAndConfirmationPage: FC = () => {
               fontWeight={FontWeight.BOLD}
               radius={false}
               expand="block"
-              onClick={navigateMyAuctions}              
+              onClick={() => {
+                  dispatch(CollectiblesOnAuctionLoadAction(publicKey!, true, false, false, undefined));
+                  navigateMyAuctions();
+                }
+              }
             >
               View Auction
             </ViewCardButton>

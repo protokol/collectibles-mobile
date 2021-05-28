@@ -1,7 +1,6 @@
 import { FC, useMemo, useCallback } from 'react';
 import Moment from 'moment';
 import { arrowBackOutline } from 'ionicons/icons';
-import { CalendarOutline } from 'react-ionicons'
 import { Controller, useForm } from 'react-hook-form';
 import { shallowEqual, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router';
@@ -69,16 +68,6 @@ const AmountIonLabel = styled(IonLabel)`
   opacity: 1;
 `;
 
-/*
-const CardIonDatetime = styled(IonDatetime)`
-  text-align: left;
-  font: normal normal bold 14px/19px Open Sans;
-  letter-spacing: 0px;
-  color: #707070;
-  opacity: 1;
-  width: 90%;   
-`;
-*/
 const HorizontalLine = styled.div`
   width:1px;
   height:1px;
@@ -249,18 +238,7 @@ const AuctionMyAuctionViewPage: FC = () => {
               <AmountIonLabel position="stacked" style={{marginLeft:"30px"}}>Auction Ends On:</AmountIonLabel> 
               <IonList no-lines>
                 <IonItem style={{border:"1px solid #707070"}} className="ion-text-center">              
-                  {Moment(finalBiddingDate).format('DD/MM/YYYY')}
-                  { /*
-                  <Controller
-                      as={
-                        <CardIonDatetime value={new Date(finalBiddingDate).toISOString()} className="ion-text-left" displayFormat="MM / DD / YYYY"/>              
-                      }                      
-                      disabled={true}
-                      control={control}
-                      name="finalbiddingdate"      
-                  /> 
-                  */ }                                    
-                  <CalendarOutline color={'#707070'} title="Final Bidding Date"/>
+                  {Moment(finalBiddingDate).format('DD/MM/YYYY')}                  
                 </IonItem>                
               </IonList>
             </IonCol>
