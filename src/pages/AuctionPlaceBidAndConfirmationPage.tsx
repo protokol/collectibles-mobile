@@ -85,7 +85,7 @@ const ViewCardButton = styled(Button)`
 
 const txUuid = uuid();
 
-const AuctionPlaceBidAndConfirmationPage: FC = () => {  
+const AuctionPlaceBidAndConfirmationPage: FC = () => {    
 
   const { auctionId, bidAmount } = useParams<{ auctionId: string, bidAmount: string}>();
   const history = useHistory();
@@ -114,14 +114,13 @@ const AuctionPlaceBidAndConfirmationPage: FC = () => {
   }, [placeBidRequest, tx]);
 
   const {
-    session: { address, passphrase, publicKey },
-  } = useContext(AuthLoginContext);  
-
-  console.log(address);
+    session: { passphrase, publicKey },
+  } = useContext(AuthLoginContext);    
 
   const isMounted = useIsMounted();  
   useEffect(() => {        
-    if (isMounted && bidAmount && auctionId && publicKey) {            
+    if (isMounted && bidAmount && auctionId && publicKey) {     
+      console.log("txUuid:" + txUuid);
       dispatch(PlaceBidAction(auctionId, Number(bidAmount), publicKey!, passphrase!, txUuid));
     }
   }, [isMounted, dispatch, bidAmount, auctionId, publicKey, passphrase]);  
@@ -144,7 +143,7 @@ const AuctionPlaceBidAndConfirmationPage: FC = () => {
 
       <IonContent fullscreen>
         <IonGrid className="ion-no-padding">
-          <IonRow>
+          <IonRow style={{paddingLeft:"40px", paddingRight: "40px"}}>
             <ImageBgCol size="12">
               {isLoading() && <IonSpinner color="light" />}
               {!isLoading() && isError() && (
@@ -153,7 +152,7 @@ const AuctionPlaceBidAndConfirmationPage: FC = () => {
                     Something went wrong!
                   </Text>
                   <Text
-                    className="ion-padding-top"
+                    className="ion-padding"
                     fontSize={FontSize.SM}
                     color="light"
                   >

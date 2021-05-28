@@ -209,7 +209,7 @@ const AuctionsMyAuctionsPage: FC = () => {
                       linkto={"/market/card/auctionview/" + auctionId + "/" + id}  
                       timeRemaining={timeRemaining}                   
                       minimumBid={minimumBid}
-                      currentBid={currentBid}
+                      currentBid={Number(currentBid)}
                       yourBid={yourBid}
                     />
                     <HorizontalLine/>

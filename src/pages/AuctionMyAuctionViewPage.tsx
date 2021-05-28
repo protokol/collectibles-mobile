@@ -117,9 +117,7 @@ const AuctionMyAuctionViewPage: FC = () => {
   const submitForm = useCallback( 
     () => {  
       //console.log("submitted:" + JSON.stringify(data, null, 2));    
-      //TBD Fixed minimum increment to 5
-      //history.push(`/home/card/startauctionaction/${assetId}/${data.minimumbid}/${data.minimumincrement}/${data.finalbiddingdate?.replaceAll('/','-')}`);      
-      history.push(`/market/card/cancelauction/${auctionId}`);
+      history.push(`/market/card/cancelauctionconfirm/${auctionId}`);
     },
     [auctionId, history]
   );

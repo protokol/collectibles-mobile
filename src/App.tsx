@@ -9,13 +9,14 @@ import MainMenu from './components/MainMenu';
 import ProtectedRoute from './components/ProtectedRoute';
 import useIsMounted from './hooks/use-is-mounted';
 import CardDetailsPage from './pages/CardDetailsPage';
-import AuctionCreateNewPage from './pages/AuctionCreateNewPage';
-import AuctionCancellationAndConfirmationPage from './pages/AuctionCancellationAndConfirmationPage';
 import CardCollectingAndConfirmationPage from './pages/CardCollectingAndConfirmationPage';
 import HomePage from './pages/HomePage';
 import PasscodePage from './pages/PasscodePage';
 import PassphrasePage from './pages/PassphrasePage';
 import StartAuctionPage from './pages/AuctionCreationAndConfirmationPage';
+import AuctionCreateNewPage from './pages/AuctionCreateNewPage';
+import AuctionCancelFinalizationPage from './pages/AuctionCancelFinalizationPage';
+import AuctionCancelConfirmationPage from './pages/AuctionCancelConfirmationPage';
 import AuctionMyAuctionViewPage from './pages/AuctionMyAuctionViewPage';
 import AuctionsMyAuctionsPage from './pages/AuctionsMyAuctionsPage';
 import AuctionMyBiddedCardsPage from './pages/AuctionMyBiddedCardsPage';
@@ -128,9 +129,14 @@ const App: FC = () => {
                 />  
                 <ProtectedRoute
                   path="/market/card/cancelauction/:auctionId"
-                  component={AuctionCancellationAndConfirmationPage}
+                  component={AuctionCancelFinalizationPage}
                   exact
-                />                  
+                />       
+                <ProtectedRoute
+                  path="/market/card/cancelauctionconfirm/:auctionId"
+                  component={AuctionCancelConfirmationPage}
+                  exact
+                />                              
                 <ProtectedRoute
                   path="/market/card/auctionview/:auctionId/:assetId"
                   component={AuctionMyAuctionViewPage}
@@ -160,6 +166,7 @@ const App: FC = () => {
                   path="/market/card/placenewbid/:auctionId/:bidAmount"
                   component={AuctionPlaceBidAndConfirmationPage}
                   exact
+                  key={new Date().getTime()}               
                 />                  
                 <ProtectedRoute
                   path="/market/card/createnewauction/:cardId/:minimumBid/:minimumIncrement/:finalBiddingDate"

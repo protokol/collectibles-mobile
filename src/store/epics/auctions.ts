@@ -102,38 +102,24 @@ const startAuctionEpic: RootEpic = (
             connection(stateBaseUrl!).api("blocks").last(),
             connection(stateBaseUrl!).api("wallets").get(pubKey),         
         ]).pipe(  
-          switchMap(([confResponse, blockResponse, walletResponse]) => {
-            
-            console.log("Passing test 2");
-            console.log(JSON.stringify(confResponse));
-
+          switchMap(([confResponse, blockResponse, walletResponse]) => {                      
+            //console.log(JSON.stringify(confResponse));
             if (!confResponse.data) {
               return of(StartAuctionErrorAction({name:"Error", message:"Error reading node configuration"}));              
-            }
-            console.log("Passing test 4");
+            }            
             if (blockResponse?.body?.errors) {
               return of(StartAuctionErrorAction(blockResponse?.body?.errors));
-            }
-            console.log("Passing test 5");
+            }            
             if(walletResponse.body?.errors){
               return of(StartAuctionErrorAction(walletResponse?.body?.errors));
-            }
-
-            console.log("Passing test 6");
-
-            console.log(JSON.stringify(confResponse));
+            }            
             const blockTime = confResponse.data?.constants?.blocktime;                        
-            const currentBlock = blockResponse.body?.data?.height;
-
-            console.log("Passing test 7");
-
+            const currentBlock = blockResponse.body?.data?.height;            
             const now = new Date().getTime();
             const fbd = new Date(finalBiddingDate.replaceAll('-','/')).getTime();
             const diffSeconds = Math.abs(fbd - now) / 1000;
             const addedHeight = currentBlock + Math.ceil(diffSeconds/blockTime);
-
-            console.log(blockTime + "   " + now + "   " +  fbd + "   " + diffSeconds + "   " + currentBlock + "   " + addedHeight);
-
+            // console.log(blockTime + "   " + now + "   " +  fbd + "   " + diffSeconds + "   " + currentBlock + "   " + addedHeight);
             // For debug purposes:
             // return of(StartAuctionErrorAction({name:"Test", message:"Testing exit"}));
             
@@ -155,8 +141,8 @@ const startAuctionEpic: RootEpic = (
             .pipe(              
               switchMap(
                 ({ body: { data, errors } }: ApiResponse<CreateTransactionApiResponse>) => {
-                  console.log(JSON.stringify(data, null, 4));
-                  console.log(JSON.stringify(errors, null, 4));
+                  // console.log(JSON.stringify(data, null, 4));
+                  // console.log(JSON.stringify(errors, null, 4));
                   const [accepted] = data.accept;
                   if (!!accepted) {
                     return merge(
@@ -198,8 +184,8 @@ const startAuctionEpic: RootEpic = (
           connection(stateBaseUrl!).api("wallets").get(pubKey)
         ).pipe(
            switchMap(({ body: { data, errors } }: ApiResponse<Wallet>) => {
-                console.log(JSON.stringify(data, null, 4));
-                console.log(JSON.stringify(errors, null, 4));
+                // console.log(JSON.stringify(data, null, 4));
+                // console.log(JSON.stringify(errors, null, 4));
                 if (errors){
                   return of(CancelAuctionErrorAction({name:"Error getting wallet", message: errors.message}));
                 }
@@ -219,8 +205,8 @@ const startAuctionEpic: RootEpic = (
                 ).pipe(       
                   switchMap(
                     ({ body: { data, errors } }: ApiResponse<CreateTransactionApiResponse>) => {
-                      console.log(JSON.stringify(data, null, 4));
-                      console.log(JSON.stringify(errors, null, 4));
+                      // console.log(JSON.stringify(data, null, 4));
+                      // console.log(JSON.stringify(errors, null, 4));
                       const [accepted] = data.accept;
                       if (!!accepted) {                                                
                         return merge(
@@ -265,8 +251,8 @@ const startAuctionEpic: RootEpic = (
           connection(stateBaseUrl!).api("wallets").get(pubKey)
         ).pipe(
            switchMap(({ body: { data, errors } }: ApiResponse<Wallet>) => {
-              console.log(JSON.stringify(data, null, 4));
-              console.log(JSON.stringify(errors, null, 4));
+              // console.log(JSON.stringify(data, null, 4));
+              // console.log(JSON.stringify(errors, null, 4));
               if (errors){
                 return of(PlaceBidErrorAction({name:"Error getting wallet", message: errors.message}));
               }
@@ -282,13 +268,15 @@ const startAuctionEpic: RootEpic = (
                   .nonce(CryptoUtils.getWalletNextNonce(data))
                   .sign(passphrase);
 
+              console.log(transaction);
+
               return defer(() =>
                 connection(stateBaseUrl!).api("transactions").create({ transactions: [transaction.getStruct()] })
               ).pipe(       
                 switchMap(
                   ({ body: { data, errors } }: ApiResponse<CreateTransactionApiResponse>) => {
-                    console.log(JSON.stringify(data, null, 4));
-                    console.log(JSON.stringify(errors, null, 4));
+                    // console.log(JSON.stringify(data, null, 4));
+                    // console.log(JSON.stringify(errors, null, 4));
                     const [accepted] = data.accept;
                     if (!!accepted) {                                                
                       return merge(
@@ -331,8 +319,8 @@ const startAuctionEpic: RootEpic = (
           connection(stateBaseUrl!).api("wallets").get(pubKey)
         ).pipe(
            switchMap(({ body: { data, errors } }: ApiResponse<Wallet>) => {
-                console.log(JSON.stringify(data, null, 4));
-                console.log(JSON.stringify(errors, null, 4));
+                // console.log(JSON.stringify(data, null, 4));
+                // console.log(JSON.stringify(errors, null, 4));
                 if (errors){
                   return of(CancelBidErrorAction({name:"Error getting wallet", message: errors.message}));
                 }
@@ -350,8 +338,8 @@ const startAuctionEpic: RootEpic = (
                 ).pipe(       
                   switchMap(
                     ({ body: { data, errors } }: ApiResponse<CreateTransactionApiResponse>) => {
-                      console.log(JSON.stringify(data, null, 4));
-                      console.log(JSON.stringify(errors, null, 4));
+                      // console.log(JSON.stringify(data, null, 4));
+                      // console.log(JSON.stringify(errors, null, 4));
                       const [accepted] = data.accept;
                       if (!!accepted) {                                                
                         return merge(
@@ -397,8 +385,8 @@ const startAuctionEpic: RootEpic = (
           connection(stateBaseUrl!).api("wallets").get(pubKey)
         ).pipe(
            switchMap(({ body: { data, errors } }: ApiResponse<Wallet>) => {
-                console.log(JSON.stringify(data, null, 4));
-                console.log(JSON.stringify(errors, null, 4));
+                // console.log(JSON.stringify(data, null, 4));
+                // console.log(JSON.stringify(errors, null, 4));
                 if (errors){
                   return of(AcceptBidErrorAction({name:"Error getting wallet", message: errors.message}));
                 }
@@ -417,8 +405,8 @@ const startAuctionEpic: RootEpic = (
                 ).pipe(       
                   switchMap(
                     ({ body: { data, errors } }: ApiResponse<CreateTransactionApiResponse>) => {
-                      console.log(JSON.stringify(data, null, 4));
-                      console.log(JSON.stringify(errors, null, 4));
+                      // console.log(JSON.stringify(data, null, 4));
+                      // console.log(JSON.stringify(errors, null, 4));
                       const [accepted] = data.accept;
                       if (!!accepted) {                                                
                         return merge(

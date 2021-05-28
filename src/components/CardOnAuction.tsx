@@ -59,7 +59,7 @@ const CardOnAuction: FC<{
 }> = ({ id, title, imgIpfsHash, type, linkto, timeRemaining, currentBid, minimumBid, yourBid }) => {
   const history = useHistory();
 
-  const currentBidColor = (yourBid===undefined || currentBid < yourBid) ? "success" : "warning";
+  const currentBidColor = (currentBid===0)?"muted":(yourBid===undefined || currentBid < yourBid) ? "success" : "warning";
   const yourBidColor = (yourBid!==undefined && currentBid > yourBid) ? "danger" : "success";
 
   return (
@@ -96,10 +96,8 @@ const CardOnAuction: FC<{
                 <IonCol>
                     <CardTitle className="ion-no-padding ion-text-left" fontWeight={FontWeight.BOLD}>Current Bid</CardTitle>
                 </IonCol>
-                <IonCol>
-                  {currentBid && (
-                    <BidIonLabel color={currentBidColor} className="ion-no-padding ion-text-right">${currentBid}</BidIonLabel>
-                  )}
+                <IonCol>                  
+                    <BidIonLabel color={currentBidColor} className="ion-no-padding ion-text-right">${currentBid}</BidIonLabel>                  
                 </IonCol>
               </IonRow>                          
               {yourBid && (

@@ -85,7 +85,7 @@ const ViewCardButton = styled(Button)`
 
 const txUuid = uuid();
 
-const AuctionCancellationAndConfirmationPage: FC = () => {  
+const AuctionCancelFinalizationPage: FC = () => {  
 
   const { auctionId } = useParams<{ auctionId: string}>();
   const history = useHistory();
@@ -132,7 +132,7 @@ const AuctionCancellationAndConfirmationPage: FC = () => {
     {!navToAuctions && (    
     <IonPage>
       <Header 
-        title="Start Card Auction"
+        title="Cancel Auction"
         buttonTopLeft={
           <IonButton onClick={() => history.replace('/home')}>
             <IonIcon color="light" slot="icon-only" icon={arrowBackOutline} />
@@ -151,7 +151,7 @@ const AuctionCancellationAndConfirmationPage: FC = () => {
                     Something went wrong!
                   </Text>
                   <Text
-                    className="ion-padding-top"
+                    className="ion-padding"
                     fontSize={FontSize.SM}
                     color="light"
                   >
@@ -166,7 +166,7 @@ const AuctionCancellationAndConfirmationPage: FC = () => {
                     Cancelled
                   </Text>
                   <Text
-                    className="ion-padding-top"
+                    className="ion-padding"
                     fontSize={FontSize.L}
                     color="light"
                   >
@@ -202,4 +202,4 @@ const AuctionCancellationAndConfirmationPage: FC = () => {
   );
 };
 
-export default AuctionCancellationAndConfirmationPage;
+export default AuctionCancelFinalizationPage;
