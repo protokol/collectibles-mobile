@@ -15,8 +15,11 @@ import PasscodePage from './pages/PasscodePage';
 import PassphrasePage from './pages/PassphrasePage';
 import StartAuctionPage from './pages/AuctionCreationAndConfirmationPage';
 import AuctionCreateNewPage from './pages/AuctionCreateNewPage';
-import AuctionCancelFinalizationPage from './pages/AuctionCancelFinalizationPage';
 import AuctionCancelConfirmationPage from './pages/AuctionCancelConfirmationPage';
+import AuctionCancelFinalizationPage from './pages/AuctionCancelFinalizationPage';
+import AuctionRetractBidConfirmationPage from './pages/AuctionRetractBidConfirmationPage';
+import AuctionRetractBidFinalizationPage from './pages/AuctionRetractBidFinalizationPage';
+
 import AuctionMyAuctionViewPage from './pages/AuctionMyAuctionViewPage';
 import AuctionMyAuctionExpiredAndAcceptOfferViewPage from './pages/AuctionMyAuctionExpiredAndAcceptOfferViewPage';
 import AuctionsMyAuctionsPage from './pages/AuctionsMyAuctionsPage';
@@ -177,9 +180,18 @@ const App: FC = () => {
                 <ProtectedRoute
                   path="/market/card/placenewbid/:auctionId/:bidAmount"
                   component={AuctionPlaceBidAndConfirmationPage}
-                  exact
-                  key={new Date().getTime()}               
-                />                  
+                  exact                  
+                />    
+                <ProtectedRoute
+                  path="/market/card/retractbid/:bidId"
+                  component={AuctionRetractBidConfirmationPage}
+                  exact                  
+                />     
+                <ProtectedRoute
+                  path="/market/card/retractbidconfirmation/:bidId"
+                  component={AuctionRetractBidFinalizationPage}
+                  exact                  
+                />                                            
                 <ProtectedRoute
                   path="/market/card/createnewauction/:cardId/:minimumBid/:minimumIncrement/:finalBiddingDate"
                   component={StartAuctionPage}

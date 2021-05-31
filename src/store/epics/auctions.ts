@@ -30,8 +30,8 @@ import {
 } from '../actions/auctions';
 import { baseUrlSelector } from '../selectors/app';
 import { RootEpic } from '../types';
-import { Builders, Transactions as NFTTransactions } from "@protokol/nft-exchange-crypto";
-import { Transactions, Utils } from "@arkecosystem/crypto";
+import { Builders } from "@protokol/nft-exchange-crypto";
+import { Utils } from "@arkecosystem/crypto";
 import { CryptoUtils } from '../../utils/crypto-utils';
 import { TransactionWaitForConfirmAction } from '../actions/transaction';
 
@@ -124,7 +124,7 @@ const startAuctionEpic: RootEpic = (
             // For debug purposes:
             // return of(StartAuctionErrorAction({name:"Test", message:"Testing exit"}));
             
-            Transactions.TransactionRegistry.registerTransactionType(NFTTransactions.NFTAuctionTransaction);   
+            //Transactions.TransactionRegistry.registerTransactionType(NFTTransactions.NFTAuctionTransaction);   
             const transaction = new Builders.NFTAuctionBuilder()
             .NFTAuctionAsset({
                 startAmount: Utils.BigNumber.make(minimumBid),                
@@ -192,7 +192,7 @@ const startAuctionEpic: RootEpic = (
                 }
                 // return of(CancelAuctionSuccessAction(txUuid));                              
 
-                Transactions.TransactionRegistry.registerTransactionType(NFTTransactions.NFTAuctionCancelTransaction);   
+                //Transactions.TransactionRegistry.registerTransactionType(NFTTransactions.NFTAuctionCancelTransaction);
                 const transaction = new Builders.NFTAuctionCancelBuilder()
                     .NFTAuctionCancelAsset({
                         auctionId: auctionId,
@@ -259,7 +259,8 @@ const startAuctionEpic: RootEpic = (
               }
               //return of(PlaceBidSuccessAction(txUuid));                              
               
-              Transactions.TransactionRegistry.registerTransactionType(NFTTransactions.NFTBidTransaction);   
+              //Transactions.TransactionRegistry.registerTransactionType(NFTTransactions.NFTBidTransaction);   
+              
               const transaction = new Builders.NFTBidBuilder()
                   .NFTBidAsset({
                       auctionId: auctionId,
@@ -325,7 +326,8 @@ const startAuctionEpic: RootEpic = (
                 if (errors){
                   return of(CancelBidErrorAction({name:"Error getting wallet", message: errors.message}));
                 }
-                Transactions.TransactionRegistry.registerTransactionType(NFTTransactions.NFTAuctionCancelTransaction);   
+                //Transactions.TransactionRegistry.registerTransactionType(NFTTransactions.NFTAuctionCancelTransaction);   
+                
                 const transaction = new Builders.NFTBidCancelBuilder()
                     .NFTBidCancelAsset({
                         bidId: bidId,
@@ -390,7 +392,8 @@ const startAuctionEpic: RootEpic = (
                 if (errors){
                   return of(AcceptBidErrorAction({name:"Error getting wallet", message: errors.message}));
                 }
-                Transactions.TransactionRegistry.registerTransactionType(NFTTransactions.NFTAcceptTradeTransaction);   
+                //Transactions.TransactionRegistry.registerTransactionType(NFTTransactions.NFTAcceptTradeTransaction);   
+                
                 const transaction = new Builders.NftAcceptTradeBuilder()
                     .NFTAcceptTradeAsset({                        
                         auctionId: auctionId,

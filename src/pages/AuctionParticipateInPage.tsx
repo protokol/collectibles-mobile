@@ -166,7 +166,11 @@ const AuctionParticipateInPage: FC = () => {
                   fontSize={FontSize.SM}
                   color="light"
                   fontWeight={FontWeight.BOLD}
-                  onClick={navigateMyBids}
+                  onClick={() => {
+                      dispatch(CollectiblesOnAuctionLoadAction(publicKey!, false, true, true, undefined));
+                      navigateMyBids();
+                    }
+                  }
                 >
                   My Bids
                 </BiddedCardsButton>                   

@@ -25,6 +25,7 @@ import { driverHighResImage } from '../constants/images';
 import useIsMounted from '../hooks/use-is-mounted';
 import { AuthLoginContext } from '../providers/AuthLoginProvider';
 import { CancelBidAction } from '../store/actions/auctions';
+import { CollectiblesOnAuctionLoadAction } from '../store/actions/collections';
 import AuctionsMyBiddedCardsPage from './AuctionMyBiddedCardsPage';
 import { auctionSelector } from '../store/selectors/auctions';
 import { transactionsSelector } from '../store/selectors/transaction';
@@ -162,11 +163,11 @@ const AuctionRetractBidFinalizationPage: FC = () => {
               {!isLoading() && !isError() && (
                 <>
                   <Text color="warning" fontSize={FontSize.XXL} fontWeight={FontWeight.BOLD}>
-                    Auction<br/>
+                    Your bid was<br/>retracted
                     Cancelled
                   </Text>
                   <Text
-                    className="ion-padding-top"
+                    className="ion-padding"
                     fontSize={FontSize.L}
                     color="light"
                   >
@@ -189,7 +190,11 @@ const AuctionRetractBidFinalizationPage: FC = () => {
               fontWeight={FontWeight.BOLD}
               radius={false}
               expand="block"
-              onClick={navigateBids}           
+              onClick={() => {
+                  dispatch(CollectiblesOnAuctionLoadAction(publicKey!, false, true, true, undefined));
+                  navigateBids();
+                }
+              }
             >
               View Open Bids
             </ViewCardButton>

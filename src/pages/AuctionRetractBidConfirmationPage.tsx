@@ -1,20 +1,18 @@
 import { arrowBackOutline } from 'ionicons/icons';
-import { FC, useCallback, useContext, useEffect, useMemo } from 'react';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { FC } from 'react';
 import { useHistory, useParams } from 'react-router';
 import styled from 'styled-components';
-import { v4 as uuid } from 'uuid';
 import {
   IonCol,
   IonContent,
   IonGrid,
   IonPage,
   IonRow,
-  IonSpinner,
   IonIcon,
   IonButton,
   IonToolbar,
   IonFooter,
+  IonRouterLink,
 } from '@ionic/react';
 import Header from '../components/Header';
 import Button from '../components/ionic/Button';
@@ -22,12 +20,6 @@ import Text from '../components/ionic/Text';
 import { FontSize } from '../constants/font-size';
 import { FontWeight } from '../constants/font-weight';
 import { driverHighResImage } from '../constants/images';
-import useIsMounted from '../hooks/use-is-mounted';
-import { AuthLoginContext } from '../providers/AuthLoginProvider';
-import { CancelBidAction } from '../store/actions/auctions';
-// import AuctionsMyAuctionsPage from './AuctionsMyAuctionsPage';
-import { auctionSelector } from '../store/selectors/auctions';
-import { transactionsSelector } from '../store/selectors/transaction';
 
 const ImageBgCol = styled(IonCol)`
   display: flex;
@@ -73,6 +65,11 @@ const ImageBgCol = styled(IonCol)`
   }
 `;
 
+const IonRouterLinkStyled = styled(IonRouterLink)`
+  text-decoration: underline;
+  font-weight: bold;  
+`;
+
 const Footer = styled(IonFooter)`
   position: fixed;
   bottom: 0;
@@ -83,47 +80,10 @@ const ViewCardButton = styled(Button)`
   background: var(--app-color-yellow-bg);
 `;
 
-const txUuid = uuid();
-
 const AuctionRetractBidConfirmationPage: FC = () => {  
 
   const { bidId } = useParams<{ bidId: string}>();
   const history = useHistory();
-  const dispatch = useDispatch();
-
-  const cancelAuctionRequest = useSelector(auctionSelector, shallowEqual);
-  const transactions = useSelector(transactionsSelector, shallowEqual);
-  const tx = useMemo(() => transactions[txUuid], [transactions]);
-
-  /*
-  const [navToAuctions, setNavToAuctions] = useState(false);
-
-  const navigateAuctions = () => {    
-    setNavToAuctions(true);   
-  }     
-*/
-  const isLoading = useCallback(() => {
-    return cancelAuctionRequest?.isLoading || tx?.isLoading;
-  }, [cancelAuctionRequest, tx]);
-
-  const isError = useCallback(() => {
-    return cancelAuctionRequest?.isError || tx?.isError;
-  }, [cancelAuctionRequest, tx]);
-
-  const error = useCallback(() => {    
-    return (cancelAuctionRequest?.isError)? `${cancelAuctionRequest?.error}`:`${tx?.error?.message}`;
-  }, [cancelAuctionRequest, tx]);
-
-  const {
-    session: { publicKey, passphrase },
-  } = useContext(AuthLoginContext);  
-
-  const isMounted = useIsMounted();  
-  useEffect(() => {        
-    if (isMounted && bidId && publicKey) {            
-      dispatch(CancelBidAction(bidId, publicKey, passphrase!, txUuid));
-    }
-  }, [isMounted, dispatch, bidId, publicKey, passphrase]);  
 
   return (
     <IonPage>
@@ -140,58 +100,37 @@ const AuctionRetractBidConfirmationPage: FC = () => {
         <IonGrid className="ion-no-padding">
           <IonRow>
             <ImageBgCol size="12">
-              {isLoading() && <IonSpinner color="light" />}
-              {!isLoading() && isError() && (
-                <>
-                  <Text color="danger" fontSize={FontSize.XXL}>
-                    Something went wrong!
+                  <Text color="warning" fontSize={FontSize.XXL} fontWeight={FontWeight.BOLD}>                    
+                    Retract bid?
                   </Text>
-                  <Text
-                    className="ion-padding-top"
-                    fontSize={FontSize.SM}
-                    color="light"
-                  >
-                  {error()}
+                  <Text className="ion-padding" fontSize={FontSize.L} color="light">
+                    Retracting from the auction means that you could loose the card you put a bid on. 
+                    <br/><br/>
+                    Are you sure you want to retract?
                   </Text>
-                </>
-              )}
-              {!isLoading() && !isError() && (
-                <>
-                  <Text color="warning" fontSize={FontSize.XXL} fontWeight={FontWeight.BOLD}>
-                    Auction<br/>
-                    Cancelled
-                  </Text>
-                  <Text
-                    className="ion-padding-top"
-                    fontSize={FontSize.L}
-                    color="light"
-                  >
-                    Retracting from the auction means that <b>you could loose the card</b> you put a bid on. Are you sure you want to retract?
-                  </Text>
-                </>
-              )}
+                  <Text fontSize={FontSize.M} color="light" >
+                  No way, <IonRouterLinkStyled color="light" onClick={() => history.goBack()}>I don't want to retract</IonRouterLinkStyled> from the auction!
+                </Text>                  
             </ImageBgCol>
           </IonRow>
         </IonGrid>
       </IonContent>
 
-      {!isLoading() && !isError() && (
-        <Footer className="ion-no-border">
-          <IonToolbar>
-            <ViewCardButton
-              size="large"
-              className="ion-text-uppercase ion-no-margin"
-              fontSize={FontSize.SM}
-              fontWeight={FontWeight.BOLD}
-              radius={false}
-              expand="block"
-              onClick={() => history.replace('/market/card/confirmretractbid/' + bidId)}           
-            >
-             YES, IM SURE I WANT TO RETRACT FROM THE AUCTION!
-            </ViewCardButton>
-          </IonToolbar>
-        </Footer>
-      )}
+      <Footer className="ion-no-border">
+        <IonToolbar>
+          <ViewCardButton
+            size="large"
+            className="ion-text-uppercase ion-no-margin"
+            fontSize={FontSize.SM}
+            fontWeight={FontWeight.BOLD}
+            radius={false}
+            expand="block"
+            onClick={ () => history.push(`/market/card/retractbidconfirmation/${bidId}`) }     
+          >
+            YES, IM SURE I WANT TO RETRACT FROM THE AUCTION!
+          </ViewCardButton>
+        </IonToolbar>
+      </Footer>
     </IonPage>    
   );
 };
