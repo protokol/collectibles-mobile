@@ -130,6 +130,7 @@ const AuctionPlaceBidPage: FC = () => {
     auctionId,
     currentBid,
     yourBid,
+    bidId,
     minimumBid
   } = attributes as any;
 
@@ -240,7 +241,7 @@ const AuctionPlaceBidPage: FC = () => {
             <IonRow>
               <IonCol className="ion-text-center ion-padding-top">
                   <Text fontSize={FontSize.M} color="dark" >
-                    Do you want to <IonRouterLinkStyled color="danger" onClick={() => history.replace("/market/card/retractbid/" + auctionId)}>retract your ${yourBid} bid?</IonRouterLinkStyled>
+                    Do you want to <IonRouterLinkStyled color="danger" onClick={() => history.replace(`/market/card/retractbid/${bidId}`)}>retract your ${yourBid} bid?</IonRouterLinkStyled>
                   </Text>                
               </IonCol>
             </IonRow>

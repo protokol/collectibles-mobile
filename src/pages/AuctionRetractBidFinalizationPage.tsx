@@ -88,7 +88,7 @@ const txUuid = uuid();
 
 const AuctionRetractBidFinalizationPage: FC = () => {  
 
-  const { auctionId } = useParams<{ auctionId: string}>();
+  const { bidId } = useParams<{ bidId: string}>();
   const history = useHistory();
   const dispatch = useDispatch();
 
@@ -120,10 +120,10 @@ const AuctionRetractBidFinalizationPage: FC = () => {
 
   const isMounted = useIsMounted();  
   useEffect(() => {        
-    if (isMounted && auctionId && publicKey) {            
-      dispatch(CancelBidAction(auctionId, publicKey, passphrase!, txUuid));
+    if (isMounted && bidId && publicKey) {            
+      dispatch(CancelBidAction(bidId, publicKey, passphrase!, txUuid));
     }
-  }, [isMounted, dispatch, auctionId, publicKey, passphrase]);  
+  }, [isMounted, dispatch, bidId, publicKey, passphrase]);  
 
   return (
     <>
@@ -133,7 +133,7 @@ const AuctionRetractBidFinalizationPage: FC = () => {
     {!navToBids && (    
     <IonPage>
       <Header 
-        title="Start Card Auction"
+        title="Retract Bid"
         buttonTopLeft={
           <IonButton onClick={() => history.replace('/home')}>
             <IonIcon color="light" slot="icon-only" icon={arrowBackOutline} />
@@ -163,8 +163,7 @@ const AuctionRetractBidFinalizationPage: FC = () => {
               {!isLoading() && !isError() && (
                 <>
                   <Text color="warning" fontSize={FontSize.XXL} fontWeight={FontWeight.BOLD}>
-                    Your bid was<br/>retracted
-                    Cancelled
+                    Your bid was<br/>retracted                    
                   </Text>
                   <Text
                     className="ion-padding"

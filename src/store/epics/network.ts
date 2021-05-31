@@ -65,6 +65,7 @@ const fetchNetworkConfigurationEpic: RootEpic = (
       Transactions.TransactionRegistry.registerTransactionType(NFTTransactions.NFTAcceptTradeTransaction);   
       Transactions.TransactionRegistry.registerTransactionType(NFTTransactions.NFTAuctionCancelTransaction);   
       Transactions.TransactionRegistry.registerTransactionType(NFTTransactions.NFTBidTransaction);         
+      Transactions.TransactionRegistry.registerTransactionType(NFTTransactions.NFTBidCancelTransaction);   
       Transactions.TransactionRegistry.registerTransactionType(NFTTransactions.NFTAuctionTransaction);     
 
       return forkJoin([

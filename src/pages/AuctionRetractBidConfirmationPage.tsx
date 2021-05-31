@@ -88,7 +88,7 @@ const AuctionRetractBidConfirmationPage: FC = () => {
   return (
     <IonPage>
       <Header 
-        title="Start Card Auction"
+        title="Retract Bid"
         buttonTopLeft={
           <IonButton onClick={() => history.replace('/home')}>
             <IonIcon color="light" slot="icon-only" icon={arrowBackOutline} />

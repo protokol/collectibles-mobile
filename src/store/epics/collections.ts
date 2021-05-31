@@ -116,9 +116,10 @@ const fetchCardsOnAuctionEpic: RootEpic = (
           (onlyOwnAuctions)?connection(stateBaseUrl!).NFTExchangeApi("auctions").searchByAsset({senderPublicKey:pubKey}, undefined):connection(stateBaseUrl!).NFTExchangeApi('auctions').getAllAuctions(),
           connection(stateBaseUrl!).NFTExchangeApi('auctions').getAllCanceledAuctions(),        
           (onlyOwnAuctions)?connection(stateBaseUrl!).NFTBaseApi('assets').walletAssets(pubKey, query):connection(stateBaseUrl!).NFTBaseApi('assets').all(),
-          connection(stateBaseUrl!).NFTExchangeApi('bids').getAllBids()
+          connection(stateBaseUrl!).NFTExchangeApi('bids').getAllBids(),
+          connection(stateBaseUrl!).NFTExchangeApi('bids').getAllCanceledBids()
       ]).pipe(
-        map(([confResponse, blockResponse, auctionsResponse, cancelledAuctionsResponse, assetsResponse, bidsResponse]) => {
+        map(([confResponse, blockResponse, auctionsResponse, cancelledAuctionsResponse, assetsResponse, bidsResponse, cancelledBidsResponse]) => {
           if (!confResponse.data) {
             return CollectiblesOnAuctionLoadErrorAction({name:"Error", message:"Error reading node configuration"});
           }
@@ -137,6 +138,9 @@ const fetchCardsOnAuctionEpic: RootEpic = (
           if (bidsResponse?.body?.errors) {
             return CollectiblesOnAuctionLoadErrorAction(bidsResponse?.body?.errors);
           }
+          if (cancelledBidsResponse?.body?.errors) {
+            return CollectiblesOnAuctionLoadErrorAction(cancelledBidsResponse?.body?.errors);
+          }          
 
           let data:BaseResourcesTypes.Assets[] = [];
 
@@ -154,15 +158,16 @@ const fetchCardsOnAuctionEpic: RootEpic = (
             //console.log("pubKey:" + pubKey);
             if (onlyBiddedAuctions)
             {
-              const biddedIn = bidsResponse.body.data.findIndex(b => b.nftBid.auctionId === auction.id && b.senderPublicKey === pubKey);
+              const biddedIn = bidsResponse.body.data.filter(c => c.id === cancelledBidsResponse.body.data.some(x => x.id === c.id)).findIndex(b => b.nftBid.auctionId === auction.id && b.senderPublicKey === pubKey);
               //console.log("biddedIn:" + biddedIn);
               if (biddedIn === -1) continue;
             }            
-            const allBids = bidsResponse.body.data.filter(b => b.nftBid.auctionId === auction.id);
-            const allMyBids = bidsResponse.body.data.filter(b => b.nftBid.auctionId === auction.id && b.senderPublicKey === pubKey);            
+            const allBids = bidsResponse.body.data.filter(b => b.nftBid.auctionId === auction.id).filter(c => c.id === cancelledBidsResponse.body.data.some(x => x.id === c.id));
+            const allMyBids = bidsResponse.body.data.filter(b => b.nftBid.auctionId === auction.id && b.senderPublicKey === pubKey);
             const maxBid = (allBids.length === 0) ? 0 : Number(allBids.reduce((prev, curr) => (Number(prev.nftBid.bidAmount)>Number(curr.nftBid.bidAmount))?prev:curr).nftBid.bidAmount);
             const myBid = (allMyBids.length === 0) ? 0 : Number(allMyBids.reduce((prev, curr) => (Number(prev.nftBid.bidAmount)>Number(curr.nftBid.bidAmount))?prev:curr).nftBid.bidAmount);
-            const highestBidId = (allMyBids.length === 0) ? 0 : Number(allMyBids.reduce((prev, curr) => (Number(prev.nftBid.bidAmount)>Number(curr.nftBid.bidAmount))?prev:curr).id);
+            const myBidId = (allMyBids.length === 0) ? 0 : allMyBids.reduce((prev, curr) => (Number(prev.nftBid.bidAmount)>Number(curr.nftBid.bidAmount))?prev:curr).id;
+            const highestBidId = (allBids.length === 0) ? 0 : allBids.reduce((prev, curr) => (Number(prev.nftBid.bidAmount)>Number(curr.nftBid.bidAmount))?prev:curr).id;            
 
             for(let nftId of auction.nftAuction.nftIds){
               const asset = assetsResponse.body.data.find(a => a.id===nftId);
@@ -192,12 +197,13 @@ const fetchCardsOnAuctionEpic: RootEpic = (
                   finalBiddingDate: humanExpirationDate.toISOString(),
                   startedBiddingDate: auction.timestamp.human,
                   timeRemaining: days + "d" + hours + "h" + minutes + "m",
-                  highestBidId: highestBidId,
+                  highestBidId: highestBidId,                  
                   currentBid: maxBid,
               };
               if (!onlyOwnAuctions){
                 asset.attributes = { ...asset.attributes, 
-                  yourBid: myBid                        
+                  yourBid: myBid,
+                  bidId: myBidId,
                 };
               }
               data.push(asset);                              
