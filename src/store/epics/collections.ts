@@ -74,10 +74,10 @@ const fetchWalletCollectionsEpic: RootEpic = (
             };
             let data:BaseResourcesTypes.Assets[] = [];
             let activeAuctions:ExchangeResourcesTypes.Auctions[] = allAuctionsResponse.body.data.filter(a => cancelledAuctionsResponse.body.data.filter(ac => ac.nftAuctionCancel.auctionId === a.id));
-            activeAuctions = activeAuctions.filter(a => a.nftAuction.expiration.blockHeight > currentBlock); 
+            activeAuctions = activeAuctions.filter(a => a.nftAuction.expiration.blockHeight < currentBlock); 
 
-            //console.log(JSON.stringify(assetsResponse.body.data, null, 4));
-            //console.log(JSON.stringify(activeAuctions, null, 4));
+            console.log(JSON.stringify(assetsResponse.body.data, null, 4));
+            console.log(JSON.stringify(activeAuctions, null, 4));
 
             for(let asset of assetsResponse.body.data){
               const auctionIn = activeAuctions.findIndex(a => a.nftAuction.nftIds.find(as => as === asset.id));

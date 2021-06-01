@@ -125,7 +125,7 @@ const AuctionableCardsPage: FC = () => {
       },
       [loadNextPage, isLastPage, isLoading]
     );
-  
+      
     const cardColSize = useCallback(() => {
       if (isLarge) {
         return 3;
@@ -135,6 +135,8 @@ const AuctionableCardsPage: FC = () => {
       }
       return 6;
     }, [isMedium, isLarge]);
+
+    console.log("cardColSize at auctionableCardsPage:" + cardColSize.toString());
     
   return (
     <>
@@ -220,10 +222,9 @@ const AuctionableCardsPage: FC = () => {
                     : CardTagType.None;
 
                 return (
-                  <>
-                    <CardContainer size={cardColSize().toString()} key={id}>  
-                      <Card
-                        key={id}
+                  <IonCol className="ion-padding" key={id}>
+                    <CardContainer>  
+                      <Card                        
                         id={id}
                         title={title}
                         subtitle={subtitle}
@@ -232,7 +233,7 @@ const AuctionableCardsPage: FC = () => {
                         linkto={"/market/card/startauction/"+id}                      
                       />    
                     </CardContainer>                  
-                  </>           
+                  </IonCol>     
                 );
               })}
             </>
