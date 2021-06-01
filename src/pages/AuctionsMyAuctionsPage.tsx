@@ -154,7 +154,7 @@ const AuctionsMyAuctionsPage: FC = () => {
                   color="light"
                   fontWeight={FontWeight.BOLD}
                   onClick={() => {
-                      CollectiblesLoadAction(publicKey!, false)
+                      CollectiblesLoadAction(publicKey!, false);
                       navigateStartAuction();
                     }
                   }
@@ -204,21 +204,20 @@ const AuctionsMyAuctionsPage: FC = () => {
                     : CardTagType.None;
 
                 return (
-                  <>
-                    <CardOnAuction       
-                      key={id}              
-                      id={id}
-                      title={title}
-                      imgIpfsHash={ipfsHashImageFront}
-                      type={type}
-                      linkto={(expired)?"/market/card/expiredauctionview/" + auctionId + "/" + id:"/market/card/auctionview/" + auctionId + "/" + id}
-                      timeRemaining={timeRemaining}                   
-                      minimumBid={minimumBid}
-                      currentBid={Number(currentBid)}
-                      yourBid={yourBid}
-                    />
-                    <HorizontalLine/>
-                  </>           
+                   <IonCol key={id}>
+                      <CardOnAuction       
+                        id={id}
+                        title={title}
+                        imgIpfsHash={ipfsHashImageFront}
+                        type={type}
+                        linkto={(expired)?"/market/card/expiredauctionview/" + auctionId + "/" + id:"/market/card/auctionview/" + auctionId + "/" + id}
+                        timeRemaining={timeRemaining}                   
+                        minimumBid={minimumBid}
+                        currentBid={Number(currentBid)}
+                        yourBid={yourBid}
+                      />
+                      <HorizontalLine/>
+                   </IonCol>                  
                 );
               })}
             </>

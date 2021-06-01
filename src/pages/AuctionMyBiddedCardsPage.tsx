@@ -190,9 +190,8 @@ const AuctionMyBiddedCardsPage: FC = () => {
                     : CardTagType.None;
 
                 return (
-                  <>
+                  <IonCol key={id}>
                     <CardOnAuction
-                      key={id}
                       id={id}
                       title={title}
                       imgIpfsHash={ipfsHashImageFront}
@@ -202,7 +201,7 @@ const AuctionMyBiddedCardsPage: FC = () => {
                       currentBid={currentBid}
                       yourBid={yourBid}
                     />
-                  </>
+                  </IonCol>
                 );
               })}
             </>

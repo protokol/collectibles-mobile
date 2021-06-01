@@ -12,7 +12,7 @@ import { flagImage } from '../constants/images';
 import AuctionableCardsPage from '../pages/AuctionableCardsPage';
 import AuctionsMyAuctionsPage from '../pages/AuctionsMyAuctionsPage';
 import AuctionParticipateInPage from '../pages/AuctionParticipateInPage';
-import { CollectiblesOnAuctionLoadAction } from '../store/actions/collections';
+import { CollectiblesLoadAction, CollectiblesOnAuctionLoadAction } from '../store/actions/collections';
 import { AuthLoginContext } from '../providers/AuthLoginProvider';
 
 const ImageBgCol = styled(IonCol)`
@@ -178,7 +178,11 @@ const HomeMarket: FC = () => {
               className="ion-text-uppercase ion-no-margin bg-gray"
               fontSize={FontSize.SM}
               fontWeight={FontWeight.BOLD}
-              onClick={auctionSellHandler}
+              onClick={() => {
+                  CollectiblesLoadAction(publicKey!, false)
+                  auctionSellHandler();
+                }
+              }
             >
               Start an auction
             </ActionButton>
@@ -188,7 +192,11 @@ const HomeMarket: FC = () => {
               className="ion-text-uppercase ion-no-margin bg-dark-blue-magenta"
               fontSize={FontSize.SM}
               fontWeight={FontWeight.BOLD}
-              onClick={auctionSellViewHandler}
+              onClick={() => {
+                  dispatch(CollectiblesOnAuctionLoadAction(publicKey!, true, false, false, undefined));
+                  auctionSellViewHandler();
+                }
+              }
             >
               View my open auctions
             </ActionButton>            
