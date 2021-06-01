@@ -96,8 +96,7 @@ const AuctionPlaceBidPage: FC = () => {
   const increment = 5;
 
   const sendBid = useCallback(
-    () => {  
-      console.log("AuctionNewBidPage:sendBid:::: " + auctionIdIn + ":" + bidAmount);
+    () => {        
       if (auctionIdIn && bidAmount){
         history.push(`/market/card/placenewbid/${auctionIdIn}/${bidAmount}`);
       }

@@ -27,6 +27,7 @@ import { AuthLoginContext } from '../providers/AuthLoginProvider';
 import {AcceptBidAction } from '../store/actions/auctions';
 import AuctionsMyAuctionsPage from './AuctionsMyAuctionsPage';
 import { auctionSelector } from '../store/selectors/auctions';
+import { CollectiblesOnAuctionLoadAction } from '../store/actions/collections';
 import { transactionsSelector } from '../store/selectors/transaction';
 
 const ImageBgCol = styled(IonCol)`
@@ -191,7 +192,11 @@ const AuctionOfferAcceptedConfirmationPage: FC = () => {
               fontWeight={FontWeight.BOLD}
               radius={false}
               expand="block"
-              onClick={navigateMyAuctions}              
+              onClick={() => {
+                  dispatch(CollectiblesOnAuctionLoadAction(publicKey!, true, false, true, undefined));
+                  navigateMyAuctions();
+                }
+              } 
             >
               View Your Open Auctions
             </ViewCardButton>

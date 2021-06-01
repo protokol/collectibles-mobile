@@ -27,6 +27,7 @@ import { AuthLoginContext } from '../providers/AuthLoginProvider';
 import { CancelAuctionAction } from '../store/actions/auctions';
 import AuctionsMyAuctionsPage from './AuctionsMyAuctionsPage';
 import { auctionSelector } from '../store/selectors/auctions';
+import { CollectiblesOnAuctionLoadAction } from '../store/actions/collections';
 import { transactionsSelector } from '../store/selectors/transaction';
 
 const ImageBgCol = styled(IonCol)`
@@ -189,7 +190,11 @@ const AuctionCancelFinalizationPage: FC = () => {
               fontWeight={FontWeight.BOLD}
               radius={false}
               expand="block"
-              onClick={navigateAuctions}           
+              onClick={() => {
+                  dispatch(CollectiblesOnAuctionLoadAction(publicKey!, true, false, true, undefined));
+                  navigateAuctions();
+                }
+              }
             >
               View Open Auctions
             </ViewCardButton>

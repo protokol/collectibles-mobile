@@ -192,7 +192,7 @@ const AuctionCreationAndConfirmationPage: FC = () => {
               radius={false}
               expand="block"
               onClick={() => {
-                  dispatch(CollectiblesOnAuctionLoadAction(publicKey!, true, false, false, undefined));
+                  dispatch(CollectiblesOnAuctionLoadAction(publicKey!, true, false, true, undefined));
                   navigateMyAuctions();
                 }
               }

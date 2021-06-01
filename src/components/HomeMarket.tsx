@@ -1,4 +1,5 @@
-import { FC, useState } from 'react';
+import { FC, useState, useContext } from 'react';
+import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
 import styled from 'styled-components';
 import { IonCol, IonGrid, IonRow } from '@ionic/react';
@@ -11,6 +12,8 @@ import { flagImage } from '../constants/images';
 import AuctionableCardsPage from '../pages/AuctionableCardsPage';
 import AuctionsMyAuctionsPage from '../pages/AuctionsMyAuctionsPage';
 import AuctionParticipateInPage from '../pages/AuctionParticipateInPage';
+import { CollectiblesOnAuctionLoadAction } from '../store/actions/collections';
+import { AuthLoginContext } from '../providers/AuthLoginProvider';
 
 const ImageBgCol = styled(IonCol)`
   position: relative;
@@ -72,7 +75,13 @@ const ActionButton = styled(Button)`
 
 const HomeMarket: FC = () => {
   const history = useHistory();
-  const [submenu, setMarketSubMenu] = useState(0)
+  const [submenu, setMarketSubMenu] = useState(0);
+  
+  const dispatch = useDispatch();
+  const {
+    session: { publicKey },
+  } = useContext(AuthLoginContext);  
+
   const auctionSell = submenu===1;
   const auctionSellView = submenu===2;
   const auctionBuy = submenu===3;
@@ -136,6 +145,7 @@ const HomeMarket: FC = () => {
               className="ion-text-uppercase ion-no-margin bg-gray"
               fontSize={FontSize.SM}
               fontWeight={FontWeight.BOLD}
+              disabled={true}
               onClick={() => history.replace('/home/buycards')}
             >
               Buy cards
@@ -146,6 +156,7 @@ const HomeMarket: FC = () => {
               className="ion-text-uppercase ion-no-margin bg-dark-blue-magenta"
               fontSize={FontSize.SM}
               fontWeight={FontWeight.BOLD}
+              disabled={true}
               onClick={() => history.replace('/home/sellcards')}
             >
               Sell cards
@@ -156,6 +167,7 @@ const HomeMarket: FC = () => {
               className="ion-text-uppercase ion-no-margin bg-charade"
               fontSize={FontSize.SM}
               fontWeight={FontWeight.BOLD}
+              disabled={true}
               onClick={() => history.replace('/home/tradecards')}
             >
               Trade cards
@@ -186,7 +198,11 @@ const HomeMarket: FC = () => {
               className="ion-text-uppercase ion-no-margin bg-dark-blue-magenta"
               fontSize={FontSize.SM}
               fontWeight={FontWeight.BOLD}
-              onClick={auctionBuyHandler}
+              onClick={() => {
+                  dispatch(CollectiblesOnAuctionLoadAction(publicKey!, true, false, true, undefined));
+                  auctionBuyHandler();
+                }
+              }
             >
               Participate in an auction
             </ActionButton>

@@ -17,7 +17,7 @@ import { FontWeight } from '../constants/font-weight';
 import useIsMounted from '../hooks/use-is-mounted';
 import { CardTagType } from '../components/CardTag';
 import { AuthLoginContext } from '../providers/AuthLoginProvider';
-import { CollectiblesOnAuctionLoadAction } from '../store/actions/collections';
+import { CollectiblesOnAuctionLoadAction, CollectiblesLoadAction } from '../store/actions/collections';
 import { collectionSelector } from '../store/selectors/collections';
 import { auctionImage } from '../constants/images';
 import AuctionableCardsPage from './AuctionableCardsPage';
@@ -153,7 +153,11 @@ const AuctionsMyAuctionsPage: FC = () => {
                   fontSize={FontSize.SM}                  
                   color="light"
                   fontWeight={FontWeight.BOLD}
-                  onClick={navigateStartAuction}
+                  onClick={() => {
+                      CollectiblesLoadAction(publicKey!, false)
+                      navigateStartAuction();
+                    }
+                  }
                 >
                   Start a new Auction
                 </StartAuctionButton>

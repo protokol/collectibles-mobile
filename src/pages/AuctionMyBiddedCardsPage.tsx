@@ -142,7 +142,11 @@ const AuctionMyBiddedCardsPage: FC = () => {
                   fontSize={FontSize.SM}
                   color="light"
                   fontWeight={FontWeight.BOLD}
-                  onClick={navigateNewBid}
+                  onClick={() => {
+                      dispatch(CollectiblesOnAuctionLoadAction(publicKey!, false, false, false, undefined));
+                      navigateNewBid();
+                    }
+                  }
                 >
                   Start a new bid
                 </BiddedCardsButton>                   
