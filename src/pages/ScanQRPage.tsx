@@ -69,7 +69,7 @@ const ScanQRPage: FC = () => {
       <Header
         title="Collect Cards"
         buttonTopLeft={
-          <IonButton onClick={() => history.goBack()}>
+          <IonButton onClick={() => history.push('/home')}>
             <IonIcon color="light" slot="icon-only" icon={arrowBackOutline} />
           </IonButton>
         }

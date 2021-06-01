@@ -135,7 +135,7 @@ const AuctionCancelFinalizationPage: FC = () => {
       <Header 
         title="Cancel Auction"
         buttonTopLeft={
-          <IonButton onClick={() => history.goBack()}>
+          <IonButton onClick={() => history.push('/market/myauctions')}>
             <IonIcon color="light" slot="icon-only" icon={arrowBackOutline} />
           </IonButton>
         }

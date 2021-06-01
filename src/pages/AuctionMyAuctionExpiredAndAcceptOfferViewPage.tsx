@@ -116,7 +116,7 @@ const AuctionMyAuctionExpiredAndAcceptOfferViewPage: FC = () => {
       <Header
         title={title + " Card Auction"}
         buttonTopLeft={
-          <IonButton onClick={() => history.goBack()}>
+          <IonButton onClick={() => history.push('/market/myauctions')}>
             <IonIcon color="light" slot="icon-only" icon={arrowBackOutline} />
           </IonButton>
         }

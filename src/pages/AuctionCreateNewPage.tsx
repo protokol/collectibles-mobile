@@ -184,7 +184,7 @@ const AuctionCreateNewPage: FC = () => {
       <Header
         title={title}
         buttonTopLeft={
-          <IonButton onClick={() => history.goBack()}>
+          <IonButton onClick={() => history.push('/market/myauctions')}>
             <IonIcon color="light" slot="icon-only" icon={arrowBackOutline} />
           </IonButton>
         }

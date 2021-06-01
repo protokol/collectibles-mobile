@@ -135,7 +135,7 @@ const AuctionRetractBidFinalizationPage: FC = () => {
       <Header 
         title="Retract Bid"
         buttonTopLeft={
-          <IonButton onClick={() => history.goBack()}>
+          <IonButton onClick={() => history.push('/market/mybids')}>
             <IonIcon color="light" slot="icon-only" icon={arrowBackOutline} />
           </IonButton>
         }

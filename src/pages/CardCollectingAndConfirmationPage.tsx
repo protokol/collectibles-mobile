@@ -126,7 +126,7 @@ const CardCollectingAndConfirmationPage: FC = () => {
       <Header
         title="Collect Cards"
         buttonTopLeft={
-          <IonButton onClick={() => history.goBack()}>
+          <IonButton onClick={() => history.push('/home/profile')}>
             <IonIcon color="light" slot="icon-only" icon={arrowBackOutline} />
           </IonButton>
         }

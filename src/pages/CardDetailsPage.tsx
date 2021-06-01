@@ -87,7 +87,7 @@ const CardDetailsPage: FC = () => {
       <Header
         title={title}
         buttonTopLeft={
-          <IonButton onClick={() => history.goBack()}>
+          <IonButton onClick={() => history.push('/home/profile')}>
             <IonIcon color="light" slot="icon-only" icon={arrowBackOutline} />
           </IonButton>
         }

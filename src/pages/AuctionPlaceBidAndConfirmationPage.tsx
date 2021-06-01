@@ -136,7 +136,7 @@ const AuctionPlaceBidAndConfirmationPage: FC = () => {
       <Header 
         title="Place Bid on Auction"
         buttonTopLeft={
-          <IonButton onClick={() => history.goBack()}>
+          <IonButton onClick={() => history.push('/market/mybids')}>
             <IonIcon color="light" slot="icon-only" icon={arrowBackOutline} />
           </IonButton>
         }

@@ -91,7 +91,7 @@ const AuctionCancelConfirmationPage: FC = () => {
       <Header 
         title="Cancel Auction"
         buttonTopLeft={
-          <IonButton onClick={() => history.goBack()}>
+          <IonButton onClick={() => history.push('/market/myauctions')}>
             <IonIcon color="light" slot="icon-only" icon={arrowBackOutline} />
           </IonButton>
         }
@@ -116,7 +116,7 @@ const AuctionCancelConfirmationPage: FC = () => {
                   <br/>                                    
                 </Text>
                 <Text fontSize={FontSize.M} color="light" >
-                  No way, <IonRouterLinkStyled color="light" onClick={() => history.goBack()}>I don't want to cancel</IonRouterLinkStyled> the auction!
+                  No way, <IonRouterLinkStyled color="light" onClick={() => history.push('/market/myauctions')}>I don't want to cancel</IonRouterLinkStyled> the auction!
                 </Text>
             </ImageBgCol>
           </IonRow>

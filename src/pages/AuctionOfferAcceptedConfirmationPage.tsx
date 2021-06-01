@@ -136,7 +136,7 @@ const AuctionOfferAcceptedConfirmationPage: FC = () => {
       <Header 
         title="Accept Bid Offer"
         buttonTopLeft={
-          <IonButton onClick={() => history.goBack()}>
+          <IonButton onClick={() => history.push('/market/myauctions')}>
             <IonIcon color="light" slot="icon-only" icon={arrowBackOutline} />
           </IonButton>
         }

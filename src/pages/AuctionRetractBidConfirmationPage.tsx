@@ -90,7 +90,7 @@ const AuctionRetractBidConfirmationPage: FC = () => {
       <Header 
         title="Retract Bid"
         buttonTopLeft={
-          <IonButton onClick={() => history.goBack()}>
+          <IonButton onClick={() => history.push('/market/mybids')}>
             <IonIcon color="light" slot="icon-only" icon={arrowBackOutline} />
           </IonButton> 
         }
@@ -109,7 +109,7 @@ const AuctionRetractBidConfirmationPage: FC = () => {
                     Are you sure you want to retract?
                   </Text>
                   <Text fontSize={FontSize.M} color="light" >
-                  No way, <IonRouterLinkStyled color="light" onClick={() => history.goBack()}>I don't want to retract</IonRouterLinkStyled> from the auction!
+                  No way, <IonRouterLinkStyled color="light" onClick={() => history.push('/market/mybids')}>I don't want to retract</IonRouterLinkStyled> from the auction!
                 </Text>                  
             </ImageBgCol>
           </IonRow>
