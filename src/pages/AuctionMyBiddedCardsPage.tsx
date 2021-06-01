@@ -51,6 +51,15 @@ const ImageBgCol = styled(IonCol)`
   }
 `;
 
+const HorizontalLine = styled.div`
+  width:1px;
+  height:1px;
+  width: 80%;
+  margin-left: 10%;  
+  background:#E6E6E6;
+  position: relative;
+`;
+
 const BiddedCardsButton = styled(Button)<JSX.IonButton>`
   text-decoration: underline;
   text-transform: uppercase;
@@ -190,18 +199,21 @@ const AuctionMyBiddedCardsPage: FC = () => {
                     : CardTagType.None;
 
                 return (
-                  <IonCol key={id}>
-                    <CardOnAuction
-                      id={id}
-                      title={title}
-                      imgIpfsHash={ipfsHashImageFront}
-                      type={type}
-                      linkto={"/market/card/newbid/" + id}  
-                      timeRemaining={timeRemaining}                   
-                      currentBid={currentBid}
-                      yourBid={yourBid}
-                    />
-                  </IonCol>
+                  <>
+                    <IonCol size="12" key={id}>
+                      <CardOnAuction
+                        id={id}
+                        title={title}
+                        imgIpfsHash={ipfsHashImageFront}
+                        type={type}
+                        linkto={"/market/card/newbid/" + id}  
+                        timeRemaining={timeRemaining}                   
+                        currentBid={currentBid}
+                        yourBid={yourBid}
+                      />
+                      <HorizontalLine/>
+                    </IonCol>
+                  </>
                 );
               })}
             </>

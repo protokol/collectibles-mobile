@@ -74,11 +74,9 @@ const fetchWalletCollectionsEpic: RootEpic = (
             };
             let data:BaseResourcesTypes.Assets[] = [];
             let activeAuctions:ExchangeResourcesTypes.Auctions[] = allAuctionsResponse.body.data.filter(a => cancelledAuctionsResponse.body.data.filter(ac => ac.nftAuctionCancel.auctionId === a.id));
-            activeAuctions = activeAuctions.filter(a => a.nftAuction.expiration.blockHeight < currentBlock); 
-
-            console.log(JSON.stringify(assetsResponse.body.data, null, 4));
-            console.log(JSON.stringify(activeAuctions, null, 4));
-
+            activeAuctions = activeAuctions.filter(a => a.nftAuction.expiration.blockHeight < currentBlock); // Remove expired auctions from active auctions
+            //console.log(JSON.stringify(assetsResponse.body.data, null, 4));
+            //console.log(JSON.stringify(activeAuctions, null, 4));
             for(let asset of assetsResponse.body.data){
               const auctionIn = activeAuctions.findIndex(a => a.nftAuction.nftIds.find(as => as === asset.id));
               if (auctionIn === -1){                                
@@ -157,13 +155,19 @@ const fetchCardsOnAuctionEpic: RootEpic = (
             //console.log("biddedAuctions:" + biddedAuctions);
             //console.log("pubKey:" + pubKey);
             if (onlyBiddedAuctions)
-            {
-              const biddedIn = bidsResponse.body.data.filter(c => c.id === cancelledBidsResponse.body.data.some(x => x.id === c.id)).findIndex(b => b.nftBid.auctionId === auction.id && b.senderPublicKey === pubKey);
+            {              
+              const biddedIn = bidsResponse.body.data.findIndex(b => b.nftBid.auctionId === auction.id && b.senderPublicKey === pubKey);
               //console.log("biddedIn:" + biddedIn);
               if (biddedIn === -1) continue;
             }            
-            const allBids = bidsResponse.body.data.filter(b => b.nftBid.auctionId === auction.id).filter(c => c.id === cancelledBidsResponse.body.data.some(x => x.id === c.id));
-            const allMyBids = bidsResponse.body.data.filter(b => b.nftBid.auctionId === auction.id && b.senderPublicKey === pubKey);
+            let bidsResp = bidsResponse.body.data.filter(b => b.nftBid.auctionId === auction.id);
+            let allBids:ExchangeResourcesTypes.Bids[] = [];
+            for(let bid of bidsResp){  
+              if (cancelledBidsResponse.body.data.some(b => b.nftBidCancel.bidId === bid.id)) continue;
+              allBids.push(bid);
+            }                         
+            //const allMyBids = bidsResponse.body.data.filter(b => b.nftBid.auctionId === auction.id && b.senderPublicKey === pubKey);
+            const allMyBids = allBids.filter(b => b.senderPublicKey === pubKey);
             const maxBid = (allBids.length === 0) ? 0 : Number(allBids.reduce((prev, curr) => (Number(prev.nftBid.bidAmount)>Number(curr.nftBid.bidAmount))?prev:curr).nftBid.bidAmount);
             const myBid = (allMyBids.length === 0) ? 0 : Number(allMyBids.reduce((prev, curr) => (Number(prev.nftBid.bidAmount)>Number(curr.nftBid.bidAmount))?prev:curr).nftBid.bidAmount);
             const myBidId = (allMyBids.length === 0) ? 0 : allMyBids.reduce((prev, curr) => (Number(prev.nftBid.bidAmount)>Number(curr.nftBid.bidAmount))?prev:curr).id;
@@ -201,10 +205,11 @@ const fetchCardsOnAuctionEpic: RootEpic = (
                   currentBid: maxBid,
               };
               if (!onlyOwnAuctions){
+                if (myBid === 0) continue;
                 asset.attributes = { ...asset.attributes, 
                   yourBid: myBid,
                   bidId: myBidId,
-                };
+                };                
               }
               data.push(asset);                              
             }

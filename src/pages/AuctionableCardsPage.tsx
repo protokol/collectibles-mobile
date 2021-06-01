@@ -15,7 +15,7 @@ import Text from '../components/ionic/Text';
 import { FontSize } from '../constants/font-size';
 import { FontWeight } from '../constants/font-weight';
 import useIsMounted from '../hooks/use-is-mounted';
-import useMediaQuery from '../hooks/use-media-query';
+// import useMediaQuery from '../hooks/use-media-query';
 import { CardTagType } from '../components/CardTag';
 import { AuthLoginContext } from '../providers/AuthLoginProvider';
 import { CollectiblesLoadAction } from '../store/actions/collections';
@@ -75,8 +75,10 @@ const CollectablesIonRow = styled(IonRow)`
 `;
 
 const AuctionableCardsPage: FC = () => {
+    /*
     const isMedium = useMediaQuery('(min-height: 992px)');
     const isLarge = useMediaQuery('(min-height: 1200px)');
+    */
     const { isError, error, isLoading, assets, isLastPage, query } = useSelector(
       collectionSelector,
       shallowEqual
@@ -126,6 +128,7 @@ const AuctionableCardsPage: FC = () => {
       [loadNextPage, isLastPage, isLoading]
     );
       
+    /*
     const cardColSize = useCallback(() => {
       if (isLarge) {
         return 3;
@@ -135,8 +138,7 @@ const AuctionableCardsPage: FC = () => {
       }
       return 6;
     }, [isMedium, isLarge]);
-
-    console.log("cardColSize at auctionableCardsPage:" + cardColSize.toString());
+    */
     
   return (
     <>

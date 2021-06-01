@@ -144,7 +144,7 @@ const AuctionOfferAcceptedConfirmationPage: FC = () => {
 
       <IonContent fullscreen>
         <IonGrid className="ion-no-padding">
-          <IonRow style={{paddingLeft:"40px", paddingRight: "40px"}}>
+          <IonRow>
             <ImageBgCol size="12">
               {isLoading() && <IonSpinner color="light" />}
               {!isLoading() && isError() && (
@@ -167,7 +167,7 @@ const AuctionOfferAcceptedConfirmationPage: FC = () => {
                     Nice!
                   </Text>
                   <Text
-                    className="ion-padding-top"
+                    className="ion-padding"
                     fontSize={FontSize.L}
                     color="light"
                   >
