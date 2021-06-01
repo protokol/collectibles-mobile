@@ -137,7 +137,7 @@ const AuctionCreationAndConfirmationPage: FC = () => {
       <Header 
         title="Start Card Auction"
         buttonTopLeft={
-          <IonButton onClick={() => history.replace('/home')}>
+          <IonButton onClick={() => history.goBack()}>
             <IonIcon color="light" slot="icon-only" icon={arrowBackOutline} />
           </IonButton>
         }

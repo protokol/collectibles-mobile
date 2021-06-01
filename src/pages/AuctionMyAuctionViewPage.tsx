@@ -140,8 +140,8 @@ const AuctionMyAuctionViewPage: FC = () => {
     <IonPage>
       <Header
         title={title}
-        buttonTopLeft={
-          <IonButton onClick={() => history.replace('/home')}>
+        buttonTopLeft={          
+          <IonButton onClick={() => history.goBack()}>
             <IonIcon color="light" slot="icon-only" icon={arrowBackOutline} />
           </IonButton>
         }
