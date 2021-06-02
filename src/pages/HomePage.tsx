@@ -93,7 +93,7 @@ const ActionButton = styled(Button)`
   }
 `;
 
-const HomeContent: FC<{menu?:string}> = () => {
+const HomeContent: FC<{menu?:string}> = ({menu}) => {
   const history = useHistory();
   const [activeIndex, setActiveIndex] = useContext(TabsState);
   // console.log("activeIndex: " + activeIndex);
@@ -201,7 +201,7 @@ const HomeContent: FC<{menu?:string}> = () => {
       </Panel>
 
       <Panel>
-        <HomeMarket/>
+        <HomeMarket menuout={menu}/>
       </Panel>
     </Content>
   );

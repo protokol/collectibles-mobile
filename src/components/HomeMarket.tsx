@@ -76,6 +76,9 @@ const ActionButton = styled(Button)`
 
 
 const HomeMarket: FC<{menuout?:string}> = ({menuout}) =>  {
+
+  console.log("Menu out incoming:" + menuout);
+
   const history = useHistory();
   const [submenu, setMarketSubMenu] = useState(menuout === undefined ? "0" : menuout);  
 

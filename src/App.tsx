@@ -106,14 +106,14 @@ const App: FC = () => {
                 <ProtectedRoute path="/home/profile" component={ProfilePage} exact />
                 <ProtectedRoute requiresCordova={true} path="/home/scan-qr" component={ScanQRPage} exact/>
                 <ProtectedRoute path="/home/card/:assetId" component={CardDetailsPage} exact />
-                <ProtectedRoute path="/home/collect-card/:collectionId" component={CardCollectingAndConfirmationPage} exact /> 
-                <ProtectedRoute path="/market/startauction" component={()=>(<HomePage menu="startauction"/>)} exact/>                 
+                <ProtectedRoute path="/home/collect-card/:collectionId" component={CardCollectingAndConfirmationPage} exact />                                
                 <ProtectedRoute path="/market/card/startauction/:assetId" component={AuctionCreateNewPage} exact />  
                 <ProtectedRoute path="/market/card/cancelauction/:auctionId" component={AuctionCancelFinalizationPage} exact />       
                 <ProtectedRoute path="/market/card/cancelauctionconfirm/:auctionId" component={AuctionCancelConfirmationPage} exact />                              
                 <ProtectedRoute path="/market/card/auctionview/:auctionId/:assetId" component={AuctionMyAuctionViewPage} exact />     
                 <ProtectedRoute path="/market/card/expiredauctionview/:auctionId/:assetId" component={AuctionMyAuctionExpiredAndAcceptOfferViewPage} exact/>
-                <ProtectedRoute path="/market/card/acceptoffer/:auctionId/:bidId" component={AuctionOfferAcceptedConfirmationPage} exact />                  
+                <ProtectedRoute path="/market/card/acceptoffer/:auctionId/:bidId" component={AuctionOfferAcceptedConfirmationPage} exact />     
+                <ProtectedRoute path="/market/startauction" component={()=>(<HomePage menu="startauction"/>)} exact/>               
                 <ProtectedRoute path="/market/myauctions" component={()=>(<HomePage menu="myauctions"/>)} exact />     
                 <ProtectedRoute path="/market/participateinauction" component={()=>(<HomePage menu="participateinauction"/>)} exact />     
                 <ProtectedRoute path="/market/mybids" component={()=>(<HomePage menu="mybids"/>)} exact />                  
