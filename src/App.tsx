@@ -13,7 +13,7 @@ import CardCollectingAndConfirmationPage from './pages/CardCollectingAndConfirma
 import HomePage from './pages/HomePage';
 import PasscodePage from './pages/PasscodePage';
 import PassphrasePage from './pages/PassphrasePage';
-import StartAuctionPage from './pages/auctions/AuctionCreationAndConfirmationPage';
+import AuctionCreationAndConfirmationPage from './pages/auctions/AuctionCreationAndConfirmationPage';
 import AuctionCreateNewPage from './pages/auctions/AuctionCreateNewPage';
 import AuctionCancelConfirmationPage from './pages/auctions/AuctionCancelConfirmationPage';
 import AuctionCancelFinalizationPage from './pages/auctions/AuctionCancelFinalizationPage';
@@ -121,7 +121,7 @@ const App: FC = () => {
                 <ProtectedRoute path="/market/card/placenewbid/:auctionId/:bidAmount" component={AuctionPlaceBidAndConfirmationPage} exact />    
                 <ProtectedRoute path="/market/card/retractbid/:bidId" component={AuctionRetractBidConfirmationPage} exact />     
                 <ProtectedRoute path="/market/card/retractbidconfirmation/:bidId" component={AuctionRetractBidFinalizationPage} exact />                                            
-                <ProtectedRoute path="/market/card/createnewauction/:cardId/:minimumBid/:minimumIncrement/:finalBiddingDate" component={StartAuctionPage} exact />                                         
+                <ProtectedRoute path="/market/card/createnewauction/:cardId/:minimumBid/:minimumIncrement/:finalBiddingDate" component={AuctionCreationAndConfirmationPage} exact />                                         
               </IonRouterOutlet>
             </Switch>
           </IonReactRouter>
