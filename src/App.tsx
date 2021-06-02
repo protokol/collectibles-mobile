@@ -98,7 +98,6 @@ const App: FC = () => {
               />
              
               <Redirect path="/" exact to="/home" />
-              <Redirect path="/market" exact to="/market" />
 
               {/* Notice: history.push only works when target is an <IonPage/> root element component */}
               <IonRouterOutlet>

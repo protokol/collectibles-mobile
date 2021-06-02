@@ -66,15 +66,18 @@ const fetchWalletCollectionsEpic: RootEpic = (
             }            
             if (cancelledAuctionsResponse?.body?.errors) {
               return CollectiblesLoadErrorAction(cancelledAuctionsResponse?.body?.errors);
-            } 
-            const currentBlock = blockResponse.body?.data?.height;                      
+            }                              
             const q = query || {
               page: 1,
               limit: 100,
             };
             let data:BaseResourcesTypes.Assets[] = [];
             let activeAuctions:ExchangeResourcesTypes.Auctions[] = allAuctionsResponse.body.data.filter(a => cancelledAuctionsResponse.body.data.filter(ac => ac.nftAuctionCancel.auctionId === a.id));
-            activeAuctions = activeAuctions.filter(a => a.nftAuction.expiration.blockHeight < currentBlock); // Remove expired auctions from active auctions
+            
+            //Cards on expired auctions (not cancelled) could be waiting for cancellation or accepting offer, is for that next two lines are commented and not filtering them
+            //const currentBlock = blockResponse.body?.data?.height;     
+            //activeAuctions = activeAuctions.filter(a => a.nftAuction.expiration.blockHeight < currentBlock); // Remove expired auctions from active auctions
+            
             //console.log(JSON.stringify(assetsResponse.body.data, null, 4));
             //console.log(JSON.stringify(activeAuctions, null, 4));
             for(let asset of assetsResponse.body.data){

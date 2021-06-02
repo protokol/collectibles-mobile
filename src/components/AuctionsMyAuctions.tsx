@@ -204,7 +204,6 @@ const AuctionsMyAuctions: FC = () => {
                     : CardTagType.None;
 
                 return (
-                  <>
                    <IonCol size="12" key={id}>
                       <CardOnAuction       
                         id={id}
@@ -219,7 +218,6 @@ const AuctionsMyAuctions: FC = () => {
                       />
                       <HorizontalLine/>
                    </IonCol>                  
-                  </>
                 );
               })}
             </>
