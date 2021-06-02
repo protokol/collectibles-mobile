@@ -1,5 +1,5 @@
-import { FC, useState, useContext } from 'react';
-import { useDispatch } from 'react-redux';
+import { FC, useState } from 'react';
+// import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
 import styled from 'styled-components';
 import { IonCol, IonGrid, IonRow } from '@ionic/react';
@@ -14,8 +14,8 @@ import AuctionsMyAuctions from '../components/AuctionsMyAuctions';
 import AuctionParticipateIn from '../components/AuctionParticipateIn';
 import AuctionMyBiddedCards from '../components/AuctionMyBiddedCards';
 
-import { CollectiblesLoadAction, CollectiblesOnAuctionLoadAction } from '../store/actions/collections';
-import { AuthLoginContext } from '../providers/AuthLoginProvider';
+//import { CollectiblesLoadAction, CollectiblesOnAuctionLoadAction } from '../store/actions/collections';
+// import { AuthLoginContext } from '../providers/AuthLoginProvider'; 
 
 const ImageBgCol = styled(IonCol)`
   position: relative;
@@ -80,13 +80,18 @@ const HomeMarket: FC<{menuout?:string}> = ({menuout}) =>  {
   console.log("Menu out incoming:" + menuout);
 
   const history = useHistory();
-  const [submenu, setMarketSubMenu] = useState(menuout === undefined ? "0" : menuout);  
+  const [submenu, setMarketSubMenu] = useState("-1");  
 
+  /*
   const dispatch = useDispatch();
   const {
     session: { publicKey },
   } = useContext(AuthLoginContext);  
- 
+ */
+  if(submenu==="-1"){
+    setMarketSubMenu(menuout === undefined ? "0" : menuout);
+  }
+
   const auctionSellHandler = () => {    
     setMarketSubMenu("auctionstart");   
   }
@@ -150,7 +155,7 @@ const HomeMarket: FC<{menuout?:string}> = ({menuout}) =>  {
               fontSize={FontSize.SM}
               fontWeight={FontWeight.BOLD}
               disabled={true}
-              onClick={() => history.replace('/home/buycards')}
+              onClick={() => history.push('/home/buycards')}
             >
               Buy cards
             </ActionButton>
@@ -161,7 +166,7 @@ const HomeMarket: FC<{menuout?:string}> = ({menuout}) =>  {
               fontSize={FontSize.SM}
               fontWeight={FontWeight.BOLD}
               disabled={true}
-              onClick={() => history.replace('/home/sellcards')}
+              onClick={() => history.push('/home/sellcards')}
             >
               Sell cards
             </ActionButton>
@@ -172,7 +177,7 @@ const HomeMarket: FC<{menuout?:string}> = ({menuout}) =>  {
               fontSize={FontSize.SM}
               fontWeight={FontWeight.BOLD}
               disabled={true}
-              onClick={() => history.replace('/home/tradecards')}
+              onClick={() => history.push('/home/tradecards')}
             >
               Trade cards
             </ActionButton>
@@ -183,7 +188,7 @@ const HomeMarket: FC<{menuout?:string}> = ({menuout}) =>  {
               fontSize={FontSize.SM}
               fontWeight={FontWeight.BOLD}
               onClick={() => {
-                  CollectiblesLoadAction(publicKey!, false)
+                  //CollectiblesLoadAction(publicKey!, false)
                   auctionSellHandler();
                 }
               }
@@ -197,7 +202,7 @@ const HomeMarket: FC<{menuout?:string}> = ({menuout}) =>  {
               fontSize={FontSize.SM}
               fontWeight={FontWeight.BOLD}
               onClick={() => {
-                  dispatch(CollectiblesOnAuctionLoadAction(publicKey!, true, false, false, undefined));
+                  //dispatch(CollectiblesOnAuctionLoadAction(publicKey!, true, false, false, undefined));
                   auctionSellViewHandler();
                 }
               }
@@ -211,7 +216,7 @@ const HomeMarket: FC<{menuout?:string}> = ({menuout}) =>  {
               fontSize={FontSize.SM}
               fontWeight={FontWeight.BOLD}
               onClick={() => {
-                  dispatch(CollectiblesOnAuctionLoadAction(publicKey!, true, false, true, undefined));
+                  //dispatch(CollectiblesOnAuctionLoadAction(publicKey!, true, false, true, undefined));
                   auctionBuyHandler();
                 }
               }

@@ -197,7 +197,7 @@ const AuctionsMyAuctions: FC = () => {
                   yourBid
                 } = attributes as any;
 
-                const expired = timeRemaining.trim().startsWith("-");
+                const expired = (timeRemaining===undefined)?false:timeRemaining.trim().startsWith("-");
                 const type = 
                   Array.isArray(tags) && tags.length
                     ? tags[0]

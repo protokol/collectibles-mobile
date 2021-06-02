@@ -96,7 +96,7 @@ const ActionButton = styled(Button)`
 const HomeContent: FC<{menu?:string}> = ({menu}) => {
   const history = useHistory();
   const [activeIndex, setActiveIndex] = useContext(TabsState);
-  // console.log("activeIndex: " + activeIndex);
+  console.log("menu received @ HomeContent: " + menu);
 
   return (
     <Content id="main-content" fullscreen isDarkBg={activeIndex <= 0}>
@@ -208,6 +208,7 @@ const HomeContent: FC<{menu?:string}> = ({menu}) => {
 };
 
 const HomePage: FC<{menu?:string}> = ({menu}) => {
+  console.log("menu received @ HomePage: " + menu);
 
   return (
     <IonPage>

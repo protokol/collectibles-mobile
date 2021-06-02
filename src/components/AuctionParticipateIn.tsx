@@ -7,21 +7,21 @@ import {
   IonRow,
   IonSpinner,
 } from '@ionic/react';
-import Card from './Card';
-import Button from './ionic/Button';
+import Card from '../components/Card';
+import Button from '../components/ionic/Button';
 import { JSX } from '@ionic/core';
-import Label from './ionic/Label';
-import Text from './ionic/Text';
+import Label from '../components/ionic/Label';
+import Text from '../components/ionic/Text';
 import { FontSize } from '../constants/font-size';
 import { FontWeight } from '../constants/font-weight';
 import useIsMounted from '../hooks/use-is-mounted';
 import useMediaQuery from '../hooks/use-media-query';
-import { CardTagType } from './CardTag';
+import { CardTagType } from '../components/CardTag';
 import { AuthLoginContext } from '../providers/AuthLoginProvider';
 import { CollectiblesOnAuctionLoadAction } from '../store/actions/collections';
 import { collectionSelector } from '../store/selectors/collections';
 import { auctionBalloonImage } from '../constants/images';
-import AuctionMyBiddedCards from './AuctionMyBiddedCards';
+import AuctionMyBiddedCards from '../components/AuctionMyBiddedCards';
 
 const ImageBgCol = styled(IonCol)`
   position: relative;
@@ -94,6 +94,7 @@ const AuctionParticipateIn: FC = () => {
     const isMounted = useIsMounted();
     useEffect(() => {
       if (publicKey && isMounted) {
+        console.log("Call dispatch participate 1");
           dispatch(CollectiblesOnAuctionLoadAction(publicKey!, false, false, false, undefined));
       }
     }, [isMounted, dispatch, publicKey]);
@@ -101,6 +102,7 @@ const AuctionParticipateIn: FC = () => {
     const loadNextPage = useCallback(() => {
       if (publicKey) {
         //const { page } = query ?? { page: 1 };
+        console.log("Call dispatch participate 2");
         dispatch(CollectiblesOnAuctionLoadAction(publicKey!, false, false, false, undefined));
       }
     }, [/*query,*/ dispatch, publicKey]);
@@ -167,7 +169,7 @@ const AuctionParticipateIn: FC = () => {
                   color="light"
                   fontWeight={FontWeight.BOLD}
                   onClick={() => {
-                      dispatch(CollectiblesOnAuctionLoadAction(publicKey!, false, true, true, undefined));
+                      //dispatch(CollectiblesOnAuctionLoadAction(publicKey!, false, true, true, undefined));
                       navigateMyBids();
                     }
                   }

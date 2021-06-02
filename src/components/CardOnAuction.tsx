@@ -62,7 +62,8 @@ const CardOnAuction: FC<{
   const yourBidColor = (yourBid!==undefined && currentBid > yourBid) ? "danger" : "success";
 
   let timeRemainingColor = "dark";
-  if (timeRemaining.trim().startsWith("-")){
+
+  if (timeRemaining===undefined || timeRemaining.trim().startsWith("-")){
     timeRemainingColor = "danger";
     timeRemaining = "Expired";
   }
