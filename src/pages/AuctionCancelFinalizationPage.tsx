@@ -25,7 +25,6 @@ import { driverHighResImage } from '../constants/images';
 import useIsMounted from '../hooks/use-is-mounted';
 import { AuthLoginContext } from '../providers/AuthLoginProvider';
 import { CancelAuctionAction } from '../store/actions/auctions';
-import AuctionsMyAuctionsPage from './AuctionsMyAuctionsPage';
 import { auctionSelector } from '../store/selectors/auctions';
 import { CollectiblesOnAuctionLoadAction } from '../store/actions/collections';
 import { transactionsSelector } from '../store/selectors/transaction';
@@ -96,12 +95,6 @@ const AuctionCancelFinalizationPage: FC = () => {
   const transactions = useSelector(transactionsSelector, shallowEqual);
   const tx = useMemo(() => transactions[txUuid], [transactions]);
 
-  const [navToAuctions, setNavToAuctions] = useState(false);
-  
-  const navigateAuctions = () => {    
-    setNavToAuctions(true);   
-  }     
-
   const isLoading = useCallback(() => {
     return cancelAuctionRequest?.isLoading || tx?.isLoading;
   }, [cancelAuctionRequest, tx]);
@@ -125,12 +118,7 @@ const AuctionCancelFinalizationPage: FC = () => {
     }
   }, [isMounted, dispatch, auctionId, publicKey, passphrase]);  
 
-  return (
-    <>
-    {navToAuctions && (
-      <AuctionsMyAuctionsPage />
-    )} 
-    {!navToAuctions && (    
+  return (  
     <IonPage>
       <Header 
         title="Cancel Auction"
@@ -192,7 +180,6 @@ const AuctionCancelFinalizationPage: FC = () => {
               expand="block"
               onClick={() => {
                   dispatch(CollectiblesOnAuctionLoadAction(publicKey!, true, false, true, undefined));
-                  //navigateAuctions();
                   history.push('/market/myauctions');
                 }
               }
@@ -202,9 +189,7 @@ const AuctionCancelFinalizationPage: FC = () => {
           </IonToolbar>
         </Footer>
       )}
-    </IonPage>    
-    )}  
-    </>
+    </IonPage>
   );
 };
 

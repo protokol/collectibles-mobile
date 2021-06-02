@@ -27,7 +27,7 @@ import useIsMounted from '../hooks/use-is-mounted';
 import { AuthLoginContext } from '../providers/AuthLoginProvider';
 import { CancelBidAction } from '../store/actions/auctions';
 import { CollectiblesOnAuctionLoadAction } from '../store/actions/collections';
-import AuctionsMyBiddedCardsPage from './AuctionMyBiddedCards';
+import AuctionsMyBiddedCardsPage from '../components/AuctionMyBiddedCards';
 import { auctionSelector } from '../store/selectors/auctions';
 import { transactionsSelector } from '../store/selectors/transaction';
 
@@ -97,16 +97,6 @@ const AuctionRetractBidFinalizationPage: FC = () => {
   const transactions = useSelector(transactionsSelector, shallowEqual);
   const tx = useMemo(() => transactions[txUuid], [transactions]);
 
-  const [navToBids, setNavToBids] = useState(false);
-
-  const navigateBids = () => {    
-    setNavToBids(true);   
-  }     
-
-  const clickBack = () => {
-    history.push('/market/mybids');
-  }
-
   const isLoading = useCallback(() => {
     return cancelBidRequest?.isLoading || tx?.isLoading;
   }, [cancelBidRequest, tx]);
@@ -130,17 +120,12 @@ const AuctionRetractBidFinalizationPage: FC = () => {
     }
   }, [isMounted, dispatch, bidId, publicKey, passphrase]);  
 
-  return (
-    <>
-    {navToBids && (
-      <AuctionsMyBiddedCardsPage />
-    )} 
-    {!navToBids && (    
+  return (  
     <IonPage>
       <Header 
         title="Retract Bid"
         buttonTopLeft={
-          <IonButton onClick={() => clickBack()}>
+          <IonButton onClick={() => history.push('/market/mybids')}>
             <IonIcon color="light" slot="icon-only" icon={arrowBackOutline} />
           </IonButton>
         }
@@ -196,7 +181,6 @@ const AuctionRetractBidFinalizationPage: FC = () => {
               expand="block"
               onClick={() => {
                   dispatch(CollectiblesOnAuctionLoadAction(publicKey!, false, true, true, undefined));
-                  //navigateBids();
                   history.push('/market/mybids');
                 }
               }
@@ -207,8 +191,6 @@ const AuctionRetractBidFinalizationPage: FC = () => {
         </Footer>
       )}
     </IonPage>    
-    )}  
-    </>
   );
 };
 

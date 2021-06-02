@@ -26,7 +26,6 @@ import useIsMounted from '../hooks/use-is-mounted';
 import { AuthLoginContext } from '../providers/AuthLoginProvider';
 import { StartAuctionAction } from '../store/actions/auctions';
 import { CollectiblesOnAuctionLoadAction } from '../store/actions/collections';
-import AuctionsMyAuctionsPage from './AuctionsMyAuctionsPage';
 import { auctionSelector } from '../store/selectors/auctions';
 import { transactionsSelector } from '../store/selectors/transaction';
 
@@ -96,12 +95,6 @@ const AuctionCreationAndConfirmationPage: FC = () => {
   const transactions = useSelector(transactionsSelector, shallowEqual);
   const tx = useMemo(() => transactions[txUuid], [transactions]);
 
-  const [navToMyAuctions, setNavToMyAuctions] = useState(false);
-
-  const navigateMyAuctions = () => {    
-    setNavToMyAuctions(true);   
-  }     
-
   const isLoading = useCallback(() => {
     return startAuctionRequest?.isLoading || tx?.isLoading;
   }, [startAuctionRequest, tx]);
@@ -128,11 +121,6 @@ const AuctionCreationAndConfirmationPage: FC = () => {
   }, [isMounted, dispatch, minimumBid, minimumIncrement, finalBiddingDate, cardId, address, publicKey, passphrase]);  
 
   return (
-    <>
-    {navToMyAuctions && (
-      <AuctionsMyAuctionsPage />
-    )} 
-    {!navToMyAuctions && ( 
     <IonPage>
       <Header 
         title="Start Card Auction"
@@ -192,8 +180,7 @@ const AuctionCreationAndConfirmationPage: FC = () => {
               radius={false}
               expand="block"
               onClick={() => {
-                  dispatch(CollectiblesOnAuctionLoadAction(publicKey!, true, false, true, undefined));
-                  //navigateMyAuctions();
+                  dispatch(CollectiblesOnAuctionLoadAction(publicKey!, true, false, true, undefined));                 
                   history.push('/market/myauctions');
                 }
               }
@@ -203,9 +190,7 @@ const AuctionCreationAndConfirmationPage: FC = () => {
           </IonToolbar>
         </Footer>
       )}
-    </IonPage>
-    )}  
-    </>    
+    </IonPage> 
   );
 };
 

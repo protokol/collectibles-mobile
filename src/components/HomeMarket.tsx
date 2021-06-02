@@ -9,9 +9,11 @@ import Text from '../components/ionic/Text';
 import { FontSize } from '../constants/font-size';
 import { FontWeight } from '../constants/font-weight';
 import { flagImage } from '../constants/images';
-import AuctionableCardsPage from '../pages/AuctionableCardsPage';
-import AuctionsMyAuctionsPage from '../pages/AuctionsMyAuctionsPage';
-import AuctionParticipateInPage from '../pages/AuctionParticipateInPage';
+import AuctionableCards from '../components/AuctionableCards';
+import AuctionsMyAuctions from '../components/AuctionsMyAuctions';
+import AuctionParticipateIn from '../components/AuctionParticipateIn';
+import AuctionMyBiddedCards from '../components/AuctionMyBiddedCards';
+
 import { CollectiblesLoadAction, CollectiblesOnAuctionLoadAction } from '../store/actions/collections';
 import { AuthLoginContext } from '../providers/AuthLoginProvider';
 
@@ -75,46 +77,40 @@ const ActionButton = styled(Button)`
 
 const HomeMarket: FC<{menuout?:string}> = ({menuout}) =>  {
   const history = useHistory();
-  const [submenu, setMarketSubMenu] = useState(menuout === undefined?0:menuout);  
+  const [submenu, setMarketSubMenu] = useState(menuout === undefined ? "0" : menuout);  
 
   const dispatch = useDispatch();
   const {
     session: { publicKey },
   } = useContext(AuthLoginContext);  
-
-  const auctionSell = submenu==="1";
-  const auctionSellView = submenu==="2";
-  const auctionBuy = submenu==="3";
-
-  const auctionMyBids = submenu==="mybids";
  
   const auctionSellHandler = () => {    
-    setMarketSubMenu("1");   
+    setMarketSubMenu("auctionstart");   
   }
 
   const auctionSellViewHandler = () => {    
-    setMarketSubMenu("2");   
+    setMarketSubMenu("myauctions");   
   }  
 
   const auctionBuyHandler = () => {    
-    setMarketSubMenu("3");   
+    setMarketSubMenu("participateinauction");   
   }
 
-  return (  
+   return (  
     <>
-    {auctionSell && (
-      <AuctionableCardsPage />
+    {submenu==="auctionstart" && (
+      <AuctionableCards />
     )}  
-    {auctionSellView && (
-      <AuctionsMyAuctionsPage />
+    {submenu==="myauctions" && (
+      <AuctionsMyAuctions />
     )}      
-    {auctionBuy && (
-      <AuctionParticipateInPage/>
+    {submenu==="participateinauction" && (
+      <AuctionParticipateIn/>
     )}  
-    {auctionMyBids && (
+    {submenu==="mybids" && (
       <AuctionMyBiddedCards/>
-    )}         
-    {!auctionSell && !auctionSellView && !auctionBuy && (
+    )}                            
+    {submenu==="0" && (
       <IonGrid className="ion-no-padding">
         <IonRow>
           <ImageBgCol size="12">

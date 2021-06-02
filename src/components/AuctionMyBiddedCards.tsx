@@ -1,5 +1,5 @@
 import { FC, useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import {
   IonCol,  
@@ -7,21 +7,20 @@ import {
   IonRow,
   IonSpinner,
 } from '@ionic/react';
-import Card from '../components/Card';
-import Button from '../components/ionic/Button';
+import CardOnAuction from './CardOnAuction';
 import { JSX } from '@ionic/core';
-import Label from '../components/ionic/Label';
-import Text from '../components/ionic/Text';
+import Button from './ionic/Button';
+import Label from './ionic/Label';
+import Text from './ionic/Text';
 import { FontSize } from '../constants/font-size';
 import { FontWeight } from '../constants/font-weight';
 import useIsMounted from '../hooks/use-is-mounted';
-import useMediaQuery from '../hooks/use-media-query';
-import { CardTagType } from '../components/CardTag';
+import { CardTagType } from './CardTag';
 import { AuthLoginContext } from '../providers/AuthLoginProvider';
 import { CollectiblesOnAuctionLoadAction } from '../store/actions/collections';
 import { collectionSelector } from '../store/selectors/collections';
 import { auctionBalloonImage } from '../constants/images';
-import AuctionMyBiddedCards from './AuctionMyBiddedCards';
+import AuctionParticipateIn from './AuctionParticipateIn';
 
 const ImageBgCol = styled(IonCol)`
   position: relative;
@@ -31,7 +30,7 @@ const ImageBgCol = styled(IonCol)`
   height: 229px !important;
 
   &:before {
-    content: ' ';
+    content: ' '; 
     display: block;
     position: absolute;
     left: 0;
@@ -52,20 +51,18 @@ const ImageBgCol = styled(IonCol)`
   }
 `;
 
+const HorizontalLine = styled.div`
+  width:1px;
+  height:1px;
+  width: 80%;
+  margin-left: 10%;  
+  background:#E6E6E6;
+  position: relative;
+`;
+
 const BiddedCardsButton = styled(Button)<JSX.IonButton>`
   text-decoration: underline;
   text-transform: uppercase;
-`;
-
-const CardContainer = styled(IonCol)` 
-  padding: 1.375rem;
-
-  &:nth-child(odd) {
-    padding-left: 0.6875rem;
-  }
-  &:nth-child(even) {
-    padding-right: 0.6875rem;
-  }
 `;
 
 const CollectablesIonRow = styled(IonRow)`
@@ -73,17 +70,15 @@ const CollectablesIonRow = styled(IonRow)`
   max-height: calc(100vh - 92px - 4.8rem);
 `;
 
-const AuctionParticipateInPage: FC = () => {    
-    const isMedium = useMediaQuery('(min-height: 992px)');
-    const isLarge = useMediaQuery('(min-height: 1200px)');
-    const { isError, error, isLoading, assets, isLastPage /*, query*/ } = useSelector(collectionSelector, shallowEqual); 
+const AuctionMyBiddedCards: FC = () => {
 
-    const [navToMyBiddedCards, setNavToMyBiddedCards] = useState(false);
+    const { isError, error, isLoading, assets, isLastPage /*, query*/ } = useSelector(collectionSelector);
 
-    const navigateMyBids = () => {    
-      setNavToMyBiddedCards(true);   
+    const [navToNewBid, setNavToNewBid] = useState(false);
+
+    const navigateNewBid = () => {    
+      setNavToNewBid(true);   
     }    
-
 
     const dispatch = useDispatch();
     const {
@@ -94,14 +89,14 @@ const AuctionParticipateInPage: FC = () => {
     const isMounted = useIsMounted();
     useEffect(() => {
       if (publicKey && isMounted) {
-          dispatch(CollectiblesOnAuctionLoadAction(publicKey!, false, false, false, undefined));
+          dispatch(CollectiblesOnAuctionLoadAction(publicKey!, false, true, true, undefined));
       }
     }, [isMounted, dispatch, publicKey]);
   
     const loadNextPage = useCallback(() => {
       if (publicKey) {
         //const { page } = query ?? { page: 1 };
-        dispatch(CollectiblesOnAuctionLoadAction(publicKey!, false, false, false, undefined));
+        dispatch(CollectiblesOnAuctionLoadAction(publicKey!, false, true, true, undefined));
       }
     }, [/*query,*/ dispatch, publicKey]);
   
@@ -117,25 +112,15 @@ const AuctionParticipateInPage: FC = () => {
       },
       [loadNextPage, isLastPage, isLoading]
     );
-  
-    const cardColSize = useCallback(() => {
-      if (isLarge) {
-        return 3;
-      }
-      if (isMedium) {
-        return 4;
-      }
-      return 6;
-    }, [isMedium, isLarge]);
-    
+      
   return (
     <>
-    {navToMyBiddedCards && (
-      <AuctionMyBiddedCards />
+    {navToNewBid && (
+      <AuctionParticipateIn />
     )}  
-    {!navToMyBiddedCards && (      
+    {!navToNewBid && (      
     <>
-    <IonGrid className="ion-no-padding">
+     <IonGrid className="ion-no-padding">
       <IonRow>
         <ImageBgCol size="12">
           <Label
@@ -167,19 +152,19 @@ const AuctionParticipateInPage: FC = () => {
                   color="light"
                   fontWeight={FontWeight.BOLD}
                   onClick={() => {
-                      dispatch(CollectiblesOnAuctionLoadAction(publicKey!, false, true, true, undefined));
-                      navigateMyBids();
+                      dispatch(CollectiblesOnAuctionLoadAction(publicKey!, false, false, false, undefined));
+                      navigateNewBid();
                     }
                   }
                 >
-                  My Bids
+                  Start a new bid
                 </BiddedCardsButton>                   
               </IonCol>              
             </IonRow>
           </IonGrid>                             
         </ImageBgCol>            
       </IonRow>
-    </IonGrid>    
+    </IonGrid>   
     <IonGrid className="ion-no-padding">
       <CollectablesIonRow onScroll={onCardsScroll}>
           {!isLoading && isError && (
@@ -201,9 +186,11 @@ const AuctionParticipateInPage: FC = () => {
               {flatAssets.map(({ id, attributes }) => {
                 const {
                   title,
-                  subtitle,
                   ipfsHashImageFront,
                   tags,
+                  timeRemaining,
+                  currentBid,
+                  yourBid                  
                 } = attributes as any;
 
                 const type = 
@@ -212,16 +199,19 @@ const AuctionParticipateInPage: FC = () => {
                     : CardTagType.None;
 
                 return (
-                  <CardContainer key={id} size={cardColSize().toString()}>
-                    <Card
+                  <IonCol size="12" key={id}>
+                    <CardOnAuction
                       id={id}
                       title={title}
-                      subtitle={subtitle}
                       imgIpfsHash={ipfsHashImageFront}
                       type={type}
-                      linkto={"/market/card/newbid/"+id}
-                    />                    
-                  </CardContainer>
+                      linkto={"/market/card/newbid/" + id}  
+                      timeRemaining={timeRemaining}                   
+                      currentBid={currentBid}
+                      yourBid={yourBid}
+                    />
+                    <HorizontalLine/>
+                  </IonCol>
                 );
               })}
             </>
@@ -230,10 +220,10 @@ const AuctionParticipateInPage: FC = () => {
             <IonCol size="12" class="ion-text-center">
               <Text
                 className="ion-padding-top"
-                fontSize={FontSize.L}
+                fontSize={FontSize.L} 
                 color="primary"
               >
-                No available auctions yet!
+                You don't have bids yet!
               </Text>
             </IonCol>
           )}
@@ -250,4 +240,4 @@ const AuctionParticipateInPage: FC = () => {
   );
 };
 
-export default AuctionParticipateInPage;
+export default AuctionMyBiddedCards;

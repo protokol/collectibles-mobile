@@ -106,7 +106,6 @@ const AuctionMyAuctionViewPage: FC = () => {
 
   const submitForm = useCallback( 
     () => {  
-      //console.log("submitted:" + JSON.stringify(data, null, 2));    
       history.push(`/market/card/cancelauctionconfirm/${auctionId}`);
     },
     [auctionId, history]

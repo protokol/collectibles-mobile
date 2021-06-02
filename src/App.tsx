@@ -5,7 +5,6 @@ import { Plugins } from '@capacitor/core';
 import { ScreenOrientation } from '@ionic-native/screen-orientation';
 import { IonApp, IonRouterOutlet, isPlatform } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { createBrowserHistory } from 'history';
 import MainMenu from './components/MainMenu';
 import ProtectedRoute from './components/ProtectedRoute';
 import useIsMounted from './hooks/use-is-mounted';
@@ -23,10 +22,6 @@ import AuctionRetractBidFinalizationPage from './pages/AuctionRetractBidFinaliza
 
 import AuctionMyAuctionViewPage from './pages/AuctionMyAuctionViewPage';
 import AuctionMyAuctionExpiredAndAcceptOfferViewPage from './pages/AuctionMyAuctionExpiredAndAcceptOfferViewPage';
-import AuctionsMyAuctionsPage from './pages/AuctionsMyAuctionsPage';
-import AuctionMyBiddedCards from './pages/AuctionMyBiddedCards';
-import AuctionableCardsPage from './pages/AuctionableCardsPage';
-import AuctionParticipateInPage from './pages/AuctionParticipateInPage';
 import AuctionPlaceBidAndConfirmationPage from './pages/AuctionPlaceBidAndConfirmationPage';
 import AuctionOfferAcceptedConfirmationPage from './pages/AuctionOfferAcceptedConfirmationPage';
 import ProfilePage from './pages/ProfilePage';
@@ -41,7 +36,6 @@ import './theme/ionic-theme';
 import AuctionPlaceBidPage from './pages/AuctionPlaceBidPage';
 
 const { SplashScreen } = Plugins;
-const history = createBrowserHistory();
 
 const App: FC = () => {
   const dispatch = useDispatch();
@@ -107,21 +101,22 @@ const App: FC = () => {
               <Redirect path="/" exact to="/home" />
               <Redirect path="/market" exact to="/market" />
 
+              {/* Notice: history.push only works when target is an <IonPage/> root element component */}
               <IonRouterOutlet>
                 <ProtectedRoute path="/home" component={HomePage} exact />
                 <ProtectedRoute path="/home/profile" component={ProfilePage} exact />
                 <ProtectedRoute requiresCordova={true} path="/home/scan-qr" component={ScanQRPage} exact/>
                 <ProtectedRoute path="/home/card/:assetId" component={CardDetailsPage} exact />
                 <ProtectedRoute path="/home/collect-card/:collectionId" component={CardCollectingAndConfirmationPage} exact /> 
-                <ProtectedRoute path="/market/startauction" component={AuctionableCardsPage} exact/>                 
+                <ProtectedRoute path="/market/startauction" component={()=>(<HomePage menu="startauction"/>)} exact/>                 
                 <ProtectedRoute path="/market/card/startauction/:assetId" component={AuctionCreateNewPage} exact />  
                 <ProtectedRoute path="/market/card/cancelauction/:auctionId" component={AuctionCancelFinalizationPage} exact />       
                 <ProtectedRoute path="/market/card/cancelauctionconfirm/:auctionId" component={AuctionCancelConfirmationPage} exact />                              
                 <ProtectedRoute path="/market/card/auctionview/:auctionId/:assetId" component={AuctionMyAuctionViewPage} exact />     
                 <ProtectedRoute path="/market/card/expiredauctionview/:auctionId/:assetId" component={AuctionMyAuctionExpiredAndAcceptOfferViewPage} exact/>
                 <ProtectedRoute path="/market/card/acceptoffer/:auctionId/:bidId" component={AuctionOfferAcceptedConfirmationPage} exact />                  
-                <ProtectedRoute path="/market/myauctions" component={AuctionsMyAuctionsPage} exact />     
-                <ProtectedRoute path="/market/participateinauction" component={AuctionParticipateInPage} exact />     
+                <ProtectedRoute path="/market/myauctions" component={()=>(<HomePage menu="myauctions"/>)} exact />     
+                <ProtectedRoute path="/market/participateinauction" component={()=>(<HomePage menu="participateinauction"/>)} exact />     
                 <ProtectedRoute path="/market/mybids" component={()=>(<HomePage menu="mybids"/>)} exact />                  
                 <ProtectedRoute path="/market/card/newbid/:assetId" component={AuctionPlaceBidPage} exact />                  
                 <ProtectedRoute path="/market/card/placenewbid/:auctionId/:bidAmount" component={AuctionPlaceBidAndConfirmationPage} exact />    

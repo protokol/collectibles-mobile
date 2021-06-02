@@ -87,7 +87,7 @@ const CardDetailsPage: FC = () => {
       <Header
         title={title}
         buttonTopLeft={
-          <IonButton onClick={() => history.push('/market/mybids')}>
+          <IonButton onClick={() => history.push('/home')}>
             <IonIcon color="light" slot="icon-only" icon={arrowBackOutline} />
           </IonButton>
         }

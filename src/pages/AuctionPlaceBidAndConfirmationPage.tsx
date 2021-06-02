@@ -1,7 +1,7 @@
 import { arrowBackOutline } from 'ionicons/icons';
 import { FC, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
-import { RouteComponentProps, useHistory, useParams } from 'react-router';
+import { useHistory, useParams } from 'react-router';
 import styled from 'styled-components';
 import { v4 as uuid } from 'uuid';
 import {
@@ -26,7 +26,6 @@ import useIsMounted from '../hooks/use-is-mounted';
 import { AuthLoginContext } from '../providers/AuthLoginProvider';
 import { PlaceBidAction } from '../store/actions/auctions';
 import { CollectiblesOnAuctionLoadAction } from '../store/actions/collections';
-import AuctionMyBiddedCards from './AuctionMyBiddedCards';
 import { auctionSelector } from '../store/selectors/auctions';
 import { transactionsSelector } from '../store/selectors/transaction';
 
@@ -86,20 +85,15 @@ const ViewCardButton = styled(Button)`
 
 const txUuid = uuid();
 
-const AuctionPlaceBidAndConfirmationPage: FC<RouteComponentProps> = ({history}) => {    
+const AuctionPlaceBidAndConfirmationPage: FC = () => {    
 
   const { auctionId, bidAmount } = useParams<{ auctionId: string, bidAmount: string}>();  
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const placeBidRequest = useSelector(auctionSelector, shallowEqual);
   const transactions = useSelector(transactionsSelector, shallowEqual);
-  const tx = useMemo(() => transactions[txUuid], [transactions]);
-
-  const [navToMyBiddedCards, setNavToMyBiddedCards] = useState(false);
-
-  const navigateToMyBiddedCards = () => {    
-    setNavToMyBiddedCards(true);   
-  }     
+  const tx = useMemo(() => transactions[txUuid], [transactions]); 
 
   const isLoading = useCallback(() => {
     return placeBidRequest?.isLoading || tx?.isLoading;
@@ -126,11 +120,6 @@ const AuctionPlaceBidAndConfirmationPage: FC<RouteComponentProps> = ({history}) 
   }, [isMounted, dispatch, bidAmount, auctionId, publicKey, passphrase]);  
 
   return (
-    <>
-    {navToMyBiddedCards && (
-      <AuctionMyBiddedCards /> 
-    )} 
-    {!navToMyBiddedCards && ( 
     <IonPage>
       <Header 
         title="Place Bid on Auction"
@@ -194,7 +183,6 @@ const AuctionPlaceBidAndConfirmationPage: FC<RouteComponentProps> = ({history}) 
               expand="block"
               onClick={() => {
                   dispatch(CollectiblesOnAuctionLoadAction(publicKey!, false, true, true, undefined));
-                  //navigateToMyBiddedCards();
                   history.push('/market/mybids');
                 }
               }
@@ -204,9 +192,7 @@ const AuctionPlaceBidAndConfirmationPage: FC<RouteComponentProps> = ({history}) 
           </IonToolbar>
         </Footer>
       )}
-    </IonPage>
-    )}  
-    </>    
+    </IonPage>    
   );
 };
 

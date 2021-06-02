@@ -1,5 +1,5 @@
 import { FC, useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import {
   IonCol,  
@@ -7,20 +7,22 @@ import {
   IonRow,
   IonSpinner,
 } from '@ionic/react';
-import CardOnAuction from '../components/CardOnAuction';
+import Card from './Card';
 import { JSX } from '@ionic/core';
-import Button from '../components/ionic/Button';
-import Label from '../components/ionic/Label';
-import Text from '../components/ionic/Text';
+import Button from './ionic/Button';
+import Label from './ionic/Label';
+import Text from './ionic/Text';
 import { FontSize } from '../constants/font-size';
 import { FontWeight } from '../constants/font-weight';
 import useIsMounted from '../hooks/use-is-mounted';
-import { CardTagType } from '../components/CardTag';
+// import useMediaQuery from '../hooks/use-media-query';
+import { CardTagType } from './CardTag';
 import { AuthLoginContext } from '../providers/AuthLoginProvider';
+import { CollectiblesLoadAction } from '../store/actions/collections';
 import { CollectiblesOnAuctionLoadAction } from '../store/actions/collections';
 import { collectionSelector } from '../store/selectors/collections';
-import { auctionBalloonImage } from '../constants/images';
-import AuctionParticipateInPage from './AuctionParticipateInPage';
+import { auctionImage } from '../constants/images';
+import AuctionsMyAuctions from './AuctionsMyAuctions';
 
 const ImageBgCol = styled(IonCol)`
   position: relative;
@@ -30,7 +32,7 @@ const ImageBgCol = styled(IonCol)`
   height: 229px !important;
 
   &:before {
-    content: ' '; 
+    content: ' ';
     display: block;
     position: absolute;
     left: 0;
@@ -39,7 +41,7 @@ const ImageBgCol = styled(IonCol)`
     height: 100%;
     z-index: 1;
     opacity: 0.8;
-    background-image: url('${auctionBalloonImage.src}');
+    background-image: url('${auctionImage.src}');
     background-size: cover;    
     background-repeat: no-repeat;
     background-position: 50% 0;
@@ -51,16 +53,18 @@ const ImageBgCol = styled(IonCol)`
   }
 `;
 
-const HorizontalLine = styled.div`
-  width:1px;
-  height:1px;
-  width: 80%;
-  margin-left: 10%;  
-  background:#E6E6E6;
-  position: relative;
+const CardContainer = styled(IonCol)` 
+  padding: 1.375rem;
+
+  &:nth-child(odd) {
+    padding-left: 0.6875rem;
+  }
+  &:nth-child(even) {
+    padding-right: 0.6875rem;
+  }
 `;
 
-const BiddedCardsButton = styled(Button)<JSX.IonButton>`
+const CardsOnAuctionButton = styled(Button)<JSX.IonButton>`
   text-decoration: underline;
   text-transform: uppercase;
 `;
@@ -70,35 +74,46 @@ const CollectablesIonRow = styled(IonRow)`
   max-height: calc(100vh - 92px - 4.8rem);
 `;
 
-const AuctionMyBiddedCards: FC = () => {
+const AuctionableCards: FC = () => {
+    /*
+    const isMedium = useMediaQuery('(min-height: 992px)');
+    const isLarge = useMediaQuery('(min-height: 1200px)');
+    */
+    const { isError, error, isLoading, assets, isLastPage, query } = useSelector(
+      collectionSelector,
+      shallowEqual
+    );
+    const [navToMyAuctions, setNavToMyAuctions] = useState(false);
 
-    const { isError, error, isLoading, assets, isLastPage /*, query*/ } = useSelector(collectionSelector);
-
-    const [navToNewBid, setNavToNewBid] = useState(false);
-
-    const navigateNewBid = () => {    
-      setNavToNewBid(true);   
-    }    
+    const navigateMyAuctions = () => {    
+      setNavToMyAuctions(true);   
+    }        
 
     const dispatch = useDispatch();
     const {
       session: { publicKey },
     } = useContext(AuthLoginContext);
   
- 
+    const publicKeyIn = publicKey;    
+  
     const isMounted = useIsMounted();
     useEffect(() => {
-      if (publicKey && isMounted) {
-          dispatch(CollectiblesOnAuctionLoadAction(publicKey!, false, true, true, undefined));
+      if (publicKeyIn && isMounted) {
+          dispatch(CollectiblesLoadAction(publicKeyIn!, false));
       }
-    }, [isMounted, dispatch, publicKey]);
+    }, [isMounted, dispatch, publicKeyIn]);
   
     const loadNextPage = useCallback(() => {
-      if (publicKey) {
-        //const { page } = query ?? { page: 1 };
-        dispatch(CollectiblesOnAuctionLoadAction(publicKey!, false, true, true, undefined));
+      if (publicKeyIn) {
+        const { page } = query ?? { page: 1 };
+        dispatch(
+          CollectiblesLoadAction(publicKeyIn!, false, {
+            ...query,
+            page: page! + 1,
+          })
+        );
       }
-    }, [/*query,*/ dispatch, publicKey]);
+    }, [query, dispatch, publicKeyIn]);
   
     const flatAssets = useMemo(() => assets.flat(), [assets]);
   
@@ -113,14 +128,26 @@ const AuctionMyBiddedCards: FC = () => {
       [loadNextPage, isLastPage, isLoading]
     );
       
+    /*
+    const cardColSize = useCallback(() => {
+      if (isLarge) {
+        return 3;
+      }
+      if (isMedium) {
+        return 4;
+      }
+      return 6;
+    }, [isMedium, isLarge]);
+    */
+    
   return (
     <>
-    {navToNewBid && (
-      <AuctionParticipateInPage />
-    )}  
-    {!navToNewBid && (      
-    <>
-     <IonGrid className="ion-no-padding">
+    {navToMyAuctions && (
+      <AuctionsMyAuctions />
+    )}
+    {!navToMyAuctions && (
+    <>     
+    <IonGrid className="ion-no-padding">
       <IonRow>
         <ImageBgCol size="12">
           <Label
@@ -129,7 +156,7 @@ const AuctionMyBiddedCards: FC = () => {
             fontSize={FontSize.L}
             fontWeight={FontWeight.BOLD}
           >
-            Are you still the highest bidder?
+            Pick a card and start an auction...
           </Label>
           <br />
           <Text
@@ -138,33 +165,33 @@ const AuctionMyBiddedCards: FC = () => {
             color="light"
             fontSize={FontSize.XS}
           >
-            Keep an eye on all your bids, and 
-            make sure you don’t loose your cards.
-          </Text>    
+            This is your auction screen. Simply click on a card that you want to put on offer, 
+            or check in with your current open auctions.
+          </Text>
           <br />
           <IonGrid class="ion-justify-content-center">
-            <IonRow class="ion-justify-content-center">              
+            <IonRow class="ion-justify-content-center">             
               <IonCol class="ion-align-self-center">
-                <BiddedCardsButton
-                  className="ion-float-right"
+                <CardsOnAuctionButton
+                  className="ion-float-right"                  
                   fill="clear"
-                  fontSize={FontSize.SM}
+                  fontSize={FontSize.SM}      
                   color="light"
                   fontWeight={FontWeight.BOLD}
                   onClick={() => {
-                      dispatch(CollectiblesOnAuctionLoadAction(publicKey!, false, false, false, undefined));
-                      navigateNewBid();
+                      dispatch(CollectiblesOnAuctionLoadAction(publicKey!, true, false, false, undefined));
+                      navigateMyAuctions();
                     }
                   }
                 >
-                  Start a new bid
-                </BiddedCardsButton>                   
-              </IonCol>              
+                  My Open Auctions
+                </CardsOnAuctionButton>             
+              </IonCol>                           
             </IonRow>
-          </IonGrid>                             
-        </ImageBgCol>            
+          </IonGrid>                         
+        </ImageBgCol>
       </IonRow>
-    </IonGrid>   
+    </IonGrid>    
     <IonGrid className="ion-no-padding">
       <CollectablesIonRow onScroll={onCardsScroll}>
           {!isLoading && isError && (
@@ -186,11 +213,9 @@ const AuctionMyBiddedCards: FC = () => {
               {flatAssets.map(({ id, attributes }) => {
                 const {
                   title,
+                  subtitle,
                   ipfsHashImageFront,
-                  tags,
-                  timeRemaining,
-                  currentBid,
-                  yourBid                  
+                  tags
                 } = attributes as any;
 
                 const type = 
@@ -199,19 +224,18 @@ const AuctionMyBiddedCards: FC = () => {
                     : CardTagType.None;
 
                 return (
-                  <IonCol size="12" key={id}>
-                    <CardOnAuction
-                      id={id}
-                      title={title}
-                      imgIpfsHash={ipfsHashImageFront}
-                      type={type}
-                      linkto={"/market/card/newbid/" + id}  
-                      timeRemaining={timeRemaining}                   
-                      currentBid={currentBid}
-                      yourBid={yourBid}
-                    />
-                    <HorizontalLine/>
-                  </IonCol>
+                  <IonCol className="ion-padding" key={id}>
+                    <CardContainer>  
+                      <Card                        
+                        id={id}
+                        title={title}
+                        subtitle={subtitle}
+                        imgIpfsHash={ipfsHashImageFront}
+                        type={type}
+                        linkto={"/market/card/startauction/"+id}                      
+                      />    
+                    </CardContainer>                  
+                  </IonCol>     
                 );
               })}
             </>
@@ -220,10 +244,10 @@ const AuctionMyBiddedCards: FC = () => {
             <IonCol size="12" class="ion-text-center">
               <Text
                 className="ion-padding-top"
-                fontSize={FontSize.L} 
+                fontSize={FontSize.L}
                 color="primary"
               >
-                You don't have bids yet!
+                No collectables yet!
               </Text>
             </IonCol>
           )}
@@ -240,4 +264,4 @@ const AuctionMyBiddedCards: FC = () => {
   );
 };
 
-export default AuctionMyBiddedCards;
+export default AuctionableCards;
