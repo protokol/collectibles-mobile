@@ -14,12 +14,12 @@ import {
   IonFooter,
   IonRouterLink,
 } from '@ionic/react';
-import Header from '../components/Header';
-import Button from '../components/ionic/Button';
-import Text from '../components/ionic/Text';
-import { FontSize } from '../constants/font-size';
-import { FontWeight } from '../constants/font-weight';
-import { driverHighResImage } from '../constants/images';
+import Header from '../../components/Header';
+import Button from '../../components/ionic/Button';
+import Text from '../../components/ionic/Text';
+import { FontSize } from '../../constants/font-size';
+import { FontWeight } from '../../constants/font-weight';
+import { driverHighResImage } from '../../constants/images'; 
 
 const ImageBgCol = styled(IonCol)`
   display: flex;

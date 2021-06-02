@@ -1,5 +1,5 @@
 import { arrowBackOutline } from 'ionicons/icons';
-import { FC, useCallback, useContext, useEffect, useState, useMemo } from 'react';
+import { FC, useCallback, useContext, useEffect, useMemo } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router';
 import styled from 'styled-components';
@@ -16,18 +16,18 @@ import {
   IonToolbar,
   IonFooter,
 } from '@ionic/react';
-import Header from '../components/Header';
-import Button from '../components/ionic/Button';
-import Text from '../components/ionic/Text';
-import { FontSize } from '../constants/font-size';
-import { FontWeight } from '../constants/font-weight';
-import { driverHighResImage } from '../constants/images';
-import useIsMounted from '../hooks/use-is-mounted';
-import { AuthLoginContext } from '../providers/AuthLoginProvider';
-import { CancelAuctionAction } from '../store/actions/auctions';
-import { auctionSelector } from '../store/selectors/auctions';
-import { CollectiblesOnAuctionLoadAction } from '../store/actions/collections';
-import { transactionsSelector } from '../store/selectors/transaction';
+import Header from '../../components/Header';
+import Button from '../../components/ionic/Button';
+import Text from '../../components/ionic/Text';
+import { FontSize } from '../../constants/font-size';
+import { FontWeight } from '../../constants/font-weight';
+import { driverHighResImage } from '../../constants/images';
+import useIsMounted from '../../hooks/use-is-mounted';
+import { AuthLoginContext } from '../../providers/AuthLoginProvider';
+import { CancelAuctionAction } from '../../store/actions/auctions';
+import { auctionSelector } from '../../store/selectors/auctions';
+import { CollectiblesOnAuctionLoadAction } from '../../store/actions/collections';
+import { transactionsSelector } from '../../store/selectors/transaction';
 
 const ImageBgCol = styled(IonCol)`
   display: flex;

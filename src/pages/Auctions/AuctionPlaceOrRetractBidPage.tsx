@@ -4,16 +4,16 @@ import { arrowBackOutline } from 'ionicons/icons';
 import { shallowEqual, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router';
 import styled from 'styled-components';
-import { FontSize } from '../constants/font-size';
-import { FontWeight } from '../constants/font-weight';
-import Title from '../components/ionic/Title';
-import Button from '../components/ionic/Button';
+import { FontSize } from '../../constants/font-size';
+import { FontWeight } from '../../constants/font-weight';
+import Title from '../../components/ionic/Title';
+import Button from '../../components/ionic/Button';
 import { JSX } from '@ionic/core';
-import Text from '../components/ionic/Text';
+import Text from '../../components/ionic/Text';
 import {
   DetailCard,
   DetailCards,
-} from '../components/DetailCards';
+} from '../../components/DetailCards';
 import { 
   IonButton,  
   IonFooter,
@@ -29,10 +29,10 @@ import {
   IonRouterLink
 } from '@ionic/react';
 import { BaseResourcesTypes } from '@protokol/client';
-import Header from '../components/Header';
-import Img from '../components/ionic/Img';
-import { addIPFSGatewayPrefix } from '../constants/images';
-import { collectionSelector } from '../store/selectors/collections';
+import Header from '../../components/Header';
+import Img from '../../components/ionic/Img';
+import { addIPFSGatewayPrefix } from '../../constants/images';
+import { collectionSelector } from '../../store/selectors/collections';
 
 const Footer = styled(IonFooter)`
   position: fixed;
@@ -85,7 +85,7 @@ const IonRouterLinkStyled = styled(IonRouterLink)`
   font-weight: bold;  
 `;
 
-const AuctionPlaceBidPage: FC = () => {
+const AuctionPlaceOrRetractBidPage: FC = () => {
     
   const [bidAmount, setStateData] = useState(0);
   const [auctionIdIn, setAuctionId] = useState(-1);
@@ -159,7 +159,7 @@ const AuctionPlaceBidPage: FC = () => {
     }
   }
 
-  return (    
+  return ( 
     <IonPage>
       <Header
         title={title}
@@ -267,4 +267,4 @@ const AuctionPlaceBidPage: FC = () => {
   );
 };
 
-export default AuctionPlaceBidPage;
+export default AuctionPlaceOrRetractBidPage;

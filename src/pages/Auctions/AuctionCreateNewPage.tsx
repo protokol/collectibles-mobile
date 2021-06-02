@@ -6,12 +6,12 @@ import { shallowEqual, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router';
 import { InputChangeEventDetail } from '@ionic/core';
 import styled from 'styled-components';
-import { Styles } from '../utils/styles';
-import { FontSize } from '../constants/font-size';
-import { FontWeight } from '../constants/font-weight';
-import FormInputError from '../components/ionic/ErrorMessage';
-import Title from '../components/ionic/Title';
-import Button from '../components/ionic/Button';
+import { Styles } from '../../utils/styles';
+import { FontSize } from '../../constants/font-size';
+import { FontWeight } from '../../constants/font-weight';
+import FormInputError from '../../components/ionic/ErrorMessage';
+import Title from '../../components/ionic/Title';
+import Button from '../../components/ionic/Button';
 import { JSX } from '@ionic/core';
 
 import { 
@@ -32,10 +32,10 @@ import {
   IonDatetime,
 } from '@ionic/react';
 import { BaseResourcesTypes } from '@protokol/client';
-import Header from '../components/Header';
-import Img from '../components/ionic/Img';
-import { addIPFSGatewayPrefix } from '../constants/images';
-import { collectionSelector } from '../store/selectors/collections';
+import Header from '../../components/Header';
+import Img from '../../components/ionic/Img';
+import { addIPFSGatewayPrefix } from '../../constants/images';
+import { collectionSelector } from '../../store/selectors/collections';
 
 const Footer = styled(IonFooter)`
   position: fixed;

@@ -13,17 +13,17 @@ import CardCollectingAndConfirmationPage from './pages/CardCollectingAndConfirma
 import HomePage from './pages/HomePage';
 import PasscodePage from './pages/PasscodePage';
 import PassphrasePage from './pages/PassphrasePage';
-import StartAuctionPage from './pages/AuctionCreationAndConfirmationPage';
-import AuctionCreateNewPage from './pages/AuctionCreateNewPage';
-import AuctionCancelConfirmationPage from './pages/AuctionCancelConfirmationPage';
-import AuctionCancelFinalizationPage from './pages/AuctionCancelFinalizationPage';
-import AuctionRetractBidConfirmationPage from './pages/AuctionRetractBidConfirmationPage';
-import AuctionRetractBidFinalizationPage from './pages/AuctionRetractBidFinalizationPage';
-
-import AuctionMyAuctionViewPage from './pages/AuctionMyAuctionViewPage';
-import AuctionMyAuctionExpiredAndAcceptOfferViewPage from './pages/AuctionMyAuctionExpiredAndAcceptOfferViewPage';
-import AuctionPlaceBidAndConfirmationPage from './pages/AuctionPlaceBidAndConfirmationPage';
-import AuctionOfferAcceptedConfirmationPage from './pages/AuctionOfferAcceptedConfirmationPage';
+import StartAuctionPage from './pages/auctions/AuctionCreationAndConfirmationPage';
+import AuctionCreateNewPage from './pages/auctions/AuctionCreateNewPage';
+import AuctionCancelConfirmationPage from './pages/auctions/AuctionCancelConfirmationPage';
+import AuctionCancelFinalizationPage from './pages/auctions/AuctionCancelFinalizationPage';
+import AuctionRetractBidConfirmationPage from './pages/auctions/AuctionRetractBidConfirmationPage';
+import AuctionRetractBidFinalizationPage from './pages/auctions/AuctionRetractBidFinalizationPage';
+import AuctionPlaceOrRetractBidPage from './pages/auctions/AuctionPlaceOrRetractBidPage';
+import AuctionMyAuctionViewPage from './pages/auctions/AuctionMyAuctionViewPage';
+import AuctionMyAuctionExpiredAndAcceptOfferViewPage from './pages/auctions/AuctionMyAuctionExpiredAndAcceptOfferViewPage';
+import AuctionPlaceBidAndConfirmationPage from './pages/auctions/AuctionPlaceBidAndConfirmationPage';
+import AuctionOfferAcceptedConfirmationPage from './pages/auctions/AuctionOfferAcceptedConfirmationPage';
 import ProfilePage from './pages/ProfilePage';
 import QrCodeGeneratorPage from './pages/QrCodeGeneratorPage';
 import ScanQRPage from './pages/ScanQRPage';
@@ -33,7 +33,6 @@ import AuthLoginContextProvider from './providers/AuthLoginProvider';
 import AuthRegisterContextProvider from './providers/AuthRegisterProvider';
 import { SetBaseUrlAppAction } from './store/actions/app';
 import './theme/ionic-theme';
-import AuctionPlaceBidPage from './pages/AuctionPlaceBidPage';
 
 const { SplashScreen } = Plugins;
 
@@ -118,7 +117,7 @@ const App: FC = () => {
                 <ProtectedRoute path="/market/myauctions" component={()=>(<HomePage menu="myauctions"/>)} exact />     
                 <ProtectedRoute path="/market/participateinauction" component={()=>(<HomePage menu="participateinauction"/>)} exact />     
                 <ProtectedRoute path="/market/mybids" component={()=>(<HomePage menu="mybids"/>)} exact />                  
-                <ProtectedRoute path="/market/card/newbid/:assetId" component={AuctionPlaceBidPage} exact />                  
+                <ProtectedRoute path="/market/card/newbid/:assetId" component={AuctionPlaceOrRetractBidPage} exact />                  
                 <ProtectedRoute path="/market/card/placenewbid/:auctionId/:bidAmount" component={AuctionPlaceBidAndConfirmationPage} exact />    
                 <ProtectedRoute path="/market/card/retractbid/:bidId" component={AuctionRetractBidConfirmationPage} exact />     
                 <ProtectedRoute path="/market/card/retractbidconfirmation/:bidId" component={AuctionRetractBidFinalizationPage} exact />                                            
