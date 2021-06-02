@@ -1,4 +1,4 @@
-import { arrowBackOutline } from 'ionicons/icons';
+import { arrowBackOutline, logoFacebook, logoTwitter, logoGoogle } from 'ionicons/icons';
 import { FC, useCallback, useContext, useEffect, useMemo } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router';
@@ -162,6 +162,11 @@ const AuctionCreationAndConfirmationPage: FC = () => {
                   >
                     The auction is now live!
                   </Text>
+                  <IonRow>
+                    <IonCol><IonButton fill="clear"><IonIcon color="light" slot="icon-only" icon={logoFacebook} /></IonButton></IonCol>
+                    <IonCol><IonButton fill="clear"><IonIcon color="light" slot="icon-only" icon={logoTwitter} /></IonButton></IonCol>
+                    <IonCol><IonButton fill="clear"><IonIcon color="light" slot="icon-only" icon={logoGoogle} /></IonButton></IonCol>
+                  </IonRow>                  
                 </>
               )}
             </ImageBgCol>

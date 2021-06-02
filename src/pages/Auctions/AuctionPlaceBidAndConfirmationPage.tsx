@@ -1,4 +1,4 @@
-import { arrowBackOutline } from 'ionicons/icons';
+import { arrowBackOutline, logoFacebook, logoTwitter, logoGoogle } from 'ionicons/icons';
 import { FC, useCallback, useContext, useEffect, useMemo } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router';
@@ -162,8 +162,12 @@ const AuctionPlaceBidAndConfirmationPage: FC = () => {
                     You successfully put a bid on the hero card. 
                     Don’t forget to follow the cards so no one 
                     bids it higher than you!
-                    TODO: Social sharing icons
                   </Text>
+                  <IonRow>
+                    <IonCol><IonButton fill="clear"><IonIcon color="light" slot="icon-only" icon={logoFacebook} /></IonButton></IonCol>
+                    <IonCol><IonButton fill="clear"><IonIcon color="light" slot="icon-only" icon={logoTwitter} /></IonButton></IonCol>
+                    <IonCol><IonButton fill="clear"><IonIcon color="light" slot="icon-only" icon={logoGoogle} /></IonButton></IonCol>
+                  </IonRow>                  
                 </>
               )}
             </ImageBgCol>

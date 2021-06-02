@@ -15,7 +15,7 @@ import {
   IonIcon,
   IonButton,
   IonToolbar,
-  IonFooter,
+  IonFooter,  
 } from '@ionic/react';
 import Header from '../../components/Header';
 import Button from '../../components/ionic/Button';
@@ -146,7 +146,7 @@ const AuctionRetractBidFinalizationPage: FC = () => {
                     color="light"
                   >
                   {error()}
-                  </Text>
+                  </Text>                                                 
                 </>
               )}
               {!isLoading() && !isError() && (

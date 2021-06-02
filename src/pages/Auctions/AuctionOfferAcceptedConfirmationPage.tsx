@@ -1,4 +1,4 @@
-import { arrowBackOutline } from 'ionicons/icons';
+import { arrowBackOutline, logoFacebook, logoTwitter, logoGoogle } from 'ionicons/icons';
 import { FC, useCallback, useContext, useEffect, useMemo } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router';
@@ -161,8 +161,12 @@ const AuctionOfferAcceptedConfirmationPage: FC = () => {
                   >
                     You <b>successfully accepted the highest offer</b>. 
                     The value for the card will soon appear in your wallet.
-                    TODO: Social sharing icons
                   </Text>
+                  <IonRow>
+                    <IonCol><IonButton fill="clear"><IonIcon color="light" slot="icon-only" icon={logoFacebook} /></IonButton></IonCol>
+                    <IonCol><IonButton fill="clear"><IonIcon color="light" slot="icon-only" icon={logoTwitter} /></IonButton></IonCol>
+                    <IonCol><IonButton fill="clear"><IonIcon color="light" slot="icon-only" icon={logoGoogle} /></IonButton></IonCol>
+                  </IonRow>                  
                 </>
               )}
             </ImageBgCol>
