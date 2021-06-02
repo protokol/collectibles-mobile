@@ -1,7 +1,7 @@
 import { arrowBackOutline } from 'ionicons/icons';
 import { FC, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
-import { useHistory, useParams } from 'react-router';
+import { RouteComponentProps, useHistory, useParams } from 'react-router';
 import styled from 'styled-components';
 import { v4 as uuid } from 'uuid';
 import {
@@ -26,7 +26,7 @@ import useIsMounted from '../hooks/use-is-mounted';
 import { AuthLoginContext } from '../providers/AuthLoginProvider';
 import { PlaceBidAction } from '../store/actions/auctions';
 import { CollectiblesOnAuctionLoadAction } from '../store/actions/collections';
-import AuctionMyBiddedCardsPage from './AuctionMyBiddedCardsPage';
+import AuctionMyBiddedCards from './AuctionMyBiddedCards';
 import { auctionSelector } from '../store/selectors/auctions';
 import { transactionsSelector } from '../store/selectors/transaction';
 
@@ -86,10 +86,9 @@ const ViewCardButton = styled(Button)`
 
 const txUuid = uuid();
 
-const AuctionPlaceBidAndConfirmationPage: FC = () => {    
+const AuctionPlaceBidAndConfirmationPage: FC<RouteComponentProps> = ({history}) => {    
 
-  const { auctionId, bidAmount } = useParams<{ auctionId: string, bidAmount: string}>();
-  const history = useHistory();
+  const { auctionId, bidAmount } = useParams<{ auctionId: string, bidAmount: string}>();  
   const dispatch = useDispatch();
 
   const placeBidRequest = useSelector(auctionSelector, shallowEqual);
@@ -129,14 +128,14 @@ const AuctionPlaceBidAndConfirmationPage: FC = () => {
   return (
     <>
     {navToMyBiddedCards && (
-      <AuctionMyBiddedCardsPage /> 
+      <AuctionMyBiddedCards /> 
     )} 
     {!navToMyBiddedCards && ( 
     <IonPage>
       <Header 
         title="Place Bid on Auction"
         buttonTopLeft={
-          <IonButton onClick={() => history.push('/market/mybids')}>
+          <IonButton onClick={() => history.replace('/market/mybids', { direction: 'back'})}>
             <IonIcon color="light" slot="icon-only" icon={arrowBackOutline} />
           </IonButton>
         }
@@ -195,7 +194,8 @@ const AuctionPlaceBidAndConfirmationPage: FC = () => {
               expand="block"
               onClick={() => {
                   dispatch(CollectiblesOnAuctionLoadAction(publicKey!, false, true, true, undefined));
-                  navigateToMyBiddedCards();
+                  //navigateToMyBiddedCards();
+                  history.push('/market/mybids');
                 }
               }
             >

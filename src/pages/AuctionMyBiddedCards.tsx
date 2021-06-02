@@ -70,7 +70,7 @@ const CollectablesIonRow = styled(IonRow)`
   max-height: calc(100vh - 92px - 4.8rem);
 `;
 
-const AuctionMyBiddedCardsPage: FC = () => {
+const AuctionMyBiddedCards: FC = () => {
 
     const { isError, error, isLoading, assets, isLastPage /*, query*/ } = useSelector(collectionSelector);
 
@@ -199,21 +199,19 @@ const AuctionMyBiddedCardsPage: FC = () => {
                     : CardTagType.None;
 
                 return (
-                  <>
-                    <IonCol size="12" key={id}>
-                      <CardOnAuction
-                        id={id}
-                        title={title}
-                        imgIpfsHash={ipfsHashImageFront}
-                        type={type}
-                        linkto={"/market/card/newbid/" + id}  
-                        timeRemaining={timeRemaining}                   
-                        currentBid={currentBid}
-                        yourBid={yourBid}
-                      />
-                      <HorizontalLine/>
-                    </IonCol>
-                  </>
+                  <IonCol size="12" key={id}>
+                    <CardOnAuction
+                      id={id}
+                      title={title}
+                      imgIpfsHash={ipfsHashImageFront}
+                      type={type}
+                      linkto={"/market/card/newbid/" + id}  
+                      timeRemaining={timeRemaining}                   
+                      currentBid={currentBid}
+                      yourBid={yourBid}
+                    />
+                    <HorizontalLine/>
+                  </IonCol>
                 );
               })}
             </>
@@ -242,4 +240,4 @@ const AuctionMyBiddedCardsPage: FC = () => {
   );
 };
 
-export default AuctionMyBiddedCardsPage;
+export default AuctionMyBiddedCards;

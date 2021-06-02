@@ -193,7 +193,8 @@ const AuctionCreationAndConfirmationPage: FC = () => {
               expand="block"
               onClick={() => {
                   dispatch(CollectiblesOnAuctionLoadAction(publicKey!, true, false, true, undefined));
-                  navigateMyAuctions();
+                  //navigateMyAuctions();
+                  history.push('/market/myauctions');
                 }
               }
             >

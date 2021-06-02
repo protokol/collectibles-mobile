@@ -21,7 +21,7 @@ import { AuthLoginContext } from '../providers/AuthLoginProvider';
 import { CollectiblesOnAuctionLoadAction } from '../store/actions/collections';
 import { collectionSelector } from '../store/selectors/collections';
 import { auctionBalloonImage } from '../constants/images';
-import AuctionMyBiddedCardsPage from './AuctionMyBiddedCardsPage';
+import AuctionMyBiddedCards from './AuctionMyBiddedCards';
 
 const ImageBgCol = styled(IonCol)`
   position: relative;
@@ -131,7 +131,7 @@ const AuctionParticipateInPage: FC = () => {
   return (
     <>
     {navToMyBiddedCards && (
-      <AuctionMyBiddedCardsPage />
+      <AuctionMyBiddedCards />
     )}  
     {!navToMyBiddedCards && (      
     <>

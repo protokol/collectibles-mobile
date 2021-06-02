@@ -1,7 +1,8 @@
 import { arrowBackOutline } from 'ionicons/icons';
 import { FC, useCallback, useContext, useEffect, useState, useMemo } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
-import { useHistory, useParams } from 'react-router';
+import { useParams } from 'react-router';
+import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import { v4 as uuid } from 'uuid';
 import {
@@ -26,7 +27,7 @@ import useIsMounted from '../hooks/use-is-mounted';
 import { AuthLoginContext } from '../providers/AuthLoginProvider';
 import { CancelBidAction } from '../store/actions/auctions';
 import { CollectiblesOnAuctionLoadAction } from '../store/actions/collections';
-import AuctionsMyBiddedCardsPage from './AuctionMyBiddedCardsPage';
+import AuctionsMyBiddedCardsPage from './AuctionMyBiddedCards';
 import { auctionSelector } from '../store/selectors/auctions';
 import { transactionsSelector } from '../store/selectors/transaction';
 
@@ -86,7 +87,7 @@ const ViewCardButton = styled(Button)`
 
 const txUuid = uuid();
 
-const AuctionRetractBidFinalizationPage: FC = () => {  
+const AuctionRetractBidFinalizationPage: FC = () => { 
 
   const { bidId } = useParams<{ bidId: string}>();
   const history = useHistory();
@@ -101,6 +102,10 @@ const AuctionRetractBidFinalizationPage: FC = () => {
   const navigateBids = () => {    
     setNavToBids(true);   
   }     
+
+  const clickBack = () => {
+    history.push('/market/mybids');
+  }
 
   const isLoading = useCallback(() => {
     return cancelBidRequest?.isLoading || tx?.isLoading;
@@ -135,7 +140,7 @@ const AuctionRetractBidFinalizationPage: FC = () => {
       <Header 
         title="Retract Bid"
         buttonTopLeft={
-          <IonButton onClick={() => history.push('/market/mybids')}>
+          <IonButton onClick={() => clickBack()}>
             <IonIcon color="light" slot="icon-only" icon={arrowBackOutline} />
           </IonButton>
         }
@@ -191,7 +196,8 @@ const AuctionRetractBidFinalizationPage: FC = () => {
               expand="block"
               onClick={() => {
                   dispatch(CollectiblesOnAuctionLoadAction(publicKey!, false, true, true, undefined));
-                  navigateBids();
+                  //navigateBids();
+                  history.push('/market/mybids');
                 }
               }
             >

@@ -4,7 +4,8 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 import { Plugins } from '@capacitor/core';
 import { ScreenOrientation } from '@ionic-native/screen-orientation';
 import { IonApp, IonRouterOutlet, isPlatform } from '@ionic/react';
-import { IonReactHashRouter } from '@ionic/react-router';
+import { IonReactRouter } from '@ionic/react-router';
+import { createBrowserHistory } from 'history';
 import MainMenu from './components/MainMenu';
 import ProtectedRoute from './components/ProtectedRoute';
 import useIsMounted from './hooks/use-is-mounted';
@@ -23,7 +24,7 @@ import AuctionRetractBidFinalizationPage from './pages/AuctionRetractBidFinaliza
 import AuctionMyAuctionViewPage from './pages/AuctionMyAuctionViewPage';
 import AuctionMyAuctionExpiredAndAcceptOfferViewPage from './pages/AuctionMyAuctionExpiredAndAcceptOfferViewPage';
 import AuctionsMyAuctionsPage from './pages/AuctionsMyAuctionsPage';
-import AuctionMyBiddedCardsPage from './pages/AuctionMyBiddedCardsPage';
+import AuctionMyBiddedCards from './pages/AuctionMyBiddedCards';
 import AuctionableCardsPage from './pages/AuctionableCardsPage';
 import AuctionParticipateInPage from './pages/AuctionParticipateInPage';
 import AuctionPlaceBidAndConfirmationPage from './pages/AuctionPlaceBidAndConfirmationPage';
@@ -40,6 +41,7 @@ import './theme/ionic-theme';
 import AuctionPlaceBidPage from './pages/AuctionPlaceBidPage';
 
 const { SplashScreen } = Plugins;
+const history = createBrowserHistory();
 
 const App: FC = () => {
   const dispatch = useDispatch();
@@ -65,7 +67,7 @@ const App: FC = () => {
     <IonApp>
       <AuthLoginContextProvider>
         <AuthRegisterContextProvider>
-          <IonReactHashRouter>
+          <IonReactRouter>
             <MainMenu />
             <Switch>
               <Route path="/qr/:id" component={QrCodeGeneratorPage} exact />
@@ -103,108 +105,32 @@ const App: FC = () => {
               />
              
               <Redirect path="/" exact to="/home" />
+              <Redirect path="/market" exact to="/market" />
 
               <IonRouterOutlet>
                 <ProtectedRoute path="/home" component={HomePage} exact />
-                <ProtectedRoute
-                  path="/home/profile"
-                  component={ProfilePage}
-                  exact
-                />
-                <ProtectedRoute
-                  requiresCordova={true}
-                  path="/home/scan-qr"
-                  component={ScanQRPage}
-                  exact
-                />
-                <ProtectedRoute
-                  path="/home/card/:assetId"
-                  component={CardDetailsPage}
-                  exact
-                />
-                <ProtectedRoute
-                  path="/market/startauction"
-                  component={AuctionableCardsPage}
-                  exact
-                />                 
-                <ProtectedRoute
-                  path="/market/card/startauction/:assetId"
-                  component={AuctionCreateNewPage}
-                  exact
-                />  
-                <ProtectedRoute
-                  path="/market/card/cancelauction/:auctionId"
-                  component={AuctionCancelFinalizationPage}
-                  exact
-                />       
-                <ProtectedRoute
-                  path="/market/card/cancelauctionconfirm/:auctionId"
-                  component={AuctionCancelConfirmationPage}
-                  exact
-                />                              
-                <ProtectedRoute
-                  path="/market/card/auctionview/:auctionId/:assetId"
-                  component={AuctionMyAuctionViewPage}
-                  exact
-                />     
-                <ProtectedRoute
-                  path="/market/card/expiredauctionview/:auctionId/:assetId"
-                  component={AuctionMyAuctionExpiredAndAcceptOfferViewPage}
-                  exact
-                />
-                <ProtectedRoute
-                  path="/market/card/acceptoffer/:auctionId/:bidId"
-                  component={AuctionOfferAcceptedConfirmationPage}
-                  exact
-                />                  
-                <ProtectedRoute
-                  path="/market/myauctions"
-                  component={AuctionsMyAuctionsPage}
-                  exact
-                />     
-                <ProtectedRoute
-                  path="/market/participateinauction"
-                  component={AuctionParticipateInPage}
-                  exact
-                />     
-                <ProtectedRoute
-                  path="/market/mybids"
-                  component={AuctionMyBiddedCardsPage}
-                  exact
-                />     
-                <ProtectedRoute
-                  path="/market/card/newbid/:assetId"
-                  component={AuctionPlaceBidPage}
-                  exact
-                />                  
-                <ProtectedRoute
-                  path="/market/card/placenewbid/:auctionId/:bidAmount"
-                  component={AuctionPlaceBidAndConfirmationPage}
-                  exact                  
-                />    
-                <ProtectedRoute
-                  path="/market/card/retractbid/:bidId"
-                  component={AuctionRetractBidConfirmationPage}
-                  exact                  
-                />     
-                <ProtectedRoute
-                  path="/market/card/retractbidconfirmation/:bidId"
-                  component={AuctionRetractBidFinalizationPage}
-                  exact                  
-                />                                            
-                <ProtectedRoute
-                  path="/market/card/createnewauction/:cardId/:minimumBid/:minimumIncrement/:finalBiddingDate"
-                  component={StartAuctionPage}
-                  exact
-                />                               
-                <ProtectedRoute
-                  path="/home/collect-card/:collectionId"
-                  component={CardCollectingAndConfirmationPage}
-                  exact
-                />                          
+                <ProtectedRoute path="/home/profile" component={ProfilePage} exact />
+                <ProtectedRoute requiresCordova={true} path="/home/scan-qr" component={ScanQRPage} exact/>
+                <ProtectedRoute path="/home/card/:assetId" component={CardDetailsPage} exact />
+                <ProtectedRoute path="/home/collect-card/:collectionId" component={CardCollectingAndConfirmationPage} exact /> 
+                <ProtectedRoute path="/market/startauction" component={AuctionableCardsPage} exact/>                 
+                <ProtectedRoute path="/market/card/startauction/:assetId" component={AuctionCreateNewPage} exact />  
+                <ProtectedRoute path="/market/card/cancelauction/:auctionId" component={AuctionCancelFinalizationPage} exact />       
+                <ProtectedRoute path="/market/card/cancelauctionconfirm/:auctionId" component={AuctionCancelConfirmationPage} exact />                              
+                <ProtectedRoute path="/market/card/auctionview/:auctionId/:assetId" component={AuctionMyAuctionViewPage} exact />     
+                <ProtectedRoute path="/market/card/expiredauctionview/:auctionId/:assetId" component={AuctionMyAuctionExpiredAndAcceptOfferViewPage} exact/>
+                <ProtectedRoute path="/market/card/acceptoffer/:auctionId/:bidId" component={AuctionOfferAcceptedConfirmationPage} exact />                  
+                <ProtectedRoute path="/market/myauctions" component={AuctionsMyAuctionsPage} exact />     
+                <ProtectedRoute path="/market/participateinauction" component={AuctionParticipateInPage} exact />     
+                <ProtectedRoute path="/market/mybids" component={()=>(<HomePage menu="mybids"/>)} exact />                  
+                <ProtectedRoute path="/market/card/newbid/:assetId" component={AuctionPlaceBidPage} exact />                  
+                <ProtectedRoute path="/market/card/placenewbid/:auctionId/:bidAmount" component={AuctionPlaceBidAndConfirmationPage} exact />    
+                <ProtectedRoute path="/market/card/retractbid/:bidId" component={AuctionRetractBidConfirmationPage} exact />     
+                <ProtectedRoute path="/market/card/retractbidconfirmation/:bidId" component={AuctionRetractBidFinalizationPage} exact />                                            
+                <ProtectedRoute path="/market/card/createnewauction/:cardId/:minimumBid/:minimumIncrement/:finalBiddingDate" component={StartAuctionPage} exact />                                         
               </IonRouterOutlet>
             </Switch>
-          </IonReactHashRouter>
+          </IonReactRouter>
         </AuthRegisterContextProvider>
       </AuthLoginContextProvider>
     </IonApp>

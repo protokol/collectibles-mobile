@@ -97,7 +97,7 @@ const AuctionCancelFinalizationPage: FC = () => {
   const tx = useMemo(() => transactions[txUuid], [transactions]);
 
   const [navToAuctions, setNavToAuctions] = useState(false);
-
+  
   const navigateAuctions = () => {    
     setNavToAuctions(true);   
   }     
@@ -192,7 +192,8 @@ const AuctionCancelFinalizationPage: FC = () => {
               expand="block"
               onClick={() => {
                   dispatch(CollectiblesOnAuctionLoadAction(publicKey!, true, false, true, undefined));
-                  navigateAuctions();
+                  //navigateAuctions();
+                  history.push('/market/myauctions');
                 }
               }
             >

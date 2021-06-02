@@ -73,29 +73,31 @@ const ActionButton = styled(Button)`
 `;
 
 
-const HomeMarket: FC = () => {
+const HomeMarket: FC<{menuout?:string}> = ({menuout}) =>  {
   const history = useHistory();
-  const [submenu, setMarketSubMenu] = useState(0);
-  
+  const [submenu, setMarketSubMenu] = useState(menuout === undefined?0:menuout);  
+
   const dispatch = useDispatch();
   const {
     session: { publicKey },
   } = useContext(AuthLoginContext);  
 
-  const auctionSell = submenu===1;
-  const auctionSellView = submenu===2;
-  const auctionBuy = submenu===3;
+  const auctionSell = submenu==="1";
+  const auctionSellView = submenu==="2";
+  const auctionBuy = submenu==="3";
+
+  const auctionMyBids = submenu==="mybids";
  
   const auctionSellHandler = () => {    
-    setMarketSubMenu(1);   
+    setMarketSubMenu("1");   
   }
 
   const auctionSellViewHandler = () => {    
-    setMarketSubMenu(2);   
+    setMarketSubMenu("2");   
   }  
 
   const auctionBuyHandler = () => {    
-    setMarketSubMenu(3);   
+    setMarketSubMenu("3");   
   }
 
   return (  
@@ -108,7 +110,10 @@ const HomeMarket: FC = () => {
     )}      
     {auctionBuy && (
       <AuctionParticipateInPage/>
-    )}      
+    )}  
+    {auctionMyBids && (
+      <AuctionMyBiddedCards/>
+    )}         
     {!auctionSell && !auctionSellView && !auctionBuy && (
       <IonGrid className="ion-no-padding">
         <IonRow>
