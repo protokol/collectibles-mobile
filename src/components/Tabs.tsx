@@ -71,11 +71,12 @@ const Elements = createContext<ElementsStateContextType>({
   panels: 0,
 });
 
-export const TabsContextProvider: FC<{ state?: UseNumberState }> = ({
+export const TabsContextProvider: FC<{ state?: UseNumberState, activeIndex?: number}> = ({
   state: outerState,
+  activeIndex,
   children,
 }) => {
-  const innerState = useState(0);
+  const innerState = useState((activeIndex===undefined)?0:activeIndex);
   const elements = useConstant(() => ({ tabs: 0, panels: 0 }));
   const state = outerState || innerState;
 

@@ -17,7 +17,7 @@ import { FontWeight } from '../constants/font-weight';
 import useIsMounted from '../hooks/use-is-mounted';
 import { CardTagType } from './CardTag';
 import { AuthLoginContext } from '../providers/AuthLoginProvider';
-import { CollectiblesOnAuctionLoadAction, CollectiblesLoadAction } from '../store/actions/collections';
+import { CollectiblesOnAuctionLoadAction } from '../store/actions/collections';
 import { collectionSelector } from '../store/selectors/collections';
 import { auctionImage } from '../constants/images';
 import AuctionableCards from './AuctionableCards';
@@ -154,7 +154,8 @@ const AuctionsMyAuctions: FC = () => {
                   color="light"
                   fontWeight={FontWeight.BOLD}
                   onClick={() => {
-                      CollectiblesLoadAction(publicKey!, false);
+                      //dispatch(CollectiblesLoadAction(publicKey!, false));
+                      //history.replace("/market/myauctionablecards");
                       navigateStartAuction();
                     }
                   }

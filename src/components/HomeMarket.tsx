@@ -74,10 +74,12 @@ const ActionButton = styled(Button)`
   }  
 `;
 
+let cont = 0;
 
-const HomeMarket: FC<{menuout?:string}> = ({menuout}) =>  {
+const HomeMarket: FC<{menu?:string}> = ({menu}) =>  {
 
-  console.log("Menu out incoming:" + menuout);
+  cont++;
+  console.log("("+cont+") Menu in @ HomeMarket:" + menu);
 
   const history = useHistory();
   const [submenu, setMarketSubMenu] = useState("-1");  
@@ -89,11 +91,11 @@ const HomeMarket: FC<{menuout?:string}> = ({menuout}) =>  {
   } = useContext(AuthLoginContext);  
  */
   if(submenu==="-1"){
-    setMarketSubMenu(menuout === undefined ? "0" : menuout);
+    setMarketSubMenu(menu === undefined ? "0" : menu);
   }
 
   const auctionSellHandler = () => {    
-    setMarketSubMenu("auctionstart");   
+    setMarketSubMenu("myauctionablecards");      
   }
 
   const auctionSellViewHandler = () => {    
@@ -104,9 +106,9 @@ const HomeMarket: FC<{menuout?:string}> = ({menuout}) =>  {
     setMarketSubMenu("participateinauction");   
   }
 
-   return (  
+  return (  
     <>
-    {submenu==="auctionstart" && (
+    {submenu==="myauctionablecards" && (
       <AuctionableCards />
     )}  
     {submenu==="myauctions" && (
@@ -226,7 +228,7 @@ const HomeMarket: FC<{menuout?:string}> = ({menuout}) =>  {
           </IonCol>
         </IonRow>
       </IonGrid>
-      )}
+      )}      
     </>
   );
 };

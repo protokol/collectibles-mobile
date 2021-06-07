@@ -1,4 +1,4 @@
-import { FC, useContext } from 'react';
+import { FC } from 'react';
 import styled from 'styled-components';
 import { IonContent, IonPage } from '@ionic/react';
 import Header from '../components/Header';
@@ -10,28 +10,20 @@ import {
   Tab,
   Tabs,
   TabsContextProvider, 
-  TabsState,
 } from '../components/Tabs';
 import Title from '../components/ionic/Title';
 import { FontSize } from '../constants/font-size';
 
-const Content = styled(IonContent)<{
-  isDarkBg: boolean;
-}>`
-  overflow: hidden;
-  ${({ isDarkBg }) =>
-    isDarkBg && '--background: var(--app-color-dark-cyan-blue);'}
-`;
 
 const TabTitle = styled(Title)`
   line-height: 2rem;
 `;
 
-const HomeContent: FC = () => {  
-  const [activeIndex] = useContext(TabsState);
+const MarketContent: FC<{menu?:string}> = ({menu}) => {
+  console.log("Menu in @ MarketContent:" + menu);
 
   return (
-    <Content id="main-content" fullscreen isDarkBg={activeIndex === 0}>
+    <IonContent id="main-content" fullscreen>
       <Panel>
         <Home />
       </Panel>
@@ -41,16 +33,17 @@ const HomeContent: FC = () => {
       </Panel>
 
       <Panel>
-        <HomeMarket />
+        <HomeMarket menu={menu}/>
       </Panel>
-    </Content>
+    </IonContent>    
   );
 };
 
-const HomePage: FC = () => {
+const HomeMarketPage: FC<{menu?:string}> = ({menu}) => {  
+  
   return (
     <IonPage>
-      <TabsContextProvider activeIndex={0}>
+      <TabsContextProvider activeIndex={2}>
         <Header>
           <Tabs>
             <Tab>
@@ -75,17 +68,17 @@ const HomePage: FC = () => {
               <TabTitle
                 className="ion-text-uppercase ion-text-center"
                 fontSize={FontSize.XS}
-                color="light"              
+                color="light"
               >
                 Market
               </TabTitle>
             </Tab>            
           </Tabs>
         </Header>
-        <HomeContent/>
+        <MarketContent menu={menu}/>        
       </TabsContextProvider>
     </IonPage>
   );
 };
 
-export default HomePage;
+export default HomeMarketPage;

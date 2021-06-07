@@ -19,7 +19,6 @@ import useMediaQuery from '../hooks/use-media-query';
 import { CardTagType } from './CardTag';
 import { AuthLoginContext } from '../providers/AuthLoginProvider';
 import { CollectiblesLoadAction } from '../store/actions/collections';
-import { CollectiblesOnAuctionLoadAction } from '../store/actions/collections';
 import { collectionSelector } from '../store/selectors/collections';
 import { auctionImage } from '../constants/images';
 import AuctionsMyAuctions from './AuctionsMyAuctions';
@@ -75,7 +74,6 @@ const CollectablesIonRow = styled(IonRow)`
 `;
 
 const AuctionableCards: FC = () => {
-    
     const isMedium = useMediaQuery('(min-height: 992px)');
     const isLarge = useMediaQuery('(min-height: 1200px)');
     
@@ -177,8 +175,9 @@ const AuctionableCards: FC = () => {
                   color="light"
                   fontWeight={FontWeight.BOLD}
                   onClick={() => {
-                      dispatch(CollectiblesOnAuctionLoadAction(publicKey!, true, false, false, undefined));
+                      //dispatch(CollectiblesOnAuctionLoadAction(publicKey!, true, false, false, undefined));
                       navigateMyAuctions();
+                      //history.replace("/market/myauctions");
                     }
                   }
                 >

@@ -11,6 +11,7 @@ import useIsMounted from './hooks/use-is-mounted';
 import CardDetailsPage from './pages/CardDetailsPage';
 import CardCollectingAndConfirmationPage from './pages/CardCollectingAndConfirmationPage';
 import HomePage from './pages/HomePage';
+import HomeMarketPage from './pages/HomeMarketPage';
 import PasscodePage from './pages/PasscodePage';
 import PassphrasePage from './pages/PassphrasePage';
 import AuctionCreationAndConfirmationPage from './pages/auctions/AuctionCreationAndConfirmationPage';
@@ -23,7 +24,7 @@ import AuctionPlaceOrRetractBidPage from './pages/auctions/AuctionPlaceOrRetract
 import AuctionMyAuctionViewPage from './pages/auctions/AuctionMyAuctionViewPage';
 import AuctionMyAuctionExpiredAndAcceptOfferViewPage from './pages/auctions/AuctionMyAuctionExpiredAndAcceptOfferViewPage';
 import AuctionPlaceBidAndConfirmationPage from './pages/auctions/AuctionPlaceBidAndConfirmationPage';
-import AuctionOfferAcceptedConfirmationPage from './pages/auctions/AuctionOfferAcceptedConfirmationPage';
+import AuctionOfferAcceptedConfirmationPage from './pages/auctions/AuctionOfferAcceptedConfirmationPage'; 
 import ProfilePage from './pages/ProfilePage';
 import QrCodeGeneratorPage from './pages/QrCodeGeneratorPage';
 import ScanQRPage from './pages/ScanQRPage';
@@ -33,6 +34,8 @@ import AuthLoginContextProvider from './providers/AuthLoginProvider';
 import AuthRegisterContextProvider from './providers/AuthRegisterProvider';
 import { SetBaseUrlAppAction } from './store/actions/app';
 import './theme/ionic-theme';
+
+// (global as any).resetMarketSubmenu=false;
 
 const { SplashScreen } = Plugins;
 
@@ -112,10 +115,10 @@ const App: FC = () => {
                 <ProtectedRoute path="/market/card/auctionview/:auctionId/:assetId" component={AuctionMyAuctionViewPage} exact />     
                 <ProtectedRoute path="/market/card/expiredauctionview/:auctionId/:assetId" component={AuctionMyAuctionExpiredAndAcceptOfferViewPage} exact/>
                 <ProtectedRoute path="/market/card/acceptoffer/:auctionId/:bidId" component={AuctionOfferAcceptedConfirmationPage} exact />     
-                <ProtectedRoute path="/market/startauction" component={()=>(<HomePage menu="startauction"/>)} exact/>               
-                <ProtectedRoute path="/market/myauctions" component={()=>(<HomePage menu="myauctions"/>)} exact />     
-                <ProtectedRoute path="/market/participateinauction" component={()=>(<HomePage menu="participateinauction"/>)} exact />     
-                <ProtectedRoute path="/market/mybids" component={()=>(<HomePage menu="mybids"/>)} exact />                  
+                <ProtectedRoute path="/market/myauctionablecards" component={()=>(<HomeMarketPage menu="myauctionablecards"/>)} exact/>               
+                <ProtectedRoute path="/market/myauctions" component={()=>(<HomeMarketPage menu="myauctions"/>)} exact />     
+                <ProtectedRoute path="/market/participateinauction" component={()=>(<HomeMarketPage menu="participateinauction"/>)} exact />     
+                <ProtectedRoute path="/market/mybids" component={()=>(<HomeMarketPage menu="mybids"/>)} exact />                  
                 <ProtectedRoute path="/market/card/newbid/:assetId" component={AuctionPlaceOrRetractBidPage} exact />                  
                 <ProtectedRoute path="/market/card/placenewbid/:auctionId/:bidAmount" component={AuctionPlaceBidAndConfirmationPage} exact />    
                 <ProtectedRoute path="/market/card/retractbid/:bidId" component={AuctionRetractBidConfirmationPage} exact />     
