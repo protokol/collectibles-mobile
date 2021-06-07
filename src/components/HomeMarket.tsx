@@ -75,16 +75,9 @@ const ActionButton = styled(Button)`
 `;
 
 const HomeMarket: FC<{menu?:string}> = ({menu}) =>  {
-  // console.log("("+cont+") Menu in @ HomeMarket:" + menu);
   const history = useHistory();
   const [submenu, setMarketSubMenu] = useState("-1");  
 
-  /*
-  const dispatch = useDispatch();
-  const {
-    session: { publicKey },
-  } = useContext(AuthLoginContext);  
- */
   if(submenu==="-1"){
     setMarketSubMenu(menu === undefined ? "0" : menu);
   }

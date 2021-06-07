@@ -94,9 +94,7 @@ const startAuctionEpic: RootEpic = (
                 passphrase,
                 txUuid
             },
-        } = action as StartAuctionActionType;              
-    
-        console.log("Passing test 1.");
+        } = action as StartAuctionActionType;                
 
         return forkJoin([
             fromFetch(`${stateBaseUrl}/api/node/configuration`).pipe(mergeMap(response => response.json())),
@@ -104,7 +102,6 @@ const startAuctionEpic: RootEpic = (
             connection(stateBaseUrl!).api("wallets").get(pubKey),         
         ]).pipe(  
           switchMap(([confResponse, blockResponse, walletResponse]) => {                      
-            //console.log(JSON.stringify(confResponse));
             if (!confResponse.data) {
               return of(StartAuctionErrorAction({name:"Error", message:"Error reading node configuration"}));              
             }            
@@ -120,11 +117,10 @@ const startAuctionEpic: RootEpic = (
             const fbd = new Date(finalBiddingDate.replaceAll('-','/')).getTime();
             const diffSeconds = Math.abs(fbd - now) / 1000;
             const addedHeight = currentBlock + Math.ceil(diffSeconds/blockTime);
-            // console.log(blockTime + "   " + now + "   " +  fbd + "   " + diffSeconds + "   " + currentBlock + "   " + addedHeight);
             // For debug purposes:
+            // console.log(blockTime + "   " + now + "   " +  fbd + "   " + diffSeconds + "   " + currentBlock + "   " + addedHeight);            
             // return of(StartAuctionErrorAction({name:"Test", message:"Testing exit"}));
-            
-            //Transactions.TransactionRegistry.registerTransactionType(NFTTransactions.NFTAuctionTransaction);   
+                        
             const transaction = new Builders.NFTAuctionBuilder()
             .NFTAuctionAsset({
                 startAmount: Utils.BigNumber.make(minimumBid),                
@@ -142,8 +138,6 @@ const startAuctionEpic: RootEpic = (
             .pipe(              
               switchMap(
                 ({ body: { data, errors } }: ApiResponse<CreateTransactionApiResponse>) => {
-                  // console.log(JSON.stringify(data, null, 4));
-                  // console.log(JSON.stringify(errors, null, 4));
                   const [accepted] = data.accept;
                   if (!!accepted) {
                     return merge(
@@ -185,14 +179,9 @@ const startAuctionEpic: RootEpic = (
           connection(stateBaseUrl!).api("wallets").get(pubKey)
         ).pipe(
            switchMap(({ body: { data, errors } }: ApiResponse<Wallet>) => {
-                // console.log(JSON.stringify(data, null, 4));
-                // console.log(JSON.stringify(errors, null, 4));
                 if (errors){
                   return of(CancelAuctionErrorAction({name:"Error getting wallet", message: errors.message}));
                 }
-                // return of(CancelAuctionSuccessAction(txUuid));                              
-
-                //Transactions.TransactionRegistry.registerTransactionType(NFTTransactions.NFTAuctionCancelTransaction);
                 const transaction = new Builders.NFTAuctionCancelBuilder()
                     .NFTAuctionCancelAsset({
                         auctionId: auctionId,
@@ -206,8 +195,6 @@ const startAuctionEpic: RootEpic = (
                 ).pipe(       
                   switchMap(
                     ({ body: { data, errors } }: ApiResponse<CreateTransactionApiResponse>) => {
-                      // console.log(JSON.stringify(data, null, 4));
-                      // console.log(JSON.stringify(errors, null, 4));
                       const [accepted] = data.accept;
                       if (!!accepted) {                                                
                         return merge(
@@ -252,15 +239,10 @@ const startAuctionEpic: RootEpic = (
           connection(stateBaseUrl!).api("wallets").get(pubKey)
         ).pipe(
            switchMap(({ body: { data, errors } }: ApiResponse<Wallet>) => {
-              // console.log(JSON.stringify(data, null, 4));
-              // console.log(JSON.stringify(errors, null, 4));
               if (errors){
                 return of(PlaceBidErrorAction({name:"Error getting wallet", message: errors.message}));
               }
-              //return of(PlaceBidSuccessAction(txUuid));                              
-              
-              //Transactions.TransactionRegistry.registerTransactionType(NFTTransactions.NFTBidTransaction);   
-              
+             
               const transaction = new Builders.NFTBidBuilder()
                   .NFTBidAsset({
                       auctionId: auctionId,
@@ -277,8 +259,6 @@ const startAuctionEpic: RootEpic = (
               ).pipe(       
                 switchMap(
                   ({ body: { data, errors } }: ApiResponse<CreateTransactionApiResponse>) => {
-                    // console.log(JSON.stringify(data, null, 4));
-                    // console.log(JSON.stringify(errors, null, 4));
                     const [accepted] = data.accept;
                     if (!!accepted) {                                                
                       return merge(
@@ -321,13 +301,9 @@ const startAuctionEpic: RootEpic = (
           connection(stateBaseUrl!).api("wallets").get(pubKey)
         ).pipe(
            switchMap(({ body: { data, errors } }: ApiResponse<Wallet>) => {
-                // console.log(JSON.stringify(data, null, 4));
-                // console.log(JSON.stringify(errors, null, 4));
                 if (errors){
                   return of(CancelBidErrorAction({name:"Error getting wallet", message: errors.message}));
-                }
-                //Transactions.TransactionRegistry.registerTransactionType(NFTTransactions.NFTAuctionCancelTransaction);   
-                
+                }                
                 const transaction = new Builders.NFTBidCancelBuilder()
                     .NFTBidCancelAsset({
                         bidId: bidId,
@@ -341,8 +317,6 @@ const startAuctionEpic: RootEpic = (
                 ).pipe(       
                   switchMap(
                     ({ body: { data, errors } }: ApiResponse<CreateTransactionApiResponse>) => {
-                      // console.log(JSON.stringify(data, null, 4));
-                      // console.log(JSON.stringify(errors, null, 4));
                       const [accepted] = data.accept;
                       if (!!accepted) {                                                
                         return merge(
@@ -387,13 +361,9 @@ const startAuctionEpic: RootEpic = (
           connection(stateBaseUrl!).api("wallets").get(pubKey)
         ).pipe(
            switchMap(({ body: { data, errors } }: ApiResponse<Wallet>) => {
-                // console.log(JSON.stringify(data, null, 4));
-                // console.log(JSON.stringify(errors, null, 4));
                 if (errors){
                   return of(AcceptBidErrorAction({name:"Error getting wallet", message: errors.message}));
-                }
-                //Transactions.TransactionRegistry.registerTransactionType(NFTTransactions.NFTAcceptTradeTransaction);   
-                
+                }                
                 const transaction = new Builders.NftAcceptTradeBuilder()
                     .NFTAcceptTradeAsset({                        
                         auctionId: auctionId,
@@ -408,8 +378,6 @@ const startAuctionEpic: RootEpic = (
                 ).pipe(       
                   switchMap(
                     ({ body: { data, errors } }: ApiResponse<CreateTransactionApiResponse>) => {
-                      // console.log(JSON.stringify(data, null, 4));
-                      // console.log(JSON.stringify(errors, null, 4));
                       const [accepted] = data.accept;
                       if (!!accepted) {                                                
                         return merge(

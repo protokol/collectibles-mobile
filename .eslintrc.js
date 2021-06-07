@@ -9,7 +9,7 @@ module.exports = {
   plugins: ['@typescript-eslint'],
   extends: ['react-app', 'prettier'],
   rules: {
-    '@typescript-eslint/no-unused-vars': 'error',
+    '@typescript-eslint/no-unused-vars': 'off',
     '@typescript-eslint/no-unused-vars-experimental': 'error',
   },
 };

@@ -5,6 +5,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { shallowEqual, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router';
 import { InputChangeEventDetail } from '@ionic/core';
+import Moment from 'moment';
 import styled from 'styled-components';
 import { Styles } from '../../utils/styles';
 import { FontSize } from '../../constants/font-size';
@@ -110,11 +111,10 @@ const ViewCardIonButton = styled(Button)<JSX.IonButton>`
   box-shadow: none !important;
 `;
 
-const d = new Date();
-const dateDefault = (d.getMonth()+1) + "/" + d.getDate() + "/" + d.getFullYear();
-const datePlaceHolder = (d.getMonth()+1) + " / " + d.getDate() + " / " + d.getFullYear();
+const dateDefault = Moment().format("MM/DD/YYYY");
+const datePlaceHolder = Moment().format("MM/DD/YYYY");
 
-let initialValues = {
+const initialValues = {
   minimumbid: "",
   minimumincrement: "",
   finalbiddingdate: dateDefault,
@@ -150,9 +150,7 @@ const AuctionCreateNewPage: FC = () => {
         return;
       }      
       setStateData({ minimumbid, minimumincrement, finalbiddingdate });      
-      //console.log("submitted:" + JSON.stringify(data, null, 2));    
-      //TBD Fixed minimum increment to 5
-      //history.push(`/home/card/startauctionaction/${assetId}/${data.minimumbid}/${data.minimumincrement}/${data.finalbiddingdate?.replaceAll('/','-')}`);      
+      //TBD Harcoded minimum increment to 5      
       history.push(`/market/card/createnewauction/${assetId}/${data.minimumbid}/5/${data.finalbiddingdate?.replaceAll('/','-')}`);      
     },
     [formState.isValid, setStateData, data, history, assetId]

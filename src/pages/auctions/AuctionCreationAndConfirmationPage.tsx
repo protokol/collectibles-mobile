@@ -111,8 +111,6 @@ const AuctionCreationAndConfirmationPage: FC = () => {
     session: { address, passphrase, publicKey },
   } = useContext(AuthLoginContext);  
 
-  console.log(address);
-
   const isMounted = useIsMounted();  
   useEffect(() => {        
     if (isMounted && minimumBid && minimumIncrement && finalBiddingDate && cardId && address) {            

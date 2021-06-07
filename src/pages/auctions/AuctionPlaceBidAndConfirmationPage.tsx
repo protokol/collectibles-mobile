@@ -114,7 +114,6 @@ const AuctionPlaceBidAndConfirmationPage: FC = () => {
   const isMounted = useIsMounted();  
   useEffect(() => {        
     if (isMounted && bidAmount && auctionId && publicKey) {     
-      console.log("txUuid:" + txUuid);
       dispatch(PlaceBidAction(auctionId, Number(bidAmount), publicKey!, passphrase!, txUuid));
     }
   }, [isMounted, dispatch, bidAmount, auctionId, publicKey, passphrase]);  

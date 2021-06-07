@@ -72,9 +72,6 @@ const HomeCollectibles: FC = () => {
     session: { publicKey },
   } = useContext(AuthLoginContext);
 
-  //console.log(publicKey);
-  //console.log(address);
-
   const publicKeyIn = publicKey;  
 
   const isMounted = useIsMounted();
@@ -146,8 +143,6 @@ const HomeCollectibles: FC = () => {
                   ipfsHashImageFront,
                   tags,
                 } = attributes as any;
-
-                //console.log(attributes);
 
                 const type = 
                   Array.isArray(tags) && tags.length

@@ -20,7 +20,6 @@ const TabTitle = styled(Title)`
 `;
 
 const MarketContent: FC<{menu?:string}> = ({menu}) => {
-  console.log("Menu in @ MarketContent:" + menu);
 
   return (
     <IonContent id="main-content" fullscreen>

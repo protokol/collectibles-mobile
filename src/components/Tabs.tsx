@@ -76,7 +76,7 @@ export const TabsContextProvider: FC<{ state?: UseNumberState, activeIndex?: num
   activeIndex,
   children,
 }) => {
-  const innerState = useState((activeIndex===undefined)?0:activeIndex);
+  const innerState = useState(activeIndex || 0);
   const elements = useConstant(() => ({ tabs: 0, panels: 0 }));
   const state = outerState || innerState;
 

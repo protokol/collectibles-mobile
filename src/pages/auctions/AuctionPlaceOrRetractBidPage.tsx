@@ -133,8 +133,6 @@ const AuctionPlaceOrRetractBidPage: FC = () => {
     minimumBid
   } = attributes as any;
 
-  //console.log(JSON.stringify(asset));
-
   if (auctionIdIn===-1){
     setAuctionId(auctionId);
   }

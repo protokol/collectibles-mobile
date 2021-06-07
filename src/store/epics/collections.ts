@@ -77,9 +77,7 @@ const fetchWalletCollectionsEpic: RootEpic = (
             //Cards on expired auctions (not cancelled) could be waiting for cancellation or accepting offer, is for that next two lines are commented and not filtering them
             //const currentBlock = blockResponse.body?.data?.height;     
             //activeAuctions = activeAuctions.filter(a => a.nftAuction.expiration.blockHeight < currentBlock); // Remove expired auctions from active auctions
-            
-            //console.log(JSON.stringify(assetsResponse.body.data, null, 4));
-            //console.log(JSON.stringify(activeAuctions, null, 4));
+
             for(let asset of assetsResponse.body.data){
               const auctionIn = activeAuctions.findIndex(a => a.nftAuction.nftIds.find(as => as === asset.id));
               if (auctionIn === -1){                                
@@ -89,7 +87,6 @@ const fetchWalletCollectionsEpic: RootEpic = (
                 data.push(asset);
               }              
             }                
-            //console.log(JSON.stringify(data, null, 4));
             return CollectiblesLoadSuccessAction(q, data, data.length < q.limit!);
           }),
           catchError((err) => of(CollectiblesLoadErrorAction(err)))
@@ -151,23 +148,14 @@ const fetchCardsOnAuctionEpic: RootEpic = (
           const nowMs = new Date().getTime();
 
           for(let auction of auctionsResponse.body.data){    
-            //console.log(ownAuctions + "  " + auction.senderPublicKey + "  " + pubKey);
-            //console.log("Step test 1");
             if (cancelledAuctionsResponse.body.data.some(a => a.nftAuctionCancel.auctionId === auction.id)) continue;
-            //console.log("Step test 2");
             if (!onlyOwnAuctions && auction.senderPublicKey === pubKey) continue;
-            //console.log("Step test 3");
             if (!includeExpiredAuctions && auction.nftAuction.expiration.blockHeight < currentBlock) continue;
-            //console.log("Step test 4");
-            //console.log("biddedAuctions:" + biddedAuctions);
-            //console.log("pubKey:" + pubKey);            
             if (onlyBiddedAuctions)
             {              
               const biddedIn = bidsResponse.body.data.findIndex(b => b.nftBid.auctionId === auction.id && b.senderPublicKey === pubKey);
-              //console.log("biddedIn:" + biddedIn);
               if (biddedIn === -1) continue;
             }            
-            //console.log("Step test 5");
             let bidsResp = bidsResponse.body.data.filter(b => b.nftBid.auctionId === auction.id);
             let allBids:ExchangeResourcesTypes.Bids[] = [];
             for(let bid of bidsResp){  
@@ -180,13 +168,9 @@ const fetchCardsOnAuctionEpic: RootEpic = (
             const myBid = (allMyBids.length === 0) ? 0 : Number(allMyBids.reduce((prev, curr) => (Number(prev.nftBid.bidAmount)>Number(curr.nftBid.bidAmount))?prev:curr).nftBid.bidAmount);
             const myBidId = (allMyBids.length === 0) ? 0 : allMyBids.reduce((prev, curr) => (Number(prev.nftBid.bidAmount)>Number(curr.nftBid.bidAmount))?prev:curr).id;
             const highestBidId = (allBids.length === 0) ? 0 : allBids.reduce((prev, curr) => (Number(prev.nftBid.bidAmount)>Number(curr.nftBid.bidAmount))?prev:curr).id;            
-            //console.log("Step test 6");
-            //console.log(JSON.stringify(auction, null, 4));
             for(let nftId of auction.nftAuction.nftIds){
-              //console.log(JSON.stringify(assetsResponse.body, null, 4));
               const asset = assetsResponse.body.data.find(a => a.id===nftId);
               if (asset === undefined) continue;
-              //console.log("Step test 7");
               const remainingBlocks = auction.nftAuction.expiration.blockHeight - currentBlock;
               const remainingMs = remainingBlocks * blockTime * 1000;
               //const seconds = Math.floor( (total/1000) % 60 );

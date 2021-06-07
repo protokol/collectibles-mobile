@@ -32,7 +32,6 @@ const ScanQRPage: FC = () => {
       try {
         const status: QRScannerStatus = await QRScanner.prepare();
         if (status.authorized) {
-          console.log("BBBB");
           await QRScanner.show();
           window.document.querySelector('ion-app').classList.add('camera-view');
 
