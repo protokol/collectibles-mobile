@@ -89,15 +89,13 @@ const AuctionMyBiddedCards: FC = () => {
     const isMounted = useIsMounted();
     useEffect(() => {
       if (publicKey && isMounted) {
-          console.log("Call My bids dispatch 1");
-          dispatch(CollectiblesOnAuctionLoadAction(publicKey!, false, true, true, undefined));
+        dispatch(CollectiblesOnAuctionLoadAction(publicKey!, false, true, true, undefined));
       }
     }, [isMounted, dispatch, publicKey]);
   
     const loadNextPage = useCallback(() => {
       if (publicKey) {
         //const { page } = query ?? { page: 1 };
-        console.log("Call My bids dispatch 2");
         dispatch(CollectiblesOnAuctionLoadAction(publicKey!, false, true, true, undefined));
       }
     }, [/*query,*/ dispatch, publicKey]);

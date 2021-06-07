@@ -74,13 +74,8 @@ const ActionButton = styled(Button)`
   }  
 `;
 
-let cont = 0;
-
 const HomeMarket: FC<{menu?:string}> = ({menu}) =>  {
-
-  cont++;
-  console.log("("+cont+") Menu in @ HomeMarket:" + menu);
-
+  // console.log("("+cont+") Menu in @ HomeMarket:" + menu);
   const history = useHistory();
   const [submenu, setMarketSubMenu] = useState("-1");  
 
