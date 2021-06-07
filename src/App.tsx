@@ -8,6 +8,7 @@ import { IonReactRouter } from '@ionic/react-router';
 import MainMenu from './components/MainMenu';
 import ProtectedRoute from './components/ProtectedRoute';
 import useIsMounted from './hooks/use-is-mounted';
+import { MarketContentSelector } from './components/Tabs';
 import CardDetailsPage from './pages/CardDetailsPage';
 import CardCollectingAndConfirmationPage from './pages/CardCollectingAndConfirmationPage';
 import HomePage from './pages/HomePage';
@@ -113,10 +114,10 @@ const App: FC = () => {
                 <ProtectedRoute path="/market/card/auctionview/:auctionId/:assetId" component={AuctionMyAuctionViewPage} exact />     
                 <ProtectedRoute path="/market/card/expiredauctionview/:auctionId/:assetId" component={AuctionMyAuctionExpiredAndAcceptOfferViewPage} exact/>
                 <ProtectedRoute path="/market/card/acceptoffer/:auctionId/:bidId" component={AuctionOfferAcceptedConfirmationPage} exact />     
-                <ProtectedRoute path="/market/myauctionablecards" component={()=>(<HomeMarketPage menu="myauctionablecards"/>)} exact/>               
-                <ProtectedRoute path="/market/myauctions" component={()=>(<HomeMarketPage menu="myauctions"/>)} exact />     
-                <ProtectedRoute path="/market/participateinauction" component={()=>(<HomeMarketPage menu="participateinauction"/>)} exact />     
-                <ProtectedRoute path="/market/mybids" component={()=>(<HomeMarketPage menu="mybids"/>)} exact />                  
+                <ProtectedRoute path="/market/myauctionablecards" component={()=>(<HomeMarketPage menu={MarketContentSelector.ContentAuctionableCards}/>)} exact/>               
+                <ProtectedRoute path="/market/myauctions" component={()=>(<HomeMarketPage menu={MarketContentSelector.ContentAuctionsMyAuctions}/>)} exact />     
+                <ProtectedRoute path="/market/participateinauction" component={()=>(<HomeMarketPage menu={MarketContentSelector.ContentAuctionParticipateIn}/>)} exact />     
+                <ProtectedRoute path="/market/mybids" component={()=>(<HomeMarketPage menu={MarketContentSelector.ContentAuctionMyBiddedCards}/>)} exact />                  
                 <ProtectedRoute path="/market/card/newbid/:assetId" component={AuctionPlaceOrRetractBidPage} exact />                  
                 <ProtectedRoute path="/market/card/placenewbid/:auctionId/:bidAmount" component={AuctionPlaceBidAndConfirmationPage} exact />    
                 <ProtectedRoute path="/market/card/retractbid/:bidId" component={AuctionRetractBidConfirmationPage} exact />     

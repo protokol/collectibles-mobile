@@ -1,6 +1,7 @@
 import { FC, useState } from 'react';
 import { useHistory } from 'react-router';
 import styled from 'styled-components';
+import { MarketContentSelector } from '../components/Tabs';
 import { IonCol, IonGrid, IonRow } from '@ionic/react';
 import Button from '../components/ionic/Button';
 import Label from '../components/ionic/Label';
@@ -75,36 +76,36 @@ const HomeMarket: FC<{menu?:string}> = ({menu}) =>  {
   const [submenu, setMarketSubMenu] = useState("-1");  
 
   if(submenu==="-1"){
-    setMarketSubMenu(menu === undefined ? "0" : menu);
+    setMarketSubMenu(menu || MarketContentSelector.ContentDefault);
   }
 
   const auctionSellHandler = () => {    
-    setMarketSubMenu("myauctionablecards");      
+    setMarketSubMenu(MarketContentSelector.ContentAuctionableCards);      
   }
 
   const auctionSellViewHandler = () => {    
-    setMarketSubMenu("myauctions");   
+    setMarketSubMenu(MarketContentSelector.ContentAuctionsMyAuctions);   
   }  
 
   const auctionBuyHandler = () => {    
-    setMarketSubMenu("participateinauction");   
+    setMarketSubMenu(MarketContentSelector.ContentAuctionParticipateIn);   
   }
 
   return (  
     <>
-    {submenu==="myauctionablecards" && (
+    {submenu===MarketContentSelector.ContentAuctionableCards && (
       <AuctionableCards />
     )}  
-    {submenu==="myauctions" && (
+    {submenu===MarketContentSelector.ContentAuctionsMyAuctions && (
       <AuctionsMyAuctions />
     )}      
-    {submenu==="participateinauction" && (
+    {submenu===MarketContentSelector.ContentAuctionParticipateIn && (
       <AuctionParticipateIn/>
     )}  
-    {submenu==="mybids" && (
+    {submenu===MarketContentSelector.ContentAuctionMyBiddedCards && (
       <AuctionMyBiddedCards/>
     )}                            
-    {submenu==="0" && (
+    {submenu===MarketContentSelector.ContentDefault && (
       <IonGrid className="ion-no-padding">
         <IonRow>
           <ImageBgCol size="12">

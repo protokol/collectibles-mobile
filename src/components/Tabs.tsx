@@ -62,6 +62,15 @@ interface ElementsStateContextType {
   panels: number;
 }
 
+export enum MarketContentSelector {
+  ContentAuctionableCards = 'myauctionablecards',
+  ContentAuctionsMyAuctions = 'myauctions',
+  ContentAuctionParticipateIn = 'participateinauction',
+  ContentAuctionMyBiddedCards = 'mybids',
+  ContentDefault = 'default',
+}
+
+
 export const TabsState = createContext<UseNumberState>(([
   0,
   () => {},

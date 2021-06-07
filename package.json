@@ -26,6 +26,7 @@
     "@opencensus/core": "0.0.22",
     "@pm2/io": "^5.0.0",
     "@protokol/nft-exchange-crypto": "1.0.0-beta.61",
+    "@protokol/nameservice-crypto": "^1.0.0-beta",
     "aes-js": "^3.1.2",
     "bip39": "^3.0.3",
     "cordova-plugin-qrscanner": "^3.0.1",
