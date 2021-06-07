@@ -85,21 +85,19 @@ const AuctionsMyAuctions: FC = () => {
     const {
       session: { publicKey },
     } = useContext(AuthLoginContext);
-  
-    const publicKeyIn = publicKey;    
-  
+   
     const isMounted = useIsMounted();
     useEffect(() => {
-      if (publicKeyIn && isMounted) {
-        dispatch(CollectiblesOnAuctionLoadAction(publicKeyIn!, true, false, true, undefined));
+      if (publicKey && isMounted) {
+        dispatch(CollectiblesOnAuctionLoadAction(publicKey!, true, false, true, undefined));
       }
-    }, [isMounted, dispatch, publicKeyIn]);
+    }, [isMounted, dispatch, publicKey]);
   
     const loadNextPage = useCallback(() => {
-      if (publicKeyIn) {        
-        dispatch(CollectiblesOnAuctionLoadAction(publicKeyIn!, true, false, true, undefined));
+      if (publicKey) {        
+        dispatch(CollectiblesOnAuctionLoadAction(publicKey!, true, false, true, undefined));
       }
-    }, [dispatch, publicKeyIn]);
+    }, [dispatch, publicKey]);
   
     const flatAssets = useMemo(() => assets.flat(), [assets]);
   

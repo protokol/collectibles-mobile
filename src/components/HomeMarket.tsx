@@ -1,5 +1,4 @@
 import { FC, useState } from 'react';
-// import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
 import styled from 'styled-components';
 import { IonCol, IonGrid, IonRow } from '@ionic/react';
@@ -13,9 +12,6 @@ import AuctionableCards from '../components/AuctionableCards';
 import AuctionsMyAuctions from '../components/AuctionsMyAuctions';
 import AuctionParticipateIn from '../components/AuctionParticipateIn';
 import AuctionMyBiddedCards from '../components/AuctionMyBiddedCards';
-
-//import { CollectiblesLoadAction, CollectiblesOnAuctionLoadAction } from '../store/actions/collections';
-// import { AuthLoginContext } from '../providers/AuthLoginProvider'; 
 
 const ImageBgCol = styled(IonCol)`
   position: relative;
@@ -178,7 +174,6 @@ const HomeMarket: FC<{menu?:string}> = ({menu}) =>  {
               fontSize={FontSize.SM}
               fontWeight={FontWeight.BOLD}
               onClick={() => {
-                  //CollectiblesLoadAction(publicKey!, false)
                   auctionSellHandler();
                 }
               }
@@ -192,7 +187,6 @@ const HomeMarket: FC<{menu?:string}> = ({menu}) =>  {
               fontSize={FontSize.SM}
               fontWeight={FontWeight.BOLD}
               onClick={() => {
-                  //dispatch(CollectiblesOnAuctionLoadAction(publicKey!, true, false, false, undefined));
                   auctionSellViewHandler();
                 }
               }
@@ -206,7 +200,6 @@ const HomeMarket: FC<{menu?:string}> = ({menu}) =>  {
               fontSize={FontSize.SM}
               fontWeight={FontWeight.BOLD}
               onClick={() => {
-                  //dispatch(CollectiblesOnAuctionLoadAction(publicKey!, true, false, true, undefined));
                   auctionBuyHandler();
                 }
               }

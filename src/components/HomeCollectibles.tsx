@@ -72,26 +72,24 @@ const HomeCollectibles: FC = () => {
     session: { publicKey },
   } = useContext(AuthLoginContext);
 
-  const publicKeyIn = publicKey;  
-
   const isMounted = useIsMounted();
   useEffect(() => {
-    if (publicKeyIn && isMounted) {
-      dispatch(CollectiblesLoadAction(publicKeyIn!, true));
+    if (publicKey && isMounted) {
+      dispatch(CollectiblesLoadAction(publicKey!, true));
     }
-  }, [isMounted, dispatch, publicKeyIn]);
+  }, [isMounted, dispatch, publicKey]);
 
   const loadNextPage = useCallback(() => {
-    if (publicKeyIn) {
+    if (publicKey) {
       const { page } = query ?? { page: 1 };
       dispatch(
-        CollectiblesLoadAction(publicKeyIn!, true, {
+        CollectiblesLoadAction(publicKey!, true, {
           ...query,
           page: page! + 1,
         })
       );
     }
-  }, [query, dispatch, publicKeyIn]);
+  }, [query, dispatch, publicKey]);
 
   const flatAssets = useMemo(() => assets.flat(), [assets]);
 

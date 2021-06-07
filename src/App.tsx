@@ -35,8 +35,6 @@ import AuthRegisterContextProvider from './providers/AuthRegisterProvider';
 import { SetBaseUrlAppAction } from './store/actions/app';
 import './theme/ionic-theme';
 
-// (global as any).resetMarketSubmenu=false;
-
 const { SplashScreen } = Plugins;
 
 const App: FC = () => {
