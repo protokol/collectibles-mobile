@@ -37,7 +37,7 @@
     "google-map-react": "^2.1.9",
     "ionic": "^5.4.16",
     "ionicons": "^5.0.0",
-    "jetifier": "^1.6.6",
+    "jetifier": "^2.0.0",
     "moment": "^2.29.1",
     "node-sass": "^6.0.0",
     "qrcode.react": "^1.0.1",
