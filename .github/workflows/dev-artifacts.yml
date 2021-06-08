@@ -1,6 +1,9 @@
 name: Development Artifacts
 
-on: [pull_request]
+on:
+  push:
+    branches:
+      - 'master'
 
 jobs:
   gh-pages:
