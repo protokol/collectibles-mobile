@@ -3,21 +3,25 @@ import { BaseResourcesTypes } from '@protokol/client';
 
 // Actions
 enum CollectionsActions {
-  COLLECTIONS_LOAD = '@Collections/COLLECTIONS_LOAD',
-  COLLECTIONS_LOAD_SUCCESS = '@Collections/COLLECTIONS_LOAD_SUCCESS',
-  COLLECTIONS_LOAD_ERROR = '@Collections/COLLECTIONS_LOAD_ERROR',
+  COLLECTIBLES_LOAD = '@Collections/COLLECTIBLES_LOAD',
+  COLLECTIBLES_LOAD_SUCCESS = '@Collections/COLLECTIBLES_LOAD_SUCCESS',
+  COLLECTIBLES_LOAD_ERROR = '@Collections/COLLECTIBLES_LOAD_ERROR',
+  COLLECTIBLES_ON_AUCTION_LOAD = '@Collections/COLLECTIBLES_ON_AUCTION_LOAD',
+  COLLECTIBLES_ON_AUCTION_LOAD_SUCCESS = '@Collections/COLLECTIBLES_ON_AUCTION_LOAD_SUCCESS',
+  COLLECTIBLES_ON_AUCTION_LOAD_ERROR = '@Collections/COLLECTIBLES_ON_AUCTION_LOAD_ERROR',  
 }
 
-export interface CollectionsLoadActionType
-  extends Action<CollectionsActions.COLLECTIONS_LOAD> {
+export interface CollectiblesLoadActionType
+  extends Action<CollectionsActions.COLLECTIBLES_LOAD> {
   payload: {
-    query?: BaseResourcesTypes.AllAssetsQuery;
     pubKey: string;
+    includeInAuctionAssets: boolean;
+    query?: BaseResourcesTypes.AllAssetsQuery;    
   };
 }
 
-export interface CollectionsLoadSuccessActionType
-  extends Action<CollectionsActions.COLLECTIONS_LOAD_SUCCESS> {
+export interface CollectiblesLoadSuccessActionType
+  extends Action<CollectionsActions.COLLECTIBLES_LOAD_SUCCESS> {
   payload: {
     query: BaseResourcesTypes.AllAssetsQuery;
     assets: BaseResourcesTypes.Assets[];
@@ -25,31 +29,60 @@ export interface CollectionsLoadSuccessActionType
   };
 }
 
-export interface CollectionsLoadErrorActionType
-  extends Action<CollectionsActions.COLLECTIONS_LOAD_ERROR> {
+export interface CollectiblesLoadErrorActionType
+  extends Action<CollectionsActions.COLLECTIBLES_LOAD_ERROR> {
+  payload: {
+    error: Error;
+  };
+}
+
+export interface CollectiblesOnAuctionLoadActionType
+  extends Action<CollectionsActions.COLLECTIBLES_ON_AUCTION_LOAD> {
+    payload: {
+      pubKey: string;
+      onlyOwnAuctions: boolean;     
+      onlyBiddedAuctions: boolean; 
+      includeExpiredAuctions: boolean; 
+      query?: BaseResourcesTypes.AllAssetsQuery;
+    };
+}
+
+export interface CollectiblesOnAuctionLoadSuccessActionType
+  extends Action<CollectionsActions.COLLECTIBLES_ON_AUCTION_LOAD_SUCCESS> {
+    payload: {
+      query?: BaseResourcesTypes.AllAssetsQuery;
+      assets: BaseResourcesTypes.Assets[];
+      isLastPage: boolean;
+    };
+}
+
+export interface CollectiblesOnAuctionLoadErrorActionType
+  extends Action<CollectionsActions.COLLECTIBLES_ON_AUCTION_LOAD_ERROR> {
   payload: {
     error: Error;
   };
 }
 
 // Action creators
-const CollectionsLoadAction = (
+const CollectiblesLoadAction = (
   pubKey: string,
-  query?: BaseResourcesTypes.AllAssetsQuery
-): CollectionsLoadActionType => ({
-  type: CollectionsActions.COLLECTIONS_LOAD,
+  includeInAuctionAssets: boolean,
+  query?: BaseResourcesTypes.AllAssetsQuery,  
+): CollectiblesLoadActionType => ({
+  type: CollectionsActions.COLLECTIBLES_LOAD,
   payload: {
     query,
-    pubKey,
+    includeInAuctionAssets,
+    pubKey,    
   },
 });
 
-const CollectionsLoadSuccessAction = (
+const CollectiblesLoadSuccessAction = (
   query: BaseResourcesTypes.AllAssetsQuery,
   assets: BaseResourcesTypes.Assets[],
   isLastPage = false
-): CollectionsLoadSuccessActionType => ({
-  type: CollectionsActions.COLLECTIONS_LOAD_SUCCESS,
+): CollectiblesLoadSuccessActionType => ({
+  type: CollectionsActions.COLLECTIBLES_LOAD_SUCCESS,
   payload: {
     query,
     assets,
@@ -57,22 +90,68 @@ const CollectionsLoadSuccessAction = (
   },
 });
 
-const CollectionsLoadErrorAction = (
+const CollectiblesLoadErrorAction = (
   error: Error
-): CollectionsLoadErrorActionType => ({
-  type: CollectionsActions.COLLECTIONS_LOAD_ERROR,
+): CollectiblesLoadErrorActionType => ({
+  type: CollectionsActions.COLLECTIBLES_LOAD_ERROR,
   payload: {
     error,
   },
 });
 
-export type COLLECTIONS_ACTION_TYPES = CollectionsLoadActionType &
-  CollectionsLoadSuccessActionType &
-  CollectionsLoadErrorActionType;
+const CollectiblesOnAuctionLoadAction = (
+  pubKey: string,
+  onlyOwnAuctions: boolean,
+  onlyBiddedAuctions: boolean,  
+  includeExpiredAuctions: boolean,
+  query?: BaseResourcesTypes.AllAssetsQuery
+): CollectiblesOnAuctionLoadActionType => ({
+  type: CollectionsActions.COLLECTIBLES_ON_AUCTION_LOAD,
+  payload: {
+    query,
+    onlyOwnAuctions,
+    onlyBiddedAuctions,
+    includeExpiredAuctions, 
+    pubKey,
+  },
+});
+
+const CollectiblesOnAuctionLoadSuccessAction = (  
+  assets: BaseResourcesTypes.Assets[],
+  query?: BaseResourcesTypes.AllAssetsQuery,
+  isLastPage = false
+): CollectiblesOnAuctionLoadSuccessActionType => ({
+  type: CollectionsActions.COLLECTIBLES_ON_AUCTION_LOAD_SUCCESS,
+  payload: {
+    assets,
+    query,    
+    isLastPage,
+  },
+});
+
+const CollectiblesOnAuctionLoadErrorAction = (
+  error: Error
+): CollectiblesOnAuctionLoadErrorActionType => ({
+  type: CollectionsActions.COLLECTIBLES_ON_AUCTION_LOAD_ERROR,
+  payload: {
+    error,
+  },
+});
+
+export type COLLECTIONS_ACTION_TYPES = CollectiblesLoadActionType &
+  CollectiblesLoadSuccessActionType &
+  CollectiblesLoadErrorActionType & 
+  CollectiblesOnAuctionLoadActionType &
+  CollectiblesOnAuctionLoadSuccessActionType &
+  CollectiblesOnAuctionLoadErrorActionType
+  ;
 
 export {
   CollectionsActions,
-  CollectionsLoadAction,
-  CollectionsLoadSuccessAction,
-  CollectionsLoadErrorAction,
+  CollectiblesLoadAction,
+  CollectiblesLoadSuccessAction,
+  CollectiblesLoadErrorAction,
+  CollectiblesOnAuctionLoadAction,
+  CollectiblesOnAuctionLoadSuccessAction,
+  CollectiblesOnAuctionLoadErrorAction
 };

@@ -27,6 +27,8 @@ App is available on:
 Run `npm start` for a dev server. The application will open in your default browser.
 
 Run `cap:start:android` for a dev Android application. Running Android application requires Android Studio to be installed.
+If you cant find the folder capacitor-cordova-android-plugins inside the android project folder, you need to run a capacitor command to create it (and update plugin variables): Run `npx cap sync`
+
 
 Run `cap:start:ios` for a dev iOS application. Running iOS application requires XCode to be installed. 
 

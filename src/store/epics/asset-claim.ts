@@ -18,7 +18,7 @@ import { RootEpic } from '../types';
 const postAssetClaimEpic: RootEpic = (action$, state$) =>
   action$.ofType(AssetClaimActions.CLAIM_ASSET).pipe(
     withLatestFrom(state$.pipe(map(baseUrlSelector))),
-    switchMap(([action, stateBaseUrl]) => {
+    switchMap(([action, stateBaseUrl]) => {      
       const {
         payload: { collectionId, recipientId, txUuid },
       } = action as ClaimAssetActionType;

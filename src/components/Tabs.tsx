@@ -62,6 +62,15 @@ interface ElementsStateContextType {
   panels: number;
 }
 
+export enum MarketContentSelector {
+  ContentAuctionableCards = 'myauctionablecards',
+  ContentAuctionsMyAuctions = 'myauctions',
+  ContentAuctionParticipateIn = 'participateinauction',
+  ContentAuctionMyBiddedCards = 'mybids',
+  ContentDefault = 'default',
+}
+
+
 export const TabsState = createContext<UseNumberState>(([
   0,
   () => {},
@@ -71,11 +80,12 @@ const Elements = createContext<ElementsStateContextType>({
   panels: 0,
 });
 
-export const TabsContextProvider: FC<{ state?: UseNumberState }> = ({
+export const TabsContextProvider: FC<{ state?: UseNumberState, activeIndex?: number}> = ({
   state: outerState,
+  activeIndex,
   children,
 }) => {
-  const innerState = useState(0);
+  const innerState = useState(activeIndex || 0);
   const elements = useConstant(() => ({ tabs: 0, panels: 0 }));
   const state = outerState || innerState;
 

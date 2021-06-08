@@ -29,7 +29,7 @@ export default function configureStore() {
     window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
   const store = createStore(
     rootReducer,
-    composeEnhancers(applyMiddleware(epicMiddleware))
+    composeEnhancers(applyMiddleware(epicMiddleware))    
   );
 
   epicMiddleware.run(rootEpic);

@@ -31,7 +31,6 @@ const ScanQRPage: FC = () => {
     const onInitQrScanner = async () => {
       try {
         const status: QRScannerStatus = await QRScanner.prepare();
-
         if (status.authorized) {
           await QRScanner.show();
           window.document.querySelector('ion-app').classList.add('camera-view');
@@ -69,7 +68,7 @@ const ScanQRPage: FC = () => {
       <Header
         title="Collect Cards"
         buttonTopLeft={
-          <IonButton onClick={() => history.replace('/home')}>
+          <IonButton onClick={() => history.push('/home')}>
             <IonIcon color="light" slot="icon-only" icon={arrowBackOutline} />
           </IonButton>
         }

@@ -4,8 +4,71 @@
 }
 
 ion-app.camera-view {
-    background: transparent url("/assets/images/camera-preview.png") !important;
+    background: transparent url("../assets/images/camera-preview.png") !important;
     background-repeat: no-repeat !important;
     background-attachment: fixed !important;
     background-position: center !important;
+}
+
+/*
+.picker-wrapper.sc-ion-picker-ios {
+    color: var(--ion-color-dark);
+    background: var(--ion-color-danger);
+    --background: var(--ion-color-dark);
+    border-top: 0.5px solid var(--ion-color-danger);
+}
+
+.picker-ios .picker-prefix,
+.picker-ios .picker-suffix,
+.picker-ios .picker-opt.picker-opt-selected {
+    border-radius: 10px;
+    font-family: Montserrat-bold;
+    color: var(--ion-color-dark);
+}
+
+.picker-ios .picker-opt {
+    color: var(--ion-color-dark);
+    font-family: Montserrat-bold;  
+}
+
+.picker-ios .picker-button,
+.picker-ios .picker-button.activated {
+    color: var(--ion-color-danger);
+    font-family: Montserrat-bold;
+    --background: var(--ion-color-dark);
+    background: var(--ion-color-dark);    
+}
+
+.picker-toolbar.sc-ion-picker-ios {
+    background: var(--ion-color-dark);
+    border-bottom: 0px solid transparent;
+    border-top: 0.5px solid var(--ion-color-danger);
+}
+*/
+
+.picker-button.sc-ion-picker-md, .picker-button.ion-activated.sc-ion-picker-md {
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-left: 1.1em;
+    padding-right: 1.1em;
+    padding-top: 0;
+    padding-bottom: 0;
+    height: 44px;
+    background: transparent;
+    color: var(--ion-color-auction-base, #F8C938);
+    font-size: 14px;
+    font-weight: 500;
+    text-transform: uppercase;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+.picker-prefix, .picker-suffix, .picker-opt.picker-opt-selected {
+    color: var(--ion-color-auction-base, #F8C938);
+}
+
+ion-button{
+    --box-shadow:none;
 }

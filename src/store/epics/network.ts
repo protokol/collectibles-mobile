@@ -20,6 +20,8 @@ import {
 import { baseUrlSelector } from '../selectors/app';
 import { ArkCrypto, NameserviceCrypto } from '../services/crypto';
 import { RootEpic } from '../types';
+import { Transactions as NFTTransactions } from "@protokol/nft-exchange-crypto";
+import { Transactions } from "@arkecosystem/crypto";
 
 const arkCryptoEpic: RootEpic = (action$) =>
   action$.ofType(NetworkActions.NETWORK_CONFIGURATION_SUCCESS).pipe(
@@ -59,6 +61,12 @@ const fetchNetworkConfigurationEpic: RootEpic = (
     withLatestFrom(state$.pipe(map(baseUrlSelector))),
     switchMap(([action, stateBaseUrl]) => {
       const { payload } = action as LoadNetworkConfigurationActionType;
+
+      Transactions.TransactionRegistry.registerTransactionType(NFTTransactions.NFTAcceptTradeTransaction);   
+      Transactions.TransactionRegistry.registerTransactionType(NFTTransactions.NFTAuctionCancelTransaction);   
+      Transactions.TransactionRegistry.registerTransactionType(NFTTransactions.NFTBidTransaction);         
+      Transactions.TransactionRegistry.registerTransactionType(NFTTransactions.NFTBidCancelTransaction);   
+      Transactions.TransactionRegistry.registerTransactionType(NFTTransactions.NFTAuctionTransaction);     
 
       return forkJoin([
         defer(() =>

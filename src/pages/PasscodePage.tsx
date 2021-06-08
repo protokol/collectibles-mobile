@@ -92,7 +92,7 @@ const PasscodePage: FC<{
       !session.error &&
       session.state === AuthLoginState.LoggedIn
     ) {
-      history.replace('/home');
+      history.push('/home')
     }
   }, [session, history]);
 

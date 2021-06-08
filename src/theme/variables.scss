@@ -7,6 +7,10 @@ html {
 
 /** Ionic CSS Variables **/
 :root {
+
+  --ion-color-auction-tint: #FFFFFF;
+  --ion-color-auction-base: #F8C938;
+
   /** font **/
   --ion-font-family: 'Open sans', -apple-system, BlinkMacSystemFont,
     'Helvetica Neue', 'Roboto', sans-serif;
@@ -20,6 +24,8 @@ html {
   --app-color-blue-bg: #037AC2;
   --app-color-blue-dark-bg: #095484;
   --app-color-green-bg: #8ac827;
+  --app-color-yellow-bg: #F8C938;
+  --app-color-transparent-bg: transparent;
 
   /** utils **/
   --margin: 1rem;
@@ -95,5 +101,16 @@ html {
   --ion-color-light-contrast: #000000;
   --ion-color-light-contrast-rgb: 0, 0, 0;
   --ion-color-light-shade: #e0e0e0;
-  --ion-color-light-tint: #ffffff;
+  --ion-color-light-tint: #ffffff;  
+
+  --ion-color-bidred: #E4132B;
+  --ion-color-bidgreen: #8AC828;
+  --ion-color-bidyellow: #FCCF45;
+  
+  $colors: (
+    bidgreen: (
+      base: transparent,
+      contrast: #8AC828
+    )
+  );
 }

@@ -16,18 +16,18 @@ import {
   IonToolbar,
   IonFooter,
 } from '@ionic/react';
-import Header from '../components/Header';
-import Button from '../components/ionic/Button';
-import Text from '../components/ionic/Text';
-import { FontSize } from '../constants/font-size';
-import { FontWeight } from '../constants/font-weight';
-import { driverHighResImage } from '../constants/images';
-import useIsMounted from '../hooks/use-is-mounted';
-import { AuthLoginContext } from '../providers/AuthLoginProvider';
-import { ClaimAssetAction } from '../store/actions/asset-claim';
-import { CollectionsLoadAction } from '../store/actions/collections';
-import { assetClaimSelector } from '../store/selectors/asset-claim';
-import { transactionsSelector } from '../store/selectors/transaction';
+import Header from '../../components/Header';
+import Button from '../../components/ionic/Button';
+import Text from '../../components/ionic/Text';
+import { FontSize } from '../../constants/font-size';
+import { FontWeight } from '../../constants/font-weight';
+import { driverHighResImage } from '../../constants/images';
+import useIsMounted from '../../hooks/use-is-mounted';
+import { AuthLoginContext } from '../../providers/AuthLoginProvider';
+import { CancelAuctionAction } from '../../store/actions/auctions';
+import { auctionSelector } from '../../store/selectors/auctions';
+import { CollectiblesOnAuctionLoadAction } from '../../store/actions/collections';
+import { transactionsSelector } from '../../store/selectors/transaction';
 
 const ImageBgCol = styled(IonCol)`
   display: flex;
@@ -79,54 +79,51 @@ const Footer = styled(IonFooter)`
 `;
 
 const ViewCardButton = styled(Button)`
-  --background: var(--app-color-green-bg);
-  background: var(--app-color-green-bg);
+  --background: var(--app-color-yellow-bg);
+  background: var(--app-color-yellow-bg);
 `;
 
 const txUuid = uuid();
 
-const CollectCardPage: FC = () => {
-  const { collectionId } = useParams<{ collectionId: string }>();
+const AuctionCancelFinalizationPage: FC = () => {  
+
+  const { auctionId } = useParams<{ auctionId: string}>();
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const {
-    session: { publicKey },
-  } = useContext(AuthLoginContext);
-
-  const assetClaimRequest = useSelector(assetClaimSelector, shallowEqual);
+  const cancelAuctionRequest = useSelector(auctionSelector, shallowEqual);
   const transactions = useSelector(transactionsSelector, shallowEqual);
   const tx = useMemo(() => transactions[txUuid], [transactions]);
 
   const isLoading = useCallback(() => {
-    return assetClaimRequest?.isLoading || tx?.isLoading;
-  }, [assetClaimRequest, tx]);
+    return cancelAuctionRequest?.isLoading || tx?.isLoading;
+  }, [cancelAuctionRequest, tx]);
 
   const isError = useCallback(() => {
-    return assetClaimRequest?.isError || tx?.isError;
-  }, [assetClaimRequest, tx]);
+    return cancelAuctionRequest?.isError || tx?.isError;
+  }, [cancelAuctionRequest, tx]);
 
-  const error = useCallback(() => {
-    return `${assetClaimRequest?.error}${tx?.error}`;
-  }, [assetClaimRequest, tx]);
+  const error = useCallback(() => {    
+    return (cancelAuctionRequest?.isError)? `${cancelAuctionRequest?.error}`:`${tx?.error?.message}`;
+  }, [cancelAuctionRequest, tx]);
 
   const {
-    session: { address },
-  } = useContext(AuthLoginContext);
+    session: { publicKey, passphrase },
+  } = useContext(AuthLoginContext);  
 
-  const isMounted = useIsMounted();
-  useEffect(() => {
-    if (isMounted && collectionId && address) {
-      dispatch(ClaimAssetAction(collectionId, address!, txUuid));
+  const isMounted = useIsMounted();  
+  useEffect(() => {        
+    if (isMounted && auctionId && publicKey) {            
+      dispatch(CancelAuctionAction(auctionId, publicKey, passphrase!, txUuid));
     }
-  }, [isMounted, dispatch, collectionId, address]);
+  }, [isMounted, dispatch, auctionId, publicKey, passphrase]);  
 
-  return (
+  return (  
     <IonPage>
-      <Header
-        title="Collect Cards"
+      <Header 
+        title="Cancel Auction"
         buttonTopLeft={
-          <IonButton onClick={() => history.replace('/home')}>
+          <IonButton onClick={() => history.push('/market/myauctions')}>
             <IonIcon color="light" slot="icon-only" icon={arrowBackOutline} />
           </IonButton>
         }
@@ -143,25 +140,26 @@ const CollectCardPage: FC = () => {
                     Something went wrong!
                   </Text>
                   <Text
-                    className="ion-padding-top"
+                    className="ion-padding"
                     fontSize={FontSize.SM}
                     color="light"
                   >
-                    {error}
+                  {error()}
                   </Text>
                 </>
               )}
               {!isLoading() && !isError() && (
                 <>
-                  <Text color="success" fontSize={FontSize.XXL}>
-                    Hooray!
+                  <Text color="warning" fontSize={FontSize.XXL} fontWeight={FontWeight.BOLD}>
+                    Auction<br/>
+                    Cancelled
                   </Text>
                   <Text
-                    className="ion-padding-top"
+                    className="ion-padding"
                     fontSize={FontSize.L}
                     color="light"
                   >
-                    You just received a new hero card!
+                    The auction is <b>cancelled</b>.
                   </Text>
                 </>
               )}
@@ -169,6 +167,7 @@ const CollectCardPage: FC = () => {
           </IonRow>
         </IonGrid>
       </IonContent>
+
       {!isLoading() && !isError() && (
         <Footer className="ion-no-border">
           <IonToolbar>
@@ -180,12 +179,12 @@ const CollectCardPage: FC = () => {
               radius={false}
               expand="block"
               onClick={() => {
-                const { txId } = tx;
-                dispatch(CollectionsLoadAction(publicKey!));
-                history.push(`/home/card/${txId}`);
-              }}
+                  dispatch(CollectiblesOnAuctionLoadAction(publicKey!, true, false, true, undefined));
+                  history.push('/market/myauctions');
+                }
+              }
             >
-              View Card
+              View Open Auctions
             </ViewCardButton>
           </IonToolbar>
         </Footer>
@@ -194,4 +193,4 @@ const CollectCardPage: FC = () => {
   );
 };
 
-export default CollectCardPage;
+export default AuctionCancelFinalizationPage;
