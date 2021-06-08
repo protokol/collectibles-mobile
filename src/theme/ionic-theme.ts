@@ -21,4 +21,4 @@ import './fonts.css';
 import './global.css';
 
 /* Theme variables */
-import './variables.css';
+import './variables.scss';

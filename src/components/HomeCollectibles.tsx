@@ -3,6 +3,7 @@ import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import styled from 'styled-components';
 import {
+  isPlatform,
   IonCol,
   IonFooter,
   IonGrid,
@@ -10,19 +11,19 @@ import {
   IonSpinner,
   IonToolbar,
 } from '@ionic/react';
-import Card from '../components/Card';
-import Button from '../components/ionic/Button';
+import Card from './Card';
+import Button from './ionic/Button';
 import { FontSize } from '../constants/font-size';
 import { FontWeight } from '../constants/font-weight';
 import useIsMounted from '../hooks/use-is-mounted';
 import useMediaQuery from '../hooks/use-media-query';
 import { AuthLoginContext } from '../providers/AuthLoginProvider';
-import { CollectionsLoadAction } from '../store/actions/collections';
+import { CollectiblesLoadAction } from '../store/actions/collections';
 import { collectionSelector } from '../store/selectors/collections';
 import { CardTagType } from './CardTag';
 import Text from './ionic/Text';
-
-const CardContainer = styled(IonCol)`
+ 
+const CardContainer = styled(IonCol)` 
   padding: 1.375rem;
 
   &:nth-child(odd) {
@@ -43,7 +44,7 @@ const CollectablesIonRow = styled(IonRow)`
   max-height: calc(100vh - 92px - 4.8rem);
 `;
 
-const HomeCollections: FC = () => {
+const HomeCollectibles: FC = () => {  
   const history = useHistory();
   const isMedium = useMediaQuery('(min-height: 992px)');
   const isLarge = useMediaQuery('(min-height: 1200px)');
@@ -51,6 +52,21 @@ const HomeCollections: FC = () => {
     collectionSelector,
     shallowEqual
   );
+
+  const AddNewCard = () => {  
+    if (isPlatform("cordova")){
+      history.push('/home/scan-qr');
+    }else{
+      const randomCollections = [
+        'd845dba7a14f1d146b01c1055834caaa66ed761abb27512a76c7211880353f9d',
+        '03c81f98549151ac6cc65889aee2549283ef6f364bb5af6cbf770cb6cfa09f36', 
+        '12b28dfbfabe8af1aaefb9a4774d20a36216905fa874a29fde79ed6521a381d7'
+      ];
+      let randomCollection = randomCollections[~~(randomCollections.length * Math.random())];
+      history.push(`/home/collect-card/${randomCollection}`);
+    }
+  }
+
   const dispatch = useDispatch();
   const {
     session: { publicKey },
@@ -59,7 +75,7 @@ const HomeCollections: FC = () => {
   const isMounted = useIsMounted();
   useEffect(() => {
     if (publicKey && isMounted) {
-      dispatch(CollectionsLoadAction(publicKey!));
+      dispatch(CollectiblesLoadAction(publicKey!, true));
     }
   }, [isMounted, dispatch, publicKey]);
 
@@ -67,7 +83,7 @@ const HomeCollections: FC = () => {
     if (publicKey) {
       const { page } = query ?? { page: 1 };
       dispatch(
-        CollectionsLoadAction(publicKey!, {
+        CollectiblesLoadAction(publicKey!, true, {
           ...query,
           page: page! + 1,
         })
@@ -121,12 +137,12 @@ const HomeCollections: FC = () => {
               {flatAssets.map(({ id, attributes }) => {
                 const {
                   title,
-                  subtitle,
+                  subtitle,                  
                   ipfsHashImageFront,
                   tags,
                 } = attributes as any;
 
-                const type =
+                const type = 
                   Array.isArray(tags) && tags.length
                     ? tags[0]
                     : CardTagType.None;
@@ -139,6 +155,7 @@ const HomeCollections: FC = () => {
                       subtitle={subtitle}
                       imgIpfsHash={ipfsHashImageFront}
                       type={type}
+                      linkto={"/home/card/"+id}
                     />
                   </CardContainer>
                 );
@@ -173,9 +190,7 @@ const HomeCollections: FC = () => {
             fontWeight={FontWeight.BOLD}
             radius={false}
             expand="block"
-            onClick={() => {
-              history.push('/home/scan-qr');
-            }}
+            onClick={AddNewCard}
           >
             Add new card
           </Button>
@@ -185,4 +200,4 @@ const HomeCollections: FC = () => {
   );
 };
 
-export default HomeCollections;
+export default HomeCollectibles;

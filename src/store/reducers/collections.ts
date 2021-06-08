@@ -3,7 +3,7 @@ import { BaseResourcesTypes } from '@protokol/client';
 import {
   COLLECTIONS_ACTION_TYPES,
   CollectionsActions,
-  CollectionsLoadSuccessActionType,
+  CollectiblesLoadSuccessActionType,
 } from '../actions/collections';
 
 export interface CollectionsState {
@@ -29,22 +29,23 @@ const reducer: Reducer<CollectionsState, COLLECTIONS_ACTION_TYPES> = (
   const { type } = action;
 
   switch (type) {
-    case CollectionsActions.COLLECTIONS_LOAD: {
+    case CollectionsActions.COLLECTIBLES_LOAD:
+    case CollectionsActions.COLLECTIBLES_ON_AUCTION_LOAD: {
       return {
         ...state,
         isLoading: true,
       };
     }
-    case CollectionsActions.COLLECTIONS_LOAD_SUCCESS: {
+    case CollectionsActions.COLLECTIBLES_LOAD_SUCCESS: {
       const {
         payload: { assets, query, isLastPage },
-      } = action as CollectionsLoadSuccessActionType;
+      } = action as CollectiblesLoadSuccessActionType;
       const { page } = query;
       return {
         ...state,
         isLoading: false,
         query,
-        assets: [
+        assets: [          
           ...state.assets.slice(0, page! - 1),
           assets,
           ...state.assets.slice(page!),
@@ -54,7 +55,22 @@ const reducer: Reducer<CollectionsState, COLLECTIONS_ACTION_TYPES> = (
         error: undefined,
       };
     }
-    case CollectionsActions.COLLECTIONS_LOAD_ERROR: {
+    case CollectionsActions.COLLECTIBLES_ON_AUCTION_LOAD_SUCCESS: {
+      const {
+        payload: { assets, query, isLastPage },
+      } = action as CollectiblesLoadSuccessActionType;
+      return {
+        ...state,
+        isLoading: false,
+        query,
+        assets: [assets],
+        isLastPage,
+        isError: false,
+        error: undefined,
+      };
+    }
+    case CollectionsActions.COLLECTIBLES_LOAD_ERROR:
+    case CollectionsActions.COLLECTIBLES_ON_AUCTION_LOAD_ERROR: {
       const {
         payload: { error },
       } = action;
@@ -64,7 +80,7 @@ const reducer: Reducer<CollectionsState, COLLECTIONS_ACTION_TYPES> = (
         isError: true,
         error,
       };
-    }
+    }        
     default:
       return state;
   }

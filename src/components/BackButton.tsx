@@ -22,7 +22,7 @@ const BackButton: FC = () => {
         fill="clear"
         className="ion-no-margin ion-no-padding"
         color="light"
-        onClick={() => history.goBack()}
+        onClick={() => history.push('/home')}
       >
         <IonIcon color="light" slot="icon-only" icon={arrowBackOutline} />
       </IonButton>

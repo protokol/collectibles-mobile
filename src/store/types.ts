@@ -10,10 +10,35 @@ import {
   ClaimAssetErrorActionType,
   ClaimAssetSuccessActionType,
 } from './actions/asset-claim';
+
 import {
-  CollectionsLoadActionType,
-  CollectionsLoadErrorActionType,
-  CollectionsLoadSuccessActionType,
+  StartAuctionActionType,
+  StartAuctionSuccessActionType,
+  StartAuctionErrorActionType,
+  CancelAuctionActionType,
+  CancelAuctionSuccessActionType,
+  CancelAuctionErrorActionType,
+  AuctionsLoadActionType,
+  AuctionsLoadSuccessActionType,
+  AuctionsLoadErrorActionType,
+  PlaceBidActionType,
+  PlaceBidSuccessActionType,
+  PlaceBidErrorActionType,
+  AcceptBidActionType,
+  AcceptBidSuccessActionType,
+  AcceptBidErrorActionType,
+  CancelBidActionType,
+  CancelBidSuccessActionType,
+  CancelBidErrorActionType,
+} from './actions/auctions';
+
+import {
+  CollectiblesLoadActionType,
+  CollectiblesLoadErrorActionType,
+  CollectiblesLoadSuccessActionType,
+  CollectiblesOnAuctionLoadActionType,
+  CollectiblesOnAuctionLoadErrorActionType,
+  CollectiblesOnAuctionLoadSuccessActionType,  
 } from './actions/collections';
 import { NamespaceRegisterActionType } from './actions/namespace';
 import {
@@ -34,6 +59,7 @@ import {
 } from './actions/wallets';
 import { AppState } from './reducers/app';
 import { AssetClaimState } from './reducers/asset-claim';
+import { AuctionState } from './reducers/auctions';
 import { CollectionsState } from './reducers/collections';
 import { NetworkState } from './reducers/network';
 import { TransactionState } from './reducers/transaction';
@@ -50,14 +76,35 @@ export type RootActions =
   | ClaimAssetActionType
   | ClaimAssetSuccessActionType
   | ClaimAssetErrorActionType
+  | StartAuctionActionType
+  | StartAuctionSuccessActionType
+  | StartAuctionErrorActionType
+  | CancelAuctionActionType
+  | CancelAuctionSuccessActionType
+  | CancelAuctionErrorActionType  
+  | AuctionsLoadActionType
+  | AuctionsLoadSuccessActionType
+  | AuctionsLoadErrorActionType
+  | PlaceBidActionType
+  | PlaceBidSuccessActionType
+  | PlaceBidErrorActionType
+  | AcceptBidActionType
+  | AcceptBidSuccessActionType
+  | AcceptBidErrorActionType
+  | CancelBidActionType
+  | CancelBidSuccessActionType
+  | CancelBidErrorActionType
+  | CollectiblesOnAuctionLoadActionType
+  | CollectiblesOnAuctionLoadSuccessActionType
+  | CollectiblesOnAuctionLoadErrorActionType
   | TransactionWaitForConfirmActionType
   | TransactionConfirmSuccessActionType
   | TransactionConfirmErrorActionType
   | TransactionSubmitActionType
   | NamespaceRegisterActionType
-  | CollectionsLoadActionType
-  | CollectionsLoadSuccessActionType
-  | CollectionsLoadErrorActionType
+  | CollectiblesLoadActionType
+  | CollectiblesLoadSuccessActionType
+  | CollectiblesLoadErrorActionType
   | WalletsLoadActionType
   | WalletsLoadSuccessActionType
   | WalletsLoadErrorActionType;
@@ -65,6 +112,8 @@ export type RootState = {
   app: AppState;
   network: NetworkState;
   assetClaim: AssetClaimState;
+  auctions: AuctionState;
+  cardsOnAuction: CollectionsState;
   transaction: TransactionState;
   collections: CollectionsState;
   wallets: WalletsState;
