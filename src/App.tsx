@@ -4,7 +4,7 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 import { Plugins } from '@capacitor/core';
 import { ScreenOrientation } from '@ionic-native/screen-orientation';
 import { IonApp, IonRouterOutlet, isPlatform } from '@ionic/react';
-import { IonReactRouter } from '@ionic/react-router';
+import { IonReactHashRouter } from '@ionic/react-router';
 import MainMenu from './components/MainMenu';
 import ProtectedRoute from './components/ProtectedRoute';
 import useIsMounted from './hooks/use-is-mounted';
@@ -62,7 +62,7 @@ const App: FC = () => {
     <IonApp>
       <AuthLoginContextProvider>
         <AuthRegisterContextProvider>
-          <IonReactRouter>
+          <IonReactHashRouter>
             <MainMenu />
             <Switch>
               <Route path="/qr/:id" component={QrCodeGeneratorPage} exact />
@@ -125,7 +125,7 @@ const App: FC = () => {
                 <ProtectedRoute path="/market/card/createnewauction/:cardId/:minimumBid/:minimumIncrement/:finalBiddingDate" component={AuctionCreationAndConfirmationPage} exact />                                         
               </IonRouterOutlet>
             </Switch>
-          </IonReactRouter>
+          </IonReactHashRouter>
         </AuthRegisterContextProvider>
       </AuthLoginContextProvider>
     </IonApp>
