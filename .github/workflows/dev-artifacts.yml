@@ -1,10 +1,6 @@
 name: Development Artifacts
 
-on:
-  push:
-    branches:
-      - "master"
-
+on: [pull_request]
 
 jobs:
   gh-pages:
@@ -12,17 +8,10 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [ 12.x ]
+        node-version: [12.x]
 
     steps:
       - uses: actions/checkout@v2
-
-      - name: Find and replace
-        uses: jacobtomlinson/gha-find-replace@master
-        with:
-          find: "/assets/"
-          replace: "/collectibles-mobile/assets/"
-          include: "fonts.css"
 
       - name: Cache node modules
         uses: actions/cache@v2
@@ -56,13 +45,12 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./build
 
-
   build-apk:
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        node-version: [ 12.x ]
+        node-version: [12.x]
 
     steps:
       - uses: actions/checkout@v2
@@ -94,4 +82,3 @@ jobs:
         with:
           name: collectibles-mobile-${{ github.sha }}.apk
           path: android/app/build/outputs/apk/debug/app-debug.apk
-
