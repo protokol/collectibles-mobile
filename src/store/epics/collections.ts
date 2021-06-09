@@ -87,7 +87,7 @@ const fetchWalletCollectionsEpic: RootEpic = (
                 data.push(asset);
               }              
             }                
-            return CollectiblesLoadSuccessAction(q, data, data.length < q.limit!);
+            return CollectiblesLoadSuccessAction(q, data, data.length < q.limit!); 
           }),
           catchError((err) => of(CollectiblesLoadErrorAction(err)))
         );            
@@ -196,12 +196,12 @@ const fetchCardsOnAuctionEpic: RootEpic = (
                   startedBiddingDate: auction.timestamp.human,
                   timeRemaining: days + "d" + hours + "h" + minutes + "m",
                   highestBidId: highestBidId,                  
-                  currentBid: maxBid,
+                  currentBid: maxBid / 10 ^ 8,
               };
               if (!onlyOwnAuctions){
                 if (myBid > 0){
                   asset.attributes = { ...asset.attributes, 
-                    yourBid: myBid,
+                    yourBid: myBid / 10 ^ 8,
                     bidId: myBidId,
                   };         
                 }       
