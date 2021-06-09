@@ -26,37 +26,37 @@ const addIPFSGatewayPrefix = (ipfsHash: string) =>
 const flagImage = {
   alt: 'Flag',
   src: `${process.env.PUBLIC_URL}${flagImagePath1x}`,
-  srcSet: `${flagImagePath1x} 1x, ${flagImagePath2x} 2x, ${flagImagePath3x} 3x`,
+  srcSet: `${process.env.PUBLIC_URL}${flagImagePath1x} 1x, ${process.env.PUBLIC_URL}${flagImagePath2x} 2x, ${process.env.PUBLIC_URL}${flagImagePath3x} 3x`,
 };
 
 const welcomeImage = {
   alt: 'Welcome',
   src: `${process.env.PUBLIC_URL}${welcomeImagePath1x}`,
-  srcSet: `${welcomeImagePath1x} 1x, ${welcomeImagePath2x} 2x, ${welcomeImagePath3x} 3x`,
+  srcSet: `${process.env.PUBLIC_URL}${welcomeImagePath1x} 1x, ${process.env.PUBLIC_URL}${welcomeImagePath2x} 2x, ${process.env.PUBLIC_URL}${welcomeImagePath3x} 3x`,
 };
 
 const driverImage = {
   alt: 'Driver',
-  src: `${driverImage1x}`,
-  srcSet: `${driverImage1x} 1x, ${driverImage2x} 2x`,
+  src: `${process.env.PUBLIC_URL}${driverImage1x}`,
+  srcSet: `${process.env.PUBLIC_URL}${driverImage1x} 1x, ${process.env.PUBLIC_URL}${driverImage2x} 2x`,
 };
 
 const auctionImage = {
   alt: 'Auction',
   src: `${process.env.PUBLIC_URL}${auctionImagePath1x}`,
-  srcSet: `${auctionImagePath1x} 1x, ${auctionImagePath2x} 2x, ${auctionImagePath3x} 3x`,
+  srcSet: `${process.env.PUBLIC_URL}${auctionImagePath1x} 1x, ${process.env.PUBLIC_URL}${auctionImagePath2x} 2x, ${process.env.PUBLIC_URL}${auctionImagePath3x} 3x`,
 };
 
 const auctionBalloonImage = {
   alt: 'Auction',
   src: `${process.env.PUBLIC_URL}${auctionBalloonImagePath1x}`,
-  srcSet: `${auctionBalloonImagePath1x} 1x, ${auctionBalloonImagePath2x} 2x, ${auctionBalloonImagePath3x} 3x`,
+  srcSet: `${process.env.PUBLIC_URL}${auctionBalloonImagePath1x} 1x, ${process.env.PUBLIC_URL}${auctionBalloonImagePath2x} 2x, ${process.env.PUBLIC_URL}${auctionBalloonImagePath3x} 3x`,
 };
 
 const driverHighResImage = {
   alt: 'Driver',
-  src: `${driverHighResImage1x}`,
-  srcSet: `${driverHighResImage1x} 1x, ${driverHighResImage2x} 2x`,
+  src: `${process.env.PUBLIC_URL}${driverHighResImage1x}`,
+  srcSet: `${process.env.PUBLIC_URL}${driverHighResImage1x} 1x, ${process.env.PUBLIC_URL}${driverHighResImage2x} 2x`,
 };
 
 export {
