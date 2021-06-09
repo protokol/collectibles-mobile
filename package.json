@@ -14,9 +14,9 @@
   },
   "dependencies": {
     "@arkecosystem/crypto": "^3.0.0-next.25",
-    "@capacitor/android": "^2.4.6",
-    "@capacitor/core": "2.4.7",
-    "@capacitor/ios": "^2.4.6",
+    "@capacitor/android": "^3.0.0",
+    "@capacitor/core": "3.0.0",
+    "@capacitor/ios": "^3.0.0",
     "@hookform/error-message": "0.0.5",
     "@ionic-native/core": "^5.31.1",
     "@ionic-native/qr-scanner": "^5.31.1",
@@ -89,7 +89,7 @@
   "devDependencies": {
     "@babel/core": "^7.14.0",
     "@babel/preset-env": "^7.13.9",
-    "@capacitor/cli": "2.4.7",
+    "@capacitor/cli": "3.0.0",
     "@testing-library/jest-dom": "^5.0.0",
     "@testing-library/react": "^11.0.0",
     "@testing-library/user-event": "^13.0.0",
