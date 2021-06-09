@@ -3,15 +3,15 @@
     "static/js/0.a48d23a3.chunk.js": "/collectibles-mobile/static/js/0.a48d23a3.chunk.js",
     "static/js/0.a48d23a3.chunk.js.map": "/collectibles-mobile/static/js/0.a48d23a3.chunk.js.map",
     "main.css": "/collectibles-mobile/static/css/main.556f64d7.chunk.css",
-    "main.js": "/collectibles-mobile/static/js/main.d09eef4d.chunk.js",
-    "main.js.map": "/collectibles-mobile/static/js/main.d09eef4d.chunk.js.map",
+    "main.js": "/collectibles-mobile/static/js/main.ab1b9824.chunk.js",
+    "main.js.map": "/collectibles-mobile/static/js/main.ab1b9824.chunk.js.map",
     "polyfills-dom.js": "/collectibles-mobile/static/js/polyfills-dom.8fbe36f1.chunk.js",
     "polyfills-dom.js.map": "/collectibles-mobile/static/js/polyfills-dom.8fbe36f1.chunk.js.map",
     "runtime-main.js": "/collectibles-mobile/static/js/runtime-main.be0b2b17.js",
     "runtime-main.js.map": "/collectibles-mobile/static/js/runtime-main.be0b2b17.js.map",
     "static/css/4.7f63e7b6.chunk.css": "/collectibles-mobile/static/css/4.7f63e7b6.chunk.css",
-    "static/js/4.8fe65582.chunk.js": "/collectibles-mobile/static/js/4.8fe65582.chunk.js",
-    "static/js/4.8fe65582.chunk.js.map": "/collectibles-mobile/static/js/4.8fe65582.chunk.js.map",
+    "static/js/4.dc5deeca.chunk.js": "/collectibles-mobile/static/js/4.dc5deeca.chunk.js",
+    "static/js/4.dc5deeca.chunk.js.map": "/collectibles-mobile/static/js/4.dc5deeca.chunk.js.map",
     "static/js/5.4c4ab2c5.chunk.js": "/collectibles-mobile/static/js/5.4c4ab2c5.chunk.js",
     "static/js/5.4c4ab2c5.chunk.js.map": "/collectibles-mobile/static/js/5.4c4ab2c5.chunk.js.map",
     "static/js/6.c2c41f28.chunk.js": "/collectibles-mobile/static/js/6.c2c41f28.chunk.js",
@@ -121,7 +121,7 @@
     "index.html": "/collectibles-mobile/index.html",
     "static/css/4.7f63e7b6.chunk.css.map": "/collectibles-mobile/static/css/4.7f63e7b6.chunk.css.map",
     "static/css/main.556f64d7.chunk.css.map": "/collectibles-mobile/static/css/main.556f64d7.chunk.css.map",
-    "static/js/4.8fe65582.chunk.js.LICENSE.txt": "/collectibles-mobile/static/js/4.8fe65582.chunk.js.LICENSE.txt",
+    "static/js/4.dc5deeca.chunk.js.LICENSE.txt": "/collectibles-mobile/static/js/4.dc5deeca.chunk.js.LICENSE.txt",
     "static/js/52.48743e10.chunk.js.LICENSE.txt": "/collectibles-mobile/static/js/52.48743e10.chunk.js.LICENSE.txt",
     "static/js/polyfills-dom.8fbe36f1.chunk.js.LICENSE.txt": "/collectibles-mobile/static/js/polyfills-dom.8fbe36f1.chunk.js.LICENSE.txt",
     "static/media/global.css": "/collectibles-mobile/static/media/camera-preview.20cd39a5.png",
@@ -130,8 +130,8 @@
   "entrypoints": [
     "static/js/runtime-main.be0b2b17.js",
     "static/css/4.7f63e7b6.chunk.css",
-    "static/js/4.8fe65582.chunk.js",
+    "static/js/4.dc5deeca.chunk.js",
     "static/css/main.556f64d7.chunk.css",
-    "static/js/main.d09eef4d.chunk.js"
+    "static/js/main.ab1b9824.chunk.js"
   ]
 }
