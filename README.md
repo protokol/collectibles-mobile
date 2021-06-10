@@ -45,6 +45,14 @@ npm install
 npm install -g @ionic/cli
 ```
 
+#### Running on Android SDK  
+Create, if not exists, local.properties file at android folder with next line:  
+sdk.dir=[path to ANDROID SDK FOLDER]
+
+```
+npm run build:android:ci  
+npm run cap:start:android
+```
 #### Running Unit Tests
 
 Run `npm run test` to execute the unit tests via [Jest](https://jestjs.io/).
