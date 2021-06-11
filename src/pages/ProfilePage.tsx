@@ -5,8 +5,12 @@ import {
   IonPage,
   IonContent,
   IonGrid,
+  IonLabel,
+  IonToolbar,
+  IonFooter,
   IonRow,
   IonCol,
+  IonItem,
   IonSpinner,
 } from '@ionic/react';
 import { DetailCard, DetailCardsStyled } from '../components/DetailCards';
@@ -18,6 +22,28 @@ import useIsMounted from '../hooks/use-is-mounted';
 import { AuthLoginContext } from '../providers/AuthLoginProvider';
 import { WalletsLoadAction } from '../store/actions/wallets';
 import { walletsSelector } from '../store/selectors/wallets';
+import styled from 'styled-components';
+import Button from '../components/ionic/Button';
+
+const Footer = styled(IonFooter)`
+  position: fixed;
+  bottom: 0;
+`;
+
+const FooterButton = styled(Button)`
+  &.ion-color-auction {
+    --ion-color-base: var(--ion-color-auction-base);
+    --ion-color-base-rgb: var(--ion-color-warning-rgb);
+    --ion-color-contrast: var(--ion-color-auction-tint);
+    --ion-color-contrast-rgb: var(--ion-color-auction-tint);
+    --ion-color-shade: var(--ion-color-warning-shade);
+    --ion-color-tint: var(--ion-color-auction-tint);
+  }
+`;
+
+const IonLabelStyled = styled(IonLabel)`
+  font-size: 30px;
+`;
 
 const ProfilePage: FC = () => {
   const history = useHistory();
@@ -100,6 +126,7 @@ const ProfilePage: FC = () => {
             )}
           </IonRow>
           {!isLoading && !isError && (
+            <>
             <DetailCardsStyled>
               <DetailCard
                 isGrayBg={true}
@@ -121,8 +148,29 @@ const ProfilePage: FC = () => {
                 onClick={() => history.replace('/home/scan-qr')}
               />
             </DetailCardsStyled>
+            <IonItem lines="none" class="ion-align-center">
+              <IonLabel>Balance </IonLabel>
+              <IonLabelStyled color="success">{"$" + (Number(wallet?.balance)/10**8).toFixed(2) + " NASCAR"}</IonLabelStyled>  
+            </IonItem>
+            </>
           )}
         </IonGrid>
+        <Footer className="ion-no-border">
+          <IonToolbar>
+            <FooterButton
+              color="auction"
+              size="large"
+              type="submit"
+              className="ion-text-uppercase ion-no-margin"
+              fontSize={FontSize.SM}
+              fontWeight={FontWeight.BOLD}
+              radius={false}
+              expand="block"
+            >
+              Get some NASCAR paper coins
+            </FooterButton>
+          </IonToolbar>
+        </Footer>          
       </IonContent>
     </IonPage>
   );

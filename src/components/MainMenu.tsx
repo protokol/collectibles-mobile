@@ -3,8 +3,6 @@ import {
   homeOutline,
   lockOpenOutline,
   personOutline,
-  cashOutline,
-  flashOutline,
 } from 'ionicons/icons';
 import { FC, useCallback, useContext, useRef } from 'react';
 import { useHistory } from 'react-router';
@@ -15,7 +13,6 @@ import {
   IonButtons,
   IonContent,
   IonHeader,
-  IonFooter,
   IonIcon,
   IonItem,
   IonList,  
@@ -43,10 +40,6 @@ const MenuHeaderToolbar = styled(IonToolbar)`
 `;
 
 const MenuContentToolbar = styled(IonContent)`
-  --background: var(--app-color-dark-cyan-blue);
-`;
-
-const MenuFooterToolbar = styled(IonFooter)`
   --background: var(--app-color-dark-cyan-blue);
 `;
 
@@ -186,26 +179,6 @@ const MainMenu: FC = () => {
           />
         </IonList>
       </MenuContentToolbar>
-      <IonFooter>
-        <MenuFooterToolbar>    
-          <IonList color="none" class="app-bg-color-transparent">
-            <MenuItem
-              color="success"
-              icon={cashOutline}
-              label={"Balance: 0 NASCAR"}
-              onNavigate={() => onNavigateToPrivacyPage()}
-              onMenuClose={onMenuClose}
-            />
-            <MenuItem    
-              color="warning"
-              icon={flashOutline}          
-              label="Get some NASCAR paper coins"
-              onNavigate={() => onNavigateToPrivacyPage()}
-              onMenuClose={onMenuClose}
-            />                     
-          </IonList>
-        </MenuFooterToolbar>
-      </IonFooter>
     </Menu>
   );
 };
