@@ -176,7 +176,7 @@ const ProfilePage: FC = () => {
           )}
         </IonGrid>
         {process.env.REACT_APP_PAPER_COINS_FAUCET_SENDER_PASSPHRASE && process.env.REACT_APP_PAPER_COINS_FAUCET_SENDER_PASSPHRASE.trim().length > 0 
-          && Number(process.env.REACT_APP_PAPER_COINS_MIN_AVAILABLE_TO_ACTIVATE_FAUCET!) < Number(wallet?.balance)/10**8 && (
+          && Number(wallet?.balance)/10**8 < Number(process.env.REACT_APP_PAPER_COINS_MIN_AVAILABLE_TO_ACTIVATE_FAUCET!) && (
         <Footer className="ion-no-border">
           <IonToolbar>
             <FooterButton
