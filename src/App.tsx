@@ -26,6 +26,7 @@ import AuctionMyAuctionViewPage from './pages/auctions/AuctionMyAuctionViewPage'
 import AuctionMyAuctionExpiredAndAcceptOfferViewPage from './pages/auctions/AuctionMyAuctionExpiredAndAcceptOfferViewPage';
 import AuctionPlaceBidAndConfirmationPage from './pages/auctions/AuctionPlaceBidAndConfirmationPage';
 import AuctionOfferAcceptedConfirmationPage from './pages/auctions/AuctionOfferAcceptedConfirmationPage'; 
+import GotPaperCoinsPage from './pages/GotPaperCoinsPage'; 
 import ProfilePage from './pages/ProfilePage';
 import QrCodeGeneratorPage from './pages/QrCodeGeneratorPage';
 import ScanQRPage from './pages/ScanQRPage';
@@ -108,6 +109,7 @@ const App: FC = () => {
                 <ProtectedRoute requiresCordova={true} path="/home/scan-qr" component={ScanQRPage} exact/>
                 <ProtectedRoute path="/home/card/:assetId" component={CardDetailsPage} exact />
                 <ProtectedRoute path="/home/collect-card/:collectionId" component={CardCollectingAndConfirmationPage} exact />                                
+                <ProtectedRoute path="/home/profile/getpapercoins" component={GotPaperCoinsPage} exact />                
                 <ProtectedRoute path="/market/card/startauction/:assetId" component={AuctionCreateNewPage} exact />  
                 <ProtectedRoute path="/market/card/cancelauction/:auctionId" component={AuctionCancelFinalizationPage} exact />       
                 <ProtectedRoute path="/market/card/cancelauctionconfirm/:auctionId" component={AuctionCancelConfirmationPage} exact />                              

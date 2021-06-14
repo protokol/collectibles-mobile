@@ -4,13 +4,11 @@ import { useHistory } from 'react-router';
 import {
   IonPage,
   IonContent,
-  IonGrid,
-  IonLabel,
+  IonGrid,  
   IonToolbar,
   IonFooter,
   IonRow,
   IonCol,
-  IonItem,
   IonSpinner,
 } from '@ionic/react';
 import { DetailCard, DetailCardsStyled } from '../components/DetailCards';
@@ -22,6 +20,7 @@ import useIsMounted from '../hooks/use-is-mounted';
 import { AuthLoginContext } from '../providers/AuthLoginProvider';
 import { WalletsLoadAction } from '../store/actions/wallets';
 import { walletsSelector } from '../store/selectors/wallets';
+import Title from '../components/ionic/Title';
 import styled from 'styled-components';
 import Button from '../components/ionic/Button';
 
@@ -41,8 +40,13 @@ const FooterButton = styled(Button)`
   }
 `;
 
-const IonLabelStyled = styled(IonLabel)`
-  font-size: 30px;
+const HorizontalLine = styled.div`
+  width:1px;
+  height:1px;
+  width: 80%;
+  margin-left: 10%;  
+  background:#E6E6E6;
+  position: relative;
 `;
 
 const ProfilePage: FC = () => {
@@ -147,11 +151,19 @@ const ProfilePage: FC = () => {
                 subtitle="+"
                 onClick={() => history.replace('/home/scan-qr')}
               />
-            </DetailCardsStyled>
-            <IonItem lines="none" class="ion-align-center">
-              <IonLabel>Balance </IonLabel>
-              <IonLabelStyled color="success">{"$" + (Number(wallet?.balance)/10**8).toFixed(2) + " NASCAR"}</IonLabelStyled>  
-            </IonItem>
+            </DetailCardsStyled>            
+            <HorizontalLine style={{marginTop:"150px"}}/>
+            <IonRow>
+              <IonCol size="10" offset="1" className="ion-text-center ion-padding">              
+                <Title fontSize={FontSize.XS} style={{fontFamily:"Open Sans",color:"#707070"}}>Available NASCAR balance:</Title> 
+              </IonCol>
+            </IonRow>      
+            <IonRow style={{marginTop:"10px"}}>
+              <IonCol size="10" offset="1" className="ion-text-center">              
+                <Title fontSize={FontSize.XXL} fontWeight={FontWeight.BOLD} style={{fontFamily:"Open Sans",color:"#8AC827"}}>${(Number(wallet?.balance)/10**8).toFixed(2)}</Title> 
+              </IonCol>
+            </IonRow>          
+            <HorizontalLine/>
             </>
           )}
         </IonGrid>
@@ -166,6 +178,7 @@ const ProfilePage: FC = () => {
               fontWeight={FontWeight.BOLD}
               radius={false}
               expand="block"
+              onClick={ () => history.push(`/home/profile/getpapercoins`) }    
             >
               Get some NASCAR paper coins
             </FooterButton>

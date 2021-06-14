@@ -56,6 +56,9 @@ import {
   WalletsLoadActionType,
   WalletsLoadErrorActionType,
   WalletsLoadSuccessActionType,
+  FaucetSendTokensActionType,
+  FaucetSendTokensSuccessActionType,
+  FaucetSendTokensErrorActionType,  
 } from './actions/wallets';
 import { AppState } from './reducers/app';
 import { AssetClaimState } from './reducers/asset-claim';
@@ -107,7 +110,10 @@ export type RootActions =
   | CollectiblesLoadErrorActionType
   | WalletsLoadActionType
   | WalletsLoadSuccessActionType
-  | WalletsLoadErrorActionType;
+  | WalletsLoadErrorActionType
+  | FaucetSendTokensActionType
+  | FaucetSendTokensSuccessActionType
+  | FaucetSendTokensErrorActionType;
 export type RootState = {
   app: AppState;
   network: NetworkState;
