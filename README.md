@@ -54,7 +54,7 @@ Create, if not exists, local.properties file at android folder with next line:
 sdk.dir=[path to ANDROID SDK FOLDER]
 
 ```
-npm run build:android:ci  
+npm run build:android:ci  (Windows users: npm run win:build:android:ci)
 npm run cap:start:android
 ```
 #### Running Unit Tests
