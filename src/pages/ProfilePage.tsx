@@ -176,6 +176,8 @@ const ProfilePage: FC = () => {
             </>
           )}
         </IonGrid>
+        {process.env.PAPER_COINS_FAUCET_SENDER_PASSPHRASE && process.env.PAPER_COINS_FAUCET_SENDER_PASSPHRASE.trim().length > 0 
+          && Number(process.env.PAPER_COINS_MIN_AVAILABLE_TO_ACTIVATE_FAUCET!) < Number(wallet?.balance)/10**8 && (
         <Footer className="ion-no-border">
           <IonToolbar>
             <FooterButton
@@ -192,7 +194,8 @@ const ProfilePage: FC = () => {
               Get some NASCAR paper coins
             </FooterButton>
           </IonToolbar>
-        </Footer>          
+        </Footer>     
+        )}     
       </IonContent>
     </IonPage>
   );

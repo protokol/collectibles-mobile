@@ -22,6 +22,10 @@ App is available on:
 [comment]: # (TODO: Replace Android and iOS links to Google Play & App Store)
 
 ## Source Install
+
+Copy .env.template to .env and configure properly
+Keep PAPER_COINS_FAUCET_SENDER_PASSPHRASE empty to disable Faucet funcionality
+
 ### Development Environment Setup
 
 Run `npm start` for a dev server. The application will open in your default browser.
