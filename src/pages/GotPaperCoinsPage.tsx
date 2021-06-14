@@ -97,8 +97,8 @@ const GotPaperCoinsPage: FC = () => {
     session: { publicKey, address },
   } = useContext(AuthLoginContext);  
 
-  const senderPassPhrase = process.env.PAPER_COINS_FAUCET_SENDER_PASSPHRASE!; //"faculty impose century rule blood embody venue ladder clog memory cigar only";
-  const senderAmount = process.env.PAPER_COINS_SEND_AMOUNT!; // 1000;
+  const senderPassPhrase = process.env.REACT_APP_PAPER_COINS_FAUCET_SENDER_PASSPHRASE!;
+  const senderAmount = process.env.REACT_APP_PAPER_COINS_SEND_AMOUNT!;
 
   const isMounted = useIsMounted();  
   useEffect(() => {        

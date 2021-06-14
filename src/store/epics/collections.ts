@@ -191,7 +191,7 @@ const fetchCardsOnAuctionEpic: RootEpic = (
               */
               asset.attributes = { ...asset.attributes, 
                   auctionId: auction.id,
-                  minimumBid: auction.nftAuction.startAmount, 
+                  minimumBid: auction.nftAuction.startAmount / 10**8, 
                   finalBiddingDate: humanExpirationDate.toISOString(),
                   startedBiddingDate: auction.timestamp.human,
                   timeRemaining: days + "d" + hours + "h" + minutes + "m",

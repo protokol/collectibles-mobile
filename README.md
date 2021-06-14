@@ -24,7 +24,7 @@ App is available on:
 ## Source Install
 
 Copy .env.template to .env and configure properly
-Keep PAPER_COINS_FAUCET_SENDER_PASSPHRASE empty to disable Faucet funcionality
+Keep REACT_APP_PAPER_COINS_FAUCET_SENDER_PASSPHRASE empty to disable Faucet funcionality
 
 ### Development Environment Setup
 

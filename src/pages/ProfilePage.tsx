@@ -124,8 +124,7 @@ const ProfilePage: FC = () => {
                   fontSize={FontSize.L}
                   fontWeight={FontWeight.BOLD}
                 >
-                  Hi {walletUsername || username || '----'}!
-                  Your address:
+                  Hi {walletUsername || username || '----'}!                  
                 </Text>
                 <br/>
                 <Text
@@ -176,8 +175,8 @@ const ProfilePage: FC = () => {
             </>
           )}
         </IonGrid>
-        {process.env.PAPER_COINS_FAUCET_SENDER_PASSPHRASE && process.env.PAPER_COINS_FAUCET_SENDER_PASSPHRASE.trim().length > 0 
-          && Number(process.env.PAPER_COINS_MIN_AVAILABLE_TO_ACTIVATE_FAUCET!) < Number(wallet?.balance)/10**8 && (
+        {process.env.REACT_APP_PAPER_COINS_FAUCET_SENDER_PASSPHRASE && process.env.REACT_APP_PAPER_COINS_FAUCET_SENDER_PASSPHRASE.trim().length > 0 
+          && Number(process.env.REACT_APP_PAPER_COINS_MIN_AVAILABLE_TO_ACTIVATE_FAUCET!) < Number(wallet?.balance)/10**8 && (
         <Footer className="ion-no-border">
           <IonToolbar>
             <FooterButton

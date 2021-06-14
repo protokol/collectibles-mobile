@@ -35,6 +35,7 @@ import WelcomePage from './pages/WelcomePage';
 import AuthLoginContextProvider from './providers/AuthLoginProvider';
 import AuthRegisterContextProvider from './providers/AuthRegisterProvider';
 import { SetBaseUrlAppAction } from './store/actions/app';
+
 import './theme/ionic-theme';
 
 const { SplashScreen } = Plugins;
@@ -55,7 +56,7 @@ const App: FC = () => {
         lockOrientation();
         SplashScreen.hide();
       }
-      dispatch(SetBaseUrlAppAction('https://nascar-explorer.protokol.sh'));
+      dispatch(SetBaseUrlAppAction(process.env.REACT_APP_NETWORK!));
     }
   }, [isMounted, dispatch]);
 
