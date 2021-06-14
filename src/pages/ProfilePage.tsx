@@ -53,7 +53,7 @@ const ProfilePage: FC = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const {
-    session: { publicKey, username },
+    session: { publicKey, username, address },
   } = useContext(AuthLoginContext);
 
   const wallets = useSelector(walletsSelector, shallowEqual);
@@ -125,7 +125,16 @@ const ProfilePage: FC = () => {
                   fontWeight={FontWeight.BOLD}
                 >
                   Hi {walletUsername || username || '----'}!
+                  Your address:
                 </Text>
+                <br/>
+                <Text
+                  className="ion-text-capitalize"
+                  fontSize={FontSize.SM}
+                  fontWeight={FontWeight.BOLD}
+                >                  
+                  Your wallet address: { address }
+                </Text>                
               </IonCol>
             )}
           </IonRow>

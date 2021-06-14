@@ -24,8 +24,7 @@ const reducer: Reducer<WalletsState, WALLETS_ACTION_TYPES> = (
   const { type } = action;
 
   switch (type) {
-    case WalletsActions.WALLETS_LOAD: 
-    case WalletsActions.FAUCET_SEND_TOKENS:
+    case WalletsActions.WALLETS_LOAD:     
     {
       const {
         payload: { pubKey },
@@ -63,26 +62,7 @@ const reducer: Reducer<WalletsState, WALLETS_ACTION_TYPES> = (
         },
       };
     }
-    case WalletsActions.FAUCET_SEND_TOKENS_SUCCESS:
-    {
-      const {
-        payload: { pubKey },
-      } = action;
-
-      return {
-        ...state,
-        wallets: {
-          ...state.wallets,
-          [pubKey]: {
-            isLoading: false,
-            isError: false,
-            error: null,
-          },
-        },
-      };
-    }
     case WalletsActions.WALLETS_LOAD_ERROR: 
-    case WalletsActions.FAUCET_SEND_TOKENS_ERROR:
     {
       const {
         payload: { pubKey, error },

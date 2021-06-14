@@ -21,8 +21,9 @@ import { FontWeight } from '../constants/font-weight';
 import { driverHighResImage } from '../constants/images';
 import useIsMounted from '../hooks/use-is-mounted';
 import { AuthLoginContext } from '../providers/AuthLoginProvider';
-import { walletsSelector } from '../store/selectors/wallets';
+import { faucetSelector } from '../store/selectors/wallets';
 import { FaucetSendTokensAction } from '../store/actions/wallets';
+import { WalletsLoadAction } from '../store/actions/wallets';
 import { transactionsSelector } from '../store/selectors/transaction';
 
 const ImageBgCol = styled(IonCol)`
@@ -76,7 +77,7 @@ const GotPaperCoinsPage: FC = () => {
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const faucetRequest = useSelector(walletsSelector, shallowEqual);
+  const faucetRequest = useSelector(faucetSelector, shallowEqual);
   const transactions = useSelector(transactionsSelector, shallowEqual);
   const tx = useMemo(() => transactions[txUuid], [transactions]);
 
@@ -97,7 +98,7 @@ const GotPaperCoinsPage: FC = () => {
   } = useContext(AuthLoginContext);  
 
   const senderPassPhrase = "faculty impose century rule blood embody venue ladder clog memory cigar only";
-  const senderAmount = "1000";
+  const senderAmount = "10";
 
   const isMounted = useIsMounted();  
   useEffect(() => {        
@@ -106,12 +107,16 @@ const GotPaperCoinsPage: FC = () => {
     }
   }, [isMounted, dispatch, senderPassPhrase, address, publicKey, senderAmount]);  
 
-  return (  
+  return (   
     <IonPage>
       <Header 
         title="Get Some Paper Coins"
         buttonTopLeft={
-          <IonButton onClick={() => history.push('/home/profile')}>
+          <IonButton onClick={() => {
+                dispatch(WalletsLoadAction(publicKey!))
+                history.goBack();
+              }
+            }>
             <IonIcon color="light" slot="icon-only" icon={arrowBackOutline} />
           </IonButton>
         }
