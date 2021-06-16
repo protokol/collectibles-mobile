@@ -70,7 +70,7 @@ const faucetSendTokensEpic: RootEpic = (action$, state$, { connection }) =>
         
           const transaction = Transactions.BuilderFactory.transfer()
           .recipientId(recipientAddress)
-          .amount(Utils.BigNumber.make(amount * 10 ** 8).toFixed())
+          .amount(Utils.BigNumber.make(amount * 10 ** Number(process.env.REACT_APP_TOKEN_DECIMALS)).toFixed())
           .nonce(CryptoUtils.getWalletNextNonce(data))
           .sign(senderPassphrase);        
 

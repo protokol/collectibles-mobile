@@ -196,12 +196,12 @@ const fetchCardsOnAuctionEpic: RootEpic = (
                   startedBiddingDate: auction.timestamp.human,
                   timeRemaining: days + "d" + hours + "h" + minutes + "m",
                   highestBidId: highestBidId,                  
-                  currentBid: maxBid / 10 ** 8,
+                  currentBid: maxBid / 10 ** Number(process.env.REACT_APP_TOKEN_DECIMALS),
               };
               if (!onlyOwnAuctions){
                 if (myBid > 0){
                   asset.attributes = { ...asset.attributes, 
-                    yourBid: myBid / 10 ** 8,
+                    yourBid: myBid / 10 ** Number(process.env.REACT_APP_TOKEN_DECIMALS),
                     bidId: myBidId,
                   };         
                 }       

@@ -20,10 +20,6 @@ const reducer: Reducer<FaucetState, WALLETS_ACTION_TYPES> = (
   switch (type) {
     case WalletsActions.FAUCET_SEND_TOKENS:
     {
-      const {
-        payload: {  },
-      } = action;
-
       return {
         ...state,
         isLoading: true,
@@ -33,10 +29,6 @@ const reducer: Reducer<FaucetState, WALLETS_ACTION_TYPES> = (
     }
     case WalletsActions.FAUCET_SEND_TOKENS_SUCCESS:
     {
-      const {
-        payload: { },
-      } = action;
-
       return {
         ...state,
         isLoading: false,
