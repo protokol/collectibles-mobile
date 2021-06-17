@@ -174,7 +174,7 @@ const AuctionPlaceOrRetractBidPage: FC = () => {
               <Img src={addIPFSGatewayPrefix(ipfsHashImageFront)} />
             </IonCol>
           </IonRow>
-          <IonRow style={{marginTop:"20px"}}>
+          <IonRow style={{marginTop:"8px"}}>
             <IonCol size="5" offset="1">
               {title && (
                 <Title fontSize={FontSize.L} fontWeight={FontWeight.BOLD} style={{fontFamily:"Open Sans",color:"#252732"}}>
@@ -221,7 +221,7 @@ const AuctionPlaceOrRetractBidPage: FC = () => {
               </DetailCards>
             </IonColCards>            
           </IonRow>        
-          <IonRow style={{paddingLeft:"60px", paddingRight:"60px", paddingTop:"40px"}}>
+          <IonRow style={{paddingLeft:"60px", paddingRight:"60px", paddingTop:"5px"}}>
             <IonCol className="ion-text-left">
                 <IncrementIonButton disabled={(currentBid===0)?bidAmount-increment<minimumBid:bidAmount-increment===currentBid} onClick={decrementBid}>-</IncrementIonButton>
             </IonCol>

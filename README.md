@@ -22,6 +22,12 @@ App is available on:
 [comment]: # (TODO: Replace Android and iOS links to Google Play & App Store)
 
 ## Source Install
+
+Copy .env.template to .env and configure properly
+Keep REACT_APP_PAPER_COINS_FAUCET_SENDER_PASSPHRASE empty to disable Faucet funcionality
+
+Be sure you don't publish any passphrase for real money production environments
+
 ### Development Environment Setup
 
 Run `npm start` for a dev server. The application will open in your default browser.
@@ -45,6 +51,14 @@ npm install
 npm install -g @ionic/cli
 ```
 
+#### Running on Android SDK  
+Create, if not exists, local.properties file at android folder with next line:  
+sdk.dir=[path to ANDROID SDK FOLDER]
+
+```
+npm run build:android:ci  (Windows users: npm run win:build:android:ci)
+npm run cap:start:android
+```
 #### Running Unit Tests
 
 Run `npm run test` to execute the unit tests via [Jest](https://jestjs.io/).

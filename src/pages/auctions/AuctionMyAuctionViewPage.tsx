@@ -153,7 +153,7 @@ const AuctionMyAuctionViewPage: FC = () => {
               <Img src={addIPFSGatewayPrefix(ipfsHashImageFront)} />
             </IonCol>
           </IonRow>
-          <IonRow style={{marginTop:"20px"}}>
+          <IonRow style={{marginTop:"8px"}}>
             <IonCol size="5" offset="1">
               {title && (
                 <Title fontSize={FontSize.L} fontWeight={FontWeight.BOLD} style={{fontFamily:"Open Sans",color:"#252732"}}>

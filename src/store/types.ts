@@ -56,6 +56,9 @@ import {
   WalletsLoadActionType,
   WalletsLoadErrorActionType,
   WalletsLoadSuccessActionType,
+  FaucetSendTokensActionType,
+  FaucetSendTokensSuccessActionType,
+  FaucetSendTokensErrorActionType,  
 } from './actions/wallets';
 import { AppState } from './reducers/app';
 import { AssetClaimState } from './reducers/asset-claim';
@@ -64,13 +67,14 @@ import { CollectionsState } from './reducers/collections';
 import { NetworkState } from './reducers/network';
 import { TransactionState } from './reducers/transaction';
 import { WalletsState } from './reducers/wallets';
+import { FaucetState } from './reducers/faucet';
 import connection from './services/protokol-connection';
 
 export type RootActions =
   | LoadNetworkConfigurationActionType
   | NetworkConfigurationSuccessActionType
   | NetworkConfigurationErrorActionType
-  | SetBaseUrlAppActionType
+  | SetBaseUrlAppActionType 
   | SetEncodedUserPrivateKeyActionType
   | SetUsernameActionType
   | ClaimAssetActionType
@@ -107,7 +111,10 @@ export type RootActions =
   | CollectiblesLoadErrorActionType
   | WalletsLoadActionType
   | WalletsLoadSuccessActionType
-  | WalletsLoadErrorActionType;
+  | WalletsLoadErrorActionType
+  | FaucetSendTokensActionType
+  | FaucetSendTokensSuccessActionType
+  | FaucetSendTokensErrorActionType;
 export type RootState = {
   app: AppState;
   network: NetworkState;
@@ -117,6 +124,7 @@ export type RootState = {
   transaction: TransactionState;
   collections: CollectionsState;
   wallets: WalletsState;
+  faucet: FaucetState;
 };
 export type RootDependencies = {
   connection: typeof connection;
