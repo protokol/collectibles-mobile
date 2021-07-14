@@ -74,7 +74,7 @@ const ImageBgCol = styled(IonCol)`
 `;
 
 const Footer = styled(IonFooter)`
-  position: fixed;
+  
   bottom: 0;
 `;
 

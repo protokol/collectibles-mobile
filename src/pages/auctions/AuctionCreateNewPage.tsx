@@ -39,7 +39,7 @@ import { addIPFSGatewayPrefix } from '../../constants/images';
 import { collectionSelector } from '../../store/selectors/collections';
 
 const Footer = styled(IonFooter)`
-  position: fixed;
+  
   bottom: 0;
 `;
 
@@ -187,7 +187,7 @@ const AuctionCreateNewPage: FC = () => {
           </IonButton>
         }
       />
-      <IonContent fullscreen>        
+      <IonContent>        
         <form onSubmit={handleSubmit(submitForm)}>
         <IonGrid className="ion-no-padding">
           <IonRow>
