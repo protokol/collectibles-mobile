@@ -28,6 +28,8 @@ Keep REACT_APP_PAPER_COINS_FAUCET_SENDER_PASSPHRASE empty to disable Faucet func
 
 Be sure you don't publish any passphrase for real money production environments
 
+Configure REACT_APP_GOOGLE_MAPS_API_KEY with your Google Maps API key to show app locations properly
+
 ### Development Environment Setup
 
 Run `npm start` for a dev server. The application will open in your default browser.

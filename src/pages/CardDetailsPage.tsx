@@ -134,7 +134,7 @@ const CardDetailsPage: FC = () => {
                       fullscreenControl: false,
                     }}
                     bootstrapURLKeys={{
-                      key: 'AIzaSyAzYuxD62y_TmSlgLXhfXywHrNLCsR4a40',
+                      key: process.env.REACT_APP_GOOGLE_MAPS_API_KEY!,
                     }}
                     defaultCenter={{
                       lat,
