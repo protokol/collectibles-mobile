@@ -25,7 +25,7 @@
     "@ionic/react-router": "^5.0.7",
     "@opencensus/core": "0.0.22",
     "@pm2/io": "^5.0.0",
-    "@protokol/nft-exchange-crypto": "1.0.0-beta.61",
+    "@protokol/nft-exchange-crypto": "1.0.0-beta.63",
     "@protokol/client": "^1.0.0-beta.39",
     "@protokol/nameservice-crypto": "^1.0.0-beta",
     "aes-js": "^3.1.2",
@@ -54,7 +54,7 @@
     "rxjs": "^6.6.3",
     "sha256": "^0.2.0",
     "styled-components": "^5.2.1",
-    "typescript": "4.3.4",
+    "typescript": "4.3.5",
     "uuid": "^8.3.2"
   },
   "scripts": {
@@ -92,7 +92,7 @@
     "@babel/preset-env": "^7.13.9",
     "@capacitor/cli": "2.4.7",
     "@testing-library/jest-dom": "^5.0.0",
-    "@testing-library/react": "^11.0.0",
+    "@testing-library/react": "^12.0.0",
     "@testing-library/user-event": "^13.0.0",
     "@trivago/prettier-plugin-sort-imports": "^2.0.0",
     "@types/aes-js": "^3.1.1",
@@ -114,7 +114,7 @@
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-jsx-a11y": "^6.4.1",
     "eslint-plugin-react": "^7.22.0",
-    "husky": "^6.0.0",
+    "husky": "^7.0.0",
     "prettier": "^2.2.1",
     "pretty-quick": "^3.1.0",
     "react-app-rewired": "^2.1.8"
