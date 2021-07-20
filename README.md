@@ -68,6 +68,10 @@ npm run cap:start:android
 
 Run `npm run test` to execute the unit tests via [Jest](https://jestjs.io/).
 
+###Building with Ionic AppFlow
+
+Android: "prebuild" script will be executed after "build"
+
 # Contact Us For Support And Custom Development
 
 info@protokol.com
