@@ -34,11 +34,14 @@ Configure REACT_APP_GOOGLE_MAPS_API_KEY with your Google Maps API key to show ap
 
 Run `npm start` for a dev server. The application will open in your default browser.
 
-Run `cap:start:android` for a dev Android application. Running Android application requires Android Studio to be installed.
-If you cant find the folder capacitor-cordova-android-plugins inside the android project folder, you need to run a capacitor command to create it (and update plugin variables): Run `npx cap sync`
+Run `npm run build` to create build folder.
 
+Run `npm run build:android:ci` and after `npm run cap:start:android` for a dev Android application.  
+Running Android application requires Android Studio to be installed.
+Note: If you cant find the folder capacitor-cordova-android-plugins inside the android project folder, you need to run a capacitor command to create it (and update plugin variables): Run `npx cap sync`
 
-Run `cap:start:ios` for a dev iOS application. Running iOS application requires XCode to be installed. 
+Run `cap:start:ios` for a dev iOS application.  
+Running iOS application requires XCode to be installed. 
 
 ### Source Code Setup
 
