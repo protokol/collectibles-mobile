@@ -52,9 +52,9 @@ const fetchWalletCollectionsEpic: RootEpic = (
           connection(stateBaseUrl!).api("blocks").last(),
           connection(stateBaseUrl!).NFTBaseApi('assets').walletAssets(pubKey, query),
           connection(stateBaseUrl!).NFTExchangeApi('auctions').getAllAuctions(),
-          connection(stateBaseUrl!).NFTExchangeApi('auctions').getAllCanceledAuctions(),          
+          //connection(stateBaseUrl!).NFTExchangeApi('auctions').getAllCanceledAuctions(),          
         ]).pipe(  
-          map(([blockResponse, assetsResponse, allAuctionsResponse, cancelledAuctionsResponse]) => {
+          map(([blockResponse, assetsResponse, allAuctionsResponse /*, cancelledAuctionsResponse*/]) => {
             if (blockResponse?.body?.errors) {
               return CollectiblesLoadErrorAction(blockResponse?.body?.errors);
             }                 
@@ -63,23 +63,26 @@ const fetchWalletCollectionsEpic: RootEpic = (
             }
             if (allAuctionsResponse?.body?.errors) {
               return CollectiblesLoadErrorAction(allAuctionsResponse?.body?.errors);
-            }            
+            }          
+            /*  
             if (cancelledAuctionsResponse?.body?.errors) {
               return CollectiblesLoadErrorAction(cancelledAuctionsResponse?.body?.errors);
-            }                              
+            } 
+            */                             
             const q = query || {
               page: 1,
               limit: 100,
             };
             let data:BaseResourcesTypes.Assets[] = [];
-            let activeAuctions:ExchangeResourcesTypes.Auctions[] = allAuctionsResponse.body.data.filter(a => cancelledAuctionsResponse.body.data.filter(ac => ac.nftAuctionCancel.auctionId === a.id));
+            //let activeAuctions:ExchangeResourcesTypes.Auctions[] = allAuctionsResponse.body.data.filter(a => cancelledAuctionsResponse.body.data.filter(ac => ac.nftAuctionCancel.auctionId === a.id));
             
             //Cards on expired auctions (not cancelled) could be waiting for cancellation or accepting offer, is for that next two lines are commented and not filtering them
             //const currentBlock = blockResponse.body?.data?.height;     
             //activeAuctions = activeAuctions.filter(a => a.nftAuction.expiration.blockHeight < currentBlock); // Remove expired auctions from active auctions
 
             for(let asset of assetsResponse.body.data){
-              const auctionIn = activeAuctions.findIndex(a => a.nftAuction.nftIds.find(as => as === asset.id));
+              //const auctionIn = activeAuctions.findIndex(a => a.nftAuction.nftIds.find(as => as === asset.id));
+              const auctionIn = allAuctionsResponse.body.data.findIndex(a => a.nftAuction.nftIds.find(as => as === asset.id));
               if (auctionIn === -1){                                
                 //asset.attributes = { ...asset.attributes, 
                 //  auctionId: activeAuctions[auctionIn].id
