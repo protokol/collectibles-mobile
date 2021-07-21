@@ -114,13 +114,17 @@ const fetchCardsOnAuctionEpic: RootEpic = (
       return forkJoin([
           fromFetch(`${stateBaseUrl}/api/node/configuration`).pipe(mergeMap(response => response.json())),
           connection(stateBaseUrl!).api("blocks").last(),
-          (onlyOwnAuctions)?connection(stateBaseUrl!).NFTExchangeApi("auctions").searchByAsset({senderPublicKey:pubKey}, undefined):connection(stateBaseUrl!).NFTExchangeApi('auctions').getAllAuctions(),
-          connection(stateBaseUrl!).NFTExchangeApi('auctions').getAllCanceledAuctions(),        
+
+          connection(stateBaseUrl!).NFTExchangeApi("auctions").searchByAsset((onlyOwnAuctions)?{senderPublicKey:pubKey}:{}, {onlyActive:true, expired:includeExpiredAuctions, includeBids:true}),
+
+          //(onlyOwnAuctions)?connection(stateBaseUrl!).NFTExchangeApi("auctions").searchByAsset({senderPublicKey:pubKey}, undefined):connection(stateBaseUrl!).NFTExchangeApi('auctions').getAllAuctions(),
+          //connection(stateBaseUrl!).NFTExchangeApi('auctions').getAllCanceledAuctions(),        
           (onlyOwnAuctions)?connection(stateBaseUrl!).NFTBaseApi('assets').walletAssets(pubKey, query):connection(stateBaseUrl!).NFTBaseApi('assets').all(),
-          connection(stateBaseUrl!).NFTExchangeApi('bids').getAllBids(),
-          connection(stateBaseUrl!).NFTExchangeApi('bids').getAllCanceledBids()
+          //connection(stateBaseUrl!).NFTExchangeApi('bids').getAllBids(),
+          //connection(stateBaseUrl!).NFTExchangeApi('bids').getAllCanceledBids()
       ]).pipe(
-        map(([confResponse, blockResponse, auctionsResponse, cancelledAuctionsResponse, assetsResponse, bidsResponse, cancelledBidsResponse]) => {
+        //map(([confResponse, blockResponse, auctionsResponse, cancelledAuctionsResponse, assetsResponse, bidsResponse, cancelledBidsResponse]) => {
+          map(([confResponse, blockResponse, auctionsResponse, assetsResponse]) => {
           if (!confResponse.data) {
             return CollectiblesOnAuctionLoadErrorAction({name:"Error", message:"Error reading node configuration"});
           }
@@ -130,18 +134,9 @@ const fetchCardsOnAuctionEpic: RootEpic = (
           if (auctionsResponse?.body?.errors) {
             return CollectiblesOnAuctionLoadErrorAction(auctionsResponse?.body?.errors);
           }
-          if (cancelledAuctionsResponse?.body?.errors) {
-            return CollectiblesOnAuctionLoadErrorAction(cancelledAuctionsResponse?.body?.errors);
-          }          
           if (assetsResponse?.body?.errors) {
             return CollectiblesOnAuctionLoadErrorAction(assetsResponse?.body?.errors);
           }
-          if (bidsResponse?.body?.errors) {
-            return CollectiblesOnAuctionLoadErrorAction(bidsResponse?.body?.errors);
-          }
-          if (cancelledBidsResponse?.body?.errors) {
-            return CollectiblesOnAuctionLoadErrorAction(cancelledBidsResponse?.body?.errors);
-          }          
 
           let data:BaseResourcesTypes.Assets[] = [];
 
@@ -150,27 +145,20 @@ const fetchCardsOnAuctionEpic: RootEpic = (
           //const currentMs = blockResponse.body?.data?.timestamp?.unix * 1000;
           const nowMs = new Date().getTime();
 
-          for(let auction of auctionsResponse.body.data){    
-            if (cancelledAuctionsResponse.body.data.some(a => a.nftAuctionCancel.auctionId === auction.id)) continue;
-            if (!onlyOwnAuctions && auction.senderPublicKey === pubKey) continue;
-            if (!includeExpiredAuctions && auction.nftAuction.expiration.blockHeight < currentBlock) continue;
+          for(let auction of auctionsResponse.body.data){            
+            let bids:ExchangeResourcesTypes.Bids[] = [];
             if (onlyBiddedAuctions)
             {              
-              const biddedIn = bidsResponse.body.data.findIndex(b => b.nftBid.auctionId === auction.id && b.senderPublicKey === pubKey);
-              if (biddedIn === -1) continue;
+              bids = auctionsResponse.body.data["bids"];
+              const biddedIn = bids.findIndex(b => b.nftBid.auctionId === auction.id && b.senderPublicKey === pubKey);
+              if (bids.length === 0 ||biddedIn === -1) continue;
             }            
-            let bidsResp = bidsResponse.body.data.filter(b => b.nftBid.auctionId === auction.id);
-            let allBids:ExchangeResourcesTypes.Bids[] = [];
-            for(let bid of bidsResp){  
-              if (cancelledBidsResponse.body.data.some(b => b.nftBidCancel.bidId === bid.id)) continue;
-              allBids.push(bid);
-            }                         
             //const allMyBids = bidsResponse.body.data.filter(b => b.nftBid.auctionId === auction.id && b.senderPublicKey === pubKey);
-            const allMyBids = allBids.filter(b => b.senderPublicKey === pubKey);
-            const maxBid = (allBids.length === 0) ? 0 : Number(allBids.reduce((prev, curr) => (Number(prev.nftBid.bidAmount)>Number(curr.nftBid.bidAmount))?prev:curr).nftBid.bidAmount);
+            const allMyBids = bids.filter(b => b.senderPublicKey === pubKey);
+            const maxBid = (bids.length === 0) ? 0 : Number(bids.reduce((prev, curr) => (Number(prev.nftBid.bidAmount)>Number(curr.nftBid.bidAmount))?prev:curr).nftBid.bidAmount);
             const myBid = (allMyBids.length === 0) ? 0 : Number(allMyBids.reduce((prev, curr) => (Number(prev.nftBid.bidAmount)>Number(curr.nftBid.bidAmount))?prev:curr).nftBid.bidAmount);
             const myBidId = (allMyBids.length === 0) ? 0 : allMyBids.reduce((prev, curr) => (Number(prev.nftBid.bidAmount)>Number(curr.nftBid.bidAmount))?prev:curr).id;
-            const highestBidId = (allBids.length === 0) ? 0 : allBids.reduce((prev, curr) => (Number(prev.nftBid.bidAmount)>Number(curr.nftBid.bidAmount))?prev:curr).id;            
+            const highestBidId = (bids.length === 0) ? 0 : bids.reduce((prev, curr) => (Number(prev.nftBid.bidAmount)>Number(curr.nftBid.bidAmount))?prev:curr).id;            
             for(let nftId of auction.nftAuction.nftIds){
               const asset = assetsResponse.body.data.find(a => a.id===nftId);
               if (asset === undefined) continue;
@@ -194,7 +182,7 @@ const fetchCardsOnAuctionEpic: RootEpic = (
               */
               asset.attributes = { ...asset.attributes, 
                   auctionId: auction.id,
-                  minimumBid: auction.nftAuction.startAmount / 10**8, 
+                  minimumBid: Number(auction.nftAuction.startAmount) / 10**8, 
                   finalBiddingDate: humanExpirationDate.toISOString(),
                   startedBiddingDate: auction.timestamp.human,
                   timeRemaining: days + "d" + hours + "h" + minutes + "m",

@@ -1,5 +1,6 @@
 import { FC, useCallback, useContext, useEffect, useMemo } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { sadOutline } from 'ionicons/icons';
 import { useHistory } from 'react-router';
 import styled from 'styled-components';
 import {
@@ -9,7 +10,8 @@ import {
   IonGrid,
   IonRow,
   IonSpinner,
-  IonToolbar,
+  IonToolbar,  
+  IonIcon,
 } from '@ionic/react';
 import Card from './Card';
 import Button from './ionic/Button';
@@ -164,13 +166,18 @@ const HomeCollectibles: FC = () => {
           )}
           {!isLoading && !flatAssets.length && !isError && (
             <IonCol size="12" class="ion-text-center">
-              <Text
-                className="ion-padding-top"
-                fontSize={FontSize.L}
-                color="primary"
-              >
-                No collectables yet!
+              <br/><br/><br/><br/>
+              <Text className="ion-padding-top" color="medium" fontSize={FontSize.XXL} fontWeight={FontWeight.BOLD}>
+                Oh no!
               </Text>
+              <Text
+                className="ion-padding"
+                fontSize={FontSize.L}
+                color="medium"
+              >
+                Looks like there are no hero cards added to your collectibles yet!
+              </Text>
+              <IonCol><IonIcon color="medium" size="large" icon={sadOutline} /></IonCol>      
             </IonCol>
           )}
           {isLoading && !flatAssets.length && (
