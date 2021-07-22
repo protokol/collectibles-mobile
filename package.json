@@ -64,7 +64,7 @@
     "cap:start:ios": "ionic cap open ios",
     "cap:start:android": "ionic cap open android",
     "build": "react-app-rewired build",
-    "postbuild": "npx jetify && npx ionic capacitor sync android && npx ionic capacitor update android && npx ionic capacitor copy android && cd android && ./gradlew assembleDebug && cd ..",
+    
     "build:android:ci": "npx jetify && npx ionic capacitor sync android && npx ionic capacitor update android && npx ionic capacitor copy android && cd android && ./gradlew assembleDebug && cd ..",
     "win:build:android:ci": "npx jetify && npx ionic capacitor sync android && npx ionic capacitor update android && npx ionic capacitor copy android && cd android && .\\gradlew.bat assembleDebug && cd ..",
     "test": "react-app-rewired test --transformIgnorePatterns \"node_modules/(?!@ionic)/\"",
