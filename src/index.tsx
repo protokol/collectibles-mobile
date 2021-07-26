@@ -7,6 +7,7 @@ import configureStore from './store/configure-store';
 
 
 setupConfig({  
+  mode: 'md',
   menuType: 'overlay'  
 });
 
