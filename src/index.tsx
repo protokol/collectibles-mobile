@@ -1,14 +1,30 @@
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-//import { setupConfig } from '@ionic/react';
+import { setupConfig } from '@ionic/react';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import configureStore from './store/configure-store';
 
-/*
-setupConfig({
-  mode: 'md',
+
+setupConfig({  
+  menuType: 'overlay'  
 });
+
+
+/*
+const getConfig = () => {
+  if (isPlatform('iphone')) {
+    return {
+      mode: 'ios'
+    }
+  }
+
+  return {    
+    mode: 'md'
+  }
+}
+
+setupConfig(getConfig());
 */
 
 const store = configureStore();
