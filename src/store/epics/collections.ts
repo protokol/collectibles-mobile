@@ -110,7 +110,7 @@ const fetchCardsOnAuctionEpic: RootEpic = (
       const {
         payload: { pubKey, query, onlyOwnAuctions, onlyBiddedAuctions, includeExpiredAuctions },
       } = action as CollectiblesOnAuctionLoadActionType;
-
+          
       return forkJoin([
           fromFetch(`${stateBaseUrl}/api/node/configuration`).pipe(mergeMap(response => response.json())),
           connection(stateBaseUrl!).api("blocks").last(),
@@ -137,7 +137,6 @@ const fetchCardsOnAuctionEpic: RootEpic = (
           if (assetsResponse?.body?.errors) {
             return CollectiblesOnAuctionLoadErrorAction(assetsResponse?.body?.errors);
           }
-
           let data:BaseResourcesTypes.Assets[] = [];
 
           const blockTime = confResponse.data?.constants?.blocktime;
@@ -146,13 +145,14 @@ const fetchCardsOnAuctionEpic: RootEpic = (
           const nowMs = new Date().getTime();
 
           for(let auction of auctionsResponse.body.data){            
-            let bids:ExchangeResourcesTypes.Bids[] = [];
+            let bids:ExchangeResourcesTypes.Bids[] = auction.nftAuction.bids!;          
             if (onlyBiddedAuctions)
-            {              
-              bids = auctionsResponse.body.data["bids"];
-              const biddedIn = bids.findIndex(b => b.nftBid.auctionId === auction.id && b.senderPublicKey === pubKey);
-              if (bids.length === 0 ||biddedIn === -1) continue;
-            }            
+            {  
+              console.log(auction);
+              if (bids.length === 0) continue; 
+              const biddedIn = bids.findIndex(b => b.senderPublicKey === pubKey);
+              if (biddedIn === -1) continue;
+            }                 
             //const allMyBids = bidsResponse.body.data.filter(b => b.nftBid.auctionId === auction.id && b.senderPublicKey === pubKey);
             const allMyBids = bids.filter(b => b.senderPublicKey === pubKey);
             const maxBid = (bids.length === 0) ? 0 : Number(bids.reduce((prev, curr) => (Number(prev.nftBid.bidAmount)>Number(curr.nftBid.bidAmount))?prev:curr).nftBid.bidAmount);
