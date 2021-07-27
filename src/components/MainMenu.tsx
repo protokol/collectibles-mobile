@@ -113,8 +113,8 @@ const MainMenu: FC = () => {
   const homeMenuRef = useRef<HTMLIonMenuElement | null>();
 
   const onMenuClose = useCallback(
-    (e?) => {
-      if (e) {
+    (e?) => {      
+      if (e && !isPlatform("iphone")) {
         e.preventDefault();
       }
 
