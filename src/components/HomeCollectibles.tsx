@@ -1,5 +1,6 @@
 import { FC, useCallback, useContext, useEffect, useMemo } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { sadOutline } from 'ionicons/icons';
 import { useHistory } from 'react-router';
 import styled from 'styled-components';
 import {
@@ -9,7 +10,8 @@ import {
   IonGrid,
   IonRow,
   IonSpinner,
-  IonToolbar,
+  IonToolbar,  
+  IonIcon,
 } from '@ionic/react';
 import Card from './Card';
 import Button from './ionic/Button';
@@ -59,8 +61,8 @@ const HomeCollectibles: FC = () => {
     }else{
       const randomCollections = [
         'd845dba7a14f1d146b01c1055834caaa66ed761abb27512a76c7211880353f9d',
-        '03c81f98549151ac6cc65889aee2549283ef6f364bb5af6cbf770cb6cfa09f36', 
-        '12b28dfbfabe8af1aaefb9a4774d20a36216905fa874a29fde79ed6521a381d7'
+        'cb6200baf80d9f110a041dcaf828f8648fed04006e69d91b8c9e887e5f5d59d8', 
+        'd1dcb59b2d44c4f88efb61bc6018c22d3e6e545901b2b39a39e74ce47c993fd6'
       ];
       let randomCollection = randomCollections[~~(randomCollections.length * Math.random())];
       history.push(`/home/collect-card/${randomCollection}`);
@@ -164,13 +166,18 @@ const HomeCollectibles: FC = () => {
           )}
           {!isLoading && !flatAssets.length && !isError && (
             <IonCol size="12" class="ion-text-center">
-              <Text
-                className="ion-padding-top"
-                fontSize={FontSize.L}
-                color="primary"
-              >
-                No collectables yet!
+              <br/><br/><br/><br/>
+              <Text className="ion-padding-top" color="medium" fontSize={FontSize.XXL} fontWeight={FontWeight.BOLD}>
+                Oh no!
               </Text>
+              <Text
+                className="ion-padding"
+                fontSize={FontSize.L}
+                color="medium"
+              >
+                Looks like there are no hero cards added to your collectibles yet!
+              </Text>
+              <IonCol><IonIcon color="medium" size="large" icon={sadOutline} /></IonCol>      
             </IonCol>
           )}
           {isLoading && !flatAssets.length && (

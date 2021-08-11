@@ -5,9 +5,28 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import configureStore from './store/configure-store';
 
-setupConfig({
+
+setupConfig({  
   mode: 'md',
+  menuType: 'overlay'  
 });
+
+
+/*
+const getConfig = () => {
+  if (isPlatform('iphone')) {
+    return {
+      mode: 'ios'
+    }
+  }
+
+  return {    
+    mode: 'md'
+  }
+}
+
+setupConfig(getConfig());
+*/
 
 const store = configureStore();
 

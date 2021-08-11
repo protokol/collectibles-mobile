@@ -1,10 +1,12 @@
 import { FC, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { sadOutline } from 'ionicons/icons';
 import styled from 'styled-components';
 import {
   IonCol,  
   IonGrid,
   IonRow,
+  IonIcon,
   IonSpinner,
 } from '@ionic/react';
 import CardOnAuction from './CardOnAuction';
@@ -218,13 +220,18 @@ const AuctionMyBiddedCards: FC = () => {
           )}
           {!isLoading && !flatAssets.length && !isError && (
             <IonCol size="12" class="ion-text-center">
-              <Text
-                className="ion-padding-top"
-                fontSize={FontSize.L} 
-                color="primary"
-              >
-                You don't have bids yet!
+              <br/><br/><br/><br/>
+              <Text className="ion-padding-top" color="medium" fontSize={FontSize.XXL} fontWeight={FontWeight.BOLD}>
+                Oh no!
               </Text>
+              <Text
+                className="ion-padding"
+                fontSize={FontSize.L}
+                color="medium"
+              >
+                Looks like you have not bids in any auction yet!
+              </Text>
+              <IonCol><IonIcon color="medium" size="large" icon={sadOutline} /></IonCol>   
             </IonCol>
           )}
           {isLoading && !flatAssets.length && (
