@@ -29,7 +29,6 @@ import { addIPFSGatewayPrefix } from '../../constants/images';
 import { collectionSelector } from '../../store/selectors/collections';
 
 const Footer = styled(IonFooter)`
-  position: fixed;
   bottom: 0;
 `;
 
