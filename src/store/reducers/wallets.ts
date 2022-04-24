@@ -24,7 +24,8 @@ const reducer: Reducer<WalletsState, WALLETS_ACTION_TYPES> = (
   const { type } = action;
 
   switch (type) {
-    case WalletsActions.WALLETS_LOAD: {
+    case WalletsActions.WALLETS_LOAD:     
+    {
       const {
         payload: { pubKey },
       } = action;
@@ -42,7 +43,8 @@ const reducer: Reducer<WalletsState, WALLETS_ACTION_TYPES> = (
         },
       };
     }
-    case WalletsActions.WALLETS_LOAD_SUCCESS: {
+    case WalletsActions.WALLETS_LOAD_SUCCESS: 
+    {
       const {
         payload: { pubKey, wallet },
       } = action;
@@ -60,7 +62,8 @@ const reducer: Reducer<WalletsState, WALLETS_ACTION_TYPES> = (
         },
       };
     }
-    case WalletsActions.WALLETS_LOAD_ERROR: {
+    case WalletsActions.WALLETS_LOAD_ERROR: 
+    {
       const {
         payload: { pubKey, error },
       } = action;

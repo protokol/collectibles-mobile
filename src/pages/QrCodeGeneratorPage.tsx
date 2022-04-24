@@ -19,7 +19,7 @@ const Content = styled(IonContent)`
 const CollectionBg = styled.div<{
   bgUrl: string;
 }>`
-  position: fixed;
+  position:  fixed;
   top: 0;
   left: 0;
   height: 100vh;

@@ -123,7 +123,7 @@ const startAuctionEpic: RootEpic = (
                         
             const transaction = new Builders.NFTAuctionBuilder()
             .NFTAuctionAsset({
-                startAmount: Utils.BigNumber.make(minimumBid),                
+                startAmount: Utils.BigNumber.make(minimumBid * 10 ** Number(process.env.REACT_APP_TOKEN_DECIMALS)),
                 expiration: {
                     blockHeight: addedHeight,
                 },
@@ -246,7 +246,7 @@ const startAuctionEpic: RootEpic = (
               const transaction = new Builders.NFTBidBuilder()
                   .NFTBidAsset({
                       auctionId: auctionId,
-                      bidAmount: Utils.BigNumber.make(bidAmount),
+                      bidAmount: Utils.BigNumber.make(bidAmount * 10 ** Number(process.env.REACT_APP_TOKEN_DECIMALS)),
                   })
                   //.fee("0")
                   .nonce(CryptoUtils.getWalletNextNonce(data))

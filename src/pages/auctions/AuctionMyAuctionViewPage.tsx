@@ -35,7 +35,6 @@ import { addIPFSGatewayPrefix } from '../../constants/images';
 import { collectionSelector } from '../../store/selectors/collections';
 
 const Footer = styled(IonFooter)`
-  position: fixed;
   bottom: 0;
 `;
 
@@ -153,7 +152,7 @@ const AuctionMyAuctionViewPage: FC = () => {
               <Img src={addIPFSGatewayPrefix(ipfsHashImageFront)} />
             </IonCol>
           </IonRow>
-          <IonRow style={{marginTop:"20px"}}>
+          <IonRow style={{marginTop:"8px"}}>
             <IonCol size="5" offset="1">
               {title && (
                 <Title fontSize={FontSize.L} fontWeight={FontWeight.BOLD} style={{fontFamily:"Open Sans",color:"#252732"}}>
