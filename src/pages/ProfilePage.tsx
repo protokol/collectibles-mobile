@@ -4,7 +4,9 @@ import { useHistory } from 'react-router';
 import {
   IonPage,
   IonContent,
-  IonGrid,
+  IonGrid,  
+  IonToolbar,
+  IonFooter,
   IonRow,
   IonCol,
   IonSpinner,
@@ -18,12 +20,40 @@ import useIsMounted from '../hooks/use-is-mounted';
 import { AuthLoginContext } from '../providers/AuthLoginProvider';
 import { WalletsLoadAction } from '../store/actions/wallets';
 import { walletsSelector } from '../store/selectors/wallets';
+import Title from '../components/ionic/Title';
+import styled from 'styled-components';
+import Button from '../components/ionic/Button';
+
+const Footer = styled(IonFooter)`
+  position: fixed;
+  bottom: 0;
+`;
+
+const FooterButton = styled(Button)`
+  &.ion-color-auction {
+    --ion-color-base: var(--ion-color-auction-base);
+    --ion-color-base-rgb: var(--ion-color-warning-rgb);
+    --ion-color-contrast: var(--ion-color-auction-tint);
+    --ion-color-contrast-rgb: var(--ion-color-auction-tint);
+    --ion-color-shade: var(--ion-color-warning-shade);
+    --ion-color-tint: var(--ion-color-auction-tint);
+  }
+`;
+
+const HorizontalLine = styled.div`
+  width:1px;
+  height:1px;
+  width: 80%;
+  margin-left: 10%;  
+  background:#E6E6E6;
+  position: relative;
+`;
 
 const ProfilePage: FC = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const {
-    session: { publicKey, username },
+    session: { publicKey, username, address },
   } = useContext(AuthLoginContext);
 
   const wallets = useSelector(walletsSelector, shallowEqual);
@@ -94,12 +124,21 @@ const ProfilePage: FC = () => {
                   fontSize={FontSize.L}
                   fontWeight={FontWeight.BOLD}
                 >
-                  Hi {walletUsername || username || '----'}!
+                  Hi {walletUsername || username || '----'}!                  
                 </Text>
+                <br/>
+                <Text
+                  className="ion-text-capitalize"
+                  fontSize={FontSize.SM}
+                  fontWeight={FontWeight.BOLD}
+                >                  
+                  Your wallet address: { address }
+                </Text>                
               </IonCol>
             )}
           </IonRow>
           {!isLoading && !isError && (
+            <>
             <DetailCardsStyled>
               <DetailCard
                 isGrayBg={true}
@@ -120,9 +159,42 @@ const ProfilePage: FC = () => {
                 subtitle="+"
                 onClick={() => history.replace('/home/scan-qr')}
               />
-            </DetailCardsStyled>
+            </DetailCardsStyled>            
+            <HorizontalLine style={{marginTop:"150px"}}/>
+            <IonRow>
+              <IonCol size="10" offset="1" className="ion-text-center ion-padding">              
+                <Title fontSize={FontSize.XS} style={{fontFamily:"Open Sans",color:"#707070"}}>Available NASCAR balance:</Title> 
+              </IonCol>
+            </IonRow>      
+            <IonRow style={{marginTop:"10px"}}>
+              <IonCol size="10" offset="1" className="ion-text-center">              
+                <Title fontSize={FontSize.XXL} fontWeight={FontWeight.BOLD} style={{fontFamily:"Open Sans",color:"#8AC827"}}>${(Number(wallet?.balance)/10**8).toFixed(2)}</Title> 
+              </IonCol>
+            </IonRow>          
+            <HorizontalLine/>
+            </>
           )}
         </IonGrid>
+        {process.env.REACT_APP_PAPER_COINS_FAUCET_SENDER_PASSPHRASE && process.env.REACT_APP_PAPER_COINS_FAUCET_SENDER_PASSPHRASE.trim().length > 0 
+          && Number(wallet?.balance)/10**8 < Number(process.env.REACT_APP_PAPER_COINS_MIN_AVAILABLE_TO_ACTIVATE_FAUCET!) && (
+        <Footer className="ion-no-border">
+          <IonToolbar>
+            <FooterButton
+              color="auction"
+              size="large"
+              type="submit"
+              className="ion-text-uppercase ion-no-margin"
+              fontSize={FontSize.SM}
+              fontWeight={FontWeight.BOLD}
+              radius={false}
+              expand="block"
+              onClick={ () => history.push(`/home/profile/getpapercoins`) }    
+            >
+              Get some NASCAR paper coins
+            </FooterButton>
+          </IonToolbar>
+        </Footer>     
+        )}     
       </IonContent>
     </IonPage>
   );

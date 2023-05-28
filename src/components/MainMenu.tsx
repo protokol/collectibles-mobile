@@ -15,7 +15,7 @@ import {
   IonHeader,
   IonIcon,
   IonItem,
-  IonList,
+  IonList,  
   IonMenu,
   IonToolbar,
   isPlatform,
@@ -69,9 +69,10 @@ const MenuItem: FC<{
   icon: string;
   label: string;
   navigateTo?: string;
-  onMenuClose: () => void;
+  color?: string;
+  onMenuClose: () => void;  
   onNavigate?: () => void;
-}> = ({ icon, label, navigateTo, onMenuClose, onNavigate }) => {
+}> = ({ icon, label, navigateTo, color, onMenuClose, onNavigate }) => {
   const history = useHistory();
 
   const onNavigateClick = useCallback(
@@ -82,11 +83,11 @@ const MenuItem: FC<{
   );
 
   return (
-    <IonItem lines="none" class="app-bg-color-transparent">
-      <MenuItemIcon color="light" icon={icon} slot="start" />
+    <IonItem lines="none" class="app-bg-color-transparent" text-wrap>
+      <MenuItemIcon color={color || "light"} icon={icon} slot="start" />
       <MenuItemLabel
         className="ion-text-uppercase"
-        color="light"
+        color={color || "light"}
         fontSize={FontSize.SM}
         onClick={() => {
           if (navigateTo) {
@@ -106,7 +107,7 @@ const MenuItem: FC<{
 
 const MainMenu: FC = () => {
   const {
-    session: { state },
+    session: { state  },
   } = useContext(AuthLoginContext);
 
   const homeMenuRef = useRef<HTMLIonMenuElement | null>();
