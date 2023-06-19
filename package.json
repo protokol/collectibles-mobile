@@ -17,7 +17,7 @@
     "@capacitor/android": "^2.4.6",
     "@capacitor/core": "2.4.7",
     "@capacitor/ios": "^2.4.6",
-    "@hookform/error-message": "0.0.5",
+    "@hookform/error-message": "2.0.1",
     "@ionic-native/core": "^5.31.1",
     "@ionic-native/qr-scanner": "^5.31.1",
     "@ionic-native/screen-orientation": "^5.31.1",
